@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\LiveScore.csproj": {}
+    "D:\\Bhagyashree\\LiveScoring\\LiveScore\\LiveScore.csproj": {}
   },
   "projects": {
-    "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\LiveScore.csproj": {
+    "D:\\Bhagyashree\\LiveScoring\\LiveScore\\LiveScore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\LiveScore.csproj",
+        "projectUniqueName": "D:\\Bhagyashree\\LiveScoring\\LiveScore\\LiveScore.csproj",
         "projectName": "LiveScore",
-        "projectPath": "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\LiveScore.csproj",
+        "projectPath": "D:\\Bhagyashree\\LiveScoring\\LiveScore\\LiveScore.csproj",
         "packagesPath": "C:\\Users\\kewal dungarwal\\.nuget\\packages\\",
-        "outputPath": "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\obj\\",
+        "outputPath": "D:\\Bhagyashree\\LiveScoring\\LiveScore\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kewal dungarwal\\AppData\\Roaming\\NuGet\\NuGet.Config",

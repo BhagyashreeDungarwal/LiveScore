@@ -7,7 +7,7 @@ namespace LiveScoring.Model
 {
     public class Matchs
     {
-        public int Id { get; set; }
+        public int MId { get; set; }
         public string? MatchStatus { get; set; }
         public int NumberOfRound { get; set; }
 
@@ -24,9 +24,9 @@ namespace LiveScoring.Model
 
         [JsonIgnore]
         public virtual Category? Category { get; set; }
-       
+
         [JsonIgnore]
-        public virtual Athlete? Athlete { get; set; }   
+        public virtual Athlete? Athlete { get; set; }
 
     }
 }

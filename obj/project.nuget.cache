@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qFj1t/6XihzV14Fj0E+Srdy+z3nFhH9mznuSydfwJXL6sZ7vN6QuZKiad6X639myOo+uKuQG4YzRQDsQ7oB61w==",
+  "dgSpecHash": "RQPY71yCUMzW2LI0HcarkIACsPY4g2ahHZNALDCy9CqQFXrfiEFSo5ZU0Kpb7CXyJA69fRn5B8buG6cOith80g==",
   "success": true,
-  "projectFilePath": "D:\\Bhagyashree\\ICT\\sem2\\LiveScore\\LiveScore.csproj",
+  "projectFilePath": "D:\\Bhagyashree\\LiveScoring\\LiveScore\\LiveScore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

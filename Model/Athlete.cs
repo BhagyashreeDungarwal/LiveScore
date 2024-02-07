@@ -11,11 +11,10 @@ namespace LiveScoring.Model
         public int Id { get; set; }
         public string? AthleteName { get; set; }
         public string? Email { get; set; }
-        public string? Password { get; set; }
 
-        public int Contact { get; set; }
+        public string Contact { get; set; }
 
-        public string? ImageUrl;
+        public string? ImageUrl { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
@@ -29,7 +28,7 @@ namespace LiveScoring.Model
 
         [JsonIgnore]
         public virtual Category? Category { get; set; }
-        public string Coordinater { get; set; }
+        public int Coordinater { get; set; }
 
         [JsonIgnore]
         public virtual ACR? acr { get; set; }

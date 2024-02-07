@@ -38,7 +38,7 @@ namespace LiveScore.Data
 
             modelBuilder.Entity<ACR>(entity =>
             {
-                entity.HasKey(e => e.Email); 
+                entity.HasKey(e => e.Id); 
 
                 entity.Property(e => e.Email).IsRequired().HasMaxLength(101); 
 
@@ -85,7 +85,6 @@ namespace LiveScore.Data
 
                 entity.Property(a => a.AthleteName).IsRequired();
                 entity.Property(a => a.Email).IsRequired(); 
-                entity.Property(a => a.Password).IsRequired(); 
                 entity.Property(a => a.Contact).IsRequired(); 
                 entity.Property(a => a.ImageUrl).IsRequired(); 
                 entity.Property(a => a.DateOfBirth).IsRequired(); 
@@ -111,7 +110,7 @@ namespace LiveScore.Data
 
             modelBuilder.Entity<Matchs>(entity =>
             {
-                entity.HasKey(m => m.Id); 
+                entity.HasKey(m => m.MId); 
 
                 entity.Property(m => m.MatchStatus).IsRequired().HasMaxLength(101); 
                 entity.Property(m => m.NumberOfRound).IsRequired().HasMaxLength(101);

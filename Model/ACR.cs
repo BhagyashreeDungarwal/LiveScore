@@ -8,11 +8,13 @@ namespace LiveScore.Model
 {
     public class ACR
     {
+        public int Id { get; set; }
         public string? Email { get; set; }
         public string? Name { get; set; }
         public string? Password { get; set; }
-        public string Image;
-        public int Contact { get; set; }
+
+        public string Image { get; set; }
+        public string Contact { get; set; }
 
         public int Age { get; set; }
 
@@ -28,7 +30,6 @@ namespace LiveScore.Model
         public int? RoleId { get; set; }
 
         [JsonIgnore]
-       public virtual Role? Role { get; set; }
-
+        public virtual Role? Role { get; set; }
     }
 }
