@@ -21,8 +21,7 @@ namespace LiveScore.Model
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-        [DataType(DataType.DateTime)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Column(TypeName="datetime")]
         public DateTime? LastLogin { get; set; }
         public string? Gender { get; set; }
         public string? City { get; set; }

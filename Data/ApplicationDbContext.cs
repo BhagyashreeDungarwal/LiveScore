@@ -24,6 +24,7 @@ namespace LiveScore.Data
         public DbSet<Round> Rounds { get; set; } = null!;
         public DbSet<Score> Scores { get; set; } = null!;
         public DbSet<Tournament> Tournaments { get; set; } = null!;
+        public DbSet<Viewers> Viewerss { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,7 +55,7 @@ namespace LiveScore.Data
 
                 entity.Property(e => e.DateOfBirth).IsRequired(); 
 
-                entity.Property(e => e.LastLogin).IsRequired(false).HasDefaultValueSql("CURRENT_TIMESTAMP");  
+                entity.Property(e => e.LastLogin).IsRequired(false);  
 
                 entity.Property(e => e.Gender).IsRequired(false).HasMaxLength(101); 
 
@@ -199,7 +200,27 @@ namespace LiveScore.Data
                     .WithMany()
                     .HasForeignKey(t => t.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict); 
-            }); 
+            });
+
+            modelBuilder.Entity<Viewers>(entity =>
+            {
+                entity.HasKey(e => e.VId);
+
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(101);
+
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(101);
+
+                entity.Property(e => e.Password).IsRequired().HasMaxLength(101);
+
+                entity.Property(e => e.Image).IsRequired();
+
+                entity.Property(e => e.Contact).IsRequired().HasMaxLength(10);
+
+                entity.Property(e => e.Gender).IsRequired(false).HasMaxLength(101);
+
+                entity.Property(e => e.State).IsRequired(false).HasMaxLength(101);
+
+            });
         } 
     }
 }

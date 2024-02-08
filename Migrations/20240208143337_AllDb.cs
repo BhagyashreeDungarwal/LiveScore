@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LiveScore.Migrations
 {
-    public partial class AddToDb : Migration
+    public partial class AllDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,6 +36,25 @@ namespace LiveScore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Viewerss",
+                columns: table => new
+                {
+                    VId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contact = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
+                    State = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Viewerss", x => x.VId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Admin",
                 columns: table => new
                 {
@@ -48,12 +67,11 @@ namespace LiveScore.Migrations
                     Contact = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Age = table.Column<int>(type: "int", maxLength: 10, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    LastLogin = table.Column<DateTime>(type: "datetime", nullable: true),
                     Gender = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
                     City = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
                     State = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true)
-                    //RoleId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,11 +81,6 @@ namespace LiveScore.Migrations
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id");
-                    //table.ForeignKey(
-                    //    name: "FK_Admin_Roles_RoleId1",
-                    //    column: x => x.RoleId1,
-                    //    principalTable: "Roles",
-                    //    principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -229,11 +242,6 @@ namespace LiveScore.Migrations
                 table: "Admin",
                 column: "RoleId");
 
-            //migrationBuilder.CreateIndex(
-            //    name: "IX_Admin_RoleId1",
-            //    table: "Admin",
-            //    column: "RoleId1");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Athletes_CategoryId",
                 table: "Athletes",
@@ -287,6 +295,9 @@ namespace LiveScore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Tournaments");
+
+            migrationBuilder.DropTable(
+                name: "Viewerss");
 
             migrationBuilder.DropTable(
                 name: "Rounds");

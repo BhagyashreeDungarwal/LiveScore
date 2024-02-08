@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240207153724_AddToDb")]
-    partial class AddToDb
+    [Migration("20240208143337_AllDb")]
+    partial class AllDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,9 +62,7 @@ namespace LiveScore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastLogin")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -79,9 +77,6 @@ namespace LiveScore.Migrations
                     b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoleId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("State")
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
@@ -90,9 +85,52 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("RoleId1");
-
                     b.ToTable("Admin");
+                });
+
+            modelBuilder.Entity("LiveScore.Model.Viewers", b =>
+                {
+                    b.Property<int>("VId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VId"), 1L, 1);
+
+                    b.Property<string>("Contact")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Gender")
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.HasKey("VId");
+
+                    b.ToTable("Viewerss");
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Athlete", b =>
@@ -388,10 +426,6 @@ namespace LiveScore.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
-                    b.HasOne("LiveScoring.Model.Role", null)
-                        .WithMany("acr")
-                        .HasForeignKey("RoleId1");
-
                     b.Navigation("Role");
                 });
 
@@ -474,11 +508,6 @@ namespace LiveScore.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Match");
-                });
-
-            modelBuilder.Entity("LiveScoring.Model.Role", b =>
-                {
-                    b.Navigation("acr");
                 });
 #pragma warning restore 612, 618
         }

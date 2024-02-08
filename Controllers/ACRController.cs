@@ -1,5 +1,6 @@
 ﻿using LiveScore.Data;
 using LiveScore.Model;
+using LiveScore.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -13,11 +14,13 @@ namespace LiveScore.Controllers
     {
         private readonly ApplicationDbContext _dbcontext;
         private readonly ILogger<ACR> _logger;
+        private readonly PasswordService _pservice;
 
-        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger)
+        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger,PasswordService pservice)
         {
             _dbcontext = dbContext;
             _logger = logger;
+            _pservice = pservice;
 
         }
 
@@ -43,50 +46,88 @@ namespace LiveScore.Controllers
             return Ok(acr);
         }
 
-        [HttpPost("addAdmin")]
+        [HttpPost("AddSAdmin")]
+        public async Task<ActionResult<ACR>> PostSAdmin(ACR acr)
+        {
+           
+                if (string.IsNullOrEmpty(acr.Password))
+                {
+                    return BadRequest("Please Enter all Field");
+                }
+
+            // Check if the email already exists in the database
+            if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
+            {
+                return BadRequest("Email already exists");
+            }
+
+            acr.RoleId = 1; // Set to the appropriate RoleId value
+                acr.Password = _pservice.HashPassword(acr.Password);
+                _dbcontext.Admin.Add(acr);
+                await _dbcontext.SaveChangesAsync();
+                acr.Password = null;
+
+                return Ok(acr);
+
+        }
+
+        [HttpPost("AddAdmin")]
         public async Task<ActionResult<ACR>> PostAdmin(ACR acr)
+        {
+           
+                if (string.IsNullOrEmpty(acr.Password))
+                {
+                    return BadRequest("Please Enter all Field");
+                }
+
+            // Check if the email already exists in the database
+            if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
+            {
+                return BadRequest("Email already exists");
+            }
+
+            acr.RoleId = 2; // Set to the appropriate RoleId value
+                acr.Password = _pservice.HashPassword(acr.Password);
+                _dbcontext.Admin.Add(acr);
+                await _dbcontext.SaveChangesAsync();
+                acr.Password = null;
+
+                return Ok(acr);
+
+        }
+
+
+        [HttpPost("AddCoordinator")]
+        public async Task<ActionResult<ACR>> PostCoordinator(ACR acr)
         {
             if (string.IsNullOrEmpty(acr.Password))
             {
                 return BadRequest("Please Enter all Field");
             }
-
-            // Set the RoleId based on your logic (e.g., fetching RoleId from the database)
-            acr.RoleId = 1; // Set to the appropriate RoleId value
-
+            acr.RoleId = 3;
+            acr.Password = _pservice.HashPassword(acr.Password);
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
             acr.Password = null;
 
             return Ok(acr);
-            // if (acr == null)
-            // {
-            //     _logger.LogWarning("Invalid  data. Please provide valid information.");
-            //     return BadRequest("Invalid Entry");
-            // }
+        }
+        [HttpPost("AddReferee")]
+        public async Task<ActionResult<ACR>> PostReferee(ACR acr)
+        {
+            if (string.IsNullOrEmpty(acr.Password))
+            {
+                return BadRequest("Please Enter all Field");
+            }
+            acr.RoleId = 4;
+            acr.Password = _pservice.HashPassword(acr.Password);
+            _dbcontext.Admin.Add(acr);
+            await _dbcontext.SaveChangesAsync();
+            acr.Password = null;
 
-            // var parameters = new[]
-            //{
-            //     new SqlParameter("@role", acr.Role),
-            //     new SqlParameter("@name", acr.Name),
-            //     new SqlParameter("@email", acr.Email),
-            //     new SqlParameter("@password", acr.Password),
-            //     new SqlParameter("@contact", acr.Contact),
-            //     new SqlParameter("@age", acr.Age),
-            //     new SqlParameter("@city", acr.City),
-            //     new SqlParameter("@state", acr.State),
-            // };
-
-            // await _dbcontext.Database.ExecuteSqlRawAsync("EXEC acrInsert @role, @name, @email, @password, @contact, @age, @city, @state", parameters);
-
-            // var insertedacr = await _dbcontext.Admin.SingleOrDefaultAsync(p => p.Name == acr.Email);
-
-            // if (insertedacr == null)
-            // {
-            //     return BadRequest("Cannot Fetch");
-            // }
-
-            // return CreatedAtAction(nameof(GetACR), new { acrId = insertedacr.Id }, insertedacr);
+            return Ok(acr);
         }
     }
+   
+ 
 }
