@@ -55,7 +55,7 @@ namespace LiveScore.Controllers
              await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
                 //return Ok("Hey Queen You Drop Your Crown");
-                return Ok(token);
+                return Ok(new { token = token , role = user.RoleId });
             }
             else
             {

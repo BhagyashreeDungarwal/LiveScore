@@ -22,7 +22,7 @@ namespace LiveScore.Controllers
         {
             if (_dbContext.Roles == null)
             {
-                return NotFound();
+                return NotFound(new {error = "Role Not Found"});
             }
             return await _dbContext.Roles.ToListAsync();
         }
@@ -32,18 +32,18 @@ namespace LiveScore.Controllers
         {
             if (_dbContext.Roles == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Role Not Found"});
             }
 
             var role = await _dbContext.Roles.FindAsync(id);
             if(role == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Role Not Found"});
             }
             return role;
         }
 
-        [HttpPost]
+        [HttpPost("addRole")]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
             _dbContext.Roles.Add(role);
@@ -52,29 +52,23 @@ namespace LiveScore.Controllers
             return CreatedAtAction(nameof(GetRoleById), new {id = role.Id},role);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> PutRole(int id, Role role)
+        [HttpPut("updateRole")]
+        public async Task<ActionResult> PutRole(Role role)
         {
-            if(id != role.Id)
+            if (role == null || role.Id  == 0)
             {
-                return BadRequest();
+                return BadRequest(new {error = "Please Enter All Fields"});
             }
-            _dbContext.Entry(role).State = EntityState.Modified;
-            try
+
+            var urole =  await _dbContext.Roles.FindAsync(role.Id);
+
+            if (urole == null)
             {
-                await _dbContext.SaveChangesAsync();
+                return NotFound(new {error = "Role Not Found"});
             }
-            catch(DbUpdateConcurrencyException)
-            {
-                if (!RoleAvailable(id)){
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return Ok();
+            urole.role = role.role;
+            
+            return Ok(new { error = "Sucessfully Updated Role" });
         }
         private bool RoleAvailable(int id)
         {
@@ -86,16 +80,16 @@ namespace LiveScore.Controllers
         {
             if(_dbContext.Roles == null)
             {
-                return NotFound();
+                return NotFound(new {error = "Role Not Found"});
             }
             var role = await _dbContext.Roles.FindAsync(id);
             if(role == null)
             {
-                return NotFound();
+                return NotFound(new {error = "Role Not Found"});
             }
             _dbContext.Roles.Remove(role);
             await _dbContext.SaveChangesAsync();
-            return Ok();
+            return Ok(new { msg = "Successfully Deleted"});
         }
 
 
