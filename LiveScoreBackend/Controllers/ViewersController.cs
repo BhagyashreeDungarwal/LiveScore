@@ -12,55 +12,55 @@ namespace LiveScore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoachesController : ControllerBase
+    public class ViewersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CoachesController(ApplicationDbContext context)
+        public ViewersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Coaches
+        // GET: api/Viewers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Coach>>> GetCoaches()
+        public async Task<ActionResult<IEnumerable<Viewers>>> GetViewerss()
         {
-          if (_context.Coaches == null)
+          if (_context.Viewerss == null)
           {
               return NotFound();
           }
-            return await _context.Coaches.ToListAsync();
+            return await _context.Viewerss.ToListAsync();
         }
 
-        // GET: api/Coaches/5
+        // GET: api/Viewers/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Coach>> GetCoach(int id)
+        public async Task<ActionResult<Viewers>> GetViewers(int id)
         {
-          if (_context.Coaches == null)
+          if (_context.Viewerss == null)
           {
               return NotFound();
           }
-            var coach = await _context.Coaches.FindAsync(id);
+            var viewers = await _context.Viewerss.FindAsync(id);
 
-            if (coach == null)
+            if (viewers == null)
             {
                 return NotFound();
             }
 
-            return coach;
+            return viewers;
         }
 
-        // PUT: api/Coaches/5
+        // PUT: api/Viewers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCoach(int id, Coach coach)
+        public async Task<IActionResult> PutViewers(int id, Viewers viewers)
         {
-            if (id != coach.CoachId)
+            if (id != viewers.VId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(coach).State = EntityState.Modified;
+            _context.Entry(viewers).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace LiveScore.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CoachExists(id))
+                if (!ViewersExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace LiveScore.Controllers
             return NoContent();
         }
 
-        // POST: api/Coaches
+        // POST: api/Viewers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Coach>> PostCoach(Coach coach)
+        public async Task<ActionResult<Viewers>> PostViewers(Viewers viewers)
         {
-          if (_context.Coaches == null)
+          if (_context.Viewerss == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Coaches'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Viewerss'  is null.");
           }
-            _context.Coaches.Add(coach);
+            _context.Viewerss.Add(viewers);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCoach", new { id = coach.CoachId }, coach);
+            return CreatedAtAction("GetViewers", new { id = viewers.VId }, viewers);
         }
 
-        // DELETE: api/Coaches/5
+        // DELETE: api/Viewers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCoach(int id)
+        public async Task<IActionResult> DeleteViewers(int id)
         {
-            if (_context.Coaches == null)
+            if (_context.Viewerss == null)
             {
                 return NotFound();
             }
-            var coach = await _context.Coaches.FindAsync(id);
-            if (coach == null)
+            var viewers = await _context.Viewerss.FindAsync(id);
+            if (viewers == null)
             {
                 return NotFound();
             }
 
-            _context.Coaches.Remove(coach);
+            _context.Viewerss.Remove(viewers);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CoachExists(int id)
+        private bool ViewersExists(int id)
         {
-            return (_context.Coaches?.Any(e => e.CoachId == id)).GetValueOrDefault();
+            return (_context.Viewerss?.Any(e => e.VId == id)).GetValueOrDefault();
         }
     }
 }

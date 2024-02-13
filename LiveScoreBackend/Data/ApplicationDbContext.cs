@@ -19,6 +19,7 @@ namespace LiveScore.Data
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<ACR> Admin { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Coach> Coaches { get; set; } = null!;
         public DbSet<Athlete> Athletes { get; set; } = null!;
         public DbSet<Matchs> Matchss { get; set; } = null!;
         public DbSet<Round> Rounds { get; set; } = null!;
@@ -239,8 +240,5 @@ namespace LiveScore.Data
 
             });
         } 
-
-
-        public DbSet<LiveScore.Model.Coach>? Coach { get; set; }
     }
 }
