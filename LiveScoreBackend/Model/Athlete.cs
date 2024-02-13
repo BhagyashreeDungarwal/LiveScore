@@ -19,7 +19,7 @@ namespace LiveScoring.Model
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
-        public string? CoachName { get; set; }
+      
         public int Height { get; set; }
         public int? Weight { get; set; }
         public string City { get; set; }
@@ -28,6 +28,10 @@ namespace LiveScoring.Model
 
         [JsonIgnore]
         public virtual Category? Category { get; set; }
+
+        public int CoachId { get; set; }
+        [JsonIgnore]
+        public virtual Coach? Coach { get; set; }   
         public int Coordinater { get; set; }
 
         [JsonIgnore]

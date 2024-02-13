@@ -79,22 +79,34 @@ namespace LiveScore.Data
                 entity.Property(c => c.Id).HasColumnName("Cid"); 
                 entity.Property(c => c.CategoryName).IsRequired().HasMaxLength(101); 
             });
+            modelBuilder.Entity<Coach>(entity =>
+            {
+                entity.HasKey(c => c.CoachId); 
+                entity.Property(c => c.CoachName).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.Gender).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.CoachEmail).IsRequired().HasMaxLength(101);
+                entity.Property(c => c.ContactNo).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.Experience).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.Achievements).IsRequired().HasMaxLength(101);
+
+            });
 
             modelBuilder.Entity<Athlete>(entity =>
             {
                 entity.HasKey(a => a.Id); 
 
-                entity.Property(a => a.AthleteName).IsRequired();
-                entity.Property(a => a.Email).IsRequired(); 
-                entity.Property(a => a.Contact).IsRequired(); 
+                entity.Property(a => a.AthleteName).IsRequired().HasMaxLength(101);
+                entity.Property(a => a.Email).IsRequired().HasMaxLength(101); 
+                entity.Property(a => a.Contact).IsRequired().HasMaxLength(101); 
                 entity.Property(a => a.ImageUrl).IsRequired(); 
-                entity.Property(a => a.DateOfBirth).IsRequired(); 
-                entity.Property(a => a.Gender).IsRequired(); 
-                entity.Property(a => a.CoachName).IsRequired(); 
+                entity.Property(a => a.DateOfBirth).IsRequired().HasMaxLength(101); 
+                entity.Property(a => a.Gender).IsRequired().HasMaxLength(101); 
+               
                 entity.Property(a => a.Height).IsRequired(); 
                 entity.Property(a => a.Weight).IsRequired(false); 
-                entity.Property(a => a.City).IsRequired(); 
-                entity.Property(a => a.State).IsRequired(); 
+                entity.Property(a => a.City).IsRequired().HasMaxLength(101); 
+                entity.Property(a => a.State).IsRequired().HasMaxLength(101);
+                entity.Property(a => a.CoachId).IsRequired();
                 entity.Property(a => a.Coordinater).IsRequired(); 
                 entity.Property(a => a.CategoryId).IsRequired(); 
 
@@ -102,6 +114,11 @@ namespace LiveScore.Data
                     .WithMany()
                     .HasForeignKey(a => a.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict); 
+
+                entity.HasOne(a => a.Coach)
+                .WithMany()
+                .HasForeignKey(a => a.CoachId)
+                .OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne(a => a.acr)
                     .WithMany()
@@ -222,5 +239,8 @@ namespace LiveScore.Data
 
             });
         } 
+
+
+        public DbSet<LiveScore.Model.Coach>? Coach { get; set; }
     }
 }

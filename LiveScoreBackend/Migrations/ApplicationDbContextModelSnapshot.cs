@@ -86,6 +86,49 @@ namespace LiveScore.Migrations
                     b.ToTable("Admin");
                 });
 
+            modelBuilder.Entity("LiveScore.Model.Coach", b =>
+                {
+                    b.Property<int>("CoachId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoachId"), 1L, 1);
+
+                    b.Property<string>("Achievements")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("CoachEmail")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("CoachName")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("ContactNo")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Experience")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
+                    b.HasKey("CoachId");
+
+                    b.ToTable("Coach");
+                });
+
             modelBuilder.Entity("LiveScore.Model.Viewers", b =>
                 {
                     b.Property<int>("VId")
@@ -141,36 +184,41 @@ namespace LiveScore.Migrations
 
                     b.Property<string>("AthleteName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
-                    b.Property<string>("CoachName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CoachId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Contact")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<int>("Coordinater")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfBirth")
+                        .HasMaxLength(101)
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<string>("Gender")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<int>("Height")
                         .HasColumnType("int");
@@ -181,7 +229,8 @@ namespace LiveScore.Migrations
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<int?>("Weight")
                         .HasColumnType("int");
@@ -189,6 +238,8 @@ namespace LiveScore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CoachId");
 
                     b.HasIndex("Coordinater");
 
@@ -435,6 +486,12 @@ namespace LiveScore.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("LiveScore.Model.Coach", "Coach")
+                        .WithMany()
+                        .HasForeignKey("CoachId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("LiveScore.Model.ACR", "acr")
                         .WithMany()
                         .HasForeignKey("Coordinater")
@@ -442,6 +499,8 @@ namespace LiveScore.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Coach");
 
                     b.Navigation("acr");
                 });
