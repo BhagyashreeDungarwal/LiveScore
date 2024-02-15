@@ -19,8 +19,10 @@ namespace LiveScoring.Model
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
         public string Gender { get; set; }
-      
+
+        [Range(1, int.MaxValue, ErrorMessage = "Height must be greater than 0")]
         public int Height { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Height must be greater than 0")]
         public int? Weight { get; set; }
         public string City { get; set; }
         public string State { get; set; }
