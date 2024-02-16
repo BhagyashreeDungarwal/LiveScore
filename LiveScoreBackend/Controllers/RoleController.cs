@@ -52,23 +52,32 @@ namespace LiveScore.Controllers
             return CreatedAtAction(nameof(GetRoleById), new {id = role.Id},role);
         }
 
-        [HttpPut("updateRole")]
-        public async Task<ActionResult> PutRole(Role role)
+        [HttpPut("updateRole/{id}")]
+        public async Task<ActionResult<Role>> PutRole(int id,Role role)
         {
-            if (role == null || role.Id  == 0)
+            if (id != role.Id)
             {
-                return BadRequest(new {error = "Please Enter All Fields"});
+                return BadRequest(new { error = "Mismatched ID in the request body" });
             }
 
-            var urole =  await _dbContext.Roles.FindAsync(role.Id);
-
-            if (urole == null)
+            _dbContext.Entry(role).State = EntityState.Modified;
+            try
             {
-                return NotFound(new {error = "Role Not Found"});
+                await _dbContext.SaveChangesAsync();
             }
-            urole.role = role.role;
-            
-            return Ok(new { error = "Sucessfully Updated Role" });
+            catch(DbUpdateConcurrencyException)
+            {
+                if (!RoleAvailable(id))
+                {
+                    return NotFound(new { error = "Role Not Found" });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+                return Ok(new { msg = "Successfully Updated" });
+
         }
         private bool RoleAvailable(int id)
         {
