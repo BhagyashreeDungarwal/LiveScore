@@ -19,11 +19,7 @@ namespace LiveScore.Data
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<ACR> Admin { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
-<<<<<<< HEAD
-        public DbSet<Coach> Coach { get; set; } = null!;
-=======
         public DbSet<Coach> Coaches { get; set; } = null!;
->>>>>>> 7e27fe449682de35da5bef94592932356efea836
         public DbSet<Athlete> Athletes { get; set; } = null!;
         public DbSet<Matchs> Matchss { get; set; } = null!;
         public DbSet<Round> Rounds { get; set; } = null!;
@@ -246,10 +242,5 @@ namespace LiveScore.Data
 
             });
         } 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 7e27fe449682de35da5bef94592932356efea836
     }
 }

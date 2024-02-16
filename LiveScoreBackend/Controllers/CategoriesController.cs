@@ -53,7 +53,7 @@ namespace LiveScore.Controllers
         {
             if (id != category.Id)
             {
-                return BadRequest();
+                return BadRequest(new { error = "Mismatched ID in the request body" });
             }
 
             _context.Entry(category).State = EntityState.Modified;
@@ -66,7 +66,7 @@ namespace LiveScore.Controllers
             {
                 if (!CategoryExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { error = "Category Not Found" });
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new {msg ="Successfully Updated!!"});
         }
 
         [HttpPost]
@@ -101,13 +101,13 @@ namespace LiveScore.Controllers
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Category Not Found" });
             }
 
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { msg = "Successfully Addedd!!" });
         }
 
         private bool CategoryExists(int id)

@@ -38,13 +38,13 @@ namespace LiveScore.Controllers
         {
           if (_context.Coaches == null)
           {
-              return NotFound();
+              return NotFound(new { error = "Coaches Not Found" });
           }
             var coach = await _context.Coaches.FindAsync(id);
 
             if (coach == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Coaches Not Found" });
             }
 
             return coach;
@@ -70,7 +70,7 @@ namespace LiveScore.Controllers
             {
                 if (!CoachExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { error = "Coach Id Not Found" });
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new {msg = "Successfully Updated!!"});
         }
 
         // POST: api/Coaches

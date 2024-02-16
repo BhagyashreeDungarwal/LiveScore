@@ -43,7 +43,7 @@ namespace LiveScore.Controllers
             return role;
         }
 
-        [HttpPost("addRole")]
+        [HttpPost]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
             _dbContext.Roles.Add(role);

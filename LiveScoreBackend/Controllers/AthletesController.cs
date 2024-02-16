@@ -57,7 +57,7 @@ namespace LiveScore.Controllers
         {
             if (id != athlete.Id)
             {
-                return BadRequest();
+                return BadRequest(new { error = "Mismatched ID in the request body" });
             }
 
             _context.Entry(athlete).State = EntityState.Modified;
@@ -70,7 +70,7 @@ namespace LiveScore.Controllers
             {
                 if (!AthleteExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { error = "Athelete Not Found" });
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { msg = "Successfully Updated!!" });
         }
 
         // POST: api/Athletes

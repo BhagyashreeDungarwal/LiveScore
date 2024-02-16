@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LiveScore.Migrations
 {
-    public partial class AllDb : Migration
+    public partial class AddDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -135,8 +135,8 @@ namespace LiveScore.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", maxLength: 101, nullable: false),
                     Gender = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
-                    Height = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<int>(type: "int", nullable: true),
+                    Height = table.Column<double>(type: "float", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: true),
                     City = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
                     State = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),

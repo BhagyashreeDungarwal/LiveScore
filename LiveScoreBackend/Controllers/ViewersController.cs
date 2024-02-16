@@ -55,7 +55,7 @@ namespace LiveScore.Controllers
         {
             if (id != viewers.VId)
             {
-                return BadRequest();
+                return BadRequest(new {error = "Invalid Id"});
             }
 
             _context.Entry(viewers).State = EntityState.Modified;
@@ -68,7 +68,7 @@ namespace LiveScore.Controllers
             {
                 if (!ViewersExists(id))
                 {
-                    return NotFound();
+                    return NotFound(new { error = "Viewers Not Found" });
                 }
                 else
                 {
@@ -76,7 +76,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { msg = "Successfully Updated!!" });
         }
 
         [HttpPost]

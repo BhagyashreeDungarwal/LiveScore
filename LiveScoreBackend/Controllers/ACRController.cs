@@ -29,7 +29,7 @@ namespace LiveScore.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ACR>>> GetAllACR()
         {
-            var acrs = await _dbcontext.Admin.Include(a => a.RoleId).ToListAsync();
+            var acrs = await _dbcontext.Admin.ToListAsync();
             return acrs;
         }
 
