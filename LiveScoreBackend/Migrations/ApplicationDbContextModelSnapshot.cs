@@ -295,6 +295,11 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
+                    b.Property<string>("MatchType")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
+
                     b.Property<DateTime?>("Matchtime")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
@@ -305,11 +310,17 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("int");
 
+                    b.Property<int?>("TournamentId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
                     b.HasKey("MId");
 
                     b.HasIndex("AthleteBlue");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("TournamentId");
 
                     b.ToTable("Matchss");
                 });
@@ -447,9 +458,6 @@ namespace LiveScore.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int?>("MatchId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("TournamentDate")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
@@ -463,8 +471,6 @@ namespace LiveScore.Migrations
                     b.HasKey("TId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("MatchId");
 
                     b.ToTable("Tournaments");
                 });
@@ -518,9 +524,17 @@ namespace LiveScore.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("LiveScoring.Model.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Athlete");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Tournament");
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Round", b =>
@@ -557,14 +571,7 @@ namespace LiveScore.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("LiveScoring.Model.Matchs", "Match")
-                        .WithMany()
-                        .HasForeignKey("MatchId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Category");
-
-                    b.Navigation("Match");
                 });
 #pragma warning restore 612, 618
         }

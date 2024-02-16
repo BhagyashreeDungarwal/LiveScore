@@ -17,11 +17,7 @@ namespace LiveScoring.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? TournamentDate { get; set; }
 
-        public int? MatchId { get; set; }
         public int? CategoryId { get; set; }
-
-        [JsonIgnore]
-        public virtual Matchs? Match { get; set; }
 
         [JsonIgnore]
         public virtual Category? Category { get; set; }

@@ -9,6 +9,7 @@ namespace LiveScoring.Model
     {
         public int MId { get; set; }
         public string? MatchStatus { get; set; }
+        public string? MatchType { get; set; }
         public int NumberOfRound { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -21,6 +22,9 @@ namespace LiveScoring.Model
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
         public int? CategoryId { get; set; }
+        public int? TournamentId  { get; set; }
+        [JsonIgnore]
+        public virtual Tournament? Tournament { get; set; }
 
         [JsonIgnore]
         public virtual Category? Category { get; set; }
