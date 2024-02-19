@@ -133,10 +133,10 @@ namespace LiveScore.Data
                 entity.HasKey(m => m.MId); 
 
                 entity.Property(m => m.MatchStatus).IsRequired().HasMaxLength(101); 
-                entity.Property(m => m.MatchType).IsRequired().HasMaxLength(101);
+                entity.Property(m => m.MatchType).HasMaxLength(101);
                 entity.Property(m => m.NumberOfRound).IsRequired().HasMaxLength(101);
-                entity.Property(r => r.MatchDate).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
-                entity.Property(r => r.Matchtime).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP");
+                entity.Property(r => r.MatchDate).IsRequired();
+                entity.Property(r => r.Matchtime);
                 entity.Property(m => m.AthleteRed).IsRequired(); 
                 entity.Property(m => m.AthleteBlue).IsRequired(); 
                 entity.Property(m => m.CategoryId).IsRequired(false); 
@@ -213,7 +213,7 @@ namespace LiveScore.Data
 
                 entity.Property(t => t.TournamentName).IsRequired().HasMaxLength(10); 
                 entity.Property(t => t.Location).IsRequired().HasMaxLength(10); 
-                entity.Property(t => t.TournamentDate).IsRequired(); 
+                entity.Property(t => t.TournamentDate); 
                 entity.Property(t => t.CategoryId).IsRequired(false); 
 
                 entity.HasOne(t => t.Category)

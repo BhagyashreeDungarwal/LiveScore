@@ -286,9 +286,7 @@ namespace LiveScore.Migrations
 
                     b.Property<DateTime?>("MatchDate")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MatchStatus")
                         .IsRequired()
@@ -300,11 +298,8 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.Property<DateTime?>("Matchtime")
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    b.Property<DateTime>("Matchtime")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("NumberOfRound")
                         .HasMaxLength(101)
@@ -360,7 +355,7 @@ namespace LiveScore.Migrations
 
                     b.Property<DateTime?>("RoundTime")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -410,7 +405,7 @@ namespace LiveScore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PaneltyTime")
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -424,7 +419,7 @@ namespace LiveScore.Migrations
 
                     b.Property<DateTime?>("ScoreTime")
                         .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
@@ -458,9 +453,7 @@ namespace LiveScore.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<DateTime?>("TournamentDate")
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
+                    b.Property<DateTime>("TournamentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TournamentName")

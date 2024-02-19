@@ -27,7 +27,7 @@ namespace LiveScore.Controllers
         {
           if (_context.Athletes == null)
           {
-              return NotFound();
+              return NotFound(new { error = "Athelete Not Found" });
           }
             return await _context.Athletes.ToListAsync();
         }

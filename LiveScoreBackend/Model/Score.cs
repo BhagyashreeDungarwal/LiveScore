@@ -16,11 +16,9 @@ namespace LiveScoring.Model
 
 
         [DataType(DataType.DateTime)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? ScoreTime { get; set; }
 
         [DataType(DataType.DateTime)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime PaneltyTime { get; set; }
         public int? Rounds { get; set; }
         public int? AthleteRed { get; set; }

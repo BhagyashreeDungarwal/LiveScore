@@ -13,9 +13,9 @@ namespace LiveScoring.Model
         public string? TournamentName { get; set; }
         public string? Location { get; set; }
 
-        [DataType(DataType.DateTime)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime? TournamentDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime TournamentDate { get; set; }
 
         public int? CategoryId { get; set; }
 

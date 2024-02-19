@@ -14,7 +14,6 @@ namespace LiveScoring.Model
         public string? ScoreList { get; set; }
 
         [DataType(DataType.DateTime)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? RoundTime { get; set; }
         public int? MatchId { get; set; }
 
