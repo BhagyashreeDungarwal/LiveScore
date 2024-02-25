@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState ={
     data:[],
@@ -26,5 +26,5 @@ const loginSlice= createSlice({
     },   
 })
 
-export const {LoginStart,LoginSuccess,LoginFail} = loginSlice.actions
+export const {LoginStart,LoginSuccess,LoginFail} = loginSlice.actions;
 export default loginSlice.reducer;

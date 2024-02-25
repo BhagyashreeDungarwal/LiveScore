@@ -59,18 +59,18 @@ namespace LiveScore.Controllers
            
                 if (string.IsNullOrEmpty(acr.Password))
                 {
-                    return BadRequest(new { error = "Please Enter all Field" });
+                    return BadRequest(new { msg = "Please Enter all Field" });
                 }
 
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists" });
+                return BadRequest(new { msg = "Email already exists" });
             }
             //checked if the contact already exists in the database
             if (_dbcontext.Admin.Any(a => a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists" });
+                return BadRequest(new { msg = "Contact already exists" });
             }
             acr.RoleId = 1; // Set to the appropriate RoleId value
                 acr.Password = _pservice.HashPassword(acr.Password);
@@ -89,25 +89,25 @@ namespace LiveScore.Controllers
         {
             if (acr == null || acr.Id == 0)
             {
-                return BadRequest(new {error = "Please Enter All Field"});
+                return BadRequest(new {msg = "Please Enter All Field"});
             }
 
             var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
             if (uacr == null)
             {
-                return NotFound(new {error = "Super Admin Not Found"});
+                return NotFound(new {msg = "Super Admin Not Found"});
             }
 
             // Check if the new email already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists for another Super Admin." });
+                return BadRequest(new { msg = "Email already exists for another Super Admin." });
             }
 
             // Check if the new contact already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists for another Super Admin." });
+                return BadRequest(new { msg = "Contact already exists for another Super Admin." });
             }
             acr.RoleId = 1;
             acr.Password = _pservice.HashPassword(acr.Password);
@@ -135,7 +135,7 @@ namespace LiveScore.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             if (id < 1)
-                return BadRequest(new {error = "Please Enter Proper Id"});
+                return BadRequest(new {msg = "Please Enter Proper Id"});
             var product = await _dbcontext.Admin.FindAsync(id);
             if (product == null)
                 return NotFound();
@@ -156,19 +156,19 @@ namespace LiveScore.Controllers
            
                 if (string.IsNullOrEmpty(acr.Password))
                 {
-                    return BadRequest(new { error = "Please Enter all Field" });
+                    return BadRequest(new { msg = "Please Enter all Field" });
                 }
 
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists" });
+                return BadRequest(new { msg = "Email already exists" });
             }
 
             //checked if the contact already exists in the database
             if (_dbcontext.Admin.Any(a => a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists" });
+                return BadRequest(new { msg = "Contact already exists" });
             }
 
             acr.RoleId = 2; // Set to the appropriate RoleId value
@@ -188,25 +188,25 @@ namespace LiveScore.Controllers
         {
             if (acr == null || acr.Id == 0)
             {
-                return BadRequest(new {error = "Please Enter All Field"});
+                return BadRequest(new {msg = "Please Enter All Field"});
             }
 
             var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
             if (uacr == null)
             {
-                return NotFound(new {error = "Admin Not Found"});
+                return NotFound(new {msg = "Admin Not Found"});
             }
 
             // Check if the new email already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists for another Admin." });
+                return BadRequest(new { msg = "Email already exists for another Admin." });
             }
 
             // Check if the new contact already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists for another Admin." });
+                return BadRequest(new { msg = "Contact already exists for another Admin." });
             }
             acr.RoleId = 2;
             acr.Password = _pservice.HashPassword(acr.Password);
@@ -241,20 +241,20 @@ namespace LiveScore.Controllers
         {
             if (string.IsNullOrEmpty(acr.Password))
             {
-                return BadRequest(new { error = "Please Enter all Field" });
+                return BadRequest(new { msg = "Please Enter all Field" });
             }
 
 
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists" });
+                return BadRequest(new { msg = "Email already exists" });
             }
 
             //checked if the contact already exists in the database
             if (_dbcontext.Admin.Any(a => a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists" });
+                return BadRequest(new { msg = "Contact already exists" });
             }
 
             acr.RoleId = 3;
@@ -273,25 +273,25 @@ namespace LiveScore.Controllers
         {
             if (acr == null || acr.Id == 0)
             {
-                return BadRequest(new { error = "Please Enter All Feild"});
+                return BadRequest(new { msg = "Please Enter All Feild"});
             }
 
             var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
             if (uacr == null)
             {
-                return NotFound(new { error = "Coordinator Not Found"});
+                return NotFound(new { msg = "Coordinator Not Found"});
             }
 
             // Check if the new email already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists for another coordinator." });
+                return BadRequest(new { msg = "Email already exists for another coordinator." });
             }
 
             // Check if the new contact already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists for another coordinator." });
+                return BadRequest(new { msg = "Contact already exists for another coordinator." });
             }
             acr.RoleId = 3;
             acr.Password = _pservice.HashPassword(acr.Password);
@@ -326,19 +326,19 @@ namespace LiveScore.Controllers
         {
             if (string.IsNullOrEmpty(acr.Password))
             {
-                return BadRequest(new { error = "Please Enter all Field" });
+                return BadRequest(new { msg = "Please Enter all Field" });
             }
 
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
             {
-                return BadRequest( new { error = "Email already exists" });
+                return BadRequest( new { msg = "Email already exists" });
             }
 
             //checked if the contact already exists in the database
             if (_dbcontext.Admin.Any(a => a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists" });
+                return BadRequest(new { msg = "Contact already exists" });
             }
 
             acr.RoleId = 4;
@@ -357,25 +357,25 @@ namespace LiveScore.Controllers
         {
             if (acr == null || acr.Id == 0)
             {
-                return BadRequest(new { error = "Please Enter All Field"});
+                return BadRequest(new { msg = "Please Enter All Field"});
             }
 
             var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
             if (uacr == null)
             {
-                return NotFound(new { error = "Referee NOt Found"});
+                return NotFound(new { msg = "Referee NOt Found"});
             }
 
             // Check if the new email already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
             {
-                return BadRequest(new { error = "Email already exists for another Referee." });
+                return BadRequest(new { msg = "Email already exists for another Referee." });
             }
 
             // Check if the new contact already exists
             if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
             {
-                return BadRequest(new { error = "Contact already exists for another Referee." });
+                return BadRequest(new { msg = "Contact already exists for another Referee." });
             }
             acr.RoleId = 4;
             acr.Password = _pservice.HashPassword(acr.Password);

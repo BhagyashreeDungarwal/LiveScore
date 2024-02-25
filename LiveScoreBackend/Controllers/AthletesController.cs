@@ -27,7 +27,7 @@ namespace LiveScore.Controllers
         {
           if (_context.Athletes == null)
           {
-              return NotFound(new { error = "Athelete Not Found" });
+              return NotFound(new { msg = "Athelete Not Found" });
           }
             return await _context.Athletes.ToListAsync();
         }
@@ -57,7 +57,7 @@ namespace LiveScore.Controllers
         {
             if (id != athlete.Id)
             {
-                return BadRequest(new { error = "Mismatched ID in the request body" });
+                return BadRequest(new { msg = "Mismatched ID in the request body" });
             }
 
             _context.Entry(athlete).State = EntityState.Modified;
@@ -70,7 +70,7 @@ namespace LiveScore.Controllers
             {
                 if (!AthleteExists(id))
                 {
-                    return NotFound(new { error = "Athelete Not Found" });
+                    return NotFound(new { msg = "Athelete Not Found" });
                 }
                 else
                 {

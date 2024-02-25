@@ -1,6 +1,7 @@
 ﻿using LiveScore.Data;
 using LiveScore.Model;
 using LiveScore.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace LiveScore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("CorsPolicy")]
     public class Logincontroller : ControllerBase
     {
         private readonly ApplicationDbContext _dbcontext;
@@ -39,7 +41,7 @@ namespace LiveScore.Controllers
 
             if (user == null)
             {
-                return NotFound(" Email not Found...");
+                return NotFound(new { msg = " Email not Found..." });
             }
 
             bool passwordMatches = _pservice.VerifyPassword(login.Password, user.Password);
@@ -54,13 +56,12 @@ namespace LiveScore.Controllers
                 //user.City = "Surat";
              await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
-                //return Ok("Hey Queen You Drop Your Crown");
-                return Ok(new { token = token , role = user.RoleId });
+                return Ok(new { token = token , role = user.RoleId , msg ="Welcome Back" });
             }
             else
             {
                 // Incorrect password
-                return Unauthorized("Invalid credentials");
+                return Unauthorized(new { msg = "Invalid credentials" });
             }
         }
 

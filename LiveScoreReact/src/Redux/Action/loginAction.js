@@ -1,10 +1,17 @@
 import axios from "axios"
 import { LoginFail, LoginStart, LoginSuccess } from "../Reducer/loginReducer"
 
-export const loginApi = ()=>async (dispatch)=>{
+
+
+export const loginApi = (values)=>async (dispatch)=>{
 try{
     dispatch(LoginStart())
-    const {data} = await axios.post('http://localhost:52038/api/Login/Login')
+console.log(values)
+    const {data} = await axios.post(`http://localhost:52038/api/Login/Login`,values,{
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
     dispatch(LoginSuccess(data))
 }catch(e){
 dispatch(LoginFail(e.message))

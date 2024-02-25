@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { loginSlice } from "./Reducer/loginReducer.js";
+import  loginSlice  from "./Reducer/loginReducer";
 
 const rootReducer = combineReducers({
 login : loginSlice

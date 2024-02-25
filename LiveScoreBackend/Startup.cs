@@ -13,12 +13,12 @@ using Microsoft.Extensions.Configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<PasswordService>();  
-        }
+            services.AddScoped<PasswordService>();
+      
+    }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
-
-        }
+    }
     }
 
