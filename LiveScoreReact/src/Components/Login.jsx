@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-// import Lottie from 'react-lottie';
-// import animationData from '../lotties/Login.json';
 import loginImg from "./Images/login.jpg";
 import { useFormik } from "formik";
 import {
@@ -23,29 +21,57 @@ import {
 import { login } from './Validation/Login.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginApi } from '../Redux/Action/loginAction.js';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Login = () => {
 
+  // getting state from  reducer
   const dispatch = useDispatch();
-  const { data, error } = useSelector((state) => state.login);
+  const { data, error, loading } = useSelector((state) => state.login);
 
+  // making intial state 
   const initialValues = {
     email: '',
     password: '',
     // remember: false
   };
 
+  // setting role and message
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
-      console.log(data.token)
-      console.log(data.role)
-    } else {
-      console.log(error.msg)
+      toast.success(data.msg)
+      localStorage.setItem('token', data.token);
+
+      // making logic for naviate acconding to role 
+      if (data.role === 1) {
+        localStorage.setItem('role', "superadmin");
+        navigate("/sadmindashboard")
+        console.log(localStorage.getItem('role'))
+        console.log(localStorage.getItem('token'))
+      } else if (data.role === 2) {
+        // console.log("admin")
+        localStorage.setItem('role', "admin");
+        navigate("/adashboard")
+        console.log(localStorage.getItem("role"))
+      }
+    }
+
+    if (error) {
+      // console.log(error.msg)
+      toast.error(error.msg)
+      console.log(loading)
     }
   }, [data, error])
 
 
+  // using formik for validation and submitting
   const {
     values,
     errors,
@@ -53,18 +79,19 @@ const Login = () => {
     handleBlur,
     handleChange,
     handleSubmit,
-    //resetForm, // Add this line
   } = useFormik({
     initialValues: initialValues, // Fix typo here
     validationSchema: login,
     onSubmit: (values, { resetForm, setSubmitting }) => {
-      // console.log(values);
+
       dispatch(loginApi(values))
       setSubmitting(false)
-      resetForm({ values: "" }); // Fix typo here
+      resetForm({ values: "" });
     },
   });
 
+
+  // making password show and hide button 
   const [type, setType] = useState("password");
   const [visible, setVisible] = useState(false);
   const icon = visible ? <Visibility sx={{ color: "#212c9f" }} /> : <VisibilityOff sx={{ color: "#212c9f" }} />;

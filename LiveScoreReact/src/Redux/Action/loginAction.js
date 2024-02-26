@@ -13,7 +13,8 @@ console.log(values)
         }
     })
     dispatch(LoginSuccess(data))
-}catch(e){
-dispatch(LoginFail(e.message))
+}catch(error){
+dispatch(LoginFail(error.response.data))
+// console.log(e.response.data.msg)
 }
 }
