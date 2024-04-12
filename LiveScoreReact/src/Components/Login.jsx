@@ -52,13 +52,19 @@ const Login = () => {
       // making logic for naviate acconding to role 
       if (data.role === 1) {
         localStorage.setItem('role', "superadmin");
-        navigate("/sadmindashboard")
+        navigate("/sadmin/sdashboard")
         console.log(localStorage.getItem('role'))
         console.log(localStorage.getItem('token'))
-      } else if (data.role === 2) {
+      } else if (data.role === 2)    {
         // console.log("admin")
         localStorage.setItem('role', "admin");
-        navigate("/adashboard")
+        navigate("/admin/adashboard")
+        console.log(localStorage.getItem("role"))
+      }
+      else if (data.role === 3) {
+        // console.log("admin")
+        localStorage.setItem('role', "admin");
+        navigate("/coordinator/cdashboard")
         console.log(localStorage.getItem("role"))
       }
     }

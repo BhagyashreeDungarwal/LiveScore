@@ -1,6 +1,6 @@
 
 import './App.css'
-import { BrowserRouter, Route, RouterProvider, Routes, createBrowserRouter } from 'react-router-dom'
+import {  RouterProvider,  createBrowserRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
@@ -9,8 +9,9 @@ import { Dashboard } from '@mui/icons-material';
 import Header from './Components/Common/Header';
 import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
-function App() {
 
+
+function App() {
 
   const sidebar = {
     sadmin: {
@@ -142,7 +143,7 @@ function App() {
 
       {/* for react tostify */}
       <ToastContainer
-        position="top-center"
+        position="top-right"
         autoClose={3000}
         hideProgdatasBar={true}
         newestOnTop={false}

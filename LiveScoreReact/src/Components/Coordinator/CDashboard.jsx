@@ -1,9 +1,14 @@
-import React from 'react'
 
+import Athelete from "./Athelete"
+
+  
 const CDashboard = () => {
   return (
     <div>
-      Coordinator Dashboard
+    
+      Coordinator Dashboard 
+      <Athelete/>
+     
     </div>
   )
 }
