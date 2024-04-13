@@ -1,14 +1,14 @@
-
 import './App.css'
 import {  RouterProvider,  createBrowserRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
-import { Dashboard } from '@mui/icons-material';
+import { Dashboard, Person2 } from '@mui/icons-material';
 import Header from './Components/Common/Header';
 import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
+import Athelete from './Components/Coordinator/Athelete';
 
 
 function App() {
@@ -37,14 +37,16 @@ function App() {
     },
     coordinator: {
       icon: [
-        Dashboard
+        Dashboard,
+        Person2
       ],
       sidebarRoute: [
-        "cdashboard"
+        "cdashboard",
+        "athelete"
       ],
       name: [
         "Coordinator Dashboard",
-
+        "Athelete"
       ]
     },
     referee: {
@@ -121,6 +123,9 @@ function App() {
         {
           path:"cdashboard",
           element:<CDashboard />
+        },{
+          path:"athelete",
+          element:<Athelete/>
         }
       ]
     },

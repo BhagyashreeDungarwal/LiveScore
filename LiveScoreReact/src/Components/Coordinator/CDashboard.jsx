@@ -1,5 +1,5 @@
+// import AddAthelete from "./AddAthelete"
 
-import Athelete from "./Athelete"
 
   
 const CDashboard = () => {
@@ -7,8 +7,7 @@ const CDashboard = () => {
     <div>
     
       Coordinator Dashboard 
-      <Athelete/>
-     
+    
     </div>
   )
 }

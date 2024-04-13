@@ -22,7 +22,7 @@ namespace LiveScore.Controllers
         }
 
         // GET: api/Athletes
-        [HttpGet]
+        [HttpGet("getAthelete")]
         public async Task<ActionResult<IEnumerable<Athlete>>> GetAthletes()
         {
           if (_context.Athletes == null)
