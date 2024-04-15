@@ -12,20 +12,20 @@ function CustomToolbar() {
     <GridToolbarContainer>
       <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
-      <GridToolbarExport/>
+      <GridToolbarExport />
       <GridToolbarDensitySelector
         slotProps={{ tooltip: { title: 'Change density' } }}
       />
       <Box sx={{ flexGrow: 1 }} />
-    <AddAthelete/>
+      <AddAthelete />
     </GridToolbarContainer>
   );
 }
 
 const Athelete = () => {
 
-const dispatch = useDispatch()
-const { atheletedata } = useSelector(state => state.coordinator)
+  const dispatch = useDispatch()
+  const { atheletedata } = useSelector(state => state.coordinator)
 
   const columns = useMemo(atheletedata => [
     { field: "imageUrl", headerName: "Avatar", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -44,44 +44,39 @@ const { atheletedata } = useSelector(state => state.coordinator)
 
   ])
 
- useEffect(() => {
-  dispatch(getAtheleteApi())
- }, [dispatch])
- 
-  
+  useEffect(() => {
+    dispatch(getAtheleteApi())
+  }, [dispatch])
+
+
   return (
     <Box>
-      <Box sx={{ display:'flex'  ,justifyContent:"space-between" , alignItems:"center",  }} >
-            <HeaderFormat title="Athelete Management" />
-           
-
-           
+      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+        <HeaderFormat title="Athelete Management" />
       </Box>
-
       <Stack style={{
-                            marginTop:"1%",
-                            display: "grid",
-                            // width: "100%",
-                            height: "80vh",
+        marginTop: "1%",
+        display: "grid",
+        // width: "100%",
+        height: "80vh",
 
-                        }}>
-                             {atheletedata && atheletedata.length > 0 ? (
-                            <DataGrid
-                            rows={atheletedata}
-                            columns={columns}
-                            getRowId={(row)=> row.id}
-                            rowHeight={37}
-                            rowSelection="true"
-                            rowSpacingType='margin'
-                            slots={{ toolbar: CustomToolbar}}
-                            scrollbarSize={1}
-                            columnHeaderHeight={37}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                            
-                            />): (<h1>error</h1>)
-                        }
-                        </Stack>
+      }}>
+        {atheletedata && atheletedata.length > 0 ? (
+          <DataGrid
+            rows={atheletedata}
+            columns={columns}
+            getRowId={(row) => row.id}
+            rowHeight={37}
+            rowSelection="true"
+            rowSpacingType='margin'
+            slots={{ toolbar: CustomToolbar }}
+            scrollbarSize={1}
+            columnHeaderHeight={37}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+          />) : (<h1>error</h1>)
+        }
+      </Stack>
     </Box>
   )
 }

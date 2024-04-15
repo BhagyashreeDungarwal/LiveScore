@@ -1,5 +1,5 @@
 import React from 'react'
-import {Typography }from '@mui/material'
+import { Typography } from '@mui/material'
 import ProtectedRoute from '../../ProtectedRoute'
 
 const AdminDashboard = () => {
@@ -10,4 +10,4 @@ const AdminDashboard = () => {
   )
 }
 
-export default  ProtectedRoute(AdminDashboard,'admin')
+export default ProtectedRoute(AdminDashboard, 'admin')

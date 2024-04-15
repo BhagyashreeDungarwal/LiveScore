@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import  {Divider ,Drawer,IconButton,List,ListItem,ListItemIcon,ListItemButton,  ListItemText,Menu,MenuItem,Toolbar,Tooltip,Typography,Avatar} from '@mui/material';
+import { Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles'
 import { Link, Outlet } from 'react-router-dom';
-import { LogoutRounded,MenuRounded,Person2Rounded  } from '@mui/icons-material';
+import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
 
 
 const drawerWidth = 210;
@@ -107,7 +107,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                             onClick={handleDrawerToggle}
                             sx={{ mr: 2, display: { sm: 'none' } }}
                         >
-                            <MenuRounded/>
+                            <MenuRounded />
                         </IconButton>
                         <Typography variant="h6" noWrap component="div">
                             {/* Responsive drawer */}
@@ -145,7 +145,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                                 </MenuItem>
                                 <MenuItem onClick={handleCloseUserMenu}  >
                                     <ListItemIcon>
-                                        <LogoutRounded  />
+                                        <LogoutRounded />
                                     </ListItemIcon>
                                     Logout
                                 </MenuItem>

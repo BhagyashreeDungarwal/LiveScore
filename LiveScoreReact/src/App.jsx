@@ -9,6 +9,7 @@ import Header from './Components/Common/Header';
 import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
 import Athelete from './Components/Coordinator/Athelete';
+import RegisterCoordinator from './Components/Coordinator/RegisterCoordinator';
 
 
 function App() {
@@ -132,6 +133,9 @@ function App() {
     {
       path:"/",
       element:(<Login/>)
+    },{
+      path:"cregister",
+      element:(<RegisterCoordinator/>)
     }
   ])
 
