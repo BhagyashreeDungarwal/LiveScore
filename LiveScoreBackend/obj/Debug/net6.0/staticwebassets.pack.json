@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\27792df8-c3eb-422f-b243-52ecfe755c15.jpg",
+      "PackagePath": "staticwebassets\\images\\27792df8-c3eb-422f-b243-52ecfe755c15.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\6dce2c7e-d559-4ff4-93e5-0b6d028db44e.jpg",
+      "PackagePath": "staticwebassets\\images\\6dce2c7e-d559-4ff4-93e5-0b6d028db44e.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\e3d406bc-121a-4e55-a82d-957c337faf01.jpg",
+      "PackagePath": "staticwebassets\\images\\e3d406bc-121a-4e55-a82d-957c337faf01.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.LiveScore.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.LiveScore.props",
+      "PackagePath": "build\\LiveScore.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.LiveScore.props",
+      "PackagePath": "buildMultiTargeting\\LiveScore.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.LiveScore.props",
+      "PackagePath": "buildTransitive\\LiveScore.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -49,11 +49,13 @@ namespace LiveScore.Data
 
                 entity.Property(e => e.Password).IsRequired().HasMaxLength(101);
 
-                entity.Property(e => e.Image).IsRequired(); 
+                entity.Property(e => e.ImageURL).IsRequired(); 
 
                 entity.Property(e => e.Contact).IsRequired().HasMaxLength(10); 
 
                 entity.Property(e => e.Age).IsRequired().HasMaxLength(10); 
+                
+                entity.Property(e => e.Status);
 
                 entity.Property(e => e.DateOfBirth).IsRequired(); 
 

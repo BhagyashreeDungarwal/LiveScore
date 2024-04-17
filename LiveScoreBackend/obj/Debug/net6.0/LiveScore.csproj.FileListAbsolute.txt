@@ -969,3 +969,6 @@ F:\Live Scoring\LiveScore\LiveScoreBackend\obj\Debug\net6.0\refint\LiveScore.dll
 F:\Live Scoring\LiveScore\LiveScoreBackend\obj\Debug\net6.0\LiveScore.pdb
 F:\Live Scoring\LiveScore\LiveScoreBackend\obj\Debug\net6.0\LiveScore.genruntimeconfig.cache
 F:\Live Scoring\LiveScore\LiveScoreBackend\obj\Debug\net6.0\ref\LiveScore.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\CloudinaryDotNet.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\dotenv.net.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\LiveScore.staticwebassets.runtime.json

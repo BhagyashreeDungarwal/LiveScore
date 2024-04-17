@@ -13,8 +13,10 @@ namespace LiveScoring.Model
         public string? Email { get; set; }
 
         public string Contact { get; set; }
+        public string ImageUrl { get; set; }
 
-        public string? ImageUrl { get; set; }
+        //[NotMapped]
+        //public IFormFile? ImageFile { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
