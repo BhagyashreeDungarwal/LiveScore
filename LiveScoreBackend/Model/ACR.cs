@@ -13,10 +13,12 @@ namespace LiveScore.Model
         public string? Name { get; set; }
         public string? Password { get; set; }
 
-        public string Image { get; set; }
+        public string ImageURL { get; set; }
         public string Contact { get; set; }
 
         public int Age { get; set; }
+
+        public bool Status { get; set; } = false;
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }

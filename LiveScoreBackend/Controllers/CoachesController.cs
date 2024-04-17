@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LiveScore.Data;
 using LiveScore.Model;
+using LiveScore.Model.ViewModel;
 
 namespace LiveScore.Controllers
 {
@@ -16,13 +17,16 @@ namespace LiveScore.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public CoachesController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public CoachesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Coaches
-        [HttpGet]
+        [HttpGet("GetCoaches")]
         public async Task<ActionResult<IEnumerable<Coach>>> GetCoaches()
         {
           if (_context.Coaches == null)
@@ -33,7 +37,7 @@ namespace LiveScore.Controllers
         }
 
         // GET: api/Coaches/5
-        [HttpGet("{id}")]
+        [HttpGet("GetCoachesById/{id}")]
         public async Task<ActionResult<Coach>> GetCoach(int id)
         {
           if (_context.Coaches == null)
@@ -52,7 +56,7 @@ namespace LiveScore.Controllers
 
         // PUT: api/Coaches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("PutCoach/{id}")]
         public async Task<IActionResult> PutCoach(int id, Coach coach)
         {
             if (id != coach.CoachId)
@@ -83,17 +87,50 @@ namespace LiveScore.Controllers
 
         // POST: api/Coaches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Coach>> PostCoach(Coach coach)
+        [HttpPost("PostCoach")]
+        public async Task<ActionResult<Coach>> PostCoach([FromForm]ImageCoach coachimg)
         {
           if (_context.Coaches == null)
           {
               return Problem("Entity set 'ApplicationDbContext.Coaches'  is null.");
           }
+
+            string imageUrl = await UploadImage(coachimg.ImageFile);
+
+            var coach = new Coach
+            {
+                CoachName = coachimg.CoachName,
+                CoachEmail = coachimg.CoachEmail,
+                Achievements = coachimg.Achievements,
+                Experience = coachimg.Experience,
+                ContactNo = coachimg.ContactNo,
+                Gender = coachimg.Gender,
+                ImageUrl = imageUrl,
+            };
+
             _context.Coaches.Add(coach);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetCoach", new { id = coach.CoachId }, coach);
+        }
+
+        private async Task<string> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return null;
+            }
+
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "coach");
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return $"{Request.Scheme}://{Request.Host}/coach/{fileName}";
         }
 
         // DELETE: api/Coaches/5

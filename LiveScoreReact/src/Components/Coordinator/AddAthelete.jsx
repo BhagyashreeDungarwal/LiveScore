@@ -6,17 +6,10 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
-import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel } from '@mui/material';
+import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress } from '@mui/material';
 import { AthleteValidate } from '../Validation/Coordinator';
 import { useState } from 'react';
-// import { object, string, number, date } from 'yup';
 
-
-// const genderOptions = [
-//     { value: 'male', label: 'Male' },
-//     { value: 'female', label: 'Female' },
-//     { value: 'other', label: 'Other' },
-//   ];
 const coordinatorOptions = [
     { value: 'John Doe', label: 'John Doe' },
     { value: 'Jane Smith', label: 'Jane Smith' },
@@ -79,7 +72,7 @@ const AddAthelete = () => {
                 console.log(values)
                 console.log(formdata);
             } catch (error) {
-                console.log(error)
+                <CircularProgress />
             }
         },
 

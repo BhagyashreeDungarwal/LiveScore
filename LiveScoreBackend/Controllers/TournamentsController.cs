@@ -17,7 +17,7 @@ namespace LiveScore.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("GetTournaments")]
         public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
         {
             if (_dbContext.Tournaments == null)
@@ -27,7 +27,7 @@ namespace LiveScore.Controllers
             return await _dbContext.Tournaments.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetTournamentById/{id}")]
         public async Task<ActionResult<Tournament>> GetTournament(int id)
         {
             if(_dbContext.Tournaments == null)
@@ -44,7 +44,7 @@ namespace LiveScore.Controllers
             return tournament;
         }
 
-        [HttpPost]
+        [HttpPost("PostTournament")]
         public async Task<ActionResult<Tournament>> PostTournament(Tournament tournament)
         {
             if (tournament == null)
@@ -68,7 +68,7 @@ namespace LiveScore.Controllers
             return CreatedAtAction("GetTournament", new {id = tournament.TId},tournament);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("PutTournament/{id}")]
         public async Task<IActionResult> PutTournament(int id,Tournament tournament)
         {
             if(id != tournament.TId)

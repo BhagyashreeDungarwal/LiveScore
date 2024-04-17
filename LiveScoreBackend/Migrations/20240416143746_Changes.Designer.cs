@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240219042743_Changes")]
+    [Migration("20240416143746_Changes")]
     partial class Changes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImageURL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -80,6 +80,9 @@ namespace LiveScore.Migrations
                     b.Property<string>("State")
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -125,6 +128,10 @@ namespace LiveScore.Migrations
                         .IsRequired()
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CoachId");
 

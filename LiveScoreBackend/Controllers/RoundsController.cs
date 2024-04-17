@@ -18,7 +18,7 @@ namespace LiveScore.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("GetRounds")]
         public async Task<ActionResult<IEnumerable<Round>>> GetRounds()
         {
             if (_context.Rounds == null)
@@ -28,7 +28,7 @@ namespace LiveScore.Controllers
             return await _context.Rounds.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetRoundById/{id}")]
         public async Task<ActionResult<Round>> GetRound(int id)
         {
             if (_context.Rounds == null)
@@ -43,7 +43,7 @@ namespace LiveScore.Controllers
             return round;
         }
 
-        [HttpPost]
+        [HttpPost("PostRound")]
         public async Task<ActionResult<Round>> PostRound(Round round)
         {
             if (round == null)

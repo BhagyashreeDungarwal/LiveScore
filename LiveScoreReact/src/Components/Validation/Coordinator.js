@@ -16,7 +16,7 @@ export const AthleteValidate = yup.object({
    contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     
 });
-export const registerCoordinator = yup.object({
+export const acr = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     password: yup.string().min(8, "Password is too short - Minimum 8 Character Required.").required("Please Enter Your Password"),
