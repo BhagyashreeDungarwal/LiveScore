@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import registration from "../Images/register.jpg"
 import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useFormik } from 'formik'
-import { registerCoordinator } from '../Validation/Coordinator'
+import { acr, } from '../Validation/Coordinator'
 
 
 
@@ -42,7 +42,7 @@ const RegisterCoordinator = () => {
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
-        validationSchema: registerCoordinator,
+        validationSchema: acr,
         onSubmit: async (values) => {
             console.log(values)
         }

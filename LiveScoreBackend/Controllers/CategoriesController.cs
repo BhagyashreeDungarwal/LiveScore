@@ -21,7 +21,7 @@ namespace LiveScore.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GetCategories")]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
           if (_context.Categories == null)
@@ -31,7 +31,7 @@ namespace LiveScore.Controllers
             return await _context.Categories.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetCategoriesById/{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
           if (_context.Categories == null)
@@ -48,7 +48,7 @@ namespace LiveScore.Controllers
             return category;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("PutCategory/{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
             if (id != category.Id)
@@ -77,7 +77,7 @@ namespace LiveScore.Controllers
             return Ok(new {msg ="Successfully Updated!!"});
         }
 
-        [HttpPost]
+        [HttpPost("PostCategory")]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
           if (_context.Categories == null)
@@ -91,7 +91,7 @@ namespace LiveScore.Controllers
         }
 
         // DELETE: api/Categories/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             if (_context.Categories == null)

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail } from "../Reducer/CoordinatorReducer"
+import { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail     } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
 
@@ -15,6 +15,22 @@ export const getAtheleteApi = (values) => async (dispatch) => {
         dispatch(GetAtheleteSuccess(data))
     } catch (error) {
         dispatch(GetAtheleteFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+
+export const AtheletePostApi = (values) => async (dispatch) => {
+    try {
+        dispatch(AtheletePostStart())
+        console.log(values)
+        const { data } = await axios.post(`${url}/Athletes/PostAthelete`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(AtheletePostSuccess(data))
+    } catch (error) {
+        dispatch(AtheletePostFail(error.response.data))
         // console.log(e.response.data.msg)
     }
 }

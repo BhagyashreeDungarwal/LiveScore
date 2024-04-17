@@ -17,7 +17,7 @@ namespace LiveScore.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GetMatchs")]
         public async Task<ActionResult<IEnumerable<Matchs>>> GetMatchs()
         {
             if (_context.Matchss == null)
@@ -28,7 +28,7 @@ namespace LiveScore.Controllers
             return await _context.Matchss.ToListAsync();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetMatchById{id}")]
         public async Task<ActionResult<Matchs>> GetMatch(int id)
         {
             if (_context.Matchss == null)
@@ -43,7 +43,7 @@ namespace LiveScore.Controllers
             return match;
         }
 
-        [HttpPost]
+        [HttpPost("PostMatch")]
         public async Task<ActionResult<Matchs>> PostMatch(Matchs matchs)
         {
             if (matchs == null)
@@ -65,9 +65,6 @@ namespace LiveScore.Controllers
 
             return CreatedAtAction("GetMatchs", new {id =matchs.MId },matchs);
         }
-
-
-
 
 
 

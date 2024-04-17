@@ -26,7 +26,7 @@ namespace LiveScore.Controllers
         }
 
         // GET: api/Coaches
-        [HttpGet]
+        [HttpGet("GetCoaches")]
         public async Task<ActionResult<IEnumerable<Coach>>> GetCoaches()
         {
           if (_context.Coaches == null)
@@ -37,7 +37,7 @@ namespace LiveScore.Controllers
         }
 
         // GET: api/Coaches/5
-        [HttpGet("{id}")]
+        [HttpGet("GetCoachesById/{id}")]
         public async Task<ActionResult<Coach>> GetCoach(int id)
         {
           if (_context.Coaches == null)
@@ -56,7 +56,7 @@ namespace LiveScore.Controllers
 
         // PUT: api/Coaches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("PutCoach/{id}")]
         public async Task<IActionResult> PutCoach(int id, Coach coach)
         {
             if (id != coach.CoachId)
@@ -87,7 +87,7 @@ namespace LiveScore.Controllers
 
         // POST: api/Coaches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("PostCoach")]
         public async Task<ActionResult<Coach>> PostCoach([FromForm]ImageCoach coachimg)
         {
           if (_context.Coaches == null)

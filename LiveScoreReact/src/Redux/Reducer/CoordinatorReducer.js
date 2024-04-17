@@ -24,10 +24,26 @@ const CoordinatorSlice = createSlice({
         GetAtheleteFail: (state, action) => {
             state.loading = false;
             state.error = action.payload;
+        },
+
+        //Post Athelete
+        AtheletePostStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        AtheletePostSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        AtheletePostFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
         }
 
     },
 })
 
-export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail } = CoordinatorSlice.actions;
+
+
+export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

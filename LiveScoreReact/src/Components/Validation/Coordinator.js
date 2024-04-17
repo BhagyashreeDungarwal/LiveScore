@@ -15,7 +15,7 @@ export const AthleteValidate = yup.object({
     coach: yup.string().required('Coach is required'),
     contact: yup.string().required('Contact is required'),
 });
-export const registerCoordinator = yup.object({
+export const acr = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     password: yup.string().min(8, "Password is too short - Minimum 8 Character Required.").required("Please Enter Your Password"),

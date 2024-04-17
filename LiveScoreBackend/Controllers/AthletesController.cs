@@ -32,7 +32,7 @@ namespace LiveScore.Controllers
         }
 
         // GET: api/Athletes/5
-        [HttpGet("{id}")]
+        [HttpGet("GetAthelete/{id}")]
         public async Task<ActionResult<Athlete>> GetAthlete(int id)
         {
             if (_context.Athletes == null)
@@ -51,7 +51,7 @@ namespace LiveScore.Controllers
 
         // PUT: api/Athletes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("PutAthelete/{id}")]
         public async Task<IActionResult> PutAthlete(int id, Athlete athlete)
         {
             if (id != athlete.Id)
@@ -82,7 +82,7 @@ namespace LiveScore.Controllers
 
         // POST: api/Athletes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{athleteId}/upload")]
+        [HttpPost("PostAthelete")]
         public async Task<ActionResult<Athlete>> PostAthlete([FromForm]Images athleteDto)
         {
            
@@ -141,7 +141,7 @@ namespace LiveScore.Controllers
         }
 
         // DELETE: api/Athletes/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteAthelete/{id}")]
         public async Task<IActionResult> DeleteAthlete(int id)
         {
             if (_context.Athletes == null)

@@ -17,7 +17,7 @@ namespace LiveScore.Controllers
             _dbContext = dbContext;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllRole")]
         public async Task<ActionResult<IEnumerable<Role>>> GetAllRole()
         {
             if (_dbContext.Roles == null)
@@ -27,7 +27,7 @@ namespace LiveScore.Controllers
             return await _dbContext.Roles.ToListAsync();
         }
        
-        [HttpGet("{id}")]
+        [HttpGet("GetRoleById/{id}")]
         public async Task<ActionResult<Role>> GetRoleById(int id)
         {
             if (_dbContext.Roles == null)
@@ -43,7 +43,7 @@ namespace LiveScore.Controllers
             return role;
         }
 
-        [HttpPost]
+        [HttpPost("PostRole")]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
             _dbContext.Roles.Add(role);
@@ -84,7 +84,7 @@ namespace LiveScore.Controllers
             return(_dbContext.Roles?.Any(x => x.Id == id)).GetValueOrDefault();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteRole/{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {
             if(_dbContext.Roles == null)

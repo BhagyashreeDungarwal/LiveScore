@@ -10,6 +10,7 @@ import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
 import Athelete from './Components/Coordinator/Athelete';
 import RegisterCoordinator from './Components/Coordinator/RegisterCoordinator';
+import Referee from './Components/Coordinator/Referee';
 
 
 function App() {
@@ -39,15 +40,18 @@ function App() {
     coordinator: {
       icon: [
         Dashboard,
-        Person2
+        Person2,
+        Person2,
       ],
       sidebarRoute: [
         "cdashboard",
-        "athelete"
+        "athelete",
+        "referee"
       ],
       name: [
         "Coordinator Dashboard",
-        "Athelete"
+        "Athelete",
+        "Referee"
       ]
     },
     referee: {
@@ -127,6 +131,9 @@ function App() {
         },{
           path:"athelete",
           element:<Athelete/>
+        },{
+          path:"referee",
+          element:<Referee/>
         }
       ]
     },

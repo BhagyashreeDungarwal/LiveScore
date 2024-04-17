@@ -26,7 +26,7 @@ namespace LiveScore.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("GetACR")]
         public async Task<ActionResult<IEnumerable<ACR>>> GetAllACR()
         {
             var acrs = await _dbcontext.Admin.ToListAsync();
@@ -236,6 +236,24 @@ namespace LiveScore.Controllers
 
 
         //Coordinator Section
+        [HttpGet("Coordinator")]
+        public async Task<ActionResult<ACR>> GetCoordinator()
+        {
+            // Assuming role ID 3 corresponds to the coordinator role
+            int coordinatorRoleId = 3;
+
+            // Fetch the coordinator from ACR table with the specified ID and role ID 3
+            var coordinator = await _dbcontext.Admin.FirstOrDefaultAsync(acr => acr.RoleId == coordinatorRoleId);
+
+            if (coordinator == null)
+            {
+                _logger.LogWarning($"Coordinator with ID not found");
+                return NotFound();
+            }
+
+            return Ok(coordinator);
+        }
+
 
         //Adding Coordinator
         [HttpPost("AddCoordinator")]
@@ -322,6 +340,24 @@ namespace LiveScore.Controllers
 
 
         //Refree Section
+
+        [HttpGet("Referee")]
+        public async Task<ActionResult<ACR>> GetReferee()
+        {
+            // Assuming role ID 3 corresponds to the coordinator role
+            int refereeRoleId = 4;
+
+            // Fetch the coordinator from ACR table with the specified ID and role ID 4
+            var referee = await _dbcontext.Admin.FirstOrDefaultAsync(acr => acr.RoleId == refereeRoleId);
+
+            if (referee == null)
+            {
+                _logger.LogWarning($"Referee with ID  not found");
+                return NotFound();
+            }
+
+            return Ok(referee);
+        }
 
         //Adding referee
         [HttpPost("AddReferee")]
