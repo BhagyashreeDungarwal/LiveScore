@@ -9,7 +9,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
 
 
-const drawerWidth = 210;
+const drawerWidth = 240;
 
 const Header = ({ link, icons, sidebarRoute, name }) => {
     const theme = useTheme()
@@ -46,7 +46,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
             }} color="initial">Live Score</Typography>
             {/* <Toolbar /> */}
             {/* <Divider /> */}
-            <List>
+            <List sx={{ mt:"3vh"}}>
                 {sidebarRoute?.map((text, index) => (
                     <ListItem key={text} disablePadding sx={{ display: "block" }}>
                         <ListItemButton
@@ -73,7 +73,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                     </ListItem>
                 ))}
             </List>
-            <Divider />
+            {/* <Divider /> */}
 
         </div>
     );

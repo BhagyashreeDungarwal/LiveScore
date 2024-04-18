@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material'
+import { Box, CircularProgress, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
@@ -74,7 +74,7 @@ const Athelete = () => {
             columnHeaderHeight={37}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />) : (<h1>error</h1>)
+          />) : <CircularProgress />
         }
       </Stack>
     </Box>

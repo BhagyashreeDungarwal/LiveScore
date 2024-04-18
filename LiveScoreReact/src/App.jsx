@@ -4,13 +4,19 @@ import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
-import { Dashboard, Person2 } from '@mui/icons-material';
+import { Category, Dashboard, Handshake, MilitaryTech, Person2, Sports, Verified } from '@mui/icons-material';
 import Header from './Components/Common/Header';
 import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
 import Athelete from './Components/Coordinator/Athelete';
 import RegisterCoordinator from './Components/Coordinator/RegisterCoordinator';
 import Referee from './Components/Coordinator/Referee';
+import VerifyCoordinator from './Components/Admin/VerifyCoordinator';
+import RefereeList from './Components/Admin/RefereeList';
+import ManageTournament from './Components/Admin/ManageTournament';
+import CategoryManage from './Components/Admin/CategoryManage';
+import MatchDetails from './Components/Admin/MatchDetails';
+import Match from './Components/Coordinator/Match';
 
 
 function App() {
@@ -29,29 +35,47 @@ function App() {
     },
     admin: {
       icon: [
-        Dashboard
+        Dashboard,
+        Category,
+        Verified,
+        Sports,
+        MilitaryTech,
+        Handshake,
       ],
       sidebarRoute: [
-        "admindashboard"
+        "admindashboard",
+        "category",
+        "vcoordinator",
+        "refereelist",
+        "mtounament",
+        "matchdetails"
       ], name: [
-        "Admin Dashboard"
+        "Admin Dashboard",
+        "Category",
+        "Verify Coordinator",
+        "Referee List",
+        "Manage Tounament",
+        "Match Details"
       ]
     },
     coordinator: {
       icon: [
         Dashboard,
         Person2,
-        Person2,
+        Sports,
+        Handshake
       ],
       sidebarRoute: [
         "cdashboard",
         "athelete",
-        "referee"
+        "referee",
+        "match",
       ],
       name: [
         "Coordinator Dashboard",
         "Athelete",
-        "Referee"
+        "Referee",
+        "Matches"
       ]
     },
     referee: {
@@ -98,7 +122,23 @@ function App() {
         {
           path:"adashboard",
           element:<AdminDashboard />
+        },{
+          path:"category",
+          element:<CategoryManage/>
+        },{
+          path:"vcoordinator",
+          element:<VerifyCoordinator/>
+        },{
+          path:"refereelist",
+          element:<RefereeList/>
+        },{
+          path:"mtounament",
+          element:<ManageTournament/>
+        },{
+          path:"matchdetails",
+          element:<MatchDetails/>
         }
+
       ]
     },
     {
@@ -134,6 +174,9 @@ function App() {
         },{
           path:"referee",
           element:<Referee/>
+        },{
+          path:"match",
+          element:<Match/>
         }
       ]
     },

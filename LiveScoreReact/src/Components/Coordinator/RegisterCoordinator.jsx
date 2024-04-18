@@ -1,16 +1,23 @@
 // import { makeStyles } from '@mui/styles';
 import { Button, Grid, Paper, TextField, useTheme, Typography, InputAdornment, FormLabel, RadioGroup, FormControlLabel, Radio, IconButton, Input } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import registration from "../Images/register.jpg"
 import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useFormik } from 'formik'
 import { acr, } from '../Validation/Coordinator'
+import { useDispatch, useSelector } from 'react-redux'
+import { CoordinatorPostApi } from '../../Redux/Action/CoordinatorAction'
+import { toast } from 'react-toastify'
 
 
 
 
 const RegisterCoordinator = () => {
     const theme = useTheme()
+    const { data, error,  } = useSelector((state) => state.coordinator);
+   const disptach = useDispatch()
+
+
     const [type, setType] = useState("password")
     const [visible, setVisible] = useState(false)
     const icon = (visible ? <Visibility color='secondary' /> : <VisibilityOff color='secondary' />)
@@ -38,6 +45,16 @@ const RegisterCoordinator = () => {
         city: "",
     }
 
+useEffect(() => {
+   if (data) {
+      toast.success(data.msg)
+      console.log(data.msg)
+   }
+   if(error){
+     toast.error(error.msg)
+    console.log(error.msg)
+   }
+}, [ data, error])
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
@@ -45,6 +62,25 @@ const RegisterCoordinator = () => {
         validationSchema: acr,
         onSubmit: async (values) => {
             console.log(values)
+            const formData = new FormData();
+                formData.append('ImageFile', values.image); // Assuming you have ImageFile in your form values
+                formData.append('Email', values.email);
+                formData.append('Name', values.name);
+                formData.append('Password', values.password);
+                formData.append('Contact', values.contact);
+                formData.append('Age', values.age);
+                formData.append('DateOfBirth', values.dateOfBirth);
+                formData.append('Gender', values.gender);
+                formData.append('City', values.city);
+                formData.append('State', values.state);
+           await disptach(CoordinatorPostApi(formData))
+            if (data) {
+                toast.success(data.msg)
+            }
+
+            if (error) {
+                   toast.error(error.msg)
+            }
         }
     })
 

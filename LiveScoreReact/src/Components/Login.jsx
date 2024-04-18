@@ -10,7 +10,6 @@ import {
 import {
   Grid,
   Typography,
-  Link,
   TextField,
   Box,
   IconButton,
@@ -23,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginApi } from '../Redux/Action/loginAction.js';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -65,6 +64,12 @@ const Login = () => {
         // console.log("admin")
         localStorage.setItem('role', "admin");
         navigate("/coordinator/cdashboard")
+        console.log(localStorage.getItem("role"))
+      }
+      else if (data.role === 4) {
+        // console.log("admin")
+        localStorage.setItem('role', "referee");
+        navigate("/referee/rdashboard")
         console.log(localStorage.getItem("role"))
       }
     }
@@ -185,13 +190,17 @@ const Login = () => {
               label="Remember me"
             /> */}
             </form>
-            <Grid container>
-              <Grid item xs mt={2}>
-                <Link href="#" sx={{ textDecoration: "none" }} variant="body2">
+            <Box  sx={{ display:"flex", justifyContent:"space-between", mt:"2vh"}}>
+             
+                <Link to="#" style={{textDecoration:"none"}} variant="body2">
                   Forgot password?
                 </Link>
-              </Grid>
-            </Grid>
+              
+                <Link to="cregister" style={{ textDecoration: "none" }} variant="body2">
+                  Register Coordinator
+                </Link>
+
+            </Box>
           </Box>
         </Box>
       </Grid>
