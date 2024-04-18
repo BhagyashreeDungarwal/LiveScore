@@ -13,7 +13,8 @@ export const AthleteValidate = yup.object({
     // image: yup.string().required('Image is required'),
     coordinator: yup.string().required('Coordinator is required'),
     coach: yup.string().required('Coach is required'),
-    contact: yup.string().required('Contact is required'),
+   contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+    
 });
 export const acr = yup.object({
     name: yup.string().required('Name is required'),

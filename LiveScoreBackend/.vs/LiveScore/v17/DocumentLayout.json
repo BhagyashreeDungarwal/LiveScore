@@ -3,16 +3,24 @@
   "WorkspaceRootPath": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\model\\athlete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:model\\athlete.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\controllers\\athletescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\athletescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\model\\acr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:model\\acr.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\live score\\livescore\\livescorebackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,24 +30,48 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "AthletesController.cs",
+              "DocumentMoniker": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Controllers\\AthletesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AthletesController.cs",
+              "ToolTip": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Controllers\\AthletesController.cs",
+              "RelativeToolTip": "Controllers\\AthletesController.cs",
+              "ViewState": "AQIAAE8AAAAAAAAAAAAkwGwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-15T11:28:20.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Athlete.cs",
+              "DocumentMoniker": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Model\\Athlete.cs",
+              "RelativeDocumentMoniker": "Model\\Athlete.cs",
+              "ToolTip": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Model\\Athlete.cs",
+              "RelativeToolTip": "Model\\Athlete.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-15T11:28:15.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ACR.cs",
               "DocumentMoniker": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Model\\ACR.cs",
               "RelativeDocumentMoniker": "Model\\ACR.cs",
               "ToolTip": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Model\\ACR.cs",
               "RelativeToolTip": "Model\\ACR.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAxwBEAAAAAAAAA",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAgwB8AAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-14T04:44:10.696Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-14T04:44:10.696Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
@@ -47,20 +79,20 @@
               "RelativeToolTip": "Data\\ApplicationDbContext.cs",
               "ViewState": "AQIAACYAAAAAAAAAAAAmwDcAAABLAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-14T04:16:47.648Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-14T04:16:47.648Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "D:\\Live Score\\LiveScore\\LiveScoreBackend\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAADgAAAAnAAAA",
+              "ViewState": "AQIAABsAAAAAAAAAAAAAADgAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-05T05:22:22.879Z"
+              "WhenOpened": "2024-04-05T05:22:22.879Z",
+              "EditorCaption": ""
             }
           ]
         }
