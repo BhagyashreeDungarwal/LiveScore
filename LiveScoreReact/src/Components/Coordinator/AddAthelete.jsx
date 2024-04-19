@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
-import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress } from '@mui/material';
+import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment } from '@mui/material';
 import { AthleteValidate } from '../Validation/Coordinator';
-import { useState } from 'react';
+// import { useState } from 'react';
+import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
 
 const coordinatorOptions = [
     { value: 'John Doe', label: 'John Doe' },
@@ -33,18 +37,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const AddAthelete = () => {
 
-
-    const [file, setFile] = useState();
-
-
-    const handleFile = (e) => {
-        const file = e.target.files[0]
-
-        setFile(file)
-        console.log("file 1", file)
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-    }
+    const theme = useTheme()
+    const {data,error} = useSelector((state => state.coordinator))
+    const dispatch = useDispatch()
 
     const initial = {
         name: "",
@@ -58,17 +53,47 @@ const AddAthelete = () => {
         height: "",
         weight: "",
         state: "",
+        image: null,
     }
+    
+React.useEffect(() => {
+   if (data) {
+      toast.success(data.msg)
+      console.log(data.msg)
+   }
+   if(error){
+     toast.error(error.msg)
+    console.log(error.msg)
+   }
+}, [ data, error])
 
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit,setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: AthleteValidate,
 
         onSubmit: async (values) => {
+            console.log(values);
             try {
                 const formdata = new FormData()
-                formdata.append('data', values)
-                formdata.append('file', file)
+                formdata.append('Name', values.name)
+                formdata.append('Email', values.email)
+                formdata.append('Contact', values.contact)
+                formdata.append('Gender', values.gender)
+                formdata.append('DateOfBirth', values.dateOfBirth)
+                formdata.append('City', values.city)
+                formdata.append('State', values.state)
+                formdata.append('Coach', values.coach)
+                formdata.append('Coordinator', values.coordinator)
+                formdata.append('ImageFile', values.image)
+
+                await dispatch(AtheletePostApi(formdata))
+                if(data){
+                    toast.success(data.msg)
+                }
+                if(error){
+                    toast.error(error.msg)
+                }
                 console.log(values)
                 console.log(formdata);
             } catch (error) {
@@ -77,6 +102,15 @@ const AddAthelete = () => {
         },
 
     })
+
+    const handleFile = (e) => {
+        const file = e.target.files[0]
+
+        setFieldValue('image',file)
+        console.log("file 1", file)
+        // const reader = new FileReader()
+        // reader.readAsDataURL(file)
+    }
 
     const [open, setOpen] = React.useState(false);
 
@@ -126,10 +160,17 @@ const AddAthelete = () => {
                                         id="name"
                                         name="name"
                                         label="Name"
-                                        size='small'
                                         value={values.name}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                <Person2Rounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
                                 </Grid>
@@ -140,19 +181,52 @@ const AddAthelete = () => {
                                         id="email"
                                         name="email"
                                         label="Email"
-                                        size='small'
                                         value={values.email}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                                                <AlternateEmailRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
-
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <FormLabel component="legend">Upload Image</FormLabel>
                                     <input
-                                        type="file"
-                                        onChange={handleFile}
+                                    id="image-upload"
+                                    label="Image"
+                                    name='image'
+                                    type="file"
+                                    onChange={handleFile}
+                                    onBlur={handleBlur}
                                     />
+                                    {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={6} md={6} sm={12}>
+
+                                    <TextField
+                                        fullWidth
+                                        id="contact"
+                                        name="contact"
+                                        label="Contact"
+                                        type="number"
+                                        value={values.contact}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                <PermContactCalendarRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    />
+                                    {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
@@ -174,21 +248,6 @@ const AddAthelete = () => {
 
                                 </Grid>
 
-                                <Grid item xl={12} md={6} sm={12}>
-
-                                    <TextField
-                                        fullWidth
-                                        id="contact"
-                                        name="contact"
-                                        label="Contact"
-                                        type="number"
-                                        size='small'
-                                        value={values.contact}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
-                                </Grid>
                                 <Grid item xl={6} md={6} sm={12}>
 
                                     <TextField
@@ -200,6 +259,14 @@ const AddAthelete = () => {
                                         value={values.height}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                <Height />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.height && touched.height ? (<Typography variant="subtitle1" color="error">{errors.height}</Typography>) : null}
                                 </Grid>
@@ -215,6 +282,14 @@ const AddAthelete = () => {
                                         value={values.weight}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                <MonitorWeight />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.weight && touched.weight ? (<Typography variant="subtitle1" color="error">{errors.weight}</Typography>) : null}
 
@@ -228,6 +303,14 @@ const AddAthelete = () => {
                                         value={values.state}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                <AddLocationAltRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.state && touched.state ? (<Typography variant="subtitle1" color="error">{errors.state}</Typography>) : null}
                                 </Grid>
@@ -241,6 +324,13 @@ const AddAthelete = () => {
                                         value={values.city}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                <LocationCityRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
                                 </Grid>
@@ -256,6 +346,13 @@ const AddAthelete = () => {
                                         value={values.dateOfBirth}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                <DateRangeRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                     />
                                     {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
                                 </Grid>

@@ -1,13 +1,13 @@
 import axios from "axios"
-import { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, GetRefereeStart, GetRefereetSuccess, GetRefereeFail } from "../Reducer/CoordinatorReducer"
+import { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail, GetRefereeStart, GetRefereetSuccess, GetRefereeFail } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
 
-export const getAtheleteApi = (values) => async (dispatch) => {
+export const getAtheleteApi = () => async (dispatch) => {
     try {
         dispatch(GetAtheleteStart())
-        console.log(values)
-        const { data } = await axios.get(`${url}/Athletes/getAthelete`, values, {
+     
+        const { data } = await axios.get(`${url}/Athletes/getAthelete`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -25,7 +25,7 @@ export const AtheletePostApi = (values) => async (dispatch) => {
         console.log(values)
         const { data } = await axios.post(`${url}/Athletes/PostAthelete`, values, {
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "multipart/form-data"
             }
         })
         dispatch(AtheletePostSuccess(data))
@@ -46,6 +46,21 @@ export const CoordinatorPostApi = (values) => async (dispatch) => {
         dispatch(CoordinatorPostSuccess(data))
     } catch (error) {
         dispatch(CoordinatorPostFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const RefereePostApi = (values) => async (dispatch) => {
+    try {
+        dispatch(RefereePostStart())
+        console.log(values)
+        const { data } = await axios.post(`${url}/ACR/AddReferee`, values, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        dispatch(RefereePostSuccess(data))
+    } catch (error) {
+        dispatch(RefereePostFail(error.response.data))
         // console.log(e.response.data.msg)
     }
 }

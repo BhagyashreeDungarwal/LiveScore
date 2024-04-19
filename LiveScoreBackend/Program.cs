@@ -63,6 +63,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//Fetch image
+app.UseStaticFiles();
+
 app.UseCors("CorsPolicy");
 
 app.UseAuthorization();

@@ -28,19 +28,22 @@ const Athelete = () => {
   const { atheletedata } = useSelector(state => state.coordinator)
 
   const columns = useMemo(atheletedata => [
-    { field: "imageUrl", headerName: "Avatar", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "athleteName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
+     renderCell: (params) => (
+        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+      ), },
+    { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "contact", headerName: "Contact", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "dateOfBirth", headerName: "DateOFBirth", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "gender", headerName: "Gender", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "height", headerName: "Height", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "weight", headerName: "Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "city", headerName: "City", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "state", headerName: "state", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "categoryId", headerName: "categoryId", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coachId", headerName: "coachId", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coordinater", headerName: "coordinater", width: 150, headerClassName: "header", headerAlign: "center", align: "center" }
+    { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "height", headerName: "Height", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "weight", headerName: "Weight", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coachId", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" }
 
   ])
 
@@ -66,7 +69,7 @@ const Athelete = () => {
             rows={atheletedata}
             columns={columns}
             getRowId={(row) => row.id}
-            rowHeight={37}
+            rowHeight={42}
             rowSelection="true"
             rowSpacingType='margin'
             slots={{ toolbar: CustomToolbar }}
@@ -80,5 +83,6 @@ const Athelete = () => {
     </Box>
   )
 }
+
 
 export default Athelete

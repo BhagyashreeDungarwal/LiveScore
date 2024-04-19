@@ -284,7 +284,7 @@ useEffect(() => {
                                     fullWidth
                                     color='secondary'
                                     type='file'
-                                    inputProps={{ accept: 'image/*' }}
+                                    inputProps ={{  accept: 'image/*' }}
                                     // style={{ display: 'none' }} 
                                     //sx={{ marginBottom: "15px" }}
                                     // value={values.image}

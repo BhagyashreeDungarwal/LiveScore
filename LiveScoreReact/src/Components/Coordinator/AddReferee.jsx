@@ -10,6 +10,10 @@ import { TextField,  Button, Grid, Typography, RadioGroup, FormControlLabel, Rad
 import { useState } from 'react';
 import { acr } from '../Validation/Coordinator';
 import { AccessibilityNewRounded, AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material';
+import { toast } from 'react-toastify';
+import { RefereePostApi } from '../../Redux/Action/CoordinatorAction';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -23,8 +27,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const AddReferee = () => {
  
-    const [file, setFile] = useState();
-    const theme = useTheme()
+   const theme = useTheme()
+    const { data, error,  } = useSelector((state) => state.coordinator);
+   const disptach = useDispatch()
+
+
     const [type, setType] = useState("password")
     const [visible, setVisible] = useState(false)
     const icon = (visible ? <Visibility color='secondary' /> : <VisibilityOff color='secondary' />)
@@ -37,16 +44,6 @@ const AddReferee = () => {
             setVisible(false)
             setType("password")
         }
-    }
-
-
-    const handleFile = (e) => {
-        const file = e.target.files[0]
-
-        setFile(file)
-        console.log("file 1", file)
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
     }
 
     const initial = {
@@ -62,23 +59,57 @@ const AddReferee = () => {
         city: "",
     }
 
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+useEffect(() => {
+   if (data) {
+      toast.success(data.msg)
+      console.log(data.msg)
+   }
+   if(error){
+     toast.error(error.msg)
+    console.log(error.msg)
+   }
+}, [ data, error])
+
+
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: acr,
-
         onSubmit: async (values) => {
+            console.log(values);
             try {
-                const formdata = new FormData()
-                formdata.append('data', values)
-                formdata.append('file', file)
-                console.log(values)
-                console.log(formdata);
+                const formData = new FormData();
+                formData.append('ImageFile', values.image); // Assuming you have ImageFile in your form values
+                formData.append('Email', values.email);
+                formData.append('Name', values.name);
+                formData.append('Password', values.password);
+                formData.append('Contact', values.contact);
+                formData.append('Age', values.age);
+                formData.append('DateOfBirth', values.dateOfBirth);
+                formData.append('Gender', values.gender);
+                formData.append('City', values.city);
+                formData.append('State', values.state);
+                await disptach(RefereePostApi(formData))
+                if (data) {
+                    toast.success(data.msg)
+                }
+
+                if (error) {
+                    toast.error(error.msg)
+                }
             } catch (error) {
                 <CircularProgress />
             }
         },
-
     })
+
+    const handleImageChange = (event) => {
+        // Extract the file from the event object
+        const file = event.target.files[0];
+
+        // Set the file in formik values
+        setFieldValue('image', file);
+    };
+
 
     const [open, setOpen] = React.useState(false);
 
@@ -118,9 +149,8 @@ const AddReferee = () => {
                         <CloseIcon />
                     </IconButton>
                     <DialogContent dividers>
-                        <form onSubmit={handleSubmit}>
+                       <form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                            
                             <Grid item xl={12} sm={12} xs={12} lg={12} >
                                 <TextField
                                     label="Name"
@@ -287,12 +317,12 @@ const AddReferee = () => {
                                     fullWidth
                                     color='secondary'
                                     type='file'
-                                    inputProps={{ accept: 'image/*' }}
+                                    inputProps ={{  accept: 'image/*' }}
                                     // style={{ display: 'none' }} 
                                     //sx={{ marginBottom: "15px" }}
                                     // value={values.image}
                                     onBlur={handleBlur}
-                                    onChange={handleFile}
+                                    onChange={handleImageChange}
                                 />
                                 {/* <label htmlFor="image-upload">
                                     <Button variant="contained" component="span">
@@ -378,7 +408,9 @@ const AddReferee = () => {
                                 </Button>
                             </Grid>
                         </Grid>
-                        </form>
+
+
+                    </form>
                     </DialogContent>
 
                 </BootstrapDialog>

@@ -380,24 +380,41 @@ namespace LiveScore.Controllers
 
         //Adding referee
         [HttpPost("AddReferee")]
-        public async Task<ActionResult<ACR>> PostReferee(ACR acr)
+        public async Task<ActionResult<ACR>> PostReferee([FromForm] Imageacr acrimg)
         {
-            if (string.IsNullOrEmpty(acr.Password))
+            if (string.IsNullOrEmpty(acrimg.Password))
             {
                 return BadRequest(new { msg = "Please Enter all Field" });
             }
 
             // Check if the email already exists in the database
-            if (_dbcontext.Admin.Any(a => a.Email == acr.Email))
+            if (_dbcontext.Admin.Any(a => a.Email == acrimg.Email))
             {
                 return BadRequest( new { msg = "Email already exists" });
             }
 
             //checked if the contact already exists in the database
-            if (_dbcontext.Admin.Any(a => a.Contact == acr.Contact))
+            if (_dbcontext.Admin.Any(a => a.Contact == acrimg.Contact))
             {
                 return BadRequest(new { msg = "Contact already exists" });
             }
+
+            string imageUrl = await UploadImage(acrimg.ImageFile);
+
+            var acr = new ACR
+            {
+                Email = acrimg.Email,
+                Name = acrimg.Name,
+                Password = acrimg.Password,
+                Contact = acrimg.Contact,
+                Age = acrimg.Age,
+                DateOfBirth = acrimg.DateOfBirth,
+                Gender = acrimg.Gender,
+                City = acrimg.City,
+                State = acrimg.State,
+                ImageURL = imageUrl
+            };
+
 
             acr.RoleId = 4;
             acr.Password = _pservice.HashPassword(acr.Password);

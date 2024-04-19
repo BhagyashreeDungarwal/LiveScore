@@ -10,11 +10,20 @@ export const AthleteValidate = yup.object({
     city: yup.string().required('City is required'),
     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
         .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
-    // image: yup.string().required('Image is required'),
+    image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
+        (value) => {
+            if (!value) return false; // if no file is selected
+            return (
+                value && // value is not undefined or null
+                ['image/jpeg', 'image/png'].includes(value.type) // check if the file type is JPEG or PNG
+            );
+            // Check if the file type is either JPEG or PNG
+        }
+    ),
     coordinator: yup.string().required('Coordinator is required'),
     coach: yup.string().required('Coach is required'),
-   contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
-    
+    contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+
 });
 export const acr = yup.object({
     name: yup.string().required('Name is required'),

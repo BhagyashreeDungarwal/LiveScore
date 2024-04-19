@@ -29,17 +29,17 @@ const {refereedata} = useSelector(state => state.coordinator)
 
 
   const columns = useMemo(refereedata => [
-    { field: "imageURL", headerName: "Avatar", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "name", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "contact", headerName: "Contact", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "dateOfBirth", headerName: "DateOFBirth", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "gender", headerName: "Gender", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "age", headerName: "Age", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "age", headerName: "Age", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "lastLogin", headerName: "LastLogin", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "city", headerName: "City", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "state", headerName: "state", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "status", headerName: "Status", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     
   ])
 
@@ -65,7 +65,7 @@ const {refereedata} = useSelector(state => state.coordinator)
             rows={refereedata}
             columns={columns}
             getRowId={(row) => row.id}
-            rowHeight={37}
+            rowHeight={42}
             rowSelection="true"
             rowSpacingType='margin'
             slots={{ toolbar: CustomToolbar }}

@@ -62,7 +62,7 @@ const Login = () => {
       }
       else if (data.role === 3) {
         // console.log("admin")
-        localStorage.setItem('role', "admin");
+        localStorage.setItem('role', "coordinator");
         navigate("/coordinator/cdashboard")
         console.log(localStorage.getItem("role"))
       }
