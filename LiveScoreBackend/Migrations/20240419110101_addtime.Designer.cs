@@ -4,6 +4,7 @@ using LiveScore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240419110101_addtime")]
+    partial class addtime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -461,16 +463,16 @@ namespace LiveScore.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(101)
-                        .HasColumnType("nvarchar(101)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime>("TournamentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TournamentName")
                         .IsRequired()
-                        .HasMaxLength(101)
-                        .HasColumnType("nvarchar(101)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("TId");
 

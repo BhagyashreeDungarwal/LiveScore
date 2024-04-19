@@ -6,7 +6,7 @@ const url = "http://localhost:5032/api"
 export const getAtheleteApi = () => async (dispatch) => {
     try {
         dispatch(GetAtheleteStart())
-     
+
         const { data } = await axios.get(`${url}/Athletes/getAthelete`, {
             headers: {
                 "Content-Type": "application/json"
@@ -65,11 +65,11 @@ export const RefereePostApi = (values) => async (dispatch) => {
     }
 }
 
-export const GetRefereeApi = (values) => async (dispatch) => {
+export const GetRefereeApi = () => async (dispatch) => {
     try {
         dispatch(GetRefereeStart())
-        console.log(values)
-        const { data } = await axios.get(`${url}/ACR/Referee`, values, {
+
+        const { data } = await axios.get(`${url}/ACR/Referee`, {
             headers: {
                 "Content-Type": "application/json"
             }

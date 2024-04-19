@@ -29,7 +29,10 @@ const {refereedata} = useSelector(state => state.coordinator)
 
 
   const columns = useMemo(refereedata => [
-    { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+     renderCell: (params) => (
+        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+      ), },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -65,7 +68,7 @@ const {refereedata} = useSelector(state => state.coordinator)
             rows={refereedata}
             columns={columns}
             getRowId={(row) => row.id}
-            rowHeight={42}
+            rowHeight={53}
             rowSelection="true"
             rowSpacingType='margin'
             slots={{ toolbar: CustomToolbar }}

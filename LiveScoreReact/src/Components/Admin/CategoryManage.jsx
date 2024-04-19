@@ -8,7 +8,6 @@ import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import { useMemo } from 'react';
 
 
-
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -33,6 +32,7 @@ const { categorydata } = useSelector(state => state.admin)
   const columns = useMemo(categorydata => [
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "categoryTime", headerName: "Time(Minutes)", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     
   ])
 

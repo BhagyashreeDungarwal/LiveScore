@@ -6,5 +6,6 @@ namespace LiveScoring.Model
     {
         public int Id { get; set; }
         public string? CategoryName { get; set; }
+        public int CategoryTime { get; set; }
     }
 }

@@ -6,7 +6,7 @@ import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
 import { Category, Dashboard, Handshake, MilitaryTech, Person2, Sports, Verified } from '@mui/icons-material';
 import Header from './Components/Common/Header';
-import Rdashboard from './Components/Referee/Rdashboard';
+// import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
 import Athelete from './Components/Coordinator/Athelete';
 import RegisterCoordinator from './Components/Coordinator/RegisterCoordinator';
@@ -141,20 +141,20 @@ function App() {
 
       ]
     },
-    {
-      path:"/referee",
-      element:(<Header  link="referee" icons={referee.icon} sidebarRoute={referee.sidebarRoute}  name={referee.name} />),
-      children:[
-        {
-          index:true,
-          element:<Rdashboard />,
-        },
-        {
-          path:"rdashboard",
-          element:<Rdashboard />
-        }
-      ]
-    },
+    // {
+    //   path:"/referee",
+    //   element:(<Header  link="referee" icons={referee.icon} sidebarRoute={referee.sidebarRoute}  name={referee.name} />),
+    //   children:[
+    //     {
+    //       index:true,
+    //       element:<Rdashboard />,
+    //     },
+    //     {
+    //       path:"rdashboard",
+    //       element:<Rdashboard />
+    //     }
+    //   ]
+    // },
     {
       path:"/coordinator",
       element:(

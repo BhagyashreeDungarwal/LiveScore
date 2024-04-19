@@ -69,7 +69,7 @@ const Athelete = () => {
             rows={atheletedata}
             columns={columns}
             getRowId={(row) => row.id}
-            rowHeight={42}
+            rowHeight={54}
             rowSelection="true"
             rowSpacingType='margin'
             slots={{ toolbar: CustomToolbar }}

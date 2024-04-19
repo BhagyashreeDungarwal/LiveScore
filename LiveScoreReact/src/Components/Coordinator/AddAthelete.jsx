@@ -8,7 +8,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
 import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment } from '@mui/material';
 import { AthleteValidate } from '../Validation/Coordinator';
-// import { useState } from 'react';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';

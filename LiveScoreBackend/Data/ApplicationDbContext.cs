@@ -82,6 +82,7 @@ namespace LiveScore.Data
 
                 entity.Property(c => c.Id).HasColumnName("Cid"); 
                 entity.Property(c => c.CategoryName).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.CategoryTime).IsRequired().HasMaxLength(10); 
             });
             modelBuilder.Entity<Coach>(entity =>
             {
@@ -213,8 +214,8 @@ namespace LiveScore.Data
             {
                 entity.HasKey(t => t.TId); 
 
-                entity.Property(t => t.TournamentName).IsRequired().HasMaxLength(10); 
-                entity.Property(t => t.Location).IsRequired().HasMaxLength(10); 
+                entity.Property(t => t.TournamentName).IsRequired().HasMaxLength(101); 
+                entity.Property(t => t.Location).IsRequired().HasMaxLength(101); 
                 entity.Property(t => t.TournamentDate); 
                 entity.Property(t => t.CategoryId).IsRequired(false); 
 

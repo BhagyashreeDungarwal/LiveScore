@@ -1,13 +1,17 @@
-import { Close, Person2Rounded, Timer } from '@mui/icons-material';
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, TextField, Typography, styled, useTheme } from '@mui/material';
+import { Close, DateRangeRounded, LocationOn, Person2Rounded, Timer } from '@mui/icons-material';
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography, styled, useTheme } from '@mui/material';
 import React from 'react'
 import { toast } from 'react-toastify';
-import { category } from '../Validation/Admin';
+import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { CategoryPostApi } from '../../Redux/Action/AdminAction';
+import { TounamentPostApi } from '../../Redux/Action/AdminAction';
 
-
+const categoryoption = [
+    { value: 'Senior', label: 'Senior' },
+    { value: 'Junior', label: 'Junior' },
+    { value: 'Sub-Junior', label: 'Sub-Junior' },
+];
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -18,9 +22,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const AddCategory = () => {
 
-   const [open, setOpen] = React.useState(false);
+const AddTournament = () => {
+
+     const [open, setOpen] = React.useState(false);
    const theme = useTheme()
     const {data,error} = useSelector((state => state.admin))
     const dispatch = useDispatch()
@@ -34,22 +39,26 @@ const AddCategory = () => {
 
     const initial ={
       name:"",
-      time:"",
+      location:"",
+      date:"",
+      category:"",
     }
 
  const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: initial,
-        validationSchema: category,
+        validationSchema: tournament,
 
         onSubmit: async (values) => {
             console.log(values);
             try {
                 const formdata = new FormData()
-                formdata.append('CategoryName', values.name)
-                formdata.append('CategoryTime', values.time)
+                formdata.append('TournamentName', values.name)
+                formdata.append('Location', values.time)
+                formdata.append('TournamentDate', values.time)
+                formdata.append('Category', values.time)
                 
 
-                await dispatch(CategoryPostApi(formdata))
+                await dispatch(TounamentPostApi(formdata))
                 if(data){
                     toast.success(data.msg)
                 }
@@ -65,11 +74,12 @@ const AddCategory = () => {
 
     })
 
-    return (
-        <div>
+
+  return (
+   <div>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
-                    Add Category
+                    Add Tournament
                 </Button>
                 <BootstrapDialog
                     onClose={handleClose}
@@ -77,7 +87,7 @@ const AddCategory = () => {
                     open={open}
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                        Add Category
+                        Add Tournament
                     </DialogTitle>
                     <IconButton
                         aria-label="close"
@@ -101,7 +111,7 @@ const AddCategory = () => {
                                         fullWidth
                                         id="name"
                                         name="name"
-                                        label="Category Name"
+                                        label="Tournament Name"
                                         value={values.name}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -120,23 +130,67 @@ const AddCategory = () => {
 
                                     <TextField
                                         fullWidth
-                                        id="time"
-                                        name="time"
-                                        label="Time"
-                                        value={values.time}
+                                        id="location"
+                                        name="location"
+                                        label="Location"
+                                        value={values.location}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Timer />
+                                                <LocationOn />
                                             </InputAdornment>
                                         ),
                                     }}
                                     />
-                                    {errors.time && touched.time ? (<Typography variant="subtitle1" color="error">{errors.time}</Typography>) : null}
-                                </Grid>                                
+                                    {errors.location && touched.location ? (<Typography variant="subtitle1" color="error">{errors.location}</Typography>) : null}
+                                </Grid>         
+                                 <Grid item xl={12} md={6} sm={12}>
+
+                                    <TextField
+                                        fullWidth
+                                        id="date"
+                                        name="date"
+                                        label="Tournament Date"
+                                        type="date"
+                                        InputLabelProps={{ shrink: true }}
+                                        value={values.date}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                <DateRangeRounded />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    />
+                                    {errors.date && touched.date ? (<Typography variant="subtitle1" color="error">{errors.date}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={12} md={6} sm={12}>
+
+                                    <TextField
+                                        fullWidth
+                                        select
+                                        id="category"
+                                        name="category"
+                                        label="category"
+                                        value={values.category}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    >
+                                         {categoryoption.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                        
+                                    </TextField>
+                                    {errors.category && touched.category ? (<Typography variant="subtitle1" color="error">{errors.category}</Typography>) : null}
+                                </Grid>
+
                                 <Grid item xl={12} md={6} sm={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
@@ -151,7 +205,7 @@ const AddCategory = () => {
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-    )
+  )
 }
 
-export default AddCategory
+export default AddTournament

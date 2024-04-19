@@ -24,8 +24,81 @@ const AdminSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        //Post Category
+        CategoryPostStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        CategoryPostSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        CategoryPostFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        // get Coordinator
+
+        GetCoordinatorStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetCoordinatorSuccess: (state, action) => {
+            state.loading = false;
+            state.coordinatordata = action.payload;
+        },
+        GetCoordinatorFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        // get Tounament
+
+        GetTounamentStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetTounamentSuccess: (state, action) => {
+            state.loading = false;
+            state.tounamentdata = action.payload;
+        },
+        GetTounamentFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //Post Tounament
+        TounamentPostStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        TounamentPostSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        TounamentPostFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        // get Tounament
+
+        GetMatchStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetMatchSuccess: (state, action) => {
+            state.loading = false;
+            state.matchdata = action.payload;
+        },
+        GetMatchFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
     }
 })
 
-export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail } = AdminSlice.actions;
+export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail } = AdminSlice.actions;
 export default AdminSlice.reducer;
