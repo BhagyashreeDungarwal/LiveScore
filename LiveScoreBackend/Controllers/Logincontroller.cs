@@ -45,8 +45,14 @@ namespace LiveScore.Controllers
             }
 
             bool passwordMatches = _pservice.VerifyPassword(login.Password, user.Password);
+            bool status = user.Status;
 
-            if (passwordMatches)
+            if (status == false)
+            {
+                return Unauthorized(new { msg = "You Are Not Registered" });
+            }
+
+            if (passwordMatches && status == true)
             {
 
                   user.LastLogin = DateTime.Now;
@@ -56,7 +62,7 @@ namespace LiveScore.Controllers
                 //user.City = "Surat";
              await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
-                return Ok(new { token = token , role = user.RoleId , msg ="Welcome Back" });
+                return Ok(new { token = token , role = user.RoleId , id = user.Id, msg ="Welcome Back" });
             }
             else
             {

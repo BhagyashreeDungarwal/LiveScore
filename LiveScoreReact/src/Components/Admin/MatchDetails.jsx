@@ -1,4 +1,5 @@
 import React from 'react'
+import ProtectedRoute from '../../ProtectedRoute'
 
 const MatchDetails = () => {
   return (
@@ -8,4 +9,4 @@ const MatchDetails = () => {
   )
 }
 
-export default MatchDetails
+export default ProtectedRoute(MatchDetails,'admin')

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {  getTounamentApi } from '../../Redux/Action/AdminAction';
 import { useMemo } from 'react';
 import AddTournament from './AddTournament';
+import ProtectedRoute from '../../ProtectedRoute';
 
 function CustomToolbar() {
   return (
@@ -74,4 +75,4 @@ const { tounamentdata } = useSelector(state => state.admin)
   )
 }
 
-export default ManageTournament
+export default ProtectedRoute(ManageTournament,'admin')

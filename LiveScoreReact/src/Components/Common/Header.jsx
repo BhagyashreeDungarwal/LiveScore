@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
+import {Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles'
-import { Link, Outlet } from 'react-router-dom';
+import { Link,  Outlet, useNavigate } from 'react-router-dom';
 import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
 
 
@@ -17,21 +17,36 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
     const [isClosing, setIsClosing] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+
+    // for logout
+    const navigate = useNavigate()
+    const handleLogout = () =>{
+        localStorage.removeItem('role')
+        navigate("/")
+    }
+
+    // for user menu open
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
+
+    // for close user menu
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    // for sidebar close
     const handleDrawerClose = () => {
         setIsClosing(true);
         setMobileOpen(false);
     };
 
+    
     const handleDrawerTransitionEnd = () => {
         setIsClosing(false);
     };
 
+    // for toggling the sidebar
     const handleDrawerToggle = () => {
         if (!isClosing) {
             setMobileOpen(!mobileOpen);
@@ -78,10 +93,6 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
         </div>
     );
 
-
-
-    // Remove this const when copying and pasting into your project.
-    //   const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -143,7 +154,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                                     </ListItemIcon>
                                     Profile
                                 </MenuItem>
-                                <MenuItem onClick={handleCloseUserMenu}  >
+                                <MenuItem onClick={handleLogout}  >
                                     <ListItemIcon>
                                         <LogoutRounded />
                                     </ListItemIcon>

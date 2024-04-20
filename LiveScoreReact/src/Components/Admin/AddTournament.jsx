@@ -6,6 +6,7 @@ import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { TounamentPostApi } from '../../Redux/Action/AdminAction';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const categoryoption = [
     { value: 'Senior', label: 'Senior' },
@@ -208,4 +209,4 @@ const AddTournament = () => {
   )
 }
 
-export default AddTournament
+export default ProtectedRoute(AddTournament,'admin')

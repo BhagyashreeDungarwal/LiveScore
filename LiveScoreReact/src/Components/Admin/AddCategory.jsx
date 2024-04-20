@@ -5,7 +5,8 @@ import { toast } from 'react-toastify';
 import { category } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { CategoryPostApi } from '../../Redux/Action/AdminAction';
+import { CategoryPostApi, getCategoryApi } from '../../Redux/Action/AdminAction';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 
@@ -20,9 +21,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const AddCategory = () => {
 
-   const [open, setOpen] = React.useState(false);
-   const theme = useTheme()
-    const {data,error} = useSelector((state => state.admin))
+    const [open, setOpen] = React.useState(false);
+    const theme = useTheme()
+    const { data, error } = useSelector((state => state.admin))
     const dispatch = useDispatch()
 
     const handleClickOpen = () => {
@@ -32,35 +33,33 @@ const AddCategory = () => {
         setOpen(false);
     };
 
-    const initial ={
-      name:"",
-      time:"",
+
+
+    const initial = {
+        CategoryName: "",
+        CategoryTime: "",
     }
 
- const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: initial,
         validationSchema: category,
 
-        onSubmit: async (values) => {
-            console.log(values);
+        onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
-                const formdata = new FormData()
-                formdata.append('CategoryName', values.name)
-                formdata.append('CategoryTime', values.time)
-                
-
-                await dispatch(CategoryPostApi(formdata))
-                if(data){
+                await dispatch(CategoryPostApi(values))
+                setSubmitting(false)
+                if (data) {
                     toast.success(data.msg)
+                    resetForm({ values: "" });
+                    dispatch(getCategoryApi())
                 }
-                if(error){
+                if (error) {
                     toast.error(error.msg)
                 }
-                console.log(values)
-                console.log(formdata);
             } catch (error) {
                 <CircularProgress />
             }
+
         },
 
     })
@@ -92,52 +91,53 @@ const AddCategory = () => {
                         <Close />
                     </IconButton>
                     <DialogContent dividers>
-                        
-                          <form onSubmit={handleSubmit}>
+
+                        <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <TextField
                                         fullWidth
                                         id="name"
-                                        name="name"
+                                        name="CategoryName"
                                         label="Category Name"
-                                        value={values.name}
+                                        value={values.CategoryName}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
+                                        variant='standard'
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-
-                                                <Person2Rounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                    <Person2Rounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                    {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
-                                </Grid>                                
-                                <Grid item xl={12} md={6} sm={12}>
+                                    {errors.CategoryName && touched.CategoryName ? (<Typography variant="subtitle1" color="error">{errors.CategoryName}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <TextField
                                         fullWidth
                                         id="time"
-                                        name="time"
+                                        name="CategoryTime"
                                         label="Time"
-                                        value={values.time}
+                                        value={values.CategoryTime}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
+                                        variant='standard'
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Timer />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Timer />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                    {errors.time && touched.time ? (<Typography variant="subtitle1" color="error">{errors.time}</Typography>) : null}
-                                </Grid>                                
-                                <Grid item xl={12} md={6} sm={12}>
+                                    {errors.CategoryTime && touched.CategoryTime ? (<Typography variant="subtitle1" color="error">{errors.CategoryTime}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
@@ -147,11 +147,11 @@ const AddCategory = () => {
                         </form>
 
                     </DialogContent>
-                    
+
                 </BootstrapDialog>
             </React.Fragment>
         </div>
     )
 }
 
-export default AddCategory
+export default ProtectedRoute(AddCategory,'admin')

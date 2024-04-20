@@ -80,14 +80,14 @@ namespace LiveScore.Controllers
         [HttpPost("PostCategory")]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-          if (_context.Categories == null)
+          if (category == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Categories'  is null.");
+              return BadRequest(new {msg = "the value is null." });
           }
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+            return Ok(new  {  msg = "Sucessfully Added Category"});
         }
 
         // DELETE: api/Categories/5

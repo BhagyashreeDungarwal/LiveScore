@@ -4,6 +4,7 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 function CustomToolbar() {
@@ -83,4 +84,4 @@ const {refereedata} = useSelector(state => state.coordinator)
  )
 }
 
-export default RefereeList
+export default ProtectedRoute(RefereeList,'admin')

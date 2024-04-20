@@ -4,6 +4,7 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { getCategoryApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 function CustomToolbar() {
@@ -82,4 +83,4 @@ const columns = useMemo(coordinatordata => [
   )
 }
 
-export default VerifyCoordinator
+export default ProtectedRoute(VerifyCoordinator,'admin')

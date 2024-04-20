@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   // setting role and message
-
+  const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,25 +52,21 @@ const Login = () => {
       if (data.role === 1) {
         localStorage.setItem('role', "superadmin");
         navigate("/sadmin/sdashboard")
-        console.log(localStorage.getItem('role'))
-        console.log(localStorage.getItem('token'))
-      } else if (data.role === 2)    {
+      } else if (data.role === 2) {
         // console.log("admin")
         localStorage.setItem('role', "admin");
         navigate("/admin/adashboard")
-        console.log(localStorage.getItem("role"))
       }
       else if (data.role === 3) {
         // console.log("admin")
         localStorage.setItem('role', "coordinator");
         navigate("/coordinator/cdashboard")
-        console.log(localStorage.getItem("role"))
       }
       else if (data.role === 4) {
         // console.log("admin")
         localStorage.setItem('role', "referee");
         navigate("/referee/rdashboard")
-        console.log(localStorage.getItem("role"))
+
       }
     }
 
@@ -190,15 +186,15 @@ const Login = () => {
               label="Remember me"
             /> */}
             </form>
-            <Box  sx={{ display:"flex", justifyContent:"space-between", mt:"2vh"}}>
-             
-                <Link to="#" style={{textDecoration:"none"}} variant="body2">
-                  Forgot password?
-                </Link>
-              
-                <Link to="cregister" style={{ textDecoration: "none" }} variant="body2">
-                  Register Coordinator
-                </Link>
+            <Box sx={{ display: "flex", justifyContent: "space-between", mt: "2vh" }}>
+
+              <Link to="#" style={{ textDecoration: "none" }} variant="body2">
+                Forgot password?
+              </Link>
+
+              <Link to="cregister" style={{ textDecoration: "none" }} variant="body2">
+                Register Coordinator
+              </Link>
 
             </Box>
           </Box>

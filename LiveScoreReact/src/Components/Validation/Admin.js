@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const category = yup.object({
-    name: yup.string().required('Category Name is Required'),
-    time: yup.number().required('Category Time is Required'),
+    CategoryName: yup.string().required('Category Name is Required'),
+    CategoryTime: yup.number().required('Category Time is Required'),
 });
 
 export const tournament = yup.object({
