@@ -1,5 +1,6 @@
 using LiveScore.Data;
 using LiveScore.Model;
+using LiveScore.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -53,6 +54,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+//For Email Services
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
 var app = builder.Build();          
 
