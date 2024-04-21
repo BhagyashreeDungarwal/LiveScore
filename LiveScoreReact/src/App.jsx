@@ -44,7 +44,7 @@ function App() {
         Handshake,
       ],
       sidebarRoute: [
-        "admindashboard",
+        "adashboard",
         "category",
         "vcoordinator",
         "refereelist",
