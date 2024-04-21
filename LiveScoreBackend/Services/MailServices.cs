@@ -6,10 +6,10 @@ namespace LiveScore.Services
 
     public interface IEmailSender
     {
-        void SendEmail(string toEmail, string subject , string messageBody);
+        void SendEmail(string toEmail, string subject, string messageBody);
     }
 
-    public class EmailSender : IEmailSender 
+    public class EmailSender : IEmailSender
     {
         public void SendEmail(string toEmail, string subject, string messageBody)
         {

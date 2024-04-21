@@ -21,13 +21,14 @@ namespace LiveScore.Controllers
         private readonly ILogger<ACR> _logger;
         private readonly PasswordService _pservice;
         private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger, PasswordService pservice, IWebHostEnvironment webHostEnvironment)
+        private readonly IEmailSender _emailSender;
+        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger, PasswordService pservice, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
         {
             _dbcontext = dbContext;
             _logger = logger;
             _pservice = pservice;
             _webHostEnvironment = webHostEnvironment;
+            _emailSender = emailSender;
         }
 
         [HttpGet("GetACR")]
@@ -297,10 +298,31 @@ namespace LiveScore.Controllers
             };
 
             acr.RoleId = 3;
+            acr.Status = false;
             acr.Password = _pservice.HashPassword(acr.Password);
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
             acr.Password = null;
+
+            //for message body
+
+            string messageBody = "<!DOCTYPE html>" +
+                                    "<html>" +
+                                    "<head>" +
+                                    "<title>Welcome to Live Score!</title>" +
+                                    "</head>" +
+                                    "<body>" +
+                                   $" <h2>Dear  {acr.Name},</h2>" +
+                                    "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                    "<p>Welcome aboard!</p>" +
+                                    "<p>Best regards,<br />" +
+                                    " Live Score</p>" +
+                                    "</body>" +
+                                    "</html>";
+
+            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
+
 
             return Ok(new { msg = "Successfully Added  Coordinator" });
         }
@@ -389,7 +411,7 @@ namespace LiveScore.Controllers
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acrimg.Email))
             {
-                return BadRequest( new { msg = "Email already exists" });
+                return BadRequest(new { msg = "Email already exists" });
             }
 
             //checked if the contact already exists in the database
@@ -493,6 +515,6 @@ namespace LiveScore.Controllers
             return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
         }
     }
-   
- 
+
+
 }

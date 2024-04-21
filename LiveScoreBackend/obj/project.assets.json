@@ -11641,19 +11641,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kewal dungarwal\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
+      "projectUniqueName": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
       "projectName": "LiveScore",
-      "projectPath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
-      "packagesPath": "C:\\Users\\kewal dungarwal\\.nuget\\packages\\",
-      "outputPath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\obj\\",
+      "projectPath": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kewal dungarwal\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11661,7 +11661,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11674,6 +11673,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -11750,7 +11754,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }
