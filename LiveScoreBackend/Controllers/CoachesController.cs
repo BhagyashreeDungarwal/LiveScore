@@ -57,18 +57,38 @@ namespace LiveScore.Controllers
         // PUT: api/Coaches/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("PutCoach/{id}")]
-        public async Task<IActionResult> PutCoach(int id, Coach coach)
+        public async Task<IActionResult> PutCoach(int id, [FromForm] ImageCoach coachimg)
         {
-            if (id != coach.CoachId)
+            //if (id != coachimg.CoachId)
+            //{
+            //    return BadRequest();
+            //}
+
+            var coach = await _context.Coaches.FindAsync(id);
+            if (coach == null)
             {
-                return BadRequest();
+                return NotFound(new { error = "Coach not found" });
             }
 
-            _context.Entry(coach).State = EntityState.Modified;
+            string imageUrl = coach.ImageUrl;
+            if (coachimg.ImageFile != null)
+            {
+                imageUrl = await UploadImage(coachimg.ImageFile);
+            }
+
+            // Update coach properties
+            coach.CoachName = coachimg.CoachName;
+            coach.CoachEmail = coachimg.CoachEmail;
+            coach.Achievements = coachimg.Achievements;
+            coach.Experience = coachimg.Experience;
+            coach.ContactNo = coachimg.ContactNo;
+            coach.Gender = coachimg.Gender;
+            coach.ImageUrl = imageUrl;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(new { msg = "Successfully Updated!!" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,8 +101,6 @@ namespace LiveScore.Controllers
                     throw;
                 }
             }
-
-            return Ok(new {msg = "Successfully Updated!!"});
         }
 
         // POST: api/Coaches

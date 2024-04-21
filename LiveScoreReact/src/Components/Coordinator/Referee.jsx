@@ -4,7 +4,9 @@ import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
+import NoData from "./../Images/NoData.jpg"
 import { GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
+import { toast } from "react-toastify";
 
 
 function CustomToolbar() {
@@ -22,10 +24,33 @@ function CustomToolbar() {
   );
 }
 
+// For No Row Display
+function CustomNoRowsOverlay() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}>
+      <img
+        style={{ flexShrink: 0, marginTop: "15%" }}
+        src={NoData}
+        alt="No Rows"
+        width="240"
+        height="240"
+
+      />
+      <Box sx={{ mt: 0 }}>No Category Added</Box>
+    </div>
+  );
+}
+
 const Referee = () => {
 
 const dispatch = useDispatch()
-const {refereedata} = useSelector(state => state.coordinator)
+const {refereedata, loading, data, error} = useSelector(state => state.coordinator)
 
 
   const columns = useMemo(refereedata => [
@@ -48,14 +73,21 @@ const {refereedata} = useSelector(state => state.coordinator)
 
   useEffect(() => {
     dispatch(GetRefereeApi())
-  }, [dispatch])
+  if(data){
+        toast.success(data.msg)
+    }
+    if(error){
+        toast.error(data.msg)
+    }
+  }, [dispatch,data,error])
 
   return (
     <div>
        <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Referee Management" />
-      </Box>
+      </Box>{
+      loading ? <CircularProgress /> :
       <Stack style={{
         marginTop: "1%",
         display: "grid",
@@ -76,9 +108,26 @@ const {refereedata} = useSelector(state => state.coordinator)
             columnHeaderHeight={37}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />) : <CircularProgress />
+          />) : (
+
+                <DataGrid
+                  autoHeight
+                  rows={[]}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  rowHeight={42}
+                  rowSelection="true"
+                  rowSpacingType='margin'
+                  slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                  scrollbarSize={1}
+                  columnHeaderHeight={37}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />
+              )
         }
       </Stack>
+}
     </Box>
       
     </div>
