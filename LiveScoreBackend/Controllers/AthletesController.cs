@@ -52,18 +52,48 @@ namespace LiveScore.Controllers
         // PUT: api/Athletes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("PutAthelete/{id}")]
-        public async Task<IActionResult> PutAthlete(int id, Athlete athlete)
+        public async Task<IActionResult> PutAthlete(int id, [FromForm] Images athleteDto)
         {
-            if (id != athlete.Id)
+            //if (id != athleteDto.Id)
+            //{
+            //    return BadRequest(new { msg = "Mismatched ID in the request body" });
+            //}
+
+            var athlete = await _context.Athletes.FindAsync(id);
+            if (athlete == null)
             {
-                return BadRequest(new { msg = "Mismatched ID in the request body" });
+                return NotFound(new { msg = "Athlete not found" });
             }
 
-            _context.Entry(athlete).State = EntityState.Modified;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (athleteDto.ImageFile != null)
+            {
+                string imageUrl = await UploadImage(athleteDto.ImageFile);
+                athlete.ImageUrl = imageUrl;
+            }
+
+            // Update athlete properties
+            athlete.AthleteName = athleteDto.AthleteName;
+            athlete.Email = athleteDto.Email;
+            athlete.Contact = athleteDto.Contact;
+            athlete.DateOfBirth = athleteDto.DateOfBirth;
+            athlete.Gender = athleteDto.Gender;
+            athlete.Height = athleteDto.Height;
+            athlete.Weight = athleteDto.Weight;
+            athlete.City = athleteDto.City;
+            athlete.State = athleteDto.State;
+            athlete.CategoryId = athleteDto.CategoryId;
+            athlete.CoachId = athleteDto.CoachId;
+            athlete.Coordinater = athleteDto.CoordinatorId;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(new { msg = "Successfully Updated!!" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -76,8 +106,6 @@ namespace LiveScore.Controllers
                     throw;
                 }
             }
-
-            return Ok(new { msg = "Successfully Updated!!" });
         }
 
         // POST: api/Athletes

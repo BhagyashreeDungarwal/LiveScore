@@ -4,7 +4,7 @@ import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
-import { Category, Dashboard, Handshake, MilitaryTech, Person2, Sports, Verified } from '@mui/icons-material';
+import { Category, Dashboard, Handshake, MilitaryTech, Person2, Sports, SportsMartialArts, Verified } from '@mui/icons-material';
 import Header from './Components/Common/Header';
 // import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
@@ -17,6 +17,7 @@ import ManageTournament from './Components/Admin/ManageTournament';
 import CategoryManage from './Components/Admin/CategoryManage';
 import MatchDetails from './Components/Admin/MatchDetails';
 import Match from './Components/Coordinator/Match';
+import Coach from './Components/Coordinator/Coach';
 
 
 function App() {
@@ -63,19 +64,25 @@ function App() {
         Dashboard,
         Person2,
         Sports,
-        Handshake
+        SportsMartialArts,
+        Handshake,
+       
       ],
       sidebarRoute: [
         "cdashboard",
         "athelete",
         "referee",
+        "coach",
         "match",
+        
       ],
       name: [
         "Coordinator Dashboard",
         "Athelete",
         "Referee",
-        "Matches"
+        "Coach",
+        "Matches",
+        
       ]
     },
     referee: {
@@ -91,7 +98,7 @@ function App() {
     }
   }
 
-  const { admin, coordinator, referee, sadmin } = sidebar
+  const { admin, coordinator, sadmin } = sidebar
 
   const router = createBrowserRouter([
     {
@@ -177,6 +184,9 @@ function App() {
         },{
           path:"match",
           element:<Match/>
+        },{
+          path:"coach",
+          element:<Coach/>
         }
       ]
     },

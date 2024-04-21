@@ -79,12 +79,43 @@ const CoordinatorSlice = createSlice({
         GetRefereeFail: (state, action) => {
             state.loading = false;
             state.error = action.payload;
-        }
+        },
+
+
+        //GEt Coach
+        GetCoachStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetCoachtSuccess: (state, action) => {
+            state.loading = false;
+            state.coachdata = action.payload;
+        },
+        GetCoachFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //Post Coach
+        CoachPostStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        CoachPostSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        CoachPostFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
     },
 })
 
 
 
-export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail, GetRefereeStart, GetRefereetSuccess, GetRefereeFail } = CoordinatorSlice.actions;
+export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
+    CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

@@ -308,53 +308,52 @@ namespace LiveScore.Controllers
         //Updating Coordinator
 
         [HttpPut("updateCoordinator")]
-        public async Task<ActionResult<ACR>> UpdateCoordinator(ACR acr)
+        public async Task<ActionResult<ACR>> UpdateCoordinator(int id, [FromForm] Imageacr acrimg)
         {
-            if (acr == null || acr.Id == 0)
+            if (acrimg == null)
             {
-                return BadRequest(new { msg = "Please Enter All Feild"});
+                return BadRequest(new { msg = "Please provide all fields" });
             }
 
-            var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
+            var uacr = await _dbcontext.Admin.FindAsync(id);
             if (uacr == null)
             {
-                return NotFound(new { msg = "Coordinator Not Found"});
+                return NotFound(new { msg = "Coordinator not found" });
             }
 
             // Check if the new email already exists
-            if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
+            if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
             {
                 return BadRequest(new { msg = "Email already exists for another coordinator." });
             }
 
             // Check if the new contact already exists
-            if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
+            if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
             {
                 return BadRequest(new { msg = "Contact already exists for another coordinator." });
             }
-            acr.RoleId = 3;
-            acr.Password = _pservice.HashPassword(acr.Password);
+
+            string imageUrl = uacr.ImageURL;
+            if (acrimg.ImageFile != null)
+            {
+                imageUrl = await UploadImage(acrimg.ImageFile);
+            }
 
 
-            uacr.Email = acr.Email;
-            uacr.Name = acr.Name;
-            uacr.Password = acr.Password;
-            uacr.ImageURL  = acr.ImageURL;
-            uacr.Contact = acr.Contact;
-            uacr.Age = acr.Age;
-            uacr.DateOfBirth = acr.DateOfBirth;
-            uacr.Status = true;
-            uacr.LastLogin = acr.LastLogin;
-            uacr.Gender = acr.Gender;
-            uacr.City = acr.City;
-            uacr.State = acr.State;
-            uacr.RoleId = acr.RoleId;
+            uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
+            uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
+            uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
+            uacr.Age = acrimg.Age != null ? acrimg.Age : uacr.Age;
+            uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
+            uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
+            uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
+            uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
+            uacr.ImageURL = imageUrl;
+
             await _dbcontext.SaveChangesAsync();
 
-
-            return Ok(new { msg = "Successfully updated Coordinator" });
+            return Ok(new { msg = "Coordinator updated successfully" });
         }
-
 
 
 
@@ -428,51 +427,51 @@ namespace LiveScore.Controllers
         //Update Referee
 
         [HttpPut("updateReferee")]
-        public async Task<ActionResult<ACR>> UpdateReferee(ACR acr)
+        public async Task<ActionResult<ACR>> UpdateReferee(int id, [FromForm] Imageacr acrimg)
         {
-            if (acr == null || acr.Id == 0)
+            if (acrimg == null)
             {
-                return BadRequest(new { msg = "Please Enter All Field"});
+                return BadRequest(new { msg = "Please provide all fields" });
             }
 
-            var uacr = await _dbcontext.Admin.FindAsync(acr.Id);
+            var uacr = await _dbcontext.Admin.FindAsync(id);
             if (uacr == null)
             {
-                return NotFound(new { msg = "Referee NOt Found"});
+                return NotFound(new { msg = "Referee not found" });
             }
 
             // Check if the new email already exists
-            if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Email == acr.Email))
+            if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
             {
                 return BadRequest(new { msg = "Email already exists for another Referee." });
             }
 
             // Check if the new contact already exists
-            if (await _dbcontext.Admin.AnyAsync(a => a.Id != acr.Id && a.Contact == acr.Contact))
+            if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
             {
                 return BadRequest(new { msg = "Contact already exists for another Referee." });
             }
-            acr.RoleId = 4;
-            acr.Password = _pservice.HashPassword(acr.Password);
+
+            string imageUrl = uacr.ImageURL;
+            if (acrimg.ImageFile != null)
+            {
+                imageUrl = await UploadImage(acrimg.ImageFile);
+            }
 
 
-            uacr.Email = acr.Email;
-            uacr.Name = acr.Name;
-            uacr.Password = acr.Password;
-            uacr.ImageURL = acr.ImageURL;
-            uacr.Contact = acr.Contact;
-            uacr.Age = acr.Age;
-            uacr.DateOfBirth = acr.DateOfBirth;
-            uacr.Status = true;
-            uacr.LastLogin = acr.LastLogin;
-            uacr.Gender = acr.Gender;
-            uacr.City = acr.City;
-            uacr.State = acr.State;
-            uacr.RoleId = acr.RoleId;
+            uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
+            uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
+            uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
+            uacr.Age = acrimg.Age != null ? acrimg.Age : uacr.Age;
+            uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
+            uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
+            uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
+            uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
+            uacr.ImageURL = imageUrl;
+
             await _dbcontext.SaveChangesAsync();
 
-
-            return Ok(new { msg = "Successfully Updated Referee" });
+            return Ok(new { msg = "Referee updated successfully" });
         }
 
         private async Task<string> UploadImage(IFormFile file)

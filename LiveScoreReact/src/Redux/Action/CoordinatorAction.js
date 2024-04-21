@@ -1,5 +1,9 @@
 import axios from "axios"
-import { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail, GetRefereeStart, GetRefereetSuccess, GetRefereeFail } from "../Reducer/CoordinatorReducer"
+import {
+    GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
+    CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+} from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
 
@@ -77,6 +81,36 @@ export const GetRefereeApi = () => async (dispatch) => {
         dispatch(GetRefereetSuccess(data))
     } catch (error) {
         dispatch(GetRefereeFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const GetCoachApi = () => async (dispatch) => {
+    try {
+        dispatch(GetCoachStart())
+
+        const { data } = await axios.get(`${url}/Coaches/GetCoaches`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(GetCoachtSuccess(data))
+    } catch (error) {
+        dispatch(GetCoachFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const CoachPostApi = (values) => async (dispatch) => {
+    try {
+        dispatch(CoachPostStart())
+        console.log(values)
+        const { data } = await axios.post(`${url}/Coaches/PostCoach`, values, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        dispatch(CoachPostSuccess(data))
+    } catch (error) {
+        dispatch(CoachPostFail(error.response.data))
         // console.log(e.response.data.msg)
     }
 }
