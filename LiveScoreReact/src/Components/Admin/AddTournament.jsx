@@ -1,18 +1,14 @@
 import { Close, DateRangeRounded, LocationOn, Person2Rounded, Timer } from '@mui/icons-material';
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography, styled, useTheme } from '@mui/material';
-import React, { useState } from 'react'
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography, styled, useTheme } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { TounamentPostApi } from '../../Redux/Action/AdminAction';
+import { TounamentPostApi, getCategoryApi, getTounamentApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 
-const categoryoption = [
-    { value: 'Senior', label: 'Senior' },
-    { value: 'Junior', label: 'Junior' },
-    { value: 'Sub-Junior', label: 'Sub-Junior' },
-];
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -27,19 +23,26 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddTournament = () => {
 
     const [open, setOpen] = useState(false);
-    const [option, setOptionn] = useState([])
 
-    
+
+
+
     const theme = useTheme()
-    const { data, error } = useSelector((state => state.admin))
+    const { categorydata, data, error } = useSelector((state => state.admin))
     const dispatch = useDispatch()
 
-    const handleClickOpen = () => {
+    const handleClickOpen = async () => {
         setOpen(true);
+      
+        console.log(open)
     };
     const handleClose = () => {
         setOpen(false);
     };
+
+
+
+
 
     const initial = {
         TournamentName: "",
@@ -52,19 +55,22 @@ const AddTournament = () => {
         initialValues: initial,
         validationSchema: tournament,
 
-        onSubmit: async (values) => {
-            console.log(values);
+        onSubmit: async (values ,{ resetForm, setSubmitting }) => {
+            // console.log(values);
             try {
 
                 await dispatch(TounamentPostApi(values))
-                if (data) {
-                    toast.success(data.msg)
-                }
-                if (error) {
-                    toast.error(error.msg)
-                }
-                console.log(values)
-                console.log(formdata);
+                setSubmitting(false)
+                resetForm({ values: "" });
+                dispatch(getTounamentApi())
+                //  if (data) {
+                //     console.log("added")
+                //      toast.success(data.msg)
+                //  }
+                //  if (error) {
+                //      toast.error(error.msg)
+                //  }
+                // console.log(values)
             } catch (error) {
                 <CircularProgress />
             }
@@ -108,7 +114,7 @@ const AddTournament = () => {
                                     <TextField
                                         fullWidth
                                         id="name"
-                                        name="name"
+                                        name="TournamentName"
                                         label="Tournament Name"
                                         value={values.TournamentName}
                                         onBlur={handleBlur}
@@ -129,9 +135,9 @@ const AddTournament = () => {
                                     <TextField
                                         fullWidth
                                         id="location"
-                                        name="location"
+                                        name="Location"
                                         label="Location"
-                                        value={values.location}
+                                        value={values.Location}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
@@ -149,11 +155,11 @@ const AddTournament = () => {
                                     <TextField
                                         fullWidth
                                         id="date"
-                                        name="date"
+                                        name="TournamentDate"
                                         label="Tournament Date"
                                         type="date"
                                         InputLabelProps={{ shrink: true }}
-                                        value={values.date}
+                                        value={values.TournamentDate}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
@@ -167,24 +173,25 @@ const AddTournament = () => {
                                     {errors.TournamentDate && touched.TournamentDate ? (<Typography variant="subtitle1" color="error">{errors.TournamentDate}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
+                                    <FormControl variant='filled' fullWidth>
+                                        <InputLabel color='secondary'>Category</InputLabel>
+                                        <Select
+                                            color='secondary'
+                                            id='CategoryId'
+                                            label="CategoryId"
+                                            name='CategoryId'
+                                            value={values.CategoryId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        >
+                                            {categorydata?.map((data) => (
+                                                <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
+                                            ))
+                                            }
 
-                                    <TextField
-                                        fullWidth
-                                        select
-                                        id="category"
-                                        name="category"
-                                        label="category"
-                                        value={values.CategoryId}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    >
-                                        {categoryoption.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
+                                        </Select>
+                                    </FormControl>
 
-                                    </TextField>
                                     {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
                                 </Grid>
 
