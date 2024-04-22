@@ -10,8 +10,13 @@ const AdminSlice = createSlice({
     name: "Admin",
     initialState,
     reducers: {
-        // get Category
 
+        ClearMessage : (state) => {
+          
+        },
+        
+
+        // get Category
         GetCategoryStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -53,8 +58,8 @@ const AdminSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        // get Tounament
 
+        // get Tounament
         GetTounamentStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -97,8 +102,22 @@ const AdminSlice = createSlice({
             state.error = action.payload;
         },
 
+        //Verify Coordinator
+        VerifyCoordinatorStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        VerifyCoordinatorSuccess: (state, action) => {
+            state.loading = false;
+            state.verifydata = action.payload;
+        },
+        VerifyCoordinatorFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
     }
 })
 
-export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail } = AdminSlice.actions;
+export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess } = AdminSlice.actions;
 export default AdminSlice.reducer;

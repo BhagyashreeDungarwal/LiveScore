@@ -259,6 +259,18 @@ namespace LiveScore.Controllers
             return Ok(coordinator);
         }
 
+        [HttpPost("VerifyCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> VerifyCoordinator(int id)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
+
+            coordinator.Status = true;
+            await _dbcontext.SaveChangesAsync();
+            return Ok(new { msg = "Successfully Verify Coordinator"});
+
+        }
+
 
         //Adding Coordinator
         [HttpPost("AddCoordinator")]

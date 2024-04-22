@@ -6,10 +6,10 @@ export const category = yup.object({
 });
 
 export const tournament = yup.object({
-    name: yup.string().required('Name is Required'),
-    location: yup.string().required('Location  is Required'),
-    category: yup.string().required('Category is Required'),
-    date: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')
+    TournamentName: yup.string().required('Name is Required'),
+    Location: yup.string().required('Location  is Required'),
+    CategoryId: yup.string().required('Category is Required'),
+    TournamentDate: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')
         .test('is-future', 'Date must be in the future', value => {
             const today = new Date();
             today.setHours(0, 0, 0, 0); // Set today's date to start of day

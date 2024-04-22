@@ -1,6 +1,6 @@
 import { Close, DateRangeRounded, LocationOn, Person2Rounded, Timer } from '@mui/icons-material';
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography, styled, useTheme } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
@@ -26,9 +26,12 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const AddTournament = () => {
 
-     const [open, setOpen] = React.useState(false);
-   const theme = useTheme()
-    const {data,error} = useSelector((state => state.admin))
+    const [open, setOpen] = useState(false);
+    const [option, setOptionn] = useState([])
+
+    
+    const theme = useTheme()
+    const { data, error } = useSelector((state => state.admin))
     const dispatch = useDispatch()
 
     const handleClickOpen = () => {
@@ -38,32 +41,26 @@ const AddTournament = () => {
         setOpen(false);
     };
 
-    const initial ={
-      name:"",
-      location:"",
-      date:"",
-      category:"",
+    const initial = {
+        TournamentName: "",
+        Location: "",
+        TournamentDate: "",
+        CategoryId: "",
     }
 
- const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: initial,
         validationSchema: tournament,
 
         onSubmit: async (values) => {
             console.log(values);
             try {
-                const formdata = new FormData()
-                formdata.append('TournamentName', values.name)
-                formdata.append('Location', values.time)
-                formdata.append('TournamentDate', values.time)
-                formdata.append('Category', values.time)
-                
 
-                await dispatch(TounamentPostApi(formdata))
-                if(data){
+                await dispatch(TounamentPostApi(values))
+                if (data) {
                     toast.success(data.msg)
                 }
-                if(error){
+                if (error) {
                     toast.error(error.msg)
                 }
                 console.log(values)
@@ -76,8 +73,8 @@ const AddTournament = () => {
     })
 
 
-  return (
-   <div>
+    return (
+        <div>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Add Tournament
@@ -103,8 +100,8 @@ const AddTournament = () => {
                         <Close />
                     </IconButton>
                     <DialogContent dividers>
-                        
-                          <form onSubmit={handleSubmit}>
+
+                        <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
                                 <Grid item xl={12} md={6} sm={12}>
 
@@ -113,20 +110,20 @@ const AddTournament = () => {
                                         id="name"
                                         name="name"
                                         label="Tournament Name"
-                                        value={values.name}
+                                        value={values.TournamentName}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Person2Rounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Person2Rounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                    {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
-                                </Grid>                                
+                                    {errors.TournamentName && touched.TournamentName ? (<Typography variant="subtitle1" color="error">{errors.TournamentName}</Typography>) : null}
+                                </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
 
                                     <TextField
@@ -138,18 +135,17 @@ const AddTournament = () => {
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <LocationOn />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <LocationOn />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                    {errors.location && touched.location ? (<Typography variant="subtitle1" color="error">{errors.location}</Typography>) : null}
-                                </Grid>         
-                                 <Grid item xl={12} md={6} sm={12}>
-
+                                    {errors.Location && touched.Location ? (<Typography variant="subtitle1" color="error">{errors.Location}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={12} md={6} sm={12}>
                                     <TextField
                                         fullWidth
                                         id="date"
@@ -161,14 +157,14 @@ const AddTournament = () => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                                <DateRangeRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                    <DateRangeRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
-                                    {errors.date && touched.date ? (<Typography variant="subtitle1" color="error">{errors.date}</Typography>) : null}
+                                    {errors.TournamentDate && touched.TournamentDate ? (<Typography variant="subtitle1" color="error">{errors.TournamentDate}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
 
@@ -178,18 +174,18 @@ const AddTournament = () => {
                                         id="category"
                                         name="category"
                                         label="category"
-                                        value={values.category}
+                                        value={values.CategoryId}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     >
-                                         {categoryoption.map((option) => (
+                                        {categoryoption.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
                                                 {option.label}
                                             </MenuItem>
                                         ))}
-                                        
+
                                     </TextField>
-                                    {errors.category && touched.category ? (<Typography variant="subtitle1" color="error">{errors.category}</Typography>) : null}
+                                    {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
                                 </Grid>
 
                                 <Grid item xl={12} md={6} sm={12}>
@@ -202,11 +198,11 @@ const AddTournament = () => {
                         </form>
 
                     </DialogContent>
-                    
+
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-  )
+    )
 }
 
-export default ProtectedRoute(AddTournament,'admin')
+export default ProtectedRoute(AddTournament, 'admin')

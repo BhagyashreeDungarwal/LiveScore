@@ -104,7 +104,6 @@ const CategoryManage = () => {
                   pageSize={5}
                   rowsPerPageOptions={[5]}
                 />) : (
-
                 <DataGrid
                   autoHeight
                   rows={[]}

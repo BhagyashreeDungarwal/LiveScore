@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import { GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
+import NoData from "./../Images/NoData.jpg"
+
 
 
 function CustomToolbar() {
@@ -17,21 +19,47 @@ function CustomToolbar() {
         slotProps={{ tooltip: { title: 'Change density' } }}
       />
       <Box sx={{ flexGrow: 1 }} />
-     
+
     </GridToolbarContainer>
   );
 }
 
+// For No Row Display
+function CustomNoRowsOverlay() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}>
+      <img
+        style={{ flexShrink: 0, marginTop: "15%" }}
+        src={NoData}
+        alt="No Rows"
+        width="240"
+        height="240"
+
+      />
+      <Box sx={{ mt: 0 }}>No Referee Added</Box>
+    </div>
+  );
+}
+
+
 const RefereeList = () => {
   const dispatch = useDispatch()
-const {refereedata} = useSelector(state => state.coordinator)
+  const { refereedata, loading } = useSelector(state => state.coordinator)
 
 
   const columns = useMemo(refereedata => [
-    { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
-     renderCell: (params) => (
+    {
+      field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+      renderCell: (params) => (
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
-      ), },
+      ),
+    },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -42,7 +70,7 @@ const {refereedata} = useSelector(state => state.coordinator)
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
-    
+
   ])
 
   useEffect(() => {
@@ -51,37 +79,56 @@ const {refereedata} = useSelector(state => state.coordinator)
 
   return (
     <div>
-       <Box>
-      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
-        <HeaderFormat title="Referee Management" />
-      </Box>
-      <Stack style={{
-        marginTop: "1%",
-        display: "grid",
-        // width: "100%",
-        height: "80vh",
+      <Box>
+        <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+          <HeaderFormat title="Referee Management" />
+        </Box>
+        {loading ? <Box sx={{ display: "flex", justifyContent: "center" }} >
+          <CircularProgress />
+        </Box> :
+          <Stack style={{
+            marginTop: "1%",
+            display: "grid",
+            // width: "100%",
+            height: "60vh",
 
-      }}>
-        {refereedata && refereedata.length > 0 ? (
-          <DataGrid
-            rows={refereedata}
-            columns={columns}
-            getRowId={(row) => row.id}
-            rowHeight={53}
-            rowSelection="true"
-            rowSpacingType='margin'
-            slots={{ toolbar: CustomToolbar }}
-            scrollbarSize={1}
-            columnHeaderHeight={37}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-          />) : <CircularProgress />
+          }}>
+
+
+            {refereedata && refereedata.length > 0 ? (
+              <DataGrid
+                rows={refereedata}
+                columns={columns}
+                getRowId={(row) => row.id}
+                rowHeight={53}
+                rowSelection="true"
+                rowSpacingType='margin'
+                slots={{ toolbar: CustomToolbar }}
+                scrollbarSize={1}
+                columnHeaderHeight={37}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />) :( <DataGrid
+                autoHeight
+                rows={[]}
+                columns={columns}
+                getRowId={(row) => row.id}
+                rowHeight={42}
+                rowSelection="true"
+                rowSpacingType='margin'
+                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                scrollbarSize={1}
+                columnHeaderHeight={37}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />)
+            }
+          </Stack>
         }
-      </Stack>
-    </Box>
-      
+      </Box>
+
     </div>
- )
+  )
 }
 
-export default ProtectedRoute(RefereeList,'admin')
+export default ProtectedRoute(RefereeList, 'admin')

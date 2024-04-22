@@ -3,10 +3,11 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import HeaderFormat from '../Common/HeaderFormat';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {  getTounamentApi } from '../../Redux/Action/AdminAction';
+import { getTounamentApi } from '../../Redux/Action/AdminAction';
 import { useMemo } from 'react';
 import AddTournament from './AddTournament';
 import ProtectedRoute from '../../ProtectedRoute';
+import NoData from "./../Images/NoData.jpg"
 
 function CustomToolbar() {
   return (
@@ -23,11 +24,35 @@ function CustomToolbar() {
   );
 }
 
+// For No Row Display
+function CustomNoRowsOverlay() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}>
+      <img
+        style={{ flexShrink: 0, marginTop: "15%" }}
+        src={NoData}
+        alt="No Rows"
+        width="240"
+        height="240"
+
+      />
+      <Box sx={{ mt: 0 }}>No Referee Added</Box>
+    </div>
+  );
+}
+
+
 const ManageTournament = () => {
 
-   
-const dispatch = useDispatch()
-const { tounamentdata } = useSelector(state => state.admin)
+
+  const dispatch = useDispatch()
+  const { tounamentdata ,loading} = useSelector(state => state.admin)
 
   const columns = useMemo(tounamentdata => [
     // { field: "tId", headerName: "Tournament Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -35,7 +60,7 @@ const { tounamentdata } = useSelector(state => state.admin)
     { field: "location", headerName: "Location", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryId", headerName: "Category", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    
+
   ])
 
   useEffect(() => {
@@ -44,35 +69,55 @@ const { tounamentdata } = useSelector(state => state.admin)
 
 
   return (
-   <Box>
+    <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Tournament Management" />
       </Box>
-      <Stack style={{
-        marginTop: "1%",
-        display: "grid",
-         width: "90%",
-        height: "50vh",
+      { loading ?  <Box sx={{ display: "flex", justifyContent: "center" }} >
+          <CircularProgress />
+        </Box> :
+        <Stack style={{
+          marginTop: "1%",
+          display: "grid",
+          // width: "90%",
+          height: "50vh",
 
-      }}>
-        {tounamentdata && tounamentdata.length > 0 ? (
-          <DataGrid
-            rows={tounamentdata}
-            columns={columns}
-            getRowId={(row) => row.tId}
-            rowHeight={42}
-            rowSelection="true"
-            rowSpacingType='margin'
-            slots={{ toolbar: CustomToolbar }}
-            scrollbarSize={1}
-            columnHeaderHeight={37}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-          />) : <CircularProgress />
-        }
-      </Stack>
+        }}> 
+
+          {tounamentdata && tounamentdata.length > 0 ? (
+            <DataGrid
+              rows={tounamentdata}
+              columns={columns}
+              getRowId={(row) => row.tId}
+              rowHeight={42}
+              rowSelection="true"
+              rowSpacingType='margin'
+              slots={{ toolbar: CustomToolbar }}
+              scrollbarSize={1}
+              columnHeaderHeight={37}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />) : (
+              <DataGrid
+                autoHeight
+                rows={[]}
+                columns={columns}
+                getRowId={(row) => row.id}
+                rowHeight={42}
+                rowSelection="true"
+                rowSpacingType='margin'
+                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                scrollbarSize={1}
+                columnHeaderHeight={37}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
+            )
+          }
+        </Stack>
+      }
     </Box>
   )
 }
 
-export default ProtectedRoute(ManageTournament,'admin')
+export default ProtectedRoute(ManageTournament, 'admin')

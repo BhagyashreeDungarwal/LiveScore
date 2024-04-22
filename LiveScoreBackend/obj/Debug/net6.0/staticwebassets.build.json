@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3KgwUhzjfGS6XANWfwxkAvgOXYRE6UVaOqcfNl776uc=",
+  "Hash": "NIO62HHYg7zPkMdNW7h8pnzHzj0IwkplSFmeg1SQ9Uk=",
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -414,6 +414,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\c41cb1ae-4cc8-48fe-9ab5-fa0d7fa64a14.jpg"
+    },
+    {
+      "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\cf09da90-b1bc-45d0-8923-a902055370d1.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "images/cf09da90-b1bc-45d0-8923-a902055370d1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\cf09da90-b1bc-45d0-8923-a902055370d1.jpg"
     },
     {
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\e3d406bc-121a-4e55-a82d-957c337faf01.jpg",

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { GetCategoryFail, GetCategoryStart, GetCategorySuccess, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail } from "../Reducer/AdminReducer"
+import { GetCategoryFail, GetCategoryStart, GetCategorySuccess, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail ,VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess  } from "../Reducer/AdminReducer"
 
 const url = "http://localhost:5032/api"
 
@@ -80,5 +80,21 @@ export const TounamentPostApi = (values) => async (dispatch) => {
     } catch (error) {
         dispatch(TounamentPostFail(error.response.data))
         // console.log(e.response.data.msg)
+    }
+}
+
+
+export const VerifyCoordinatorApi = (id) => async (dispatch) => {
+    try {
+        dispatch(VerifyCoordinatorStart())
+        
+        const { data } = await axios.post(`${url}/ACR/VerifyCoordinator/${id}`,  {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(VerifyCoordinatorSuccess(data))
+    } catch (error) {
+        dispatch(VerifyCoordinatorFail(error.response.data))
     }
 }
