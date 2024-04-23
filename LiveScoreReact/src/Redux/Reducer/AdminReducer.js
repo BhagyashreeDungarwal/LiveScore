@@ -115,9 +115,35 @@ const AdminSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        //Block Coordinator
+        BlockCoordinatorStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        BlockCoordinatorSuccess: (state, action) => {
+            state.loading = false;
+            state.blockdata = action.payload;
+        },
+        BlockCoordinatorFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+        //Unblock Coordinator
+        UnblockCoordinatorStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        UnblockCoordinatorSuccess: (state, action) => {
+            state.loading = false;
+            state.unblockdata = action.payload;
+        },
+        UnblockCoordinatorFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
     }
 })
 
-export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess } = AdminSlice.actions;
+export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess ,BlockCoordinatorFail,BlockCoordinatorStart,BlockCoordinatorSuccess ,UnblockCoordinatorFail, UnblockCoordinatorStart,UnblockCoordinatorSuccess } = AdminSlice.actions;
 export default AdminSlice.reducer;

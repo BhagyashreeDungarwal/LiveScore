@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "gyeIdOicIfdB89zgGLK4THTaBjx8TiiOcE5JSqTB9qA=",
+  "Hash": "FblNbDbVZoBVFlCQt+lQ6rslk8vlsgJc/rmsA6jsvd8=",
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -16,6 +16,44 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\0f3effda-3c2a-4761-8462-34ad22ccdf7b.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "ACR/0f3effda-3c2a-4761-8462-34ad22ccdf7b.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ACR\\0f3effda-3c2a-4761-8462-34ad22ccdf7b.jpg"
+    },
+    {
+      "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\d06c053a-4835-4d05-82dc-a53693d408b4.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "ACR/d06c053a-4835-4d05-82dc-a53693d408b4.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ACR\\d06c053a-4835-4d05-82dc-a53693d408b4.jpg"
+    },
     {
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg",
       "SourceId": "LiveScore",

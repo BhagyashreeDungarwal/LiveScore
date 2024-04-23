@@ -51,6 +51,10 @@ namespace LiveScore.Controllers
             {
                 return Unauthorized(new { msg = "You Are Not Registered" });
             }
+            if (status == "Block")
+            {
+                return Unauthorized(new { msg = "You Are Blocked" });
+            }
 
             if (passwordMatches && status == "Verified" )
             {

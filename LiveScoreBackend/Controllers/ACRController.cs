@@ -270,6 +270,28 @@ namespace LiveScore.Controllers
             await _dbcontext.SaveChangesAsync();
             return Ok(new { msg = "Successfully Verify Coordinator"});
 
+        } 
+        [HttpPost("BlockCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> BlockCoordinator(int id)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
+
+            coordinator.Status = "Block";
+            await _dbcontext.SaveChangesAsync();
+            return Ok(new { msg = "Successfully Block Coordinator"});
+
+        }
+        [HttpPost("UnblockCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> UnblockCoordinator(int id)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
+
+            coordinator.Status = "Verified";
+            await _dbcontext.SaveChangesAsync();
+            return Ok(new { msg = "Successfully Unblock Coordinator" });
+
         }
 
 
@@ -526,7 +548,7 @@ namespace LiveScore.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
+            return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
         }
     }
 

@@ -28,6 +28,7 @@
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\ACR\" />
     <Folder Include="wwwroot\coach\" />
+    <Folder Include="wwwroot\ACR\" />
   </ItemGroup>
 
 </Project>
