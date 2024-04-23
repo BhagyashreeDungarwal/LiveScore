@@ -18,7 +18,7 @@ namespace LiveScore.Model
 
         public int Age { get; set; }
 
-        public bool Status { get; set; } = false;
+        public string Status { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }

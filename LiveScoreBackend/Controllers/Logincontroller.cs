@@ -45,14 +45,14 @@ namespace LiveScore.Controllers
             }
 
             bool passwordMatches = _pservice.VerifyPassword(login.Password, user.Password);
-            bool status = user.Status;
+            String status = user.Status;
 
-            if (status == false)
+            if (status == "Not Verified")
             {
                 return Unauthorized(new { msg = "You Are Not Registered" });
             }
 
-            if (passwordMatches && status == true)
+            if (passwordMatches && status == "Verified" )
             {
 
                   user.LastLogin = DateTime.Now;
