@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack } from '@mui/material'
+import { Box, CircularProgress, Fab, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { GetCoachApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import { toast } from 'react-toastify';
 import AddCoach from './AddCoach';
+import { VerifiedUser } from '@mui/icons-material';
 
 
 function CustomToolbar() {
@@ -56,7 +57,7 @@ const Coach = () => {
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
       ), },
     { field: "coachName", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coachEmail", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coachEmail", headerName: "Email", width: 170, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contactNo", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
      { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "experience", headerName: "Experience", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -97,7 +98,7 @@ const Coach = () => {
                   columns={columns}
                   getRowId={(row) => row.coachId}
                   rowHeight={53}
-                  rowSelection="true"
+                  rowSelection={true}
                   rowSpacingType='margin'
                   slots={{ toolbar: CustomToolbar }}
                   scrollbarSize={1}
@@ -129,4 +130,4 @@ const Coach = () => {
   )
 }
 
-export default ProtectedRoute(Coach,'admin') 
+export default ProtectedRoute(Coach,'coordinator') 

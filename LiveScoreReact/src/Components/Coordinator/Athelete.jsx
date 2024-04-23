@@ -3,8 +3,10 @@ import HeaderFormat from '../Common/HeaderFormat'
 import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
+import NoData from "./../Images/NoData.jpg"
 import { useEffect, useMemo } from 'react';
 import { getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import { toast } from 'react-toastify';
 // import { useState } from 'react';
 
 function CustomToolbar() {
@@ -22,10 +24,32 @@ function CustomToolbar() {
   );
 }
 
+function CustomNoRowsOverlay() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%'
+    }}>
+      <img
+        style={{ flexShrink: 0, marginTop: "15%" }}
+        src={NoData}
+        alt="No Rows"
+        width="240"
+        height="240"
+
+      />
+      <Box sx={{ mt: 0 }}>No Coach Added</Box>
+    </div>
+  );
+}
+
 const Athelete = () => {
 
   const dispatch = useDispatch()
-  const { atheletedata } = useSelector(state => state.coordinator)
+  const { atheletedata, loading, data, error } = useSelector(state => state.coordinator)
 
   const columns = useMemo(atheletedata => [
     { field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
@@ -40,8 +64,13 @@ const Athelete = () => {
     { field: "height", headerName: "Height", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "weight", headerName: "Weight", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+    renderCell: params => {
+       // Assuming params.row.category contains the entire category object
+      const categoryName = params.row.category ? params.row.category.categoryName : "Unknown Category";
+      return <span>{categoryName}</span>;
+      } },
     { field: "coachId", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" }
 
@@ -49,7 +78,13 @@ const Athelete = () => {
 
   useEffect(() => {
     dispatch(getAtheleteApi())
-  }, [dispatch])
+  if(data){
+        toast.success(data.msg)
+    }
+    if(error){
+        toast.error(data.msg)
+    }
+  }, [dispatch,data,error])
 
 
   return (
@@ -57,6 +92,8 @@ const Athelete = () => {
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Athelete Management" />
       </Box>
+      {
+        loading ? <CircularProgress /> :
       <Stack style={{
         marginTop: "1%",
         display: "grid",
@@ -64,7 +101,8 @@ const Athelete = () => {
         height: "80vh",
 
       }}>
-        {atheletedata && atheletedata.length > 0 ? (
+        {
+        atheletedata && atheletedata.length > 0 ? (
           <DataGrid
             rows={atheletedata}
             columns={columns}
@@ -77,10 +115,28 @@ const Athelete = () => {
             columnHeaderHeight={37}
             pageSize={5}
             rowsPerPageOptions={[5]}
-          />) : <CircularProgress />
-        }
+          />) : (
+
+                <DataGrid
+                  autoHeight
+                  rows={[]}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  rowHeight={42}
+                  rowSelection="true"
+                  rowSpacingType='margin'
+                  slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                  scrollbarSize={1}
+                  columnHeaderHeight={37}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />
+              )
+            }
       </Stack>
+}
     </Box>
+    
   )
 }
 

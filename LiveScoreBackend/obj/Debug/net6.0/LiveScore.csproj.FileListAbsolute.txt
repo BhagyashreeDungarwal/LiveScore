@@ -1235,3 +1235,9 @@ D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\MimeKit.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\System.Formats.Asn1.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\BouncyCastle.Cryptography.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\MailKit.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\MimeKit.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\System.Formats.Asn1.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\System.Security.Cryptography.Pkcs.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.Pkcs.dll

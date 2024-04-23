@@ -182,11 +182,11 @@ function App() {
           path:"referee",
           element:<Referee/>
         },{
-          path:"match",
-          element:<Match/>
-        },{
           path:"coach",
           element:<Coach/>
+        },{
+          path:"match",
+          element:<Match/>
         }
       ]
     },

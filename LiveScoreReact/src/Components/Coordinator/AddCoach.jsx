@@ -59,11 +59,11 @@ React.useEffect(() => {
             console.log(values);
             try {
                 const formdata = new FormData()
-                formdata.append('Name', values.name)
-                formdata.append('Email', values.email)
-                formdata.append('Contact', values.contact)
+                formdata.append('CoachName', values.name)
+                formdata.append('CoachEmail', values.email)
+                formdata.append('ContactNo', values.contact)
                 formdata.append('Gender', values.gender)
-                formdata.append('Achivement', values.achivement)
+                formdata.append('Achievements', values.achivement)
                 formdata.append('Experience', values.experience)               
                 formdata.append('ImageFile', values.image)
 
@@ -139,6 +139,7 @@ React.useEffect(() => {
                                         id="name"
                                         name="name"
                                         label="Name"
+                                        variant='standard'
                                         value={values.name}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -160,6 +161,7 @@ React.useEffect(() => {
                                         id="email"
                                         name="email"
                                         label="Email"
+                                        variant='standard'
                                         value={values.email}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -215,6 +217,7 @@ React.useEffect(() => {
                                         id="gender"
                                         name="gender"
                                         size='small'
+                                        variant='standard'
                                         value={values.gender}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -234,6 +237,7 @@ React.useEffect(() => {
                                         id="achivement"
                                         name="achivement"
                                         label="Achivements"
+                                        variant='standard'
                                         value={values.achivement}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -256,6 +260,7 @@ React.useEffect(() => {
                                         id="experience"
                                         name="experience"
                                         label="Experiences"
+                                        variant='standard'
                                         value={values.experience}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
