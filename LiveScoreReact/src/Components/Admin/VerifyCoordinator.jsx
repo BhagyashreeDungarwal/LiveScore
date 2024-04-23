@@ -77,9 +77,9 @@ const VerifyCoordinator = () => {
     { field: "city", headerName: "City", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
-      field: "status", headerName: "Status", width: 120, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+      field: "status", headerName: "Status", width: 140, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
         if (params.row.status === false) {
-          return <Chip icon={<Circle fontSize='small' color='error' />} label="Requested" color='error' variant='outlined' size='small' />
+          return <Chip icon={<Circle fontSize='small' color='error' />} label="Not Verified" color='error' variant='outlined' size='small' />
         }
         else if (params.row.status === true) {
           return <Chip icon={<Circle fontSize='small' color='success' />} label="Verified" color='success' variant='outlined' size='small' />

@@ -17,14 +17,39 @@ namespace LiveScore.Controllers
             _dbContext = dbContext;
         }
 
+        //[HttpGet("GetTournaments")]
+        //public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
+        //{
+        //    if (_dbContext.Tournaments == null)
+        //    {
+        //        return NotFound(new { error = "Tournament Not Found" });
+        //    }
+        //    return await _dbContext.Tournaments.ToListAsync();
+        //}
         [HttpGet("GetTournaments")]
         public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
         {
-            if (_dbContext.Tournaments == null)
+            var tournaments = await _dbContext.Tournaments.ToListAsync();
+
+            if (tournaments == null || tournaments.Count == 0)
             {
-                return NotFound(new { error = "Tournament Not Found" });
+                return NotFound(new { msg = "Tournaments Not Found" });
             }
-            return await _dbContext.Tournaments.ToListAsync();
+
+            
+
+            // Project tournaments to include Category information
+            var tournamentsWithCategory = tournaments.Select(t => new Tournament
+            {
+                TId = t.TId,
+                TournamentName = t.TournamentName,
+                Location = t.Location,
+                TournamentDate = t.TournamentDate,
+                CategoryId = t.CategoryId,
+                Category = t.Category // Include Category information
+            });
+
+            return Ok(tournamentsWithCategory);
         }
 
         [HttpGet("GetTournamentById/{id}")]
@@ -49,7 +74,7 @@ namespace LiveScore.Controllers
         {
             if (tournament == null)
             {
-                return BadRequest(new {error = "Invalid Tournament DATA"});
+                return BadRequest(new {error = "Please Enter All Field"});
             }
 
             if(!ModelState.IsValid)
@@ -59,13 +84,13 @@ namespace LiveScore.Controllers
 
             if (_dbContext.Tournaments == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Tournaments' is null.");
+                return BadRequest(new { msg = "Something Went Wrong"});
             }
 
             _dbContext.Tournaments.Add(tournament);
              await _dbContext.SaveChangesAsync();
 
-            return CreatedAtAction("GetTournament", new {id = tournament.TId},tournament);
+            return Ok(new { msg = "Successfully Added Tournament"});
         }
 
         [HttpPut("PutTournament/{id}")]

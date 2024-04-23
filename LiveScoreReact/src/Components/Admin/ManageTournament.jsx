@@ -3,11 +3,13 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import HeaderFormat from '../Common/HeaderFormat';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTounamentApi } from '../../Redux/Action/AdminAction';
+import { getCategoryApi, getTounamentApi } from '../../Redux/Action/AdminAction';
 import { useMemo } from 'react';
 import AddTournament from './AddTournament';
 import ProtectedRoute from '../../ProtectedRoute';
 import NoData from "./../Images/NoData.jpg"
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
 
 function CustomToolbar() {
   return (
@@ -52,20 +54,27 @@ const ManageTournament = () => {
 
 
   const dispatch = useDispatch()
-  const { tounamentdata ,loading} = useSelector(state => state.admin)
+  const { tounamentdata ,loading , data, error } = useSelector(state => state.admin)
 
   const columns = useMemo(tounamentdata => [
     // { field: "tId", headerName: "Tournament Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentName", headerName: "Tournament Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "location", headerName: "Location", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center" ,valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------"  },
     { field: "categoryId", headerName: "Category", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
 
   ])
 
   useEffect(() => {
     dispatch(getTounamentApi())
-  }, [dispatch])
+    dispatch(getCategoryApi())
+    if (data) {
+      toast.success(data.msg)
+    }
+    if (error) {
+      toast.error(error.msg)
+    }
+  }, [dispatch,data,error])
 
 
   return (
