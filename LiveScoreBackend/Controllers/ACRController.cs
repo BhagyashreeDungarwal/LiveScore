@@ -526,7 +526,7 @@ namespace LiveScore.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
+            return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
         }
     }
 
