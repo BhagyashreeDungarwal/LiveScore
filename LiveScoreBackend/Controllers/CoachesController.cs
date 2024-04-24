@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using LiveScore.Data;
 using LiveScore.Model;
 using LiveScore.Model.ViewModel;
+using LiveScore.Services;
+using LiveScoring.Model;
 
 namespace LiveScore.Controllers
 {
@@ -16,13 +18,14 @@ namespace LiveScore.Controllers
     public class CoachesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
+        private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CoachesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public CoachesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _emailSender = emailSender;                
         }
 
         // GET: api/Coaches
@@ -85,6 +88,23 @@ namespace LiveScore.Controllers
             coach.Gender = coachimg.Gender;
             coach.ImageUrl = imageUrl;
 
+            string messageBody = "<!DOCTYPE html>" +
+                                 "<html>" +
+                                 "<head>" +
+                                 "<title>Welcome to Live Score!</title>" +
+                                 "</head>" +
+                                "<body>" +
+                                $" <h2>Respected {coach.CoachName},</h2>" +
+                                "< p > Congratulations on your recent update at Live Score! You're now on board as a Coach. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>"+
+                                "< p > Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</ p >" +
+                                "< p > Welcome aboard! </ p >"+
+                                "< p > Best regards,< br />"+
+                                "Live Score </ p >" +
+                                 "</body>" +
+                                   "</html>";
+
+            _emailSender.SendEmail(coach.CoachEmail, "SucessFully Registered", messageBody);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -128,6 +148,22 @@ namespace LiveScore.Controllers
 
             _context.Coaches.Add(coach);
             await _context.SaveChangesAsync();
+            string messageBody = "<!DOCTYPE html>" +
+                                  "<html>" +
+                                  "<head>" +
+                                  "<title>Welcome to Live Score!</title>" +
+                                  "</head>" +
+            "<body>" +
+                                 $" <h2>Respected  {coach.CoachName},</h2>" +
+                                  "<p>Congratulations on joining Live Score! You're now registered as a Coach. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                  "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                  "<p>Welcome aboard!</p>" +
+                                  "<p>Best regards,<br />" +
+                                  " Live Score</p>" +
+                                  "</body>" +
+            "</html>";
+
+            _emailSender.SendEmail(coach.CoachEmail, "SucessFully Registered", messageBody);
 
             return CreatedAtAction("GetCoach", new { id = coach.CoachId }, coach);
         }

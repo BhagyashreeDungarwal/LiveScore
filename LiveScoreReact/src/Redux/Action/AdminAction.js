@@ -1,5 +1,9 @@
 import axios from "axios"
-import { GetCategoryFail, GetCategoryStart, GetCategorySuccess, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess, TounamentPostFail ,VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess ,BlockCoordinatorFail,BlockCoordinatorStart,BlockCoordinatorSuccess ,UnblockCoordinatorFail,UnblockCoordinatorStart,UnblockCoordinatorSuccess  } from "../Reducer/AdminReducer"
+import {
+    GetCategoryFail, GetCategoryStart, GetCategorySuccess, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart,
+    GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess,
+    TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess,
+} from "../Reducer/AdminReducer"
 
 const url = "http://localhost:5032/api"
 
@@ -87,8 +91,8 @@ export const TounamentPostApi = (values) => async (dispatch) => {
 export const VerifyCoordinatorApi = (id) => async (dispatch) => {
     try {
         dispatch(VerifyCoordinatorStart())
-        
-        const { data } = await axios.post(`${url}/ACR/VerifyCoordinator/${id}`,  {
+
+        const { data } = await axios.post(`${url}/ACR/VerifyCoordinator/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -96,35 +100,5 @@ export const VerifyCoordinatorApi = (id) => async (dispatch) => {
         dispatch(VerifyCoordinatorSuccess(data))
     } catch (error) {
         dispatch(VerifyCoordinatorFail(error.response.data))
-    }
-}
-
-export const BlockCoordinatorApi = (id) => async (dispatch) => {
-    try {
-        dispatch(BlockCoordinatorStart())
-        
-        const { data } = await axios.post(`${url}/ACR/BlockCoordinator/${id}`,  {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        dispatch(BlockCoordinatorSuccess(data))
-    } catch (error) {
-        dispatch(BlockCoordinatorFail(error.response.data))
-    }
-}
-
-export const UnblockCoordinatorApi = (id) => async (dispatch) => {
-    try {
-        dispatch(UnblockCoordinatorStart())
-        
-        const { data } = await axios.post(`${url}/ACR/UnblockCoordinator/${id}`,  {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        dispatch(UnblockCoordinatorSuccess(data))
-    } catch (error) {
-        dispatch(UnblockCoordinatorFail(error.response.data))
     }
 }

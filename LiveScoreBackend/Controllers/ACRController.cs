@@ -1,4 +1,5 @@
-﻿using LiveScore.Data;
+﻿using CloudinaryDotNet.Actions;
+using LiveScore.Data;
 using LiveScore.Model;
 using LiveScore.Model.ViewModel;
 using LiveScore.Services;
@@ -123,7 +124,6 @@ namespace LiveScore.Controllers
             uacr.Password = acr.Password;
             uacr.ImageURL = acr.ImageURL;
             uacr.Contact = acr.Contact;
-            uacr.Age = acr.Age;
             uacr.DateOfBirth = acr.DateOfBirth;
             uacr.LastLogin = acr.LastLogin;
             uacr.Status = "Verified";
@@ -184,6 +184,25 @@ namespace LiveScore.Controllers
             await _dbcontext.SaveChangesAsync();
             acr.Password = null;
 
+            //for message body
+
+            string messageBody = "<!DOCTYPE html>" +
+                                    "<html>" +
+                                    "<head>" +
+                                    "<title>Welcome to Live Score!</title>" +
+                                    "</head>" +
+                                    "<body>" +
+                                   $" <h2>Respected  {acr.Name},</h2>" +
+                                    "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                    "<p>Welcome aboard!</p>" +
+                                    "<p>Best regards,<br />" +
+                                    " Live Score</p>" +
+                                    "</body>" +
+                                    "</html>";
+
+            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
+
             return Ok(new { msg = "Successfully Added Admin" });
 
         }
@@ -224,7 +243,6 @@ namespace LiveScore.Controllers
             uacr.Password = acr.Password;
             uacr.ImageURL = acr.ImageURL;
             uacr.Contact = acr.Contact;
-            uacr.Age = acr.Age;
             uacr.DateOfBirth = acr.DateOfBirth;
             uacr.Status = "Verified";
             uacr.LastLogin = acr.LastLogin;
@@ -266,34 +284,28 @@ namespace LiveScore.Controllers
             var coordinator = await _dbcontext.Admin.FindAsync(id);
             if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
 
-            coordinator.Status = "Verified";
-            await _dbcontext.SaveChangesAsync();
-            return Ok(new { msg = "Successfully Verify Coordinator"});
+            if(coordinator.Status == "Not Verified")
+            {
+                coordinator.Status = "Verified";
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Successfully Verify Coordinator" });
+            }
+            if(coordinator.Status == "Verified")
+            {
+                coordinator.Status = "Block";
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Successfully Block Coordinator" });
+            }
+            if(coordinator.Status == "Block")
+            {
+                coordinator.Status = "Verified";
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Successfully Verified Coordinator" });
+            }   
+            return Ok("Successful");
+
 
         } 
-        [HttpPost("BlockCoordinator/{id}")]
-        public async Task<ActionResult<ACR>> BlockCoordinator(int id)
-        {
-            var coordinator = await _dbcontext.Admin.FindAsync(id);
-            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
-
-            coordinator.Status = "Block";
-            await _dbcontext.SaveChangesAsync();
-            return Ok(new { msg = "Successfully Block Coordinator"});
-
-        }
-        [HttpPost("UnblockCoordinator/{id}")]
-        public async Task<ActionResult<ACR>> UnblockCoordinator(int id)
-        {
-            var coordinator = await _dbcontext.Admin.FindAsync(id);
-            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
-
-            coordinator.Status = "Verified";
-            await _dbcontext.SaveChangesAsync();
-            return Ok(new { msg = "Successfully Unblock Coordinator" });
-
-        }
-
 
         //Adding Coordinator
         [HttpPost("AddCoordinator")]
@@ -324,7 +336,6 @@ namespace LiveScore.Controllers
                 Name = acrimg.Name,
                 Password = acrimg.Password,
                 Contact = acrimg.Contact,
-                Age = acrimg.Age,
                 DateOfBirth = acrimg.DateOfBirth,
                 Gender = acrimg.Gender,
                 City = acrimg.City,
@@ -347,7 +358,7 @@ namespace LiveScore.Controllers
                                     "<title>Welcome to Live Score!</title>" +
                                     "</head>" +
                                     "<body>" +
-                                   $" <h2>Dear  {acr.Name},</h2>" +
+                                   $" <h2>Respected  {acr.Name},</h2>" +
                                     "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
                                     "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
                                     "<p>Welcome aboard!</p>" +
@@ -400,7 +411,6 @@ namespace LiveScore.Controllers
             uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
             uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
             uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
-            uacr.Age = acrimg.Age != null ? acrimg.Age : uacr.Age;
             uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
             uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
             uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
@@ -408,6 +418,22 @@ namespace LiveScore.Controllers
             uacr.ImageURL = imageUrl;
 
             await _dbcontext.SaveChangesAsync();
+            string messageBody = "<!DOCTYPE html>" +
+                                   "<html>" +
+                                   "<head>" +
+                                   "<title>Welcome to Live Score!</title>" +
+                                   "</head>" +
+                                   "<body>" +
+                                  $" <h2>Respected  {uacr.Name},</h2>" +
+                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                   "<p>Welcome aboard!</p>" +
+                                   "<p>Best regards,<br />" +
+                                   " Live Score</p>" +
+                                   "</body>" +
+                                   "</html>";
+
+            _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
 
             return Ok(new { msg = "Coordinator updated successfully" });
         }
@@ -463,7 +489,6 @@ namespace LiveScore.Controllers
                 Name = acrimg.Name,
                 Password = acrimg.Password,
                 Contact = acrimg.Contact,
-                Age = acrimg.Age,
                 DateOfBirth = acrimg.DateOfBirth,
                 Gender = acrimg.Gender,
                 City = acrimg.City,
@@ -478,6 +503,22 @@ namespace LiveScore.Controllers
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
             acr.Password = null;
+            string messageBody = "<!DOCTYPE html>" +
+                                   "<html>" +
+                                   "<head>" +
+                                   "<title>Welcome to Live Score!</title>" +
+                                   "</head>" +
+                                   "<body>" +
+                                  $" <h2>Respected  {acr.Name},</h2>" +
+                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                   "<p>Welcome aboard!</p>" +
+                                   "<p>Best regards,<br />" +
+                                   " Live Score</p>" +
+                                   "</body>" +
+                                   "</html>";
+
+            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
 
             return Ok(new { msg = "Successfully Added Referee" });
         }
@@ -520,7 +561,6 @@ namespace LiveScore.Controllers
             uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
             uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
             uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
-            uacr.Age = acrimg.Age != null ? acrimg.Age : uacr.Age;
             uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
             uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
             uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
@@ -528,6 +568,22 @@ namespace LiveScore.Controllers
             uacr.ImageURL = imageUrl;
 
             await _dbcontext.SaveChangesAsync();
+            string messageBody = "<!DOCTYPE html>" +
+                                   "<html>" +
+                                   "<head>" +
+                                   "<title>Welcome to Live Score!</title>" +
+                                   "</head>" +
+            "<body>" +
+                                  $" <h2>Respected  {uacr.Name},</h2>" +
+                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                   "<p>Welcome aboard!</p>" +
+                                   "<p>Best regards,<br />" +
+                                   " Live Score</p>" +
+                                   "</body>" +
+                                   "</html>";
+
+            _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
 
             return Ok(new { msg = "Referee updated successfully" });
         }

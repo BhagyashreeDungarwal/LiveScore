@@ -11641,19 +11641,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MeetGunjan\\.nuget\\packages\\": {}
+    "C:\\Users\\kewal dungarwal\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+      "projectUniqueName": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
       "projectName": "LiveScore",
-      "projectPath": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
-      "packagesPath": "C:\\Users\\MeetGunjan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\obj\\",
+      "projectPath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
+      "packagesPath": "C:\\Users\\kewal dungarwal\\.nuget\\packages\\",
+      "outputPath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\MeetGunjan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kewal dungarwal\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11661,6 +11661,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -11673,11 +11674,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -11754,7 +11750,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

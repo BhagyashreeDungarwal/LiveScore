@@ -20,6 +20,24 @@ namespace LiveScoring.Model
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
+        [NotMapped]
+       public int Age
+        {
+            get
+            {
+                // Calculate age based on current date and DateOfBirth
+                int age = DateTime.Now.Year - DateOfBirth.Year;
+
+                // If the athlete hasn't had their birthday yet this year, subtract one year from age
+                if (DateTime.Now.Month < DateOfBirth.Month || (DateTime.Now.Month == DateOfBirth.Month && DateTime.Now.Day < DateOfBirth.Day))
+                {
+                    age--;
+                }
+
+                return age;
+            }
+            set { }            
+        }
         public string Gender { get; set; }
 
         [Range(1, 10, ErrorMessage = "Height must be greater than 0")]

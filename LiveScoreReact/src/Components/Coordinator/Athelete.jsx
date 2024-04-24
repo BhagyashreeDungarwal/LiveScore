@@ -60,6 +60,7 @@ const Athelete = () => {
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "age", headerName: "Age", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "height", headerName: "Height", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "weight", headerName: "Weight", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },

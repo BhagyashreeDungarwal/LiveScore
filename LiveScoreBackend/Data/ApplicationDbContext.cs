@@ -51,7 +51,7 @@ namespace LiveScore.Data
 
                 entity.Property(e => e.ImageURL).IsRequired(); 
 
-                entity.Property(e => e.Contact).IsRequired().HasMaxLength(10); 
+                entity.Property(e => e.Contact).IsRequired().HasMaxLength(101); 
 
                 entity.Property(e => e.Age).IsRequired().HasMaxLength(10); 
                 
@@ -105,8 +105,7 @@ namespace LiveScore.Data
                 entity.Property(a => a.Contact).IsRequired().HasMaxLength(101); 
                 entity.Property(a => a.ImageUrl).IsRequired(); 
                 entity.Property(a => a.DateOfBirth).IsRequired().HasMaxLength(101); 
-                entity.Property(a => a.Gender).IsRequired().HasMaxLength(101); 
-               
+                entity.Property(a => a.Gender).IsRequired().HasMaxLength(101);
                 entity.Property(a => a.Height).IsRequired(); 
                 entity.Property(a => a.Weight).IsRequired(false); 
                 entity.Property(a => a.City).IsRequired().HasMaxLength(101); 

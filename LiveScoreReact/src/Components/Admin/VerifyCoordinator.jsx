@@ -3,7 +3,7 @@ import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { BlockCoordinatorApi, UnblockCoordinatorApi, VerifyCoordinatorApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
+import { VerifyCoordinatorApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import dayjs from 'dayjs';
 import { Block, Circle, VerifiedUser } from '@mui/icons-material';
@@ -58,18 +58,6 @@ const VerifyCoordinator = () => {
     await dispatch(VerifyCoordinatorApi(id))
   }
 
-  const handleBlock =  async (id) => {
-    // alert(id)
-    await dispatch(BlockCoordinatorApi(id))
-  }
-  const handleUnblock =  async (id) => {
-    // alert(id)
-    await dispatch(UnblockCoordinatorApi(id))
-  }
-  
-
-
-
   const columns = useMemo(coordinatordata => [
     {
       field: "imageURL", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
@@ -112,14 +100,14 @@ const VerifyCoordinator = () => {
         }
        else if (params.row.status === "Verified") {   
         return (
-          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleBlock(params.row.id)}>
+          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
             <Block size="small" sx={{ mr: 1 }} />
             Block
           </Fab>)
         }
        else if (params.row.status === "Block") {   
         return (
-          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleUnblock(params.row.id)}>
+          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
             <Block size="small" sx={{ mr: 1 }} />
             Unblock
           </Fab>)

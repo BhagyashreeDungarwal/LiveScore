@@ -1,5 +1,7 @@
-﻿using LiveScore.Data;
+﻿using CloudinaryDotNet.Actions;
+using LiveScore.Data;
 using LiveScore.Model;
+using LiveScore.Services;
 //using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,13 @@ namespace LiveScore.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-       
-        public AthletesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly IEmailSender _emailSender;
+
+        public AthletesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _emailSender = emailSender;
         }
 
         // GET: api/Athletes
@@ -124,6 +128,7 @@ namespace LiveScore.Controllers
                 return BadRequest(ModelState);
             }
 
+
             string imageUrl = await UploadImage(athleteDto.ImageFile);
 
             var athlete = new Athlete
@@ -146,6 +151,23 @@ namespace LiveScore.Controllers
             _context.Athletes.Add(athlete);
             await _context.SaveChangesAsync();
 
+            string messageBody = "<!DOCTYPE html>" +
+                                   "<html>" +
+                                   "<head>" +
+                                   "<title>Welcome to Live Score!</title>" +
+                                   "</head>" +
+            "<body>" +
+                                  $" <h2>Respected  {athlete.AthleteName},</h2>" +
+                                   "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                   "<p>Welcome aboard!</p>" +
+                                   "<p>Best regards,<br />" +
+                                   " Live Score</p>" +
+                                   "</body>" +
+                                   "</html>";
+
+            _emailSender.SendEmail(athlete.Email, "SucessFully Registered", messageBody);
+
             return Ok("Athlete created successfully.");
 
         }
@@ -164,6 +186,7 @@ namespace LiveScore.Controllers
             {
                 await file.CopyToAsync(stream);
             }
+
 
             return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
         }

@@ -51,7 +51,7 @@ const AddReferee = () => {
         email: "",
         password: "",
         contact: "",
-        age: "",
+        // age: "",
         dateOfBirth: "",
         image: null,
         gender: "",
@@ -83,7 +83,7 @@ useEffect(() => {
                 formData.append('Name', values.name);
                 formData.append('Password', values.password);
                 formData.append('Contact', values.contact);
-                formData.append('Age', values.age);
+                // formData.append('Age', values.age);
                 formData.append('DateOfBirth', values.dateOfBirth);
                 formData.append('Gender', values.gender);
                 formData.append('City', values.city);
@@ -257,32 +257,8 @@ useEffect(() => {
                                 />
                                 {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                             </Grid>
-                            <Grid item xl={6} sm={12} xs={12} lg={12} >
-                                <TextField
-                                    label="Age"
-                                    variant="standard"
-                                    fullWidth
-                                    color='secondary'
-                                    type='number'
-                                    name='age'
-                                    size='small'
-                                    value={values.age}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    InputLabelProps={{ shrink: true }}
-                                    placeholder='Enter Age'
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-
-                                                <AccessibilityNewRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                {errors.age && touched.age ? (<Typography variant="subtitle1" color="error">{errors.age}</Typography>) : null}
-                            </Grid>
-                            <Grid item xl={6} sm={12} xs={12} lg={12} >
+                            
+                            <Grid item xl={12} sm={12} xs={12} lg={12} >
                                 <TextField
                                     label="Date fo birth"
                                     variant="standard"

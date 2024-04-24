@@ -11,9 +11,6 @@ namespace LiveScore.Model.ViewModel
         public string Password { get; set; }
         public string Contact { get; set; }
 
-        public int Age { get; set; }
-
-
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
