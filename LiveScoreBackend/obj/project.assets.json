@@ -11641,19 +11641,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MeetGunjan\\.nuget\\packages\\": {}
+    "C:\\Users\\admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+      "projectUniqueName": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
       "projectName": "LiveScore",
-      "projectPath": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
-      "packagesPath": "C:\\Users\\MeetGunjan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MeetGunjan\\Documents\\GitHub\\LiveScore\\LiveScoreBackend\\obj\\",
+      "projectPath": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+      "outputPath": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\MeetGunjan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

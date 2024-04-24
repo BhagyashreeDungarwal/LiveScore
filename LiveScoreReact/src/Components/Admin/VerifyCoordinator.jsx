@@ -205,5 +205,4 @@ const VerifyCoordinator = () => {
     </div>
   )
 }
-
 export default ProtectedRoute(VerifyCoordinator, 'admin')

@@ -42,13 +42,13 @@ namespace LiveScore.Controllers
         {
           if (_context.Coaches == null)
           {
-              return NotFound(new { error = "Coaches Not Found" });
+              return NotFound(new { msg = "Coaches Not Found" });
           }
             var coach = await _context.Coaches.FindAsync(id);
 
             if (coach == null)
             {
-                return NotFound(new { error = "Coaches Not Found" });
+                return NotFound(new { msg = "Coaches Not Found" });
             }
 
             return coach;
@@ -129,7 +129,7 @@ namespace LiveScore.Controllers
             _context.Coaches.Add(coach);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCoach", new { id = coach.CoachId }, coach);
+            return Ok(new { msg = "Successfully Added Coach"});
         }
 
         private async Task<string> UploadImage(IFormFile file)

@@ -28,7 +28,7 @@ const AddTournament = () => {
 
 
     const theme = useTheme()
-    const { categorydata, data, error } = useSelector((state => state.admin))
+    const { categorydata} = useSelector((state => state.admin))
     const dispatch = useDispatch()
 
     const handleClickOpen = async () => {
@@ -56,21 +56,14 @@ const AddTournament = () => {
         validationSchema: tournament,
 
         onSubmit: async (values ,{ resetForm, setSubmitting }) => {
-            // console.log(values);
+           
             try {
 
                 await dispatch(TounamentPostApi(values))
                 setSubmitting(false)
                 resetForm({ values: "" });
                 dispatch(getTounamentApi())
-                //  if (data) {
-                //     console.log("added")
-                //      toast.success(data.msg)
-                //  }
-                //  if (error) {
-                //      toast.error(error.msg)
-                //  }
-                // console.log(values)
+               
             } catch (error) {
                 <CircularProgress />
             }
@@ -113,6 +106,7 @@ const AddTournament = () => {
 
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="name"
                                         name="TournamentName"
                                         label="Tournament Name"
@@ -134,6 +128,7 @@ const AddTournament = () => {
 
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="location"
                                         name="Location"
                                         label="Location"
@@ -154,6 +149,7 @@ const AddTournament = () => {
                                 <Grid item xl={12} md={6} sm={12}>
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="date"
                                         name="TournamentDate"
                                         label="Tournament Date"
@@ -173,10 +169,11 @@ const AddTournament = () => {
                                     {errors.TournamentDate && touched.TournamentDate ? (<Typography variant="subtitle1" color="error">{errors.TournamentDate}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
-                                    <FormControl variant='filled' fullWidth>
+                                    <FormControl variant='standard' fullWidth>
                                         <InputLabel color='secondary'>Category</InputLabel>
                                         <Select
                                             color='secondary'
+                                            
                                             id='CategoryId'
                                             label="CategoryId"
                                             name='CategoryId'

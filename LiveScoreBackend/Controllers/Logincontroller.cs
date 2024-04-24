@@ -60,10 +60,6 @@ namespace LiveScore.Controllers
             {
 
                   user.LastLogin = DateTime.Now;
-                //_dbcontext.Update(user);
-                //_dbcontext.Admin.Update(user);
-
-                //user.City = "Surat";
              await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
                 return Ok(new { token = token , role = user.RoleId , id = user.Id, msg ="Welcome Back" });
