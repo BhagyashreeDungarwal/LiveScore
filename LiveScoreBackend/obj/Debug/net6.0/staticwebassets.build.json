@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "iM9b+R97L7n1cY+vJzsv6+oBrInY5htMcbwFmMKGoBw=",
+  "Hash": "lA9frzeBTQyxbDBov/CNf+D8wvCrUfI9uRJNckHIC48=",
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -32,6 +32,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\9da397d2-6fb5-403c-81ca-c48cded68466.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "coach/9da397d2-6fb5-403c-81ca-c48cded68466.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\coach\\9da397d2-6fb5-403c-81ca-c48cded68466.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\bd43ccf4-cd51-4c4a-8c4e-e5f8d5720475.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "coach/bd43ccf4-cd51-4c4a-8c4e-e5f8d5720475.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\coach\\bd43ccf4-cd51-4c4a-8c4e-e5f8d5720475.jpg"
     },
     {
       "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\d2697923-950b-429d-8df9-149ba6c86397.jpg",
