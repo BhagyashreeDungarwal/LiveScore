@@ -3,10 +3,10 @@ import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { VerifyCoordinatorApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
+import { BlockCoordinatorApi, UnblockCoordinatorApi, VerifyCoordinatorApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import dayjs from 'dayjs';
-import { Circle, VerifiedUser } from '@mui/icons-material';
+import { Block, Circle, VerifiedUser } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import NoData from "./../Images/NoData.jpg"
 
@@ -51,12 +51,23 @@ function CustomNoRowsOverlay() {
 
 const VerifyCoordinator = () => {
   const dispatch = useDispatch()
-  const { coordinatordata, verifydata, error, loading } = useSelector(state => state.admin)
+  const { coordinatordata, verifydata, error, loading ,blockdata ,unblockdata } = useSelector(state => state.admin)
 
 
   const handleRequest = async (id) => {
     await dispatch(VerifyCoordinatorApi(id))
   }
+
+  const handleBlock =  async (id) => {
+    // alert(id)
+    await dispatch(BlockCoordinatorApi(id))
+  }
+  const handleUnblock =  async (id) => {
+    // alert(id)
+    await dispatch(UnblockCoordinatorApi(id))
+  }
+  
+
 
 
   const columns = useMemo(coordinatordata => [
@@ -78,22 +89,39 @@ const VerifyCoordinator = () => {
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
       field: "status", headerName: "Status", width: 140, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
-        if (params.row.status === false) {
-          return <Chip icon={<Circle fontSize='small' color='error' />} label="Not Verified" color='error' variant='outlined' size='small' />
+        if (params.row.status === "Not Verified") {
+          return <Chip icon={<Circle fontSize='small' color='error' />} label={params.row.status} color='error' variant='outlined' size='small' />
         }
-        else if (params.row.status === true) {
-          return <Chip icon={<Circle fontSize='small' color='success' />} label="Verified" color='success' variant='outlined' size='small' />
+        else if (params.row.status === "Verified") {
+          return <Chip icon={<Circle fontSize='small' color='success' />} label={params.row.status} color='success' variant='outlined' size='small' />
+        }
+        else if (params.row.status === "Block") {
+          return <Chip icon={<Circle fontSize='small' color='warning' />} label={params.row.status} color='warning' variant='outlined' size='small' />
         }
       }
     }, {
       headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
       width: 122,
       renderCell: params => {
-        if (params.row.status === false) {   
+        if (params.row.status === "Not Verified") {   
         return (
           <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
             <VerifiedUser size="small" sx={{ mr: 1 }} />
             Accept
+          </Fab>)
+        }
+       else if (params.row.status === "Verified") {   
+        return (
+          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleBlock(params.row.id)}>
+            <Block size="small" sx={{ mr: 1 }} />
+            Block
+          </Fab>)
+        }
+       else if (params.row.status === "Block") {   
+        return (
+          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleUnblock(params.row.id)}>
+            <Block size="small" sx={{ mr: 1 }} />
+            Unblock
           </Fab>)
         }
       }
@@ -108,11 +136,19 @@ const VerifyCoordinator = () => {
       toast.success(verifydata.msg)
       dispatch(getCoordinatorApi())
     }
+    if (blockdata) {
+      toast.success(blockdata.msg)
+      dispatch(getCoordinatorApi())
+    }
+    if (unblockdata) {
+      toast.success(unblockdata.msg)
+      dispatch(getCoordinatorApi())
+    }
     if (error) {
       toast.error(error.msg)
     }
 
-  }, [dispatch, verifydata, error])
+  }, [dispatch, verifydata, error ,blockdata,unblockdata])
 
 
   return (

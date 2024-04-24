@@ -79,8 +79,9 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

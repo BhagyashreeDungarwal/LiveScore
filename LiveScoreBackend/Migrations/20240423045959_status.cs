@@ -5,14 +5,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LiveScore.Migrations
 {
-    public partial class Changes : Migration
+    public partial class status : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
                 name: "Image",
                 table: "Admin",
-                newName: "ImageURL");
+                newName: "Status");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "TournamentName",
+                table: "Tournaments",
+                type: "nvarchar(101)",
+                maxLength: 101,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Location",
+                table: "Tournaments",
+                type: "nvarchar(101)",
+                maxLength: 101,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10);
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Matchtime",
@@ -39,12 +59,20 @@ namespace LiveScore.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "Status",
-                table: "Admin",
-                type: "bit",
+            migrationBuilder.AddColumn<int>(
+                name: "CategoryTime",
+                table: "Categories",
+                type: "int",
+                maxLength: 10,
                 nullable: false,
-                defaultValue: false);
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ImageURL",
+                table: "Admin",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -54,13 +82,37 @@ namespace LiveScore.Migrations
                 table: "Coaches");
 
             migrationBuilder.DropColumn(
-                name: "Status",
+                name: "CategoryTime",
+                table: "Categories");
+
+            migrationBuilder.DropColumn(
+                name: "ImageURL",
                 table: "Admin");
 
             migrationBuilder.RenameColumn(
-                name: "ImageURL",
+                name: "Status",
                 table: "Admin",
                 newName: "Image");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "TournamentName",
+                table: "Tournaments",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(101)",
+                oldMaxLength: 101);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Location",
+                table: "Tournaments",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(101)",
+                oldMaxLength: 101);
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "Matchtime",

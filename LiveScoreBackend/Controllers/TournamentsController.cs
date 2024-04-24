@@ -17,40 +17,16 @@ namespace LiveScore.Controllers
             _dbContext = dbContext;
         }
 
-        //[HttpGet("GetTournaments")]
-        //public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
-        //{
-        //    if (_dbContext.Tournaments == null)
-        //    {
-        //        return NotFound(new { error = "Tournament Not Found" });
-        //    }
-        //    return await _dbContext.Tournaments.ToListAsync();
-        //}
         [HttpGet("GetTournaments")]
-        public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
+       public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
         {
-            var tournaments = await _dbContext.Tournaments.ToListAsync();
-
-            if (tournaments == null || tournaments.Count == 0)
-            {
-                return NotFound(new { msg = "Tournaments Not Found" });
+           if (_dbContext.Tournaments == null)
+           {
+                return NotFound(new { error = "Tournament Not Found" });
             }
-
-            
-
-            // Project tournaments to include Category information
-            var tournamentsWithCategory = tournaments.Select(t => new Tournament
-            {
-                TId = t.TId,
-                TournamentName = t.TournamentName,
-                Location = t.Location,
-                TournamentDate = t.TournamentDate,
-                CategoryId = t.CategoryId,
-                Category = t.Category // Include Category information
-            });
-
-            return Ok(tournamentsWithCategory);
+            return await _dbContext.Tournaments.ToListAsync();
         }
+      
 
         [HttpGet("GetTournamentById/{id}")]
         public async Task<ActionResult<Tournament>> GetTournament(int id)

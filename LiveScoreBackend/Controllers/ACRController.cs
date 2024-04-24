@@ -126,7 +126,7 @@ namespace LiveScore.Controllers
             uacr.Age = acr.Age;
             uacr.DateOfBirth = acr.DateOfBirth;
             uacr.LastLogin = acr.LastLogin;
-            uacr.Status = true;
+            uacr.Status = "Verified";
             uacr.Gender = acr.Gender;
             uacr.City = acr.City;
             uacr.State = acr.State;
@@ -177,7 +177,8 @@ namespace LiveScore.Controllers
                 return BadRequest(new { msg = "Contact already exists" });
             }
 
-            acr.RoleId = 2; // Set to the appropriate RoleId value
+            acr.RoleId = 2;
+            acr.Status = "Verified";// Set to the appropriate RoleId value
             acr.Password = _pservice.HashPassword(acr.Password);
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
@@ -225,7 +226,7 @@ namespace LiveScore.Controllers
             uacr.Contact = acr.Contact;
             uacr.Age = acr.Age;
             uacr.DateOfBirth = acr.DateOfBirth;
-            uacr.Status = true;
+            uacr.Status = "Verified";
             uacr.LastLogin = acr.LastLogin;
             uacr.Gender = acr.Gender;
             uacr.City = acr.City;
@@ -265,9 +266,31 @@ namespace LiveScore.Controllers
             var coordinator = await _dbcontext.Admin.FindAsync(id);
             if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
 
-            coordinator.Status = true;
+            coordinator.Status = "Verified";
             await _dbcontext.SaveChangesAsync();
             return Ok(new { msg = "Successfully Verify Coordinator"});
+
+        } 
+        [HttpPost("BlockCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> BlockCoordinator(int id)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
+
+            coordinator.Status = "Block";
+            await _dbcontext.SaveChangesAsync();
+            return Ok(new { msg = "Successfully Block Coordinator"});
+
+        }
+        [HttpPost("UnblockCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> UnblockCoordinator(int id)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
+
+            coordinator.Status = "Verified";
+            await _dbcontext.SaveChangesAsync();
+            return Ok(new { msg = "Successfully Unblock Coordinator" });
 
         }
 
@@ -310,7 +333,7 @@ namespace LiveScore.Controllers
             };
 
             acr.RoleId = 3;
-            acr.Status = false;
+            acr.Status = "Not Verified";
             acr.Password = _pservice.HashPassword(acr.Password);
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
@@ -445,6 +468,7 @@ namespace LiveScore.Controllers
                 Gender = acrimg.Gender,
                 City = acrimg.City,
                 State = acrimg.State,
+                Status = "Verified",
                 ImageURL = imageUrl
             };
 
@@ -524,7 +548,7 @@ namespace LiveScore.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
+            return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
         }
     }
 

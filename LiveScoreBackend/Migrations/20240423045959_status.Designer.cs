@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240419110101_addtime")]
-    partial class addtime
+    [Migration("20240423045959_status")]
+    partial class status
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,8 +81,9 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -463,16 +464,16 @@ namespace LiveScore.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.Property<DateTime>("TournamentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TournamentName")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
                     b.HasKey("TId");
 
