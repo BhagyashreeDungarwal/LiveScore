@@ -2,6 +2,7 @@ import { Dashboard } from "@mui/icons-material"
 import { createBrowserRouter } from "react-router-dom"
 import HeaderNew from "./Components/HeaderNew"
 import Login from "./Components/Login"
+import Profile from "./Components/Profile"
 
 function App() {
 
@@ -28,7 +29,8 @@ function App() {
   return (
     <> 
     {/* <HeaderNew/>  */}
-    <Login />
+    {/* <Login /> */}
+    <Profile />
     </>
   )
 }
