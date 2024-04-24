@@ -48,23 +48,27 @@ const Login = () => {
       toast.success(data.msg)
       localStorage.setItem('token', data.token);
 
-      // making logic for naviate acconding to role 
+      // making logic for navigate according to role 
       if (data.role === 1) {
         localStorage.setItem('role', "superadmin");
+        localStorage.setItem('ID',data.id)
         navigate("/sadmin/sdashboard")
       } else if (data.role === 2) {
         // console.log("admin")
         localStorage.setItem('role', "admin");
+        localStorage.setItem('ID',data.id)
         navigate("/admin/adashboard")
       }
       else if (data.role === 3) {
         // console.log("admin")
         localStorage.setItem('role', "coordinator");
+        localStorage.setItem('ID',data.id)
         navigate("/coordinator/cdashboard")
       }
       else if (data.role === 4) {
         // console.log("admin")
         localStorage.setItem('role', "referee");
+        localStorage.setItem('ID',data.id)
         navigate("/referee/rdashboard")
 
       }

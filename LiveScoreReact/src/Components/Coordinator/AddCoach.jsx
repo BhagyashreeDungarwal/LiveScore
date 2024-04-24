@@ -7,8 +7,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
 import { TextField, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment } from '@mui/material';
-import {  CoachValidate } from '../Validation/Coordinator';
-import {  AlternateEmailRounded,  EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
+import { CoachValidate } from '../Validation/Coordinator';
+import { AlternateEmailRounded, EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { CoachPostApi } from '../../Redux/Action/CoordinatorAction';
@@ -26,7 +26,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddCoach = () => {
 
     const theme = useTheme()
-    const {data,error} = useSelector((state => state.coordinator))
+    const { data, error } = useSelector((state => state.coordinator))
     const dispatch = useDispatch()
 
     const initial = {
@@ -38,20 +38,20 @@ const AddCoach = () => {
         achivement: "",
         image: null,
     }
-    
-React.useEffect(() => {
-   if (data) {
-      toast.success(data.msg)
-      console.log(data.msg)
-   }
-   if(error){
-     toast.error(error.msg)
-    console.log(error.msg)
-   }
-}, [ data, error])
+
+    React.useEffect(() => {
+        if (data) {
+            toast.success(data.msg)
+            console.log(data.msg)
+        }
+        if (error) {
+            toast.error(error.msg)
+            console.log(error.msg)
+        }
+    }, [data, error])
 
 
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit,setFieldValue } = useFormik({
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: CoachValidate,
 
@@ -64,14 +64,14 @@ React.useEffect(() => {
                 formdata.append('ContactNo', values.contact)
                 formdata.append('Gender', values.gender)
                 formdata.append('Achievements', values.achivement)
-                formdata.append('Experience', values.experience)               
+                formdata.append('Experience', values.experience)
                 formdata.append('ImageFile', values.image)
 
                 await dispatch(CoachPostApi(formdata))
-                if(data){
+                if (data) {
                     toast.success(data.msg)
                 }
-                if(error){
+                if (error) {
                     toast.error(error.msg)
                 }
                 console.log(values)
@@ -86,7 +86,7 @@ React.useEffect(() => {
     const handleFile = (e) => {
         const file = e.target.files[0]
 
-        setFieldValue('image',file)
+        setFieldValue('image', file)
         console.log("file 1", file)
         // const reader = new FileReader()
         // reader.readAsDataURL(file)
@@ -102,9 +102,9 @@ React.useEffect(() => {
         setOpen(false);
     };
 
-  return (
-    <div>
-      <React.Fragment>
+    return (
+        <div>
+            <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Add Coach
                 </Button>
@@ -144,13 +144,13 @@ React.useEffect(() => {
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Person2Rounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Person2Rounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
                                 </Grid>
@@ -166,24 +166,25 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-                                                <AlternateEmailRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                                                    <AlternateEmailRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12}>
                                     <FormLabel component="legend">Upload Image</FormLabel>
                                     <input
-                                    id="image-upload"
-                                    label="Image"
-                                    name='image'
-                                    type="file"
-                                    onChange={handleFile}
-                                    onBlur={handleBlur}
+                                        id="image-upload"
+                                        label="Image"
+                                        name='image'
+                                        type="file"
+                                        onChange={handleFile}
+                                        onBlur={handleBlur}
+
                                     />
                                     {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
                                 </Grid>
@@ -191,6 +192,7 @@ React.useEffect(() => {
 
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="contact"
                                         name="contact"
                                         label="Contact"
@@ -199,17 +201,17 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <PermContactCalendarRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <PermContactCalendarRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -242,13 +244,13 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <EmojiEvents />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <EmojiEvents />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.achivement && touched.achivement ? (<Typography variant="subtitle1" color="error">{errors.achivement}</Typography>) : null}
                                 </Grid>
@@ -265,18 +267,18 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Stars />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Stars />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.experience && touched.experience ? (<Typography variant="subtitle1" color="error">{errors.experience}</Typography>) : null}
 
                                 </Grid>
-                                 <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
@@ -288,8 +290,8 @@ React.useEffect(() => {
 
                 </BootstrapDialog>
             </React.Fragment>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default AddCoach

@@ -3,13 +3,14 @@ import * as yup from "yup";
 export const AthleteValidate = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
+    contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     gender: yup.string().required('Gender is required'),
     height: yup.number().required('Height is required'),
     weight: yup.number().required('Weight is required'),
-    state: yup.string().required('State is required'),
-    city: yup.string().required('City is required'),
     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
-        .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
+    .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
+    city: yup.string().required('City is required'),
+    state: yup.string().required('State is required'),
     image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
         (value) => {
             if (!value) return false; // if no file is selected
@@ -20,9 +21,8 @@ export const AthleteValidate = yup.object({
             // Check if the file type is either JPEG or PNG
         }
     ),
-    coordinator: yup.string().required('Coordinator is required'),
-    coach: yup.string().required('Coach is required'),
-    contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+    categoryId: yup.string().required('Category is required'),
+    coachId: yup.string().required('Coach is required'),
 
 });
 export const acr = yup.object({

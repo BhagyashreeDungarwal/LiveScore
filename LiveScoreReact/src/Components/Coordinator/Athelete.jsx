@@ -5,8 +5,9 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
 import { useEffect, useMemo } from 'react';
-import { getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import { GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
+import { getCategoryApi } from '../../Redux/Action/AdminAction';
 // import { useState } from 'react';
 
 function CustomToolbar() {
@@ -52,10 +53,12 @@ const Athelete = () => {
   const { atheletedata, loading, data, error } = useSelector(state => state.coordinator)
 
   const columns = useMemo(atheletedata => [
-    { field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
-     renderCell: (params) => (
+    {
+      field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
+      renderCell: (params) => (
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
-      ), },
+      ),
+    },
     { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -66,12 +69,14 @@ const Athelete = () => {
     { field: "weight", headerName: "Weight", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
-    renderCell: params => {
-       // Assuming params.row.category contains the entire category object
-      const categoryName = params.row.category ? params.row.category.categoryName : "Unknown Category";
-      return <span>{categoryName}</span>;
-      } },
+    {
+      field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+      renderCell: params => {
+        // Assuming params.row.category contains the entire category object
+        const categoryName = params.row.category ? params.row.category.categoryName : "Unknown Category";
+        return <span>{categoryName}</span>;
+      }
+    },
     { field: "coachId", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" }
 
@@ -79,13 +84,15 @@ const Athelete = () => {
 
   useEffect(() => {
     dispatch(getAtheleteApi())
-  if(data){
-        toast.success(data.msg)
+    dispatch(getCategoryApi())
+    dispatch(GetCoachApi())
+    if (data) {
+      toast.success(data.msg)
     }
-    if(error){
-        toast.error(data.msg)
+    if (error) {
+      toast.error(data.msg)
     }
-  }, [dispatch,data,error])
+  }, [dispatch, data, error])
 
 
   return (
@@ -95,28 +102,28 @@ const Athelete = () => {
       </Box>
       {
         loading ? <CircularProgress /> :
-      <Stack style={{
-        marginTop: "1%",
-        display: "grid",
-        // width: "100%",
-        height: "80vh",
+          <Stack style={{
+            marginTop: "1%",
+            display: "grid",
+            // width: "100%",
+            height: "80vh",
 
-      }}>
-        {
-        atheletedata && atheletedata.length > 0 ? (
-          <DataGrid
-            rows={atheletedata}
-            columns={columns}
-            getRowId={(row) => row.id}
-            rowHeight={54}
-            rowSelection="true"
-            rowSpacingType='margin'
-            slots={{ toolbar: CustomToolbar }}
-            scrollbarSize={1}
-            columnHeaderHeight={37}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-          />) : (
+          }}>
+            {
+              atheletedata && atheletedata.length > 0 ? (
+                <DataGrid
+                  rows={atheletedata}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  rowHeight={54}
+                  rowSelection="true"
+                  rowSpacingType='margin'
+                  slots={{ toolbar: CustomToolbar }}
+                  scrollbarSize={1}
+                  columnHeaderHeight={37}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />) : (
 
                 <DataGrid
                   autoHeight
@@ -134,10 +141,10 @@ const Athelete = () => {
                 />
               )
             }
-      </Stack>
-}
+          </Stack>
+      }
     </Box>
-    
+
   )
 }
 

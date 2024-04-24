@@ -6,24 +6,14 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
-import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment } from '@mui/material';
+import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment, Select, FormControl, InputLabel } from '@mui/material';
 import { AthleteValidate } from '../Validation/Coordinator';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
+import { AtheletePostApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 
-const coordinatorOptions = [
-    { value: 'John Doe', label: 'John Doe' },
-    { value: 'Jane Smith', label: 'Jane Smith' },
-    { value: 'Mike Johnson', label: 'Mike Johnson' },
-];
 
-const coachOptions = [
-    { value: 'David Brown', label: 'David Brown' },
-    { value: 'Emily White', label: 'Emily White' },
-    { value: 'Michael Lee', label: 'Michael Lee' },
-];
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -37,64 +27,53 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddAthelete = () => {
 
     const theme = useTheme()
-    const {data,error} = useSelector((state => state.coordinator))
+    const { coachdata } = useSelector((state => state.coordinator))
+    const { categorydata } = useSelector((state => state.admin))
     const dispatch = useDispatch()
+
+    const cid = localStorage.getItem("ID")
 
     const initial = {
         name: "",
         email: "",
         contact: "",
         gender: "",
-        coordinator: "",
-        coach: "",
-        dateOfBirth: "",
-        city: "",
         height: "",
         weight: "",
+        dateOfBirth: "",
+        city: "",
         state: "",
+        categoryId: "",
+        coachId: "",
         image: null,
     }
-    
-React.useEffect(() => {
-   if (data) {
-      toast.success(data.msg)
-      console.log(data.msg)
-   }
-   if(error){
-     toast.error(error.msg)
-    console.log(error.msg)
-   }
-}, [ data, error])
 
-
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit,setFieldValue } = useFormik({
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: AthleteValidate,
 
-        onSubmit: async (values) => {
-            console.log(values);
+        onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
                 const formdata = new FormData()
-                formdata.append('Name', values.name)
+                formdata.append('AthleteName', values.name)
                 formdata.append('Email', values.email)
                 formdata.append('Contact', values.contact)
                 formdata.append('Gender', values.gender)
+                formdata.append('Height', values.height)
+                formdata.append('Weight', values.weight)
                 formdata.append('DateOfBirth', values.dateOfBirth)
                 formdata.append('City', values.city)
                 formdata.append('State', values.state)
-                formdata.append('Coach', values.coach)
-                formdata.append('Coordinator', values.coordinator)
+                formdata.append('CategoryId', values.categoryId)
+                formdata.append('CoachId', values.coachId)
+                formdata.append('CoordinatorId', cid)
                 formdata.append('ImageFile', values.image)
 
                 await dispatch(AtheletePostApi(formdata))
-                if(data){
-                    toast.success(data.msg)
-                }
-                if(error){
-                    toast.error(error.msg)
-                }
-                console.log(values)
-                console.log(formdata);
+                setSubmitting(false)
+                resetForm({ values: "" });
+                dispatch(getAtheleteApi())
+                console.log(cid);
             } catch (error) {
                 <CircularProgress />
             }
@@ -105,16 +84,14 @@ React.useEffect(() => {
     const handleFile = (e) => {
         const file = e.target.files[0]
 
-        setFieldValue('image',file)
+        setFieldValue('image', file)
         console.log("file 1", file)
-        // const reader = new FileReader()
-        // reader.readAsDataURL(file)
     }
 
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
-        console.log("open")
+        // console.log("open")
         setOpen(true);
     };
     const handleClose = () => {
@@ -152,10 +129,11 @@ React.useEffect(() => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="name"
                                         name="name"
                                         label="Name"
@@ -163,20 +141,21 @@ React.useEffect(() => {
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Person2Rounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Person2Rounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="email"
                                         name="email"
                                         label="Email"
@@ -184,31 +163,19 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-                                                <AlternateEmailRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                                                    <AlternateEmailRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
-                                    <FormLabel component="legend">Upload Image</FormLabel>
-                                    <input
-                                    id="image-upload"
-                                    label="Image"
-                                    name='image'
-                                    type="file"
-                                    onChange={handleFile}
-                                    onBlur={handleBlur}
-                                    />
-                                    {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
-                                </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
-
+                                <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="contact"
                                         name="contact"
                                         label="Contact"
@@ -217,17 +184,52 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <PermContactCalendarRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <PermContactCalendarRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={6} sm={12}>
+                                    <TextField
+                                        fullWidth
+                                        variant='standard'
+                                        id="dateOfBirth"
+                                        name="dateOfBirth"
+                                        label="Date of Birth"
+                                        type="date"
+                                        InputLabelProps={{ shrink: true }}
+                                        value={values.dateOfBirth}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                    <DateRangeRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <FormLabel component="legend">Upload Image</FormLabel>
+                                    <input
+                                        id="image-upload"
+                                        label="Image"
+                                        name='image'
+                                        type="file"
+                                        onChange={handleFile}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
+                                </Grid>
+                              
+                                <Grid item xl={12} md={12} sm={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -246,11 +248,10 @@ React.useEffect(() => {
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
 
                                 </Grid>
-
                                 <Grid item xl={6} md={6} sm={12}>
-
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="height"
                                         name="height"
                                         label="Height (cm)"
@@ -259,21 +260,20 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <Height />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <Height />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.height && touched.height ? (<Typography variant="subtitle1" color="error">{errors.height}</Typography>) : null}
                                 </Grid>
-
                                 <Grid item xl={6} md={6} sm={12}>
-
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="weight"
                                         name="weight"
                                         label="Weight (kg)"
@@ -282,13 +282,13 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <MonitorWeight />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <MonitorWeight />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.weight && touched.weight ? (<Typography variant="subtitle1" color="error">{errors.weight}</Typography>) : null}
 
@@ -296,6 +296,7 @@ React.useEffect(() => {
                                 <Grid item xl={6} md={6} sm={12}>
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="state"
                                         name="state"
                                         label="State"
@@ -303,13 +304,13 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                <AddLocationAltRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                                    <AddLocationAltRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.state && touched.state ? (<Typography variant="subtitle1" color="error">{errors.state}</Typography>) : null}
                                 </Grid>
@@ -317,6 +318,7 @@ React.useEffect(() => {
 
                                     <TextField
                                         fullWidth
+                                        variant='standard'
                                         id="city"
                                         name="city"
                                         label="City"
@@ -324,77 +326,57 @@ React.useEffect(() => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                                <LocationCityRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                    <LocationCityRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                     {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
-
-                                    <TextField
-                                        fullWidth
-                                        id="dateOfBirth"
-                                        name="dateOfBirth"
-                                        label="Date of Birth"
-                                        type="date"
-                                        InputLabelProps={{ shrink: true }}
-                                        value={values.dateOfBirth}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                                <DateRangeRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                    />
-                                    {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
+                                
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <FormControl variant='filled' fullWidth>
+                                        <InputLabel color='secondary'>Coach</InputLabel>
+                                        <Select
+                                            color='secondary'
+                                            id="coachId"
+                                            name="coachId"
+                                            label="coachId"
+                                            value={values.coachId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        >
+                                            {coachdata?.map((data) => (
+                                                <MenuItem key={data.coachId} value={data.coachId}>{data.coachName}</MenuItem>
+                                            ))
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12}>
-
-                                    <TextField
-                                        fullWidth
-                                        select
-                                        id="coordinator"
-                                        name="coordinator"
-                                        label="Coordinator"
-                                        value={values.coordinator}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    >
-                                        {coordinatorOptions.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    {errors.coordinator && touched.coordinator ? (<Typography variant="subtitle1" color="error">{errors.coordinator}</Typography>) : null}
+                                    <FormControl variant='filled' fullWidth>
+                                        <InputLabel color='secondary'>Category</InputLabel>
+                                        <Select
+                                            color='secondary'
+                                            id="categoryId"
+                                            name="categoryId"
+                                            label="category"
+                                            value={values.categoryId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        >
+                                            {categorydata?.map((data) => (
+                                                <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
+                                            ))
+                                            }
+                                        </Select>
+                                    </FormControl>
+                                    {errors.categoryId && touched.categoryId ? (<Typography variant="subtitle1" color="error">{errors.categoryId}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
-                                    <TextField
-                                        fullWidth
-                                        select
-                                        id="coach"
-                                        name="coach"
-                                        label="Coach"
-                                        value={values.coach}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    >
-                                        {coachOptions.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    {errors.coach && touched.coach ? (<Typography variant="subtitle1" color="error">{errors.coach}</Typography>) : null}
-                                </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
