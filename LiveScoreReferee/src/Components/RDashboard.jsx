@@ -1,8 +1,14 @@
 import React from 'react'
+import Header from './Header'
+import Card from './Card'
+
 
 const RDashboard = () => {
   return (
-    <div>RDashboard</div>
+    <>
+    <Header />
+    <Card />
+    </>
   )
 }
 

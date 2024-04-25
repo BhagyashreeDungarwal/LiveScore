@@ -1,6 +1,6 @@
 import { Dashboard } from "@mui/icons-material"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import HeaderNew from "./Components/HeaderNew"
+import Header from "./Components/Header"
 import Login from "./Components/Login"
 import Profile from "./Components/Profile"
 import { ToastContainer } from "react-toastify"
@@ -43,7 +43,7 @@ function App() {
 
   return (
     <> 
-    {/* <HeaderNew/>  */}
+    {/* <Header/>  */}
    <RouterProvider router={router} />
     {/* <Profile /> */}
 
