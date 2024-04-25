@@ -59,8 +59,8 @@ namespace LiveScore.Controllers
             if (passwordMatches && status == "Verified" )
             {
 
-                  user.LastLogin = DateTime.Now;
-             await _dbcontext.SaveChangesAsync();
+                 user.LastLogin = DateTime.Now;
+                await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
                 return Ok(new { token = token , role = user.RoleId , id = user.Id, msg ="Welcome Back" });
             }

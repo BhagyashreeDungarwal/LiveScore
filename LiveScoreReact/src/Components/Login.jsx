@@ -40,7 +40,7 @@ const Login = () => {
   };
 
   // setting role and message
-  const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
+  // const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -100,8 +100,7 @@ const Login = () => {
       resetForm({ values: "" });
     },
   });
-
-
+  
   // making password show and hide button 
   const [type, setType] = useState("password");
   const [visible, setVisible] = useState(false);
@@ -118,7 +117,6 @@ const Login = () => {
 
   return (
     <Grid container
-
       sx={{ minHeight: "100vh", width: "100vw" }}>
       <Grid item xs={false} sm={false} lg={6} sx={{ backgroundImage: `url(${loginImg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}>
       </Grid>
