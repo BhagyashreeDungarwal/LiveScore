@@ -11,16 +11,16 @@ namespace LiveScoring.Model
     {
         public int TId { get; set; }
         public string? TournamentName { get; set; }
-        public string? Location { get; set; }
+        public string? Venue { get; set; }
 
 
         [DataType(DataType.Date)]
         public DateTime TournamentDate { get; set; }
 
-        public int? CategoryId { get; set; }
+        //public int? CategoryId { get; set; }
 
-        [JsonIgnore]
-        public virtual Category? Category { get; set; }
+        //[JsonIgnore]
+        //public virtual Category? Category { get; set; }
 
     }
 }

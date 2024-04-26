@@ -1,5 +1,4 @@
 
-import { HomeRounded } from '@mui/icons-material'
 import logo from '../assets/image/Logo.png'
 
 const Index = () => {

@@ -457,14 +457,6 @@ namespace LiveScore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TId"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(101)
-                        .HasColumnType("nvarchar(101)");
-
                     b.Property<DateTime>("TournamentDate")
                         .HasColumnType("datetime2");
 
@@ -473,9 +465,12 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.HasKey("TId");
+                    b.Property<string>("Venue")
+                        .IsRequired()
+                        .HasMaxLength(101)
+                        .HasColumnType("nvarchar(101)");
 
-                    b.HasIndex("CategoryId");
+                    b.HasKey("TId");
 
                     b.ToTable("Tournaments");
                 });
@@ -567,16 +562,6 @@ namespace LiveScore.Migrations
                     b.Navigation("Athlete");
 
                     b.Navigation("Round");
-                });
-
-            modelBuilder.Entity("LiveScoring.Model.Tournament", b =>
-                {
-                    b.HasOne("LiveScoring.Model.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Category");
                 });
 #pragma warning restore 612, 618
         }

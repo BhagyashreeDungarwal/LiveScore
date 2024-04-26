@@ -214,14 +214,9 @@ namespace LiveScore.Data
                 entity.HasKey(t => t.TId); 
 
                 entity.Property(t => t.TournamentName).IsRequired().HasMaxLength(101); 
-                entity.Property(t => t.Location).IsRequired().HasMaxLength(101); 
+                entity.Property(t => t.Venue).IsRequired().HasMaxLength(101); 
                 entity.Property(t => t.TournamentDate); 
-                entity.Property(t => t.CategoryId).IsRequired(false); 
-
-                entity.HasOne(t => t.Category)
-                    .WithMany()
-                    .HasForeignKey(t => t.CategoryId)
-                    .OnDelete(DeleteBehavior.Restrict); 
+               
             });
 
             modelBuilder.Entity<Viewers>(entity =>
