@@ -21,7 +21,7 @@ function CustomToolbar() {
         slotProps={{ tooltip: { title: 'Change density' } }}
       />
       <Box sx={{ flexGrow: 1 }} />
-     <AddCoach />
+      <AddCoach />
     </GridToolbarContainer>
   );
 }
@@ -48,39 +48,38 @@ function CustomNoRowsOverlay() {
   );
 }
 const Coach = () => {
-    const dispatch =  useDispatch()
-    const {coachdata, loading, data, error} = useSelector(state => state.coordinator)
+  const dispatch = useDispatch()
+  const { coachdata, loading, data, error } = useSelector(state => state.coordinator)
 
-    const columns = useMemo(coachdata => [
-    { field: "imageUrl", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
-     renderCell: (params) => (
+  const columns = useMemo(coachdata => [
+    {
+      field: "imageUrl", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+      renderCell: (params) => (
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
-      ), },
+      ),
+    },
     { field: "coachName", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coachEmail", headerName: "Email", width: 170, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contactNo", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
-     { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "experience", headerName: "Experience", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "achievements", headerName: "Achievements", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    
+
   ])
 
   useEffect(() => {
     dispatch(GetCoachApi())
-    if(data){
-        toast.success(data.msg)
+    if (data) {
+      toast.success(data.msg)
     }
-    if(error){
-        toast.error(data.msg)
+    if (error) {
+      toast.error(data.msg)
     }
-  }, [dispatch,data,error])
-  
+  }, [dispatch, data, error])
+
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
-        <HeaderFormat title="Coach Management" />
-      </Box>
 
       {
         loading ? <CircularProgress /> :
@@ -130,4 +129,4 @@ const Coach = () => {
   )
 }
 
-export default ProtectedRoute(Coach,'coordinator') 
+export default ProtectedRoute(Coach, 'coordinator') 

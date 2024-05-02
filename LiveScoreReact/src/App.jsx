@@ -4,7 +4,7 @@ import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
-import { Category, Dashboard, Handshake, MilitaryTech, Person2, Sports, SportsMartialArts, Verified } from '@mui/icons-material';
+import { Category, Dashboard, Handshake, MilitaryTech, Person2, Person2Rounded, Sports, SportsMartialArts, Verified } from '@mui/icons-material';
 import Header from './Components/Common/Header';
 // import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
@@ -18,6 +18,7 @@ import CategoryManage from './Components/Admin/CategoryManage';
 import MatchDetails from './Components/Admin/MatchDetails';
 import Match from './Components/Coordinator/Match';
 import Coach from './Components/Coordinator/Coach';
+import CProfile from './Components/Coordinator/CProfile';
 
 
 function App() {
@@ -83,6 +84,15 @@ function App() {
         "Coach",
         "Matches",
         
+      ],
+      sideroutername:[
+        "Profile"
+      ],
+      siderouteicon:[
+        Person2Rounded
+      ],
+      sideroutelink:[
+        "cprofile"
       ]
     },
     referee: {
@@ -94,6 +104,15 @@ function App() {
       ],
       name: [
         "Referee Dashboard"
+      ],
+      sideroutername:[
+        "Profile"
+      ],
+      siderouteicon:[
+        Person2Rounded
+      ],
+      sideroutelink:[
+        "cprofile"
       ]
     }
   }
@@ -148,24 +167,10 @@ function App() {
 
       ]
     },
-    // {
-    //   path:"/referee",
-    //   element:(<Header  link="referee" icons={referee.icon} sidebarRoute={referee.sidebarRoute}  name={referee.name} />),
-    //   children:[
-    //     {
-    //       index:true,
-    //       element:<Rdashboard />,
-    //     },
-    //     {
-    //       path:"rdashboard",
-    //       element:<Rdashboard />
-    //     }
-    //   ]
-    // },
     {
       path:"/coordinator",
       element:(
-        <Header  link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} />
+        <Header  link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} sideroutername={coordinator.sideroutername}  siderouteicon={coordinator.siderouteicon} sideroutelink={coordinator.sideroutelink} />
       ),
       children:[
         {
@@ -187,6 +192,9 @@ function App() {
         },{
           path:"match",
           element:<Match/>
+        },{
+          path:"cprofile",
+          element:<CProfile/>
         }
       ]
     },

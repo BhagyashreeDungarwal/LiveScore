@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import {Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
+import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles'
-import { Link,  Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
 
 
 const drawerWidth = 240;
 
-const Header = ({ link, icons, sidebarRoute, name }) => {
+const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon , sideroutelink}) => {
     const theme = useTheme()
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
@@ -20,7 +20,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
 
     // for logout
     const navigate = useNavigate()
-    const handleLogout = () =>{
+    const handleLogout = () => {
         localStorage.removeItem('role')
         navigate("/")
     }
@@ -41,7 +41,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
         setMobileOpen(false);
     };
 
-    
+
     const handleDrawerTransitionEnd = () => {
         setIsClosing(false);
     };
@@ -61,7 +61,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
             }} color="initial">Live Score</Typography>
             {/* <Toolbar /> */}
             {/* <Divider /> */}
-            <List sx={{ mt:"3vh"}}>
+            <List sx={{ mt: "3vh" }}>
                 {sidebarRoute?.map((text, index) => (
                     <ListItem key={text} disablePadding sx={{ display: "block" }}>
                         <ListItemButton
@@ -133,7 +133,7 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: '45px' }}
+                                sx={{ mt: '45px',maxWidth:"15%" }}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -148,19 +148,30 @@ const Header = ({ link, icons, sidebarRoute, name }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem onClick={handleCloseUserMenu}  >
-                                    <ListItemIcon>
-                                        <Person2Rounded />
-                                    </ListItemIcon>
-                                    Profile
-                                </MenuItem>
-                                <MenuItem onClick={handleLogout}  >
-                                    <ListItemIcon>
-                                        <LogoutRounded />
-                                    </ListItemIcon>
-                                    Logout
-                                </MenuItem>
+                                {sideroutelink?.map((text, index) => (
+                                    <MenuItem key={text}  sx={{maxHeight:"2%"}} >
+                                        <ListItemButton
+                                            component={Link}
+                                            to={`/${link}/${text}`}
+                                            sx={{
+                                                maxHeight:20,
+                                                justifyContent: open ? "initial" : "center",
+                                            }}
+                                        >
+                                            <ListItemIcon
+                                               sx={{
+                                                color: theme.palette.primary.light,
+                                                minWidth:0,
+                                                mr:1,
+                                                justifyContent: "center",
+                                            }}>
+                                                {React.createElement(siderouteicon[index % siderouteicon.length])}
+                                            </ListItemIcon>
+                                        <ListItemText primary={sideroutername[index]} sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
+                                        </ListItemButton>
+                                    </MenuItem>
 
+                                ))}
                             </Menu>
                         </Box>
 

@@ -3,6 +3,9 @@ import {
     GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
     GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+    CoordinatorProfileStart,
+    CoordinatorProfileSuccess,
+    CoordinatorProfileFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -51,6 +54,15 @@ export const CoordinatorPostApi = (values) => async (dispatch) => {
     } catch (error) {
         dispatch(CoordinatorPostFail(error.response.data))
         // console.log(e.response.data.msg)
+    }
+}
+export const CoordinatorProfileApi = (id) => async (dispatch) => {
+    try {
+        dispatch(CoordinatorProfileStart())
+        const { data } = await axios.get(`${url}/ACR/${id}`)
+        dispatch(CoordinatorProfileSuccess(data))
+    } catch (error) {
+        dispatch(CoordinatorProfileFail(error.response.data))
     }
 }
 export const RefereePostApi = (values) => async (dispatch) => {

@@ -8,14 +8,15 @@ import { acr, } from '../Validation/Coordinator'
 import { useDispatch, useSelector } from 'react-redux'
 import { CoordinatorPostApi } from '../../Redux/Action/CoordinatorAction'
 import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 const RegisterCoordinator = () => {
     const theme = useTheme()
-    const { data, error,  } = useSelector((state) => state.coordinator);
-   const disptach = useDispatch()
+    const { data, error, } = useSelector((state) => state.coordinator);
+    const disptach = useDispatch()
 
 
     const [type, setType] = useState("password")
@@ -45,16 +46,17 @@ const RegisterCoordinator = () => {
         city: "",
     }
 
-useEffect(() => {
-   if (data) {
-      toast.success(data.msg)
-      console.log(data.msg)
-   }
-   if(error){
-     toast.error(error.msg)
-    console.log(error.msg)
-   }
-}, [ data, error])
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (data) {
+            toast.success(data.msg)
+            console.log(data.msg)
+        }
+        if (error) {
+            toast.error(error.msg)
+            console.log(error.msg)
+        }
+    }, [data, error])
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
@@ -63,23 +65,24 @@ useEffect(() => {
         onSubmit: async (values) => {
             console.log(values)
             const formData = new FormData();
-                formData.append('ImageFile', values.image); // Assuming you have ImageFile in your form values
-                formData.append('Email', values.email);
-                formData.append('Name', values.name);
-                formData.append('Password', values.password);
-                formData.append('Contact', values.contact);
-                formData.append('Age', values.age);
-                formData.append('DateOfBirth', values.dateOfBirth);
-                formData.append('Gender', values.gender);
-                formData.append('City', values.city);
-                formData.append('State', values.state);
-           await disptach(CoordinatorPostApi(formData))
+            formData.append('ImageFile', values.image); // Assuming you have ImageFile in your form values
+            formData.append('Email', values.email);
+            formData.append('Name', values.name);
+            formData.append('Password', values.password);
+            formData.append('Contact', values.contact);
+            formData.append('Age', values.age);
+            formData.append('DateOfBirth', values.dateOfBirth);
+            formData.append('Gender', values.gender);
+            formData.append('City', values.city);
+            formData.append('State', values.state);
+            await disptach(CoordinatorPostApi(formData))
             if (data) {
                 toast.success(data.msg)
+                navigate("/")
             }
 
             if (error) {
-                   toast.error(error.msg)
+                toast.error(error.msg)
             }
         }
     })
@@ -284,7 +287,7 @@ useEffect(() => {
                                     fullWidth
                                     color='secondary'
                                     type='file'
-                                    inputProps ={{  accept: 'image/*' }}
+                                    inputProps={{ accept: 'image/*' }}
                                     // style={{ display: 'none' }} 
                                     //sx={{ marginBottom: "15px" }}
                                     // value={values.image}
