@@ -8,6 +8,7 @@ import { useEffect, useMemo } from 'react';
 import { GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
 import { getCategoryApi } from '../../Redux/Action/AdminAction';
+import dayjs from 'dayjs';
 // import { useState } from 'react';
 
 function CustomToolbar() {
@@ -59,25 +60,17 @@ const Athelete = () => {
         <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
       ),
     },
+   
     { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "email", headerName: "Email", width: 190, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "age", headerName: "Age", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "dateOfBirth", headerName: "DateOFBirth", width: 105, headerClassName: "header", headerAlign: "center", align: "center",valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "age", headerName: "Age", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "height", headerName: "Height", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "weight", headerName: "Weight", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    {
-      field: "categoryId", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
-      renderCell: params => {
-        // Assuming params.row.category contains the entire category object
-        const categoryName = params.row.category ? params.row.category.categoryName : "Unknown Category";
-        return <span>{categoryName}</span>;
-      }
-    },
-    { field: "coachId", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "categoryName", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",  },
+    { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" }
 
   ])
