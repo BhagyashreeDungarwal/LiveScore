@@ -57,37 +57,28 @@ namespace LiveScore.Controllers
             return coach;
         }
 
-        // PUT: api/Coaches/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("PutCoach/{id}")]
-        public async Task<IActionResult> PutCoach(int id, [FromForm] ImageCoach coachimg)
+        //Put
+        [HttpPut("UpdateCoach/{id}")]
+        public async Task<IActionResult> UpdateCoach(int id, [FromBody] Coach coachDto)
         {
-            //if (id != coachimg.CoachId)
-            //{
-            //    return BadRequest();
-            //}
-
             var coach = await _context.Coaches.FindAsync(id);
             if (coach == null)
             {
                 return NotFound(new { error = "Coach not found" });
             }
 
-            string imageUrl = coach.ImageUrl;
-            if (coachimg.ImageFile != null)
+            if (!ModelState.IsValid)
             {
-                imageUrl = await UploadImage(coachimg.ImageFile);
+                return BadRequest(ModelState);
             }
 
             // Update coach properties
-            coach.CoachName = coachimg.CoachName;
-            coach.CoachEmail = coachimg.CoachEmail;
-            coach.Achievements = coachimg.Achievements;
-            coach.Experience = coachimg.Experience;
-            coach.ContactNo = coachimg.ContactNo;
-            coach.Gender = coachimg.Gender;
-            coach.ImageUrl = imageUrl;
-
+            coach.CoachName = coachDto.CoachName;
+            coach.CoachEmail = coachDto.CoachEmail;
+            coach.Achievements = coachDto.Achievements;
+            coach.Experience = coachDto.Experience;
+            coach.ContactNo = coachDto.ContactNo;
+            coach.Gender = coachDto.Gender;
             string messageBody = "<!DOCTYPE html>" +
                                  "<html>" +
                                  "<head>" +
@@ -95,20 +86,21 @@ namespace LiveScore.Controllers
                                  "</head>" +
                                 "<body>" +
                                 $" <h2>Respected {coach.CoachName},</h2>" +
-                                "< p > Congratulations on your recent update at Live Score! You're now on board as a Coach. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>"+
+                                "< p > Congratulations on your recent update at Live Score! You're now on board as a Coach. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
                                 "< p > Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</ p >" +
-                                "< p > Welcome aboard! </ p >"+
-                                "< p > Best regards,< br />"+
+                                "< p > Welcome aboard! </ p >" +
+                                "< p > Best regards,< br />" +
                                 "Live Score </ p >" +
                                  "</body>" +
                                    "</html>";
 
-            _emailSender.SendEmail(coach.CoachEmail, "SucessFully Registered", messageBody);
+            _emailSender.SendEmail(coach.CoachEmail, "Sucessfully Updated", messageBody);
+
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { msg = "Successfully Updated!!" });
+                return Ok(new { msg = "Coach information successfully updated" });
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -123,6 +115,48 @@ namespace LiveScore.Controllers
             }
         }
 
+        [HttpPut("UpdateCoachImage/{id}")]
+        public async Task<IActionResult> UpdateCoachImage(int id, [FromForm] UpdateImg updateImg)
+        {
+            var coach = await _context.Coaches.FindAsync(id);
+            if (coach == null)
+            {
+                return NotFound(new { error = "Coach not found" });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string imageUrl = coach.ImageUrl;
+            if (updateImg.ImageFile != null)
+            {
+                imageUrl = await UploadImage(updateImg.ImageFile);
+                coach.ImageUrl = imageUrl;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Ok(new { msg = "Coach image successfully updated" });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CoachExists(id))
+                    {
+                        return NotFound(new { error = "Coach Id Not Found" });
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            return BadRequest(new { msg = "Image file is missing" });
+        }
+
+       
         // POST: api/Coaches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("PostCoach")]

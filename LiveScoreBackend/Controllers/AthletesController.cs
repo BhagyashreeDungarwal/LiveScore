@@ -170,6 +170,23 @@ namespace LiveScore.Controllers
             athlete.CoachId = athleteDto.CoachId;
             athlete.Coordinater = athleteDto.Coordinater;
 
+            string messageBody = "<!DOCTYPE html>" +
+                                  "<html>" +
+                                  "<head>" +
+                                  "<title>Welcome to Live Score!</title>" +
+                                  "</head>" +
+           "<body>" +
+                                 $" <h2>Respected  {athlete.AthleteName},</h2>" +
+                                  "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                  "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                  "<p>Welcome aboard!</p>" +
+                                  "<p>Best regards,<br />" +
+                                  " Live Score</p>" +
+                                  "</body>" +
+                                  "</html>";
+
+            _emailSender.SendEmail(athlete.Email, "SucessFully Registered", messageBody);
+
             try
             {
                 await _context.SaveChangesAsync();
