@@ -374,69 +374,68 @@ namespace LiveScore.Controllers
         }
 
         //Updating Coordinator
+        //[HttpPut("updateCoordinator")]
+        //public async Task<ActionResult<ACR>> UpdateCoordinator(int id, [FromForm] Imageacr acrimg)
+        //{
+        //    if (acrimg == null)
+        //    {
+        //        return BadRequest(new { msg = "Please provide all fields" });
+        //    }
 
-        [HttpPut("updateCoordinator")]
-        public async Task<ActionResult<ACR>> UpdateCoordinator(int id, [FromForm] Imageacr acrimg)
-        {
-            if (acrimg == null)
-            {
-                return BadRequest(new { msg = "Please provide all fields" });
-            }
+        //    var uacr = await _dbcontext.Admin.FindAsync(id);
+        //    if (uacr == null)
+        //    {
+        //        return NotFound(new { msg = "Coordinator not found" });
+        //    }
 
-            var uacr = await _dbcontext.Admin.FindAsync(id);
-            if (uacr == null)
-            {
-                return NotFound(new { msg = "Coordinator not found" });
-            }
+        //    // Check if the new email already exists
+        //    if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
+        //    {
+        //        return BadRequest(new { msg = "Email already exists for another coordinator." });
+        //    }
 
-            // Check if the new email already exists
-            if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
-            {
-                return BadRequest(new { msg = "Email already exists for another coordinator." });
-            }
+        //    // Check if the new contact already exists
+        //    if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
+        //    {
+        //        return BadRequest(new { msg = "Contact already exists for another coordinator." });
+        //    }
 
-            // Check if the new contact already exists
-            if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
-            {
-                return BadRequest(new { msg = "Contact already exists for another coordinator." });
-            }
-
-            string imageUrl = uacr.ImageURL;
-            if (acrimg.ImageFile != null)
-            {
-                imageUrl = await UploadImage(acrimg.ImageFile);
-            }
+        //    string imageUrl = uacr.ImageURL;
+        //    if (acrimg.ImageFile != null)
+        //    {
+        //        imageUrl = await UploadImage(acrimg.ImageFile);
+        //    }
 
 
-            uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
-            uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
-            uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
-            uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
-            uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
-            uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
-            uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
-            uacr.ImageURL = imageUrl;
+        //    uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
+        //    uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
+        //    uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
+        //    uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
+        //    uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
+        //    uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
+        //    uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
+        //    uacr.ImageURL = imageUrl;
 
-            await _dbcontext.SaveChangesAsync();
-            string messageBody = "<!DOCTYPE html>" +
-                                   "<html>" +
-                                   "<head>" +
-                                   "<title>Welcome to Live Score!</title>" +
-                                   "</head>" +
-                                   "<body>" +
-                                  $" <h2>Respected  {uacr.Name},</h2>" +
-                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                   "<p>Welcome aboard!</p>" +
-                                   "<p>Best regards,<br />" +
-                                   " Live Score</p>" +
-                                   "</body>" +
-                                   "</html>";
+        //    await _dbcontext.SaveChangesAsync();
+        //    string messageBody = "<!DOCTYPE html>" +
+        //                           "<html>" +
+        //                           "<head>" +
+        //                           "<title>Welcome to Live Score!</title>" +
+        //                           "</head>" +
+        //                           "<body>" +
+        //                          $" <h2>Respected  {uacr.Name},</h2>" +
+        //                           $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+        //                           "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+        //                           "<p>Welcome aboard!</p>" +
+        //                           "<p>Best regards,<br />" +
+        //                           " Live Score</p>" +
+        //                           "</body>" +
+        //                           "</html>";
 
-            _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
+        //    _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
 
-            return Ok(new { msg = "Coordinator updated successfully" });
-        }
+        //    return Ok(new { msg = "Coordinator updated successfully" });
+        //}
 
 
 

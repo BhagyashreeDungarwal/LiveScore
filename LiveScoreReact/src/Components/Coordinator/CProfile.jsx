@@ -25,6 +25,11 @@ const CProfile = () => {
   }
 
   useEffect(() => {
+    disptach(CoordinatorProfileApi(cid))
+}, [cid, disptach]);
+
+
+  useEffect(() => {
     if (data) {
         toast.success(data.msg);
     }
@@ -36,9 +41,6 @@ useEffect(() => {
     }
 }, [error]);
 
-  useEffect(() => {
-    disptach(CoordinatorProfileApi(cid))
-}, [cid, disptach]);
 
 useEffect(() => {
   if (cprofiledata) {
@@ -86,12 +88,12 @@ useEffect(() => {
                 display: 'block',
                 marginTop: 'auto',
                 marginBottom: 'auto',
-                maxHeight: { xs: 150, md: 167, lg: 500, sm:500 },
-                maxWidth: { xs: 260, md: 300, lg: 340, sm:480 },
-                borderRadius: 5,
+                maxHeight: { xs: 150, md: 167, lg: 250, sm:500 },
+                maxWidth: { xs: 260, md: 100, lg: 230, sm:480 },
+                borderRadius: 50,
               }}
               alt="The house from the offer."
-              src={cprofiledata.imageURL}
+              src={cprofiledata ? cprofiledata.imageURL : "" }
             />
             <Button
               type="submit"
