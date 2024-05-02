@@ -50,7 +50,6 @@ export const acr = yup.object({
 });
 export const acrupdate = yup.object({
     name: yup.string().required('Name is required'),
-    email: yup.string().email('Invalid email address').required('Email is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
      dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
         .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),

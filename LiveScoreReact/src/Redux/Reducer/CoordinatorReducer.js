@@ -66,6 +66,19 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        //Update Coordinator Profile 
+        CoordinatorProfileUpdateStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        CoordinatorProfileUpdateSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        CoordinatorProfileUpdateFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
         //Post Referee
         RefereePostStart: (state) => {
             state.loading = true;
@@ -132,5 +145,5 @@ const CoordinatorSlice = createSlice({
 
 export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
-    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess,CoordinatorProfileFail,CoordinatorProfileStart} = CoordinatorSlice.actions;
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess,CoordinatorProfileFail,CoordinatorProfileStart ,CoordinatorProfileUpdateFail,CoordinatorProfileUpdateStart,CoordinatorProfileUpdateSuccess, } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

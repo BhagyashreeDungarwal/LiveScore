@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { acrupdate } from '../Validation/Coordinator'
 import { toast } from 'react-toastify'
-import { CoordinatorProfileApi } from '../../Redux/Action/CoordinatorAction'
+import { CoordinatorProfileApi, CoordinatorUpdateProfileApi } from '../../Redux/Action/CoordinatorAction'
 import dayjs from 'dayjs'
 
 const CProfile = () => {
@@ -16,7 +16,6 @@ const CProfile = () => {
   const cid = localStorage.getItem("ID")
   const initial = {
     name: "",
-    email: "",
     contact: "",
     dateOfBirth: "",
     gender: "",
@@ -56,7 +55,7 @@ useEffect(() => {
     validationSchema: acrupdate,
     onSubmit: async (values) => {
       console.log(values)
-      // await disptach(CoordinatorPostApi(formData))
+      //  await disptach(CoordinatorUpdateProfileApi(cid,values))
       if (data) {
         toast.success(data.msg)
         navigate("/")
@@ -72,9 +71,9 @@ useEffect(() => {
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Profile" />
       </Box>
-      <Grid container spacing={2} sx={{ mt: "1%" }} >
+      <Grid container spacing={2} sx={{ mt: "1%" }}  >
 
-        <Grid item xl={4} md={4} sm={12} xs={12}  >
+        <Grid item xl={4} md={4} sm={12} xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}  >
           <Paper sx={{
             padding: 4,
 
@@ -89,7 +88,7 @@ useEffect(() => {
                 marginTop: 'auto',
                 marginBottom: 'auto',
                 maxHeight: { xs: 150, md: 167, lg: 250, sm:500 },
-                maxWidth: { xs: 260, md: 100, lg: 230, sm:480 },
+                maxWidth: { xs: 150, md: 100, lg: 230, sm:480 },
                 borderRadius: 50,
               }}
               alt="The house from the offer."
@@ -107,7 +106,7 @@ useEffect(() => {
         </Grid>
         <Grid item xl={8} md={8} sm={12} xs={12} >
           <Paper sx={{
-            padding: 4,
+            padding: 3,
           }}
             elevation={1}>
             <form onSubmit={handleSubmit}>
@@ -138,30 +137,6 @@ useEffect(() => {
 
                   />
                   {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
-                </Grid>
-                <Grid item xl={12} sm={12} xs={12} lg={12}  >
-                  <TextField
-                    label="Email"
-                    size='small'
-                    variant="standard"
-                    fullWidth
-                    name='email'
-                    color='secondary'
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    InputLabelProps={{ shrink: true }}
-                    placeholder='Enter Email'
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-                          <AlternateEmailRounded />
-                        </InputAdornment>
-                      ),
-                    }}
-
-                  />
-                  {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                 </Grid>
                 <Grid item xl={6} sm={12} xs={12} lg={6} >
                   <TextField

@@ -373,6 +373,48 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Successfully Added  Coordinator" });
         }
 
+        [HttpPut("updateCoordinator/{id}")]
+        public async Task<ActionResult<ACR>> UpdateCoordinator(int id, ACR acr)
+        {
+            var uacr = await _dbcontext.Admin.FindAsync(id);
+            if (uacr == null)
+            {
+                return NotFound(new { msg = "Coordinator not found" });
+            }
+            if (!string.IsNullOrEmpty(acr.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acr.Contact))
+            {
+                return BadRequest(new { msg = "Contact already exists for another coordinator." });
+            }
+            uacr.Name = !string.IsNullOrEmpty(acr.Name) ? acr.Name : uacr.Name;
+            uacr.Contact = !string.IsNullOrEmpty(acr.Contact) ? acr.Contact : uacr.Contact;
+            uacr.DateOfBirth = acr.DateOfBirth != null ? acr.DateOfBirth : uacr.DateOfBirth;
+            uacr.Gender = !string.IsNullOrEmpty(acr.Gender) ? acr.Gender : uacr.Gender;
+            uacr.City = !string.IsNullOrEmpty(acr.City) ? acr.City : uacr.City;
+            uacr.State = !string.IsNullOrEmpty(acr.State) ? acr.State : uacr.State;
+
+
+            await _dbcontext.SaveChangesAsync();
+
+            string messageBody = "<!DOCTYPE html>" +
+                                "<html>" +
+                                "<head>" +
+                                "<title>Welcome to Live Score!</title>" +
+                                "</head>" +
+                                "<body>" +
+                               $" <h2>Respected  {uacr.Name},</h2>" +
+                                $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                "<p>Welcome aboard!</p>" +
+                                "<p>Best regards,<br />" +
+                                " Live Score</p>" +
+                                "</body>" +
+                                "</html>";
+
+            _emailSender.SendEmail(uacr.Email, "Successfully Registered", messageBody);
+
+            return Ok(new { msg = "Coordinator updated successfully" });
+        }
+
         //Updating Coordinator
         //[HttpPut("updateCoordinator")]
         //public async Task<ActionResult<ACR>> UpdateCoordinator(int id, [FromForm] Imageacr acrimg)
