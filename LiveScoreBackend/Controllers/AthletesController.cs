@@ -1,10 +1,12 @@
 ﻿using CloudinaryDotNet.Actions;
 using LiveScore.Data;
 using LiveScore.Model;
+using LiveScore.Model.ViewModel;
 using LiveScore.Services;
 //using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace LiveScore.Controllers
@@ -26,24 +28,53 @@ namespace LiveScore.Controllers
 
         // GET: api/Athletes
         [HttpGet("getAthelete")]
-        public async Task<ActionResult<IEnumerable<Athlete>>> GetAthletes()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetAthletes()
         {
             if (_context.Athletes == null)
             {
                 return NotFound(new { msg = "Athelete Not Found" });
             }
-            return await _context.Athletes.ToListAsync();
+            return await _context.Athletes.Include((e)=> e.Coach).Include((c) => c.Category).Include((o)=> o.acr)
+                .Select((a)=> new {
+                    id = a.Id,
+                    athleteName = a.AthleteName,
+                    email = a.Email,
+                    contact = a.Contact,
+                    imageUrl = a.ImageUrl,
+                    dateOfBirth = a.DateOfBirth,
+                    age = a.Age,
+                    gender = a.Gender,
+                    city = a.City,
+                    state = a.State,
+                    coachName = a.Coach.CoachName,
+                    categoryName = a.Category.CategoryName,
+                    coordinater = a.acr.Name,
+                }).ToListAsync();
         }
 
-        // GET: api/Athletes/5
+        //// GET: api/Athletes/5
         [HttpGet("GetAthelete/{id}")]
-        public async Task<ActionResult<Athlete>> GetAthlete(int id)
+        public async Task<ActionResult<dynamic>> GetAthlete(int id)
         {
-            if (_context.Athletes == null)
-            {
-                return NotFound();
-            }
-            var athlete = await _context.Athletes.FindAsync(id);
+            var athlete = await _context.Athletes.Include((e) => e.Coach).Include((c) => c.Category).Include((o) => o.acr)
+                .Where(a => a.Id == id)
+                .Select(a => new {
+                    id = a.Id,
+                    athleteName = a.AthleteName,
+                    email = a.Email,
+                    contact = a.Contact,
+                    imageUrl = a.ImageUrl,
+                    dateOfBirth = a.DateOfBirth,
+                    age = a.Age,
+                    gender = a.Gender,
+                    city = a.City,
+                    state = a.State,
+                    coachName = a.Coach.CoachName,
+                    categoryName = a.Category.CategoryName,                   
+                    coordinater = a.acr.Name,
+                    
+                })
+                .FirstOrDefaultAsync();
 
             if (athlete == null)
             {
@@ -52,17 +83,68 @@ namespace LiveScore.Controllers
 
             return athlete;
         }
-
         // PUT: api/Athletes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("PutAthelete/{id}")]
-        public async Task<IActionResult> PutAthlete(int id, [FromForm] Images athleteDto)
-        {
-            //if (id != athleteDto.Id)
-            //{
-            //    return BadRequest(new { msg = "Mismatched ID in the request body" });
-            //}
+        //[HttpPut("PutAthelete/{id}")]
+        //public async Task<IActionResult> PutAthlete(int id, [FromForm] Images athleteDto)
+        //{
+        //    //if (id != athleteDto.Id)
+        //    //{
+        //    //    return BadRequest(new { msg = "Mismatched ID in the request body" });
+        //    //}
 
+        //    var athlete = await _context.Athletes.FindAsync(id);
+        //    if (athlete == null)
+        //    {
+        //        return NotFound(new { msg = "Athlete not found" });
+        //    }
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (athleteDto.ImageFile != null)
+        //    {
+        //        string imageUrl = await UploadImage(athleteDto.ImageFile);
+        //        athlete.ImageUrl = imageUrl;
+        //    }
+
+        //    // Update athlete properties
+        //    athlete.AthleteName = athleteDto.AthleteName;
+        //    athlete.Email = athleteDto.Email;
+        //    athlete.Contact = athleteDto.Contact;
+        //    athlete.DateOfBirth = athleteDto.DateOfBirth;
+        //    athlete.Gender = athleteDto.Gender;
+        //    athlete.Height = athleteDto.Height;
+        //    athlete.Weight = athleteDto.Weight;
+        //    athlete.City = athleteDto.City;
+        //    athlete.State = athleteDto.State;
+        //    athlete.CategoryId = athleteDto.CategoryId;
+        //    athlete.CoachId = athleteDto.CoachId;
+        //    athlete.Coordinater = athleteDto.CoordinatorId;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //        return Ok(new { msg = "Successfully Updated!!" });
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!AthleteExists(id))
+        //        {
+        //            return NotFound(new { msg = "Athelete Not Found" });
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+        //}
+
+        [HttpPut("UpdateAthlete/{id}")]
+        public async Task<IActionResult> UpdateAthlete(int id,Athlete athleteDto)
+        {
             var athlete = await _context.Athletes.FindAsync(id);
             if (athlete == null)
             {
@@ -72,12 +154,6 @@ namespace LiveScore.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (athleteDto.ImageFile != null)
-            {
-                string imageUrl = await UploadImage(athleteDto.ImageFile);
-                athlete.ImageUrl = imageUrl;
             }
 
             // Update athlete properties
@@ -92,18 +168,18 @@ namespace LiveScore.Controllers
             athlete.State = athleteDto.State;
             athlete.CategoryId = athleteDto.CategoryId;
             athlete.CoachId = athleteDto.CoachId;
-            athlete.Coordinater = athleteDto.CoordinatorId;
+            athlete.Coordinater = athleteDto.Coordinater;
 
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { msg = "Successfully Updated!!" });
+                return Ok(new { msg = "Athlete information successfully updated" });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!AthleteExists(id))
                 {
-                    return NotFound(new { msg = "Athelete Not Found" });
+                    return NotFound(new { msg = "Athlete Not Found" });
                 }
                 else
                 {
@@ -111,6 +187,46 @@ namespace LiveScore.Controllers
                 }
             }
         }
+
+        [HttpPut("UpdateAthleteImage/{id}")]
+        public async Task<IActionResult> UpdateAthleteImage(int id, [FromForm] UpdateImg updateImg)
+        {
+            var athlete = await _context.Athletes.FindAsync(id);
+            if (athlete == null)
+            {
+                return NotFound(new { msg = "Athlete not found" });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+                if (updateImg.ImageFile != null)
+                {
+                    string imageUrl = await UploadImage(updateImg.ImageFile);
+                    athlete.ImageUrl = imageUrl;
+                }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "Athlete image successfully updated" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AthleteExists(id))
+                {
+                    return NotFound(new { msg = "Athlete Not Found" });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return BadRequest(new { msg = "Image file is missing" });
+        }
+
 
         // POST: api/Athletes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

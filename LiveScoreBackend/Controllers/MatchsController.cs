@@ -3,6 +3,7 @@ using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace LiveScore.Controllers
 {
@@ -18,28 +19,56 @@ namespace LiveScore.Controllers
         }
 
         [HttpGet("GetMatchs")]
-        public async Task<ActionResult<IEnumerable<Matchs>>> GetMatchs()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetMatchs()
         {
             if (_context.Matchss == null)
             {
                 return NotFound(new { error = "Matchs Not Found" });
             }
 
-            return await _context.Matchss.ToListAsync();
+            return await _context.Matchss.Include((c) => c.Category).Include((o) => o.Athlete).Include((t) => t.Tournament)
+                .Select((a) => new {
+                   mid = a.MId,
+                    matchStatus = a.MatchStatus,
+                    matchType = a.MatchType,
+                    numberOfRound = a.NumberOfRound,
+                    matchDate = a.MatchDate,
+                    matchtime = a.Matchtime,
+                    athleteRed = a.Athlete.AthleteName,
+                    athleteBlue = a.Athlete.AthleteName,
+                    categoryId = a.Category.CategoryName,
+                    tournamentId = a.Tournament.TournamentName,
+
+                }).ToListAsync();
         }
 
-        [HttpGet("GetMatchById{id}")]
-        public async Task<ActionResult<Matchs>> GetMatch(int id)
+        // GET: api/Athletes/GetMatchById/5
+        [HttpGet("GetMatchById/{id}")]
+        public async Task<ActionResult<dynamic>> GetMatchById(int id)
         {
-            if (_context.Matchss == null)
-            {
-                return NotFound(new { error = "Matchs Not Found" });
-            }
-            var match = await _context.Matchss.FindAsync(id);
+            var match = await _context.Matchss.Include((c) => c.Category)
+                                              .Include((o) => o.Athlete)
+                                              .Include((t) => t.Tournament)
+                                              .Where(m => m.MId == id)
+                                              .Select(m => new {
+                                                  mid = m.MId,
+                                                  matchStatus = m.MatchStatus,
+                                                  matchType = m.MatchType,
+                                                  numberOfRound = m.NumberOfRound,
+                                                  matchDate = m.MatchDate,
+                                                  matchtime = m.Matchtime,
+                                                  athleteRed = m.Athlete.AthleteName,
+                                                  athleteBlue = m.Athlete.AthleteName,
+                                                  categoryId = m.Category.CategoryName,
+                                                  tournamentId = m.Tournament.TournamentName
+                                              })
+                                              .FirstOrDefaultAsync();
+
             if (match == null)
             {
-                return NotFound(new { error = "Matchs Not Found" });
+                return NotFound(new { error = "Match Not Found" });
             }
+
             return match;
         }
 
@@ -66,12 +95,44 @@ namespace LiveScore.Controllers
             return CreatedAtAction("GetMatchs", new {id =matchs.MId },matchs);
         }
 
-
-
-        private bool MatchsExists(int id)
+        // PUT: api/Athletes/UpdateMatch/5
+        [HttpPut("UpdateMatch/{id}")]
+        public async Task<IActionResult> UpdateMatch(int id, Matchs match)
         {
-            return (_context.Matchss?.Any(e => e.MId == id)).GetValueOrDefault();
+            if (id != match.MId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(match).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MatchExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
+
+        private bool MatchExists(int id)
+        {
+            return _context.Matchss.Any(e => e.MId == id);
+        }
+        //private bool MatchsExists(int id)
+        //{
+        //    return (_context.Matchss?.Any(e => e.MId == id)).GetValueOrDefault();
+        //}
 
     }
 }
