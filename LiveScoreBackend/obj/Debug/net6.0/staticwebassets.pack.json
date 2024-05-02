@@ -37,7 +37,15 @@
       "PackagePath": "staticwebassets\\ACR\\d06c053a-4835-4d05-82dc-a53693d408b4.jpg"
     },
     {
+<<<<<<< HEAD
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg",
+=======
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\f51821b3-2b99-470a-8d90-41a4bb621018.jpg",
+      "PackagePath": "staticwebassets\\ACR\\f51821b3-2b99-470a-8d90-41a4bb621018.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg",
+>>>>>>> b4c5f4d6a3106b4b1678b815ff4e43e35431bac2
       "PackagePath": "staticwebassets\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg"
     },
     {
@@ -157,6 +165,7 @@
       "PackagePath": "staticwebassets\\images\\91b14a2c-d386-42d8-9e4a-cc87ff19849a.jpg"
     },
     {
+<<<<<<< HEAD
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\af53d6f6-f796-423b-8734-72950e6d91c1.jpg",
       "PackagePath": "staticwebassets\\images\\af53d6f6-f796-423b-8734-72950e6d91c1.jpg"
     },
@@ -166,6 +175,17 @@
     },
     {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\bd572ae8-4f74-4eba-9d87-68a71229231d.jpg",
+=======
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\af53d6f6-f796-423b-8734-72950e6d91c1.jpg",
+      "PackagePath": "staticwebassets\\images\\af53d6f6-f796-423b-8734-72950e6d91c1.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\af9ea30e-567c-49a3-8975-9beaaef45cc6.jpg",
+      "PackagePath": "staticwebassets\\images\\af9ea30e-567c-49a3-8975-9beaaef45cc6.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\bd572ae8-4f74-4eba-9d87-68a71229231d.jpg",
+>>>>>>> b4c5f4d6a3106b4b1678b815ff4e43e35431bac2
       "PackagePath": "staticwebassets\\images\\bd572ae8-4f74-4eba-9d87-68a71229231d.jpg"
     },
     {

@@ -39,24 +39,19 @@ namespace LiveScore.Controllers
             return acrs;
         }
 
-
         [HttpGet("{id}")]
         public async Task<ActionResult<ACR>> GetACR(int id)
         {
             var acr = await _dbcontext.Admin.FindAsync(id);
-
             if (acr == null)
             {
                 _logger.LogWarning($"ACR with ID {id} not found");
                 return NotFound();
             }
-
             return Ok(acr);
         }
 
-
         //Super Admin Section
-
 
         //Adding Super Admin
         [HttpPost("AddSAdmin")]
@@ -118,7 +113,6 @@ namespace LiveScore.Controllers
             acr.RoleId = 1;
             acr.Password = _pservice.HashPassword(acr.Password);
 
-
             uacr.Email = acr.Email;
             uacr.Name = acr.Name;
             uacr.Password = acr.Password;
@@ -132,7 +126,6 @@ namespace LiveScore.Controllers
             uacr.State = acr.State;
             uacr.RoleId = acr.RoleId;
             await _dbcontext.SaveChangesAsync();
-
 
             return Ok(new { msg = "Successfully Updated Super Admin" });
         }
@@ -151,15 +144,12 @@ namespace LiveScore.Controllers
 
         }
 
-
-
         //Admin Section
 
         //Adding Admin
         [HttpPost("AddAdmin")]
         public async Task<ActionResult<ACR>> PostAdmin(ACR acr)
         {
-
             if (string.IsNullOrEmpty(acr.Password))
             {
                 return BadRequest(new { msg = "Please Enter all Field" });
@@ -185,7 +175,6 @@ namespace LiveScore.Controllers
             acr.Password = null;
 
             //for message body
-
             string messageBody = "<!DOCTYPE html>" +
                                     "<html>" +
                                     "<head>" +
@@ -202,9 +191,7 @@ namespace LiveScore.Controllers
                                     "</html>";
 
             _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
-
             return Ok(new { msg = "Successfully Added Admin" });
-
         }
 
         //Updating Admin
@@ -237,7 +224,6 @@ namespace LiveScore.Controllers
             acr.RoleId = 2;
             acr.Password = _pservice.HashPassword(acr.Password);
 
-
             uacr.Email = acr.Email;
             uacr.Name = acr.Name;
             uacr.Password = acr.Password;
@@ -256,9 +242,6 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Successfully Updated Admin" }); ;
         }
 
-
-
-
         //Coordinator Section
         [HttpGet("Coordinator")]
         public async Task<ActionResult<ACR>> GetCoordinator()
@@ -274,7 +257,6 @@ namespace LiveScore.Controllers
                 _logger.LogWarning($"Coordinator with ID not found");
                 return NotFound();
             }
-
             return Ok(coordinator);
         }
 
@@ -303,8 +285,6 @@ namespace LiveScore.Controllers
                 return Ok(new { msg = "Successfully Verified Coordinator" });
             }   
             return Ok("Successful");
-
-
         } 
 
         //Adding Coordinator
@@ -315,7 +295,6 @@ namespace LiveScore.Controllers
             {
                 return BadRequest(new { msg = "Please Enter all Field" });
             }
-
 
             // Check if the email already exists in the database
             if (_dbcontext.Admin.Any(a => a.Email == acrimg.Email))
@@ -351,7 +330,6 @@ namespace LiveScore.Controllers
             acr.Password = null;
 
             //for message body
-
             string messageBody = "<!DOCTYPE html>" +
                                     "<html>" +
                                     "<head>" +
@@ -368,7 +346,6 @@ namespace LiveScore.Controllers
                                     "</html>";
 
             _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
-
 
             return Ok(new { msg = "Successfully Added  Coordinator" });
         }
@@ -392,7 +369,6 @@ namespace LiveScore.Controllers
             uacr.City = !string.IsNullOrEmpty(acr.City) ? acr.City : uacr.City;
             uacr.State = !string.IsNullOrEmpty(acr.State) ? acr.State : uacr.State;
 
-
             await _dbcontext.SaveChangesAsync();
 
             string messageBody = "<!DOCTYPE html>" +
@@ -415,74 +391,40 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Coordinator updated successfully" });
         }
 
-        //Updating Coordinator
-        //[HttpPut("updateCoordinator")]
-        //public async Task<ActionResult<ACR>> UpdateCoordinator(int id, [FromForm] Imageacr acrimg)
-        //{
-        //    if (acrimg == null)
-        //    {
-        //        return BadRequest(new { msg = "Please provide all fields" });
-        //    }
+        [HttpPut("UpdateCoordinatorImage/{id}")]
+        public async Task<IActionResult> UpdateCoordinatorImage(int id, [FromForm] UpdateImg updateImg)
+        {
+            var coordinator = await _dbcontext.Admin.FindAsync(id);
+            if (coordinator == null)
+            {
+                return NotFound(new { msg = "Coordinator not found" });
+            }
 
-        //    var uacr = await _dbcontext.Admin.FindAsync(id);
-        //    if (uacr == null)
-        //    {
-        //        return NotFound(new { msg = "Coordinator not found" });
-        //    }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    // Check if the new email already exists
-        //    if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
-        //    {
-        //        return BadRequest(new { msg = "Email already exists for another coordinator." });
-        //    }
+            if (updateImg.ImageFile != null)
+            {
+                string imageUrl = await UploadImage(updateImg.ImageFile);
+                coordinator.ImageURL = imageUrl;
+            }
 
-        //    // Check if the new contact already exists
-        //    if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
-        //    {
-        //        return BadRequest(new { msg = "Contact already exists for another coordinator." });
-        //    }
-
-        //    string imageUrl = uacr.ImageURL;
-        //    if (acrimg.ImageFile != null)
-        //    {
-        //        imageUrl = await UploadImage(acrimg.ImageFile);
-        //    }
-
-
-        //    uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
-        //    uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
-        //    uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
-        //    uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
-        //    uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
-        //    uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
-        //    uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
-        //    uacr.ImageURL = imageUrl;
-
-        //    await _dbcontext.SaveChangesAsync();
-        //    string messageBody = "<!DOCTYPE html>" +
-        //                           "<html>" +
-        //                           "<head>" +
-        //                           "<title>Welcome to Live Score!</title>" +
-        //                           "</head>" +
-        //                           "<body>" +
-        //                          $" <h2>Respected  {uacr.Name},</h2>" +
-        //                           $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-        //                           "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-        //                           "<p>Welcome aboard!</p>" +
-        //                           "<p>Best regards,<br />" +
-        //                           " Live Score</p>" +
-        //                           "</body>" +
-        //                           "</html>";
-
-        //    _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
-
-        //    return Ok(new { msg = "Coordinator updated successfully" });
-        //}
-
-
+            try
+            {
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Coordinator image successfully updated" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                    return NotFound(new { msg = "Athlete Not Found" });
+                
+            }
+            return BadRequest(new { msg = "Image file is missing" });
+        }
 
         //Refree Section
-
         [HttpGet("Referee")]
         public async Task<ActionResult<ACR>> GetReferee()
         {
@@ -497,7 +439,6 @@ namespace LiveScore.Controllers
                 _logger.LogWarning($"Referee with ID  not found");
                 return NotFound();
             }
-
             return Ok(referee);
         }
 
@@ -538,7 +479,6 @@ namespace LiveScore.Controllers
                 ImageURL = imageUrl
             };
 
-
             acr.RoleId = 4;
             acr.Password = _pservice.HashPassword(acr.Password);
             _dbcontext.Admin.Add(acr);
@@ -565,68 +505,77 @@ namespace LiveScore.Controllers
         }
 
         //Update Referee
-
-        [HttpPut("updateReferee")]
-        public async Task<ActionResult<ACR>> UpdateReferee(int id, [FromForm] Imageacr acrimg)
+        [HttpPut("updateReferee/{id}")]
+        public async Task<ActionResult<ACR>> UpdateReferee(int id, ACR acr)
         {
-            if (acrimg == null)
-            {
-                return BadRequest(new { msg = "Please provide all fields" });
-            }
-
             var uacr = await _dbcontext.Admin.FindAsync(id);
             if (uacr == null)
             {
                 return NotFound(new { msg = "Referee not found" });
             }
-
-            // Check if the new email already exists
-            if (!string.IsNullOrEmpty(acrimg.Email) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Email == acrimg.Email))
-            {
-                return BadRequest(new { msg = "Email already exists for another Referee." });
-            }
-
-            // Check if the new contact already exists
-            if (!string.IsNullOrEmpty(acrimg.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acrimg.Contact))
+            if (!string.IsNullOrEmpty(acr.Contact) && await _dbcontext.Admin.AnyAsync(a => a.Id != id && a.Contact == acr.Contact))
             {
                 return BadRequest(new { msg = "Contact already exists for another Referee." });
             }
-
-            string imageUrl = uacr.ImageURL;
-            if (acrimg.ImageFile != null)
-            {
-                imageUrl = await UploadImage(acrimg.ImageFile);
-            }
-
-
-            uacr.Email = !string.IsNullOrEmpty(acrimg.Email) ? acrimg.Email : uacr.Email;
-            uacr.Name = !string.IsNullOrEmpty(acrimg.Name) ? acrimg.Name : uacr.Name;
-            uacr.Contact = !string.IsNullOrEmpty(acrimg.Contact) ? acrimg.Contact : uacr.Contact;
-            uacr.DateOfBirth = acrimg.DateOfBirth != null ? acrimg.DateOfBirth : uacr.DateOfBirth;
-            uacr.Gender = !string.IsNullOrEmpty(acrimg.Gender) ? acrimg.Gender : uacr.Gender;
-            uacr.City = !string.IsNullOrEmpty(acrimg.City) ? acrimg.City : uacr.City;
-            uacr.State = !string.IsNullOrEmpty(acrimg.State) ? acrimg.State : uacr.State;
-            uacr.ImageURL = imageUrl;
+            uacr.Name = !string.IsNullOrEmpty(acr.Name) ? acr.Name : uacr.Name;
+            uacr.Contact = !string.IsNullOrEmpty(acr.Contact) ? acr.Contact : uacr.Contact;
+            uacr.DateOfBirth = acr.DateOfBirth != null ? acr.DateOfBirth : uacr.DateOfBirth;
+            uacr.Gender = !string.IsNullOrEmpty(acr.Gender) ? acr.Gender : uacr.Gender;
+            uacr.City = !string.IsNullOrEmpty(acr.City) ? acr.City : uacr.City;
+            uacr.State = !string.IsNullOrEmpty(acr.State) ? acr.State : uacr.State;
 
             await _dbcontext.SaveChangesAsync();
-            string messageBody = "<!DOCTYPE html>" +
-                                   "<html>" +
-                                   "<head>" +
-                                   "<title>Welcome to Live Score!</title>" +
-                                   "</head>" +
-            "<body>" +
-                                  $" <h2>Respected  {uacr.Name},</h2>" +
-                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                   "<p>Welcome aboard!</p>" +
-                                   "<p>Best regards,<br />" +
-                                   " Live Score</p>" +
-                                   "</body>" +
-                                   "</html>";
 
-            _emailSender.SendEmail(uacr.Email, "SucessFully Registered", messageBody);
+            string messageBody = "<!DOCTYPE html>" +
+                                "<html>" +
+                                "<head>" +
+                                "<title>Welcome to Live Score!</title>" +
+                                "</head>" +
+                                "<body>" +
+                               $" <h2>Respected  {uacr.Name},</h2>" +
+                                $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+                                "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+                                "<p>Welcome aboard!</p>" +
+                                "<p>Best regards,<br />" +
+                                " Live Score</p>" +
+                                "</body>" +
+                                "</html>";
+
+            _emailSender.SendEmail(uacr.Email, "Successfully Updated", messageBody);
 
             return Ok(new { msg = "Referee updated successfully" });
+        }
+
+        [HttpPut("UpdateRefereeImage/{id}")]
+        public async Task<IActionResult> UpdateRefereeImage(int id, [FromForm] UpdateImg updateImg)
+        {
+            var referee = await _dbcontext.Admin.FindAsync(id);
+            if (referee == null)
+            {
+                return NotFound(new { msg = "Referee not found" });
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (updateImg.ImageFile != null)
+            {
+                string imageUrl = await UploadImage(updateImg.ImageFile);
+                referee.ImageURL = imageUrl;
+            }
+
+            try
+            {
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Referee image successfully updated" });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound(new { msg = "Athlete Not Found" });
+            }
+            return BadRequest(new { msg = "Image file is missing" });
         }
 
         private async Task<string> UploadImage(IFormFile file)
@@ -644,10 +593,7 @@ namespace LiveScore.Controllers
             {
                 await file.CopyToAsync(stream);
             }
-
             return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
         }
     }
-
-
 }
