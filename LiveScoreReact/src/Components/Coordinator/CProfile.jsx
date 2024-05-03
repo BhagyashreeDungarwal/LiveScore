@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import HeaderFormat from '../Common/HeaderFormat'
-import { Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography, useTheme } from '@mui/material'
-import { AccessibilityNewRounded, AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material'
+import { Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Avatar } from '@mui/material'
+import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { acrupdate } from '../Validation/Coordinator'
@@ -9,9 +9,23 @@ import { toast } from 'react-toastify'
 import { CoordinatorProfileApi, CoordinatorUpdateProfileApi } from '../../Redux/Action/CoordinatorAction'
 import dayjs from 'dayjs'
 
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const CProfile = () => {
   const theme = useTheme()
-  const { data, error,cprofiledata } = useSelector((state) => state.coordinator);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const { data, error, cprofiledata } = useSelector((state) => state.coordinator);
   const disptach = useDispatch()
   const cid = localStorage.getItem("ID")
   const initial = {
@@ -25,39 +39,48 @@ const CProfile = () => {
 
   useEffect(() => {
     disptach(CoordinatorProfileApi(cid))
-}, [cid, disptach]);
+  }, [cid, disptach]);
 
 
   useEffect(() => {
     if (data) {
-        toast.success(data.msg);
+      toast.success(data.msg);
+      disptach(CoordinatorProfileApi(cid))
     }
-}, [data]);
+  }, [data]);
 
-useEffect(() => {
+  useEffect(() => {
     if (error) {
-        toast.error(error.msg);
+      toast.error(error.msg);
     }
-}, [error]);
+  }, [error]);
 
 
-useEffect(() => {
-  if (cprofiledata) {
+  useEffect(() => {
+    if (cprofiledata) {
       setValues(cprofiledata);
-  }
-}, [cprofiledata]);
+    }
+  }, [cprofiledata]);
 
 
-  
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit ,setValues } = useFormik({
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: initial,
     validationSchema: acrupdate,
     onSubmit: async (values) => {
       console.log(values)
+<<<<<<< HEAD
        await disptach(CoordinatorUpdateProfileApi(cid,values))
       if (data) {
         toast.success(data.msg)
+=======
+      await disptach(CoordinatorUpdateProfileApi(cid, values))
+
+      if (data) {
+        toast.success(data.msg)
+        disptach(CoordinatorProfileApi(cid))
+>>>>>>> 66ed4aed8883c29b1a59a326c4e974ea27ecfcab
         // navigate("/")
       }
 
@@ -87,21 +110,57 @@ useEffect(() => {
                 display: 'block',
                 marginTop: 'auto',
                 marginBottom: 'auto',
-                maxHeight: { xs: 150, md: 167, lg: 250, sm:500 },
-                maxWidth: { xs: 150, md: 100, lg: 230, sm:480 },
+                maxHeight: { xs: 150, md: 167, lg: 250, sm: 500 },
+                maxWidth: { xs: 150, md: 100, lg: 230, sm: 480 },
                 borderRadius: 50,
               }}
               alt="The house from the offer."
-              src={cprofiledata ? cprofiledata.imageURL : "" }
+              src={cprofiledata ? cprofiledata.imageURL : ""}
             />
             <Button
               type="submit"
               variant="contained"
+              onClick={handleClickOpen}
               color="primary"
               sx={{ mt: "4%" }}
               fullWidth >
               Update Image
             </Button>
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle>Update Profile Picture</DialogTitle>
+              <DialogContent>
+                <form action="">
+                  <Avatar src={image} className={style.Avatar} />
+                  <TextField
+
+                    sx={{ margin: "2rem 0 ", }}
+                    id="name"
+                    onChange={handleImage}
+                    InputProps={{ startAdornment: (<InputAdornment position="start">   </InputAdornment>) }}
+                    type="file"
+
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: "4%" }}
+                    fullWidth 
+                    startIcon={<AddPhotoAlternateRounded/>}>
+                    Update Image
+                  </Button>
+                </form>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Disagree</Button>
+              </DialogActions>
+            </Dialog>
           </Paper>
         </Grid>
         <Grid item xl={8} md={8} sm={12} xs={12} >
@@ -199,7 +258,7 @@ useEffect(() => {
                     value={values.gender}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                   
+
 
                   >
                     <FormControlLabel value="Male" control={<Radio size='small' />} label="Male" />
