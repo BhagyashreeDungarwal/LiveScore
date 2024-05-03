@@ -11,10 +11,10 @@ const CoordinatorSlice = createSlice({
     initialState,
     reducers: {
         // for Clear All Message
-        clearMessage:(state) =>{
+        clearMessage: (state) => {
             state.error = null,
-            state.data = null
-            
+                state.data = null
+
         },
         // get Athelete
 
@@ -193,12 +193,8 @@ const CoordinatorSlice = createSlice({
 export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
-<<<<<<< HEAD
-    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail, CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess, CoordinatorProfileUpdatePicFail, CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess ,clearMessage } = CoordinatorSlice.actions;
-=======
     GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail, CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess,
-
+    CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail, clearMessage,
 } = CoordinatorSlice.actions;
->>>>>>> fa9a7aa7dcebf9aa52b354a630b7751c65bea618
 export default CoordinatorSlice.reducer;

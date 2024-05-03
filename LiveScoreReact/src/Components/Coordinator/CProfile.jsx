@@ -98,25 +98,16 @@ const CProfile = () => {
     validationSchema: acrupdate,
     onSubmit: async (values) => {
       console.log(values)
-<<<<<<< HEAD
-      disptach(CoordinatorUpdateProfileApi(cid, values))
-=======
-<<<<<<< HEAD
+      
        await disptach(CoordinatorUpdateProfileApi(cid,values))
       if (data) {
         toast.success(data.msg)
-=======
       await disptach(CoordinatorUpdateProfileApi(cid, values))
->>>>>>> fa9a7aa7dcebf9aa52b354a630b7751c65bea618
 
       if (data) {
         toast.success(data.msg)
         disptach(CoordinatorProfileApi(cid))
-<<<<<<< HEAD
         disptach(clearMessage())
-=======
->>>>>>> 66ed4aed8883c29b1a59a326c4e974ea27ecfcab
->>>>>>> fa9a7aa7dcebf9aa52b354a630b7751c65bea618
         // navigate("/")
       }
 
@@ -124,6 +115,7 @@ const CProfile = () => {
         toast.error(error.msg)
       }
     }
+  }
   })
   return (
     <Box>
