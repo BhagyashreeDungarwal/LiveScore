@@ -414,14 +414,13 @@ namespace LiveScore.Controllers
             try
             {
                 await _dbcontext.SaveChangesAsync();
-                return Ok(new { msg = "Coordinator image successfully updated" });
+                return Ok(new { msg = "Coordinator Profile Picture successfully updated" });
             }
             catch (DbUpdateConcurrencyException)
             {
-                    return NotFound(new { msg = "Athlete Not Found" });
+                    return NotFound(new { msg = "Coordinator  Not Found" });
                 
             }
-            return BadRequest(new { msg = "Image file is missing" });
         }
 
         //Refree Section

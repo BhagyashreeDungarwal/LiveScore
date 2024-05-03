@@ -9,6 +9,9 @@ import {
     CoordinatorProfileUpdateStart,
     CoordinatorProfileUpdateSuccess,
     CoordinatorProfileUpdateFail,
+    CoordinatorProfileUpdatePicStart,
+    CoordinatorProfileUpdatePicSuccess,
+    CoordinatorProfileUpdatePicFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -79,6 +82,19 @@ export const CoordinatorUpdateProfileApi = (id, values) => async (dispatch) => {
         dispatch(CoordinatorProfileUpdateSuccess(data))
     } catch (error) {
         dispatch(CoordinatorProfileUpdateFail(error.response.data))
+    }
+}
+export const CoordinatorUpdateProfilePicApi = (id, values) => async (dispatch) => {
+    try {
+        dispatch(CoordinatorProfileUpdatePicStart())
+        const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        dispatch(CoordinatorProfileUpdatePicSuccess(data))
+    } catch (error) {
+        dispatch(CoordinatorProfileUpdatePicFail(error.response.data))
     }
 }
 export const RefereePostApi = (values) => async (dispatch) => {

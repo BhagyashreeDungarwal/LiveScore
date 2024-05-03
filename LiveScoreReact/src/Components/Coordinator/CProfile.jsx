@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
 import { acrupdate } from '../Validation/Coordinator'
 import { toast } from 'react-toastify'
-import { CoordinatorProfileApi, CoordinatorUpdateProfileApi } from '../../Redux/Action/CoordinatorAction'
+import { CoordinatorProfileApi, CoordinatorUpdateProfileApi, CoordinatorUpdateProfilePicApi } from '../../Redux/Action/CoordinatorAction'
 import dayjs from 'dayjs'
+import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -16,8 +17,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const CProfile = () => {
   const theme = useTheme()
+  const { data, error, cprofiledata } = useSelector((state) => state.coordinator);
   const [open, setOpen] = React.useState(false);
-
+  const [image, setImage] = React.useState(cprofiledata ? cprofiledata.imageURL : "");
+  const [selectedFile, setSelectedFile] = React.useState()
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,7 +28,6 @@ const CProfile = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const { data, error, cprofiledata } = useSelector((state) => state.coordinator);
   const disptach = useDispatch()
   const cid = localStorage.getItem("ID")
   const initial = {
@@ -45,6 +47,7 @@ const CProfile = () => {
   useEffect(() => {
     if (data) {
       toast.success(data.msg);
+      disptach(clearMessage())
       disptach(CoordinatorProfileApi(cid))
     }
   }, [data]);
@@ -52,6 +55,7 @@ const CProfile = () => {
   useEffect(() => {
     if (error) {
       toast.error(error.msg);
+      disptach(clearMessage())
     }
   }, [error]);
 
@@ -62,19 +66,44 @@ const CProfile = () => {
     }
   }, [cprofiledata]);
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file)
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImage(reader.result)
+      }
+    }
+    reader.readAsDataURL(file)
+  }
 
+  const handleUpadteImage = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("ImageFile", selectedFile);
+      console.log(formData.get("ImageFile"))
+      disptach(CoordinatorUpdateProfilePicApi(cid, formData))
+      disptach(clearMessage())
+      handleClose();
+      // dispatch(updateProfileImage(formData))
 
+    } else {
+      toast.error("Please First Select Image...")
+    }
+  }
   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: initial,
     validationSchema: acrupdate,
     onSubmit: async (values) => {
       console.log(values)
-      await disptach(CoordinatorUpdateProfileApi(cid, values))
+      disptach(CoordinatorUpdateProfileApi(cid, values))
 
       if (data) {
         toast.success(data.msg)
         disptach(CoordinatorProfileApi(cid))
+        disptach(clearMessage())
         // navigate("/")
       }
 
@@ -107,6 +136,7 @@ const CProfile = () => {
                 maxHeight: { xs: 150, md: 167, lg: 250, sm: 500 },
                 maxWidth: { xs: 150, md: 100, lg: 230, sm: 480 },
                 borderRadius: 50,
+                boxShadow: "3px 3px 6px"
               }}
               alt="The house from the offer."
               src={cprofiledata ? cprofiledata.imageURL : ""}
@@ -124,35 +154,41 @@ const CProfile = () => {
               open={open}
               TransitionComponent={Transition}
               keepMounted
-              onClose={handleClose}
               aria-describedby="alert-dialog-slide-description"
             >
               <DialogTitle>Update Profile Picture</DialogTitle>
               <DialogContent>
-                <form action="">
-                  <Avatar src={image} className={style.Avatar} />
-                  <TextField
 
-                    sx={{ margin: "2rem 0 ", }}
-                    id="name"
-                    onChange={handleImage}
-                    InputProps={{ startAdornment: (<InputAdornment position="start">   </InputAdornment>) }}
-                    type="file"
+                <Avatar src={cprofiledata ? cprofiledata.imageURL : image} sx={{
+                  height: "12rem",
+                  width: "12rem",
+                  margin: "auto",
+                  boxShadow: "3px 3px 6px"
+                }} />
+                <TextField
 
-                  />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    sx={{ mt: "4%" }}
-                    fullWidth 
-                    startIcon={<AddPhotoAlternateRounded/>}>
-                    Update Image
-                  </Button>
-                </form>
+                  // sx={{ margin: "2rem 0 ", }}
+                  id="name"
+                  onChange={handleImage}
+                  sx={{ margin: "1rem 0 " }}
+                  InputProps={{ startAdornment: (<InputAdornment position="start">   </InputAdornment>) }}
+                  type="file"
+
+                />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ display: "block" }}
+                  fullWidth
+                  onClick={handleUpadteImage}
+                  startIcon={<AddPhotoAlternateRounded />}>
+                  Update Image
+                </Button>
+
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose}>Close</Button>
               </DialogActions>
             </Dialog>
           </Paper>
