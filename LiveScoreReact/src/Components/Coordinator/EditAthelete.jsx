@@ -1,18 +1,14 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { useFormik } from 'formik';
-import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment, Select, FormControl, InputLabel } from '@mui/material';
-import { AthleteValidate } from '../Validation/Coordinator';
-import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
+import { AddLocationAltRounded, AlternateEmailRounded, Close, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography, styled, useTheme } from '@mui/material';
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { AtheletePutApi, GetAtheleteByIdApi, GetCoachApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
-import { AtheletePostApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
-
+import { useParams } from 'react-router-dom';
+import { useFormik } from 'formik';
+import dayjs from 'dayjs';
+import { getCategoryApi } from '../../Redux/Action/AdminAction';
+import { upAthelete } from '../Validation/Coordinator';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -24,94 +20,88 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const AddAthelete = () => {
-
+const EditAthelete = () => {
     const theme = useTheme()
-    const { coachdata } = useSelector((state => state.coordinator))
+  const { data, error,atheleteByIddata } = useSelector((state) => state.coordinator);
+   const { coachdata } = useSelector((state => state.coordinator))
     const { categorydata } = useSelector((state => state.admin))
-    const dispatch = useDispatch()
+   
+  const dispatch = useDispatch()
+  const {id} = useParams()
+//   const aid = localStorage.getItem("ID")
 
-    const cid = localStorage.getItem("ID")
+  const initial = {
+    athleteName: "",
+    email: "",
+    contact: "",
+    gender: "",
+    height: "",
+    weight: "",
+    dateOfBirth: "",
+    city: "",
+    state: "",
+    categoryName: "",
+    coachName: "",
+  }
 
-    const initial = {
-        athleteName: "",
-        email: "",
-        contact: "",
-        gender: "",
-        height: "",
-        weight: "",
-        dateOfBirth: "",
-        city: "",
-        state: "",
-        categoryId: "",
-        coachId: "",
-        image: null,
+  useEffect(() => {
+    dispatch(GetAtheleteByIdApi(id));
+  }, [dispatch,id])
+  
+useEffect(() => {
+  if(atheleteByIddata){
+    setValues(atheleteByIddata)
+  }
+}, [atheleteByIddata])
+
+useEffect(() => {
+  dispatch(getCategoryApi())
+}, [dispatch])
+
+useEffect(() => {
+    dispatch(GetCoachApi())
+}, [dispatch])
+
+
+const { values, errors, touched, handleBlur, handleChange, handleSubmit ,setValues } = useFormik({
+    initialValues: initial,
+    validationSchema:upAthelete,
+    onSubmit: async (values) => {
+      console.log(values)
+       await dispatch(AtheletePutApi(values,id))
+      if (data) {
+        toast.success(data.msg)
+        // navigate("/")
+      }
+
+      if (error) {
+        toast.error(error.msg)
+      }
     }
-
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
-        initialValues: initial,
-        validationSchema: AthleteValidate,
-
-        onSubmit: async (values, { resetForm, setSubmitting }) => {
-            try {
-                const formdata = new FormData()
-                formdata.append('AthleteName', values.name)
-                formdata.append('Email', values.email)
-                formdata.append('Contact', values.contact)
-                formdata.append('Gender', values.gender)
-                formdata.append('Height', values.height)
-                formdata.append('Weight', values.weight)
-                formdata.append('DateOfBirth', values.dateOfBirth)
-                formdata.append('City', values.city)
-                formdata.append('State', values.state)
-                formdata.append('CategoryId', values.categoryId)
-                formdata.append('CoachId', values.coachId)
-                formdata.append('CoordinatorId', cid)
-                formdata.append('ImageFile', values.image)
-
-                await dispatch(AtheletePostApi(formdata))
-                setSubmitting(false)
-                resetForm({ values: "" });
-                dispatch(getAtheleteApi())
-                console.log(cid);
-            } catch (error) {
-                <CircularProgress />
-            }
-        },
-
-    })
-
-    const handleFile = (e) => {
-        const file = e.target.files[0]
-
-        setFieldValue('image', file)
-        console.log("file 1", file)
-    }
-
+  })
+  
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        // console.log("open")
-        setOpen(true);
-    };
+    // const handleClickOpen = () => {
+    //     // console.log("open")
+    //     setOpen(true);
+    // };
     const handleClose = () => {
         setOpen(false);
     };
-
-
-    return (
-        <div>
+  return (
+       <div>
             <React.Fragment>
-                <Button variant="outlined" onClick={handleClickOpen}>
+                {/* <Button variant="outlined" onClick={handleClickOpen}>
                     Add Athelete
-                </Button>
+                </Button> */}
                 <BootstrapDialog
                     onClose={handleClose}
                     aria-labelledby="customized-dialog-title"
-                    open={open}
+                    open="true"
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                        Add Athelete
+                        Edit Athelete
                     </DialogTitle>
                     <IconButton
                         aria-label="close"
@@ -123,7 +113,7 @@ const AddAthelete = () => {
                             color: (theme) => theme.palette.grey[500],
                         }}
                     >
-                        <CloseIcon />
+                        <Close />
                     </IconButton>
                     <DialogContent dividers>
                         <form onSubmit={handleSubmit}>
@@ -203,7 +193,7 @@ const AddAthelete = () => {
                                         label="Date of Birth"
                                         type="date"
                                         InputLabelProps={{ shrink: true }}
-                                        value={values.dateOfBirth}
+                                       value={dayjs(values.dateOfBirth).format('YYYY-MM-DD')}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
@@ -216,19 +206,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
-                                    <FormLabel component="legend">Upload Image</FormLabel>
-                                    <input
-                                        id="image-upload"
-                                        label="Image"
-                                        name='image'
-                                        type="file"
-                                        onChange={handleFile}
-                                        onBlur={handleBlur}
-                                    />
-                                    {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
-                                </Grid>
-                              
+                                                     
                                 <Grid item xl={12} md={12} sm={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
@@ -341,40 +319,40 @@ const AddAthelete = () => {
                                         <InputLabel color='secondary'>Coach</InputLabel>
                                         <Select
                                             color='secondary'
-                                            id="coachId"
-                                            name="coachId"
-                                            label="coachId"
-                                            value={values.coachId}
+                                            id="coachName"
+                                            name="coachName"
+                                            label="CoachName"
+                                            value={values.coachName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         >
                                             {coachdata?.map((data) => (
-                                                <MenuItem key={data.coachId} value={data.coachId}>{data.coachName}</MenuItem>
+                                                <MenuItem key={data.coachName} value={data.coachName}>{data.coachName}</MenuItem>
                                             ))
                                             }
                                         </Select>
                                     </FormControl>
-                                    {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
+                                    {errors.coachName && touched.coachName ? (<Typography variant="subtitle1" color="error">{errors.coachName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Category</InputLabel>
                                         <Select
                                             color='secondary'
-                                            id="categoryId"
-                                            name="categoryId"
+                                            id="categoryName"
+                                            name="categoryName"
                                             label="category"
-                                            value={values.categoryId}
+                                            value={values.categoryName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         >
                                             {categorydata?.map((data) => (
-                                                <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
+                                                <MenuItem key={data.categoryName} value={data.categoryName}>{data.categoryName}</MenuItem>
                                             ))
                                             }
                                         </Select>
                                     </FormControl>
-                                    {errors.categoryId && touched.categoryId ? (<Typography variant="subtitle1" color="error">{errors.categoryId}</Typography>) : null}
+                                    {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
 
@@ -389,7 +367,7 @@ const AddAthelete = () => {
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-    )
+  )
 }
 
-export default AddAthelete
+export default EditAthelete

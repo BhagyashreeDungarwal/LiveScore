@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace LiveScoring.Model
+namespace LiveScore.Model.ViewModel
 {
-    public class Score
+    public class ScoreVm
     {
-        public int ScoreId { get; set; }
+        [Required]
         public int? RedPoints { get; set; }
+        [Required]
         public int? BluePoints { get; set; }
         public string? ScoreType { get; set; }
         public string PaneltyPlayer { get; set; }
         public string Panelty { get; set; }
-
 
         [DataType(DataType.DateTime)]
         public DateTime? ScoreTime { get; set; }
@@ -23,16 +20,5 @@ namespace LiveScoring.Model
         public int? Rounds { get; set; }
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
-
-        [JsonIgnore]
-        public virtual Round? Round { get; set; }
-
-
-        [JsonIgnore]
-        public virtual Athlete? AthleteRedObj { get; set; }
-
-        [JsonIgnore]
-        public virtual Athlete? AthleteBlueObj { get; set; }
-
     }
 }

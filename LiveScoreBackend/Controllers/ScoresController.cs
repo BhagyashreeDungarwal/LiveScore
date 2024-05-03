@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LiveScore.Data;
 using LiveScoring.Model;
+using LiveScore.Model.ViewModel;
+using Microsoft.OpenApi.Writers;
 
 namespace LiveScore.Controllers
 {
@@ -23,24 +25,58 @@ namespace LiveScore.Controllers
 
         // GET: api/Scores
         [HttpGet("GetScores")]
-        public async Task<ActionResult<IEnumerable<Score>>> GetScores()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetScores()
         {
           if (_context.Scores == null)
           {
               return NotFound();
           }
-            return await _context.Scores.ToListAsync();
+            return await _context.Scores.Include((a) => a.Round)
+                .Include((r) => r.AthleteRedObj)
+                .Include((b) => b.AthleteBlueObj)
+                .Select(s => new
+                {
+                    scoreId = s.ScoreId,
+                    redPoints = s.RedPoints,
+                    bluePoints = s.BluePoints,
+                    scoreType = s.ScoreType,
+                    paneltyPlayer = s.PaneltyPlayer,
+                    panelty = s.Panelty,
+                    scoreTime = s.ScoreTime,
+                    paneltyTime = s.PaneltyTime,
+                    rounds = s.Round.NumberOfRounds,
+                    athleteRed = s.AthleteRedObj.AthleteName,
+                    athleteBlue = s.AthleteBlueObj.AthleteName
+                }).ToListAsync();
         }
 
         // GET: api/Scores/5
         [HttpGet("GetScoreById/{id}")]
-        public async Task<ActionResult<Score>> GetScore(int id)
+        public async Task<ActionResult<dynamic>> GetScoreById(int id)
         {
           if (_context.Scores == null)
           {
               return NotFound();
           }
-            var score = await _context.Scores.FindAsync(id);
+            var score = await _context.Scores.Include((a) => a.Round)
+                .Include((r) => r.AthleteRedObj)
+                .Include((b) => b.AthleteBlueObj)
+                .Where(s => s.ScoreId == id)
+                .Select(s => new
+                {
+                    scoreId = s.ScoreId,
+                    redPoints = s.RedPoints,
+                    bluePoints = s.BluePoints,
+                    scoreType = s.ScoreType,
+                    paneltyPlayer = s.PaneltyPlayer,
+                    panelty = s.Panelty,
+                    scoreTime = s.ScoreTime,
+                    paneltyTime = s.PaneltyTime,
+                    rounds = s.Round.NumberOfRounds,
+                    athleteRed =s.AthleteRedObj.AthleteName,
+                    athleteBlue = s.AthleteBlueObj.AthleteName
+                })
+                .FirstOrDefaultAsync();
 
             if (score == null)
             {
@@ -84,12 +120,27 @@ namespace LiveScore.Controllers
         // POST: api/Scores
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("PostScore")]
-        public async Task<ActionResult<Score>> PostScore(Score score)
+        public async Task<ActionResult<Score>> PostScore(ScoreVm scores)
         {
           if (_context.Scores == null)
           {
               return Problem("Entity set 'ApplicationDbContext.Scores'  is null.");
           }
+
+            var score = new Score()
+            {
+                RedPoints = scores.RedPoints,
+                BluePoints = scores.BluePoints,
+                ScoreType = scores.ScoreType,
+                PaneltyPlayer = scores.PaneltyPlayer,
+                Panelty = scores.Panelty,
+                ScoreTime = scores.ScoreTime,
+                PaneltyTime = scores.PaneltyTime,
+                Rounds = scores.Rounds,
+                AthleteBlue = scores.AthleteBlue,
+                AthleteRed = scores.AthleteRed,
+            };
+
             _context.Scores.Add(score);
             await _context.SaveChangesAsync();
 

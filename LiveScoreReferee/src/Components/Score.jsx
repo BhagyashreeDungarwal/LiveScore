@@ -4,7 +4,6 @@ import { Card, ListGroup } from 'react-bootstrap'
 const Score = () => {
   return (
     <Card style={{padding:4, borderColor:"#141c33",borderRadius:"7px",color:"white",backgroundColor:"#141c33"  }}>
-
       <Card.Body >
         <Card.Title>Match</Card.Title>
         <Card.Text className="d-flex justify-content-between mb-2">

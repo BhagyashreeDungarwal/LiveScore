@@ -66,6 +66,8 @@ namespace LiveScore.Controllers
                     imageUrl = a.ImageUrl,
                     dateOfBirth = a.DateOfBirth,
                     age = a.Age,
+                    height = a.Height,
+                    weight = a.Weight,
                     gender = a.Gender,
                     city = a.City,
                     state = a.State,
@@ -83,8 +85,8 @@ namespace LiveScore.Controllers
 
             return athlete;
         }
-        // PUT: api/Athletes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //PUT: api/Athletes/5
+         //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         //[HttpPut("PutAthelete/{id}")]
         //public async Task<IActionResult> PutAthlete(int id, [FromForm] Images athleteDto)
         //{
@@ -143,7 +145,7 @@ namespace LiveScore.Controllers
         //}
 
         [HttpPut("UpdateAthlete/{id}")]
-        public async Task<IActionResult> UpdateAthlete(int id,Athlete athleteDto)
+        public async Task<IActionResult> UpdateAthlete(int id,UpAthelete athleteDto)
         {
             var athlete = await _context.Athletes.FindAsync(id);
             if (athlete == null)
@@ -156,6 +158,9 @@ namespace LiveScore.Controllers
                 return BadRequest(ModelState);
             }
 
+            var coach = await _context.Coaches.FirstOrDefaultAsync(c => c.CoachName == athleteDto.CoachName);
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryName == athleteDto.CategoryName);
+
             // Update athlete properties
             athlete.AthleteName = athleteDto.AthleteName;
             athlete.Email = athleteDto.Email;
@@ -166,9 +171,8 @@ namespace LiveScore.Controllers
             athlete.Weight = athleteDto.Weight;
             athlete.City = athleteDto.City;
             athlete.State = athleteDto.State;
-            athlete.CategoryId = athleteDto.CategoryId;
-            athlete.CoachId = athleteDto.CoachId;
-            athlete.Coordinater = athleteDto.Coordinater;
+            athlete.CategoryId = category.Id;
+            athlete.CoachId = coach.CoachId;
 
             string messageBody = "<!DOCTYPE html>" +
                                   "<html>" +

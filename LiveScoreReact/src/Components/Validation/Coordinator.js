@@ -1,14 +1,14 @@
 import * as yup from "yup";
 
 export const AthleteValidate = yup.object({
-    name: yup.string().required('Name is required'),
+    athleteName: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     gender: yup.string().required('Gender is required'),
     height: yup.number().required('Height is required'),
     weight: yup.number().required('Weight is required'),
     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
-    .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
+        .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
     city: yup.string().required('City is required'),
     state: yup.string().required('State is required'),
     image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
@@ -25,6 +25,23 @@ export const AthleteValidate = yup.object({
     coachId: yup.string().required('Coach is required'),
 
 });
+
+export const upAthelete = yup.object({
+    athleteName: yup.string().required('Name is required'),
+    email: yup.string().email('Invalid email address').required('Email is required'),
+    contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+    gender: yup.string().required('Gender is required'),
+    height: yup.number().required('Height is required'),
+    weight: yup.number().required('Weight is required'),
+    dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
+        .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
+    city: yup.string().required('City is required'),
+    state: yup.string().required('State is required'),
+    coachName: yup.string().required("Coach Name is Required"),
+    categoryName: yup.string().required("Category Name is Required")
+
+})
+
 
 export const acr = yup.object({
     name: yup.string().required('Name is required'),
@@ -51,7 +68,7 @@ export const acr = yup.object({
 export const acrupdate = yup.object({
     name: yup.string().required('Name is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
-     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
+    dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
         .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
     gender: yup.string().required('Gender is required'),
     state: yup.string().required('State is required'),

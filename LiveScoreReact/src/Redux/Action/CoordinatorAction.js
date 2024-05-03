@@ -1,6 +1,7 @@
 import axios from "axios"
 import {
     GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
+    GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
     GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileStart,
@@ -44,6 +45,37 @@ export const AtheletePostApi = (values) => async (dispatch) => {
         dispatch(AtheletePostSuccess(data))
     } catch (error) {
         dispatch(AtheletePostFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const GetAtheleteByIdApi = (id) => async (dispatch) => {
+    try {
+        dispatch(GetAtheleteByIdStart())
+
+        const { data } = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(GetAtheleteByIdSuccess(data))
+    } catch (error) {
+        dispatch(GetAtheleteByIdFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+
+export const AtheletePutApi = (values, id) => async (dispatch) => {
+    try {
+        dispatch(AtheletePutStart())
+        console.log(values)
+        const { data } = await axios.put(`${url}/Athletes/UpdateAthlete/${id}`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(AtheletePutSuccess(data))
+    } catch (error) {
+        dispatch(AtheletePutFail(error.response.data))
         // console.log(e.response.data.msg)
     }
 }

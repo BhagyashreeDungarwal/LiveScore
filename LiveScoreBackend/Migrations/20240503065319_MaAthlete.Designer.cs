@@ -4,6 +4,7 @@ using LiveScore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240503065319_MaAthlete")]
+    partial class MaAthlete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -446,8 +448,6 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("AthleteBlue");
 
-                    b.HasIndex("AthleteRed");
-
                     b.HasIndex("Rounds");
 
                     b.ToTable("Scores");
@@ -561,14 +561,9 @@ namespace LiveScore.Migrations
 
             modelBuilder.Entity("LiveScoring.Model.Score", b =>
                 {
-                    b.HasOne("LiveScoring.Model.Athlete", "AthleteBlueObj")
+                    b.HasOne("LiveScoring.Model.Athlete", "Athlete")
                         .WithMany()
                         .HasForeignKey("AthleteBlue")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("LiveScoring.Model.Athlete", "AthleteRedObj")
-                        .WithMany()
-                        .HasForeignKey("AthleteRed")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LiveScoring.Model.Round", "Round")
@@ -576,9 +571,7 @@ namespace LiveScore.Migrations
                         .HasForeignKey("Rounds")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("AthleteBlueObj");
-
-                    b.Navigation("AthleteRedObj");
+                    b.Navigation("Athlete");
 
                     b.Navigation("Round");
                 });

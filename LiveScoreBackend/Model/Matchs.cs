@@ -28,7 +28,10 @@ namespace LiveScoring.Model
         public virtual Category? Category { get; set; }
 
         [JsonIgnore]
-        public virtual Athlete? Athlete { get; set; }
+        public virtual Athlete? AthleteRedObj { get; set; }
+
+        [JsonIgnore]
+        public virtual Athlete? AthleteBlueObj { get; set; }
 
     }
 }

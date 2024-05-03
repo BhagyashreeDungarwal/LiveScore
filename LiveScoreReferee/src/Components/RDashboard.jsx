@@ -11,23 +11,12 @@ const RDashboard = () => {
     <>
     <Header />
      <div>
-      <div style={{float:"left"}}>
-      <Row  xs={1} md={2} className="row-cols-3 g-4 "  >
-        <Col className="col-sm-3">
-         <MatchCard />
-         <MatchCard />
-         <MatchCard />
-         <MatchCard />
-         <MatchCard />
-         <MatchCard />
-         <MatchCard />
-
-      </Col>
-      </Row>
+      <div style={{float:"left",display: 'flex', overflowX: 'auto'}}>     
+         <MatchCard />     
+            
         </div>
    
-<div style={{float:"right"}}>
-
+<div style={{float:"right", zIndex:"1"}}>
     <Score />
 </div>
      </div>

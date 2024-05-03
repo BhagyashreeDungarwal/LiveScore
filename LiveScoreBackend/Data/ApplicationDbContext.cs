@@ -49,7 +49,7 @@ namespace LiveScore.Data
 
                 entity.Property(e => e.Password).IsRequired().HasMaxLength(101);
 
-                entity.Property(e => e.ImageURL).IsRequired(); 
+                entity.Property(e => e.ImageURL); 
 
                 entity.Property(e => e.Contact).IsRequired().HasMaxLength(101); 
 
@@ -103,7 +103,7 @@ namespace LiveScore.Data
                 entity.Property(a => a.AthleteName).IsRequired().HasMaxLength(101);
                 entity.Property(a => a.Email).IsRequired().HasMaxLength(101); 
                 entity.Property(a => a.Contact).IsRequired().HasMaxLength(101); 
-                entity.Property(a => a.ImageUrl).IsRequired(); 
+                entity.Property(a => a.ImageUrl); 
                 entity.Property(a => a.DateOfBirth).IsRequired().HasMaxLength(101); 
                 entity.Property(a => a.Gender).IsRequired().HasMaxLength(101);
                 entity.Property(a => a.Height).IsRequired(); 
@@ -154,12 +154,12 @@ namespace LiveScore.Data
                     .HasForeignKey(m => m.CategoryId)
                     .OnDelete(DeleteBehavior.Restrict); 
 
-                entity.HasOne(m => m.Athlete)
+                entity.HasOne(m => m.AthleteRedObj)
                     .WithMany()
                     .HasForeignKey(m => m.AthleteRed)
                     .OnDelete(DeleteBehavior.Restrict); 
 
-                entity.HasOne(m => m.Athlete)
+                entity.HasOne(m => m.AthleteBlueObj)
                     .WithMany()
                     .HasForeignKey(m => m.AthleteBlue)
                     .OnDelete(DeleteBehavior.Restrict); 
@@ -199,11 +199,11 @@ namespace LiveScore.Data
                         .HasForeignKey(s => s.Rounds)
                         .OnDelete(DeleteBehavior.Restrict); 
 
-                    entity.HasOne(s => s.Athlete)
+                    entity.HasOne(s => s.AthleteRedObj)
                         .WithMany()
                         .HasForeignKey(s => s.AthleteRed)
                         .OnDelete(DeleteBehavior.Restrict); 
-                    entity.HasOne(s => s.Athlete)
+                    entity.HasOne(s => s.AthleteBlueObj)
                         .WithMany()
                         .HasForeignKey(s => s.AthleteBlue)
                         .OnDelete(DeleteBehavior.Restrict); 
@@ -229,7 +229,7 @@ namespace LiveScore.Data
 
                 entity.Property(e => e.Password).IsRequired().HasMaxLength(101);
 
-                entity.Property(e => e.Image).IsRequired();
+                entity.Property(e => e.Image);
 
                 entity.Property(e => e.Contact).IsRequired().HasMaxLength(10);
 
