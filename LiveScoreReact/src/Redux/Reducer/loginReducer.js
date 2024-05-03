@@ -10,6 +10,11 @@ const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
+    clearMessageLogin: (state) => {
+      state.error = null,
+        state.data = null
+
+    },
     LoginStart: (state) => {
       state.loading = true;
       state.error = null;
@@ -26,5 +31,5 @@ const loginSlice = createSlice({
   },
 })
 
-export const { LoginStart, LoginSuccess, LoginFail } = loginSlice.actions;
+export const { LoginStart, LoginSuccess, LoginFail, clearMessageLogin } = loginSlice.actions;
 export default loginSlice.reducer;

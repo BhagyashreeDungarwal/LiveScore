@@ -11,7 +11,7 @@ import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material'
 
 const drawerWidth = 240;
 
-const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon , sideroutelink}) => {
+const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon, sideroutelink }) => {
     const theme = useTheme()
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
@@ -133,7 +133,7 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: '45px',maxWidth:"15%" }}
+                                sx={{ mt: '45px', maxWidth: "15%" }}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -149,29 +149,45 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                                 onClose={handleCloseUserMenu}
                             >
                                 {sideroutelink?.map((text, index) => (
-                                    <MenuItem key={text}  sx={{maxHeight:"2%"}} >
+                                    <MenuItem key={text} sx={{ maxHeight: "2%" }} >
                                         <ListItemButton
                                             component={Link}
                                             to={`/${link}/${text}`}
                                             sx={{
-                                                maxHeight:20,
-                                                justifyContent: open ? "initial" : "center",
+                                                maxHeight: 20,
                                             }}
                                         >
                                             <ListItemIcon
-                                               sx={{
-                                                color: theme.palette.primary.light,
-                                                minWidth:0,
-                                                mr:1,
-                                                justifyContent: "center",
-                                            }}>
+                                                sx={{
+                                                    color: theme.palette.primary.light,
+                                                    minWidth: 0,
+                                                    mr: 1,
+                                                    justifyContent: "center",
+                                                }}>
                                                 {React.createElement(siderouteicon[index % siderouteicon.length])}
                                             </ListItemIcon>
-                                        <ListItemText primary={sideroutername[index]} sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
+                                            <ListItemText primary={sideroutername[index]} sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
                                         </ListItemButton>
                                     </MenuItem>
 
                                 ))}
+                                <MenuItem onClick={handleLogout} sx={{ maxHeight: "2%" }}  >
+                                    <ListItemButton 
+                                      sx={{
+                                        maxHeight: 20,
+                                    }}>
+
+                                        <ListItemIcon sx={{
+                                            color: theme.palette.primary.light,
+                                            minWidth: 0,
+                                            mr: 1,
+                                            justifyContent: "center"
+                                        }}>
+                                            <LogoutRounded />
+                                        </ListItemIcon>
+                                        <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
+                                    </ListItemButton>
+                                </MenuItem>
                             </Menu>
                         </Box>
 
@@ -220,7 +236,7 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                 <Toolbar />
                 <Outlet />
             </Box>
-        </Box>
+        </Box >
     );
 }
 

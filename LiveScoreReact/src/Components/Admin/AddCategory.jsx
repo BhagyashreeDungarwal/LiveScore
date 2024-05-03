@@ -1,7 +1,6 @@
 import { Close, Person2Rounded, Timer } from '@mui/icons-material';
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, TextField, Typography, styled, useTheme } from '@mui/material';
 import React from 'react'
-import { toast } from 'react-toastify';
 import { category } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,20 +19,15 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const AddCategory = () => {
-
     const [open, setOpen] = React.useState(false);
     const theme = useTheme()
-    const { data, error } = useSelector((state => state.admin))
     const dispatch = useDispatch()
-
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
     };
-
-
 
     const initial = {
         CategoryName: "",
@@ -43,25 +37,16 @@ const AddCategory = () => {
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: initial,
         validationSchema: category,
-
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
                 await dispatch(CategoryPostApi(values))
                 setSubmitting(false)
-                if (data) {
-                    toast.success(data.msg)
-                    resetForm({ values: "" });
-                    dispatch(getCategoryApi())
-                }
-                if (error) {
-                    toast.error(error.msg)
-                }
+                resetForm({ values: "" });
+                dispatch(getCategoryApi())
             } catch (error) {
                 <CircularProgress />
             }
-
         },
-
     })
 
     return (
@@ -153,5 +138,4 @@ const AddCategory = () => {
         </div>
     )
 }
-
-export default ProtectedRoute(AddCategory,'admin')
+export default ProtectedRoute(AddCategory, 'admin')

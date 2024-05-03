@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import ProtectedRoute from '../../ProtectedRoute';
+import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 
 // Tolbar for datagrid
 function CustomToolbar() {
@@ -52,7 +53,6 @@ function CustomNoRowsOverlay() {
 
 
 const CategoryManage = () => {
-
   const dispatch = useDispatch()
   const { categorydata, loading, data, error } = useSelector(state => state.admin)
 
@@ -60,26 +60,25 @@ const CategoryManage = () => {
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryTime", headerName: "Time(Minutes)", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-
   ])
 
   useEffect(() => {
     dispatch(getCategoryApi())
     if (data) {
       toast.success(data.msg)
+      dispatch(ClearMessageAdmin())
     }
     if (error) {
       toast.error(error.msg)
+      dispatch(ClearMessageAdmin())
     }
   }, [dispatch, data, error])
-
 
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Category Management" />
       </Box>
-
       {
         loading ? <CircularProgress /> :
           <Stack style={{
@@ -87,9 +86,7 @@ const CategoryManage = () => {
             display: "grid",
             width: "90%",
             height: "60vh",
-
           }}>{
-
               categorydata && categorydata.length > 0 ? (
                 <DataGrid
                   rows={categorydata}

@@ -1,8 +1,18 @@
 // import AddAthelete from "./AddAthelete"
 
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer"
+
 
   
 const CDashboard = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(clearMessage())
+  }, [dispatch])
+  
   return (
     <div>
     

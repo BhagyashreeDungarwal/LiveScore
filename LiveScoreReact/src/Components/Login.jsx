@@ -23,6 +23,7 @@ import { loginApi } from '../Redux/Action/loginAction.js';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { clearMessageLogin } from '../Redux/Reducer/loginReducer.js';
 
 
 
@@ -32,6 +33,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const { data, error, loading } = useSelector((state) => state.login);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // making intial state 
   const initialValues = {
     email: '',
@@ -51,24 +53,28 @@ const Login = () => {
       // making logic for navigate according to role 
       if (data.role === 1) {
         localStorage.setItem('role', "superadmin");
-        localStorage.setItem('ID',data.id)
+        localStorage.setItem('ID', data.id)
+        dispatch(clearMessageLogin())
         navigate("/sadmin/sdashboard")
       } else if (data.role === 2) {
         // console.log("admin")
         localStorage.setItem('role', "admin");
-        localStorage.setItem('ID',data.id)
+        localStorage.setItem('ID', data.id)
+        dispatch(clearMessageLogin())
         navigate("/admin/adashboard")
       }
       else if (data.role === 3) {
         // console.log("admin")
         localStorage.setItem('role', "coordinator");
-        localStorage.setItem('ID',data.id)
+        localStorage.setItem('ID', data.id)
+        dispatch(clearMessageLogin())
         navigate("/coordinator/cdashboard")
       }
       else if (data.role === 4) {
         // console.log("admin")
         localStorage.setItem('role', "referee");
-        localStorage.setItem('ID',data.id)
+        localStorage.setItem('ID', data.id)
+        dispatch(clearMessageLogin())
         navigate("/referee/rdashboard")
 
       }
@@ -77,9 +83,13 @@ const Login = () => {
     if (error) {
       // console.log(error.msg)
       toast.error(error.msg)
-      console.log(loading)
+      dispatch(clearMessageLogin())
     }
-  }, [data, error])
+
+    if (loading) {
+      setIsSubmitting(true)
+    }
+  }, [data, error, dispatch ])
 
 
   // using formik for validation and submitting
@@ -93,14 +103,14 @@ const Login = () => {
   } = useFormik({
     initialValues: initialValues, // Fix typo here
     validationSchema: login,
-    onSubmit: (values, { resetForm, setSubmitting }) => {
-
+    onSubmit: (values, { resetForm, }) => {
+      setIsSubmitting(true)
       dispatch(loginApi(values))
-      setSubmitting(false)
       resetForm({ values: "" });
+      setIsSubmitting(false)
     },
   });
-  
+
   // making password show and hide button 
   const [type, setType] = useState("password");
   const [visible, setVisible] = useState(false);
@@ -180,7 +190,7 @@ const Login = () => {
               />
               {errors.password && touched.password ? <Typography variant="caption" color="error">{errors.password}</Typography> : null}
 
-              <Button variant="contained" type='submit' fullWidth sx={{ color: "White", background: "#212c9f" }}>
+              <Button variant="contained" type='submit' fullWidth disabled={isSubmitting} sx={{ color: "White", background: "#212c9f" }}>
                 Submit
               </Button>
               {/* <FormControlLabel
