@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack } from '@mui/material'
+import { Box, CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
@@ -9,6 +9,9 @@ import { GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorActio
 import { toast } from 'react-toastify';
 import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
+import { DriveFileRenameOutline, DriveFileRenameOutlineRounded } from '@mui/icons-material';
+import Modal from '../Common/Modal';
 // import { useState } from 'react';
 
 function CustomToolbar() {
@@ -71,7 +74,22 @@ const Athelete = () => {
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "categoryName", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",  },
     { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" }
+    { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    {  headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params =>{
+      return(
+      <Box>
+      <Tooltip title="Edit">
+        <Link to={`/coordinator/editathelete/${params.row.id}`} >
+          <IconButton aria-label="Edit" color='primary'>
+            <DriveFileRenameOutlineRounded />
+          </IconButton>
+        </Link>
+        
+        {/* <Modal id={params.row.id} /> */}
+      </Tooltip>
+     </Box>
+      )
+    } },
 
   ])
 

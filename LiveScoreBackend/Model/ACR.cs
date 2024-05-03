@@ -16,8 +16,6 @@ namespace LiveScore.Model
         public string ImageURL { get; set; }
         public string Contact { get; set; }
 
-       
-
         public string Status { get; set; }
 
         [DataType(DataType.Date)]

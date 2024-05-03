@@ -40,6 +40,35 @@ const CoordinatorSlice = createSlice({
             state.error = action.payload;
         },
 
+        //GetById Athelete
+        GetAtheleteByIdStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetAtheleteByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.atheleteByIddata = action.payload;
+        },
+        GetAtheleteByIdFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //Post Athelete
+        AtheletePutStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        AtheletePutSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        AtheletePutFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
         //Post Coordinator
         CoordinatorPostStart: (state) => {
             state.loading = true;
@@ -135,7 +164,7 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-       
+
 
 
     },
@@ -144,6 +173,10 @@ const CoordinatorSlice = createSlice({
 
 
 export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
+    GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
-    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess,CoordinatorProfileFail,CoordinatorProfileStart ,CoordinatorProfileUpdateFail,CoordinatorProfileUpdateStart,CoordinatorProfileUpdateSuccess, } = CoordinatorSlice.actions;
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+    CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail, CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess,
+
+} = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

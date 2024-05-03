@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "c/JKMHukvq6L5OndrnT1Y/rK9T/NssvWHA695JThvFzgPEUz/KjA4PtaCqIYMp0jWiG5DmaZKWkL5jdqA5xpAg==",
+  "dgSpecHash": "AElY8pQIloc6UOYUWzadeY4dg/GUDJ/KZ+6tcKWzXEZ/S01p8o1DUYVTmTTul/YdRPpUsCimJeAI6BX2qSUErg==",
   "success": true,
   "projectFilePath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\kewal dungarwal\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\bouncycastle.cryptography\\2.3.0\\bouncycastle.cryptography.2.3.0.nupkg.sha512",
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\cloudinarydotnet\\1.26.2\\cloudinarydotnet.1.26.2.nupkg.sha512",

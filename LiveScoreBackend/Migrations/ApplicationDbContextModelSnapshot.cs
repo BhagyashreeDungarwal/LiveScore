@@ -325,6 +325,8 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("AthleteBlue");
 
+                    b.HasIndex("AthleteRed");
+
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("TournamentId");
@@ -444,6 +446,8 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("AthleteBlue");
 
+                    b.HasIndex("AthleteRed");
+
                     b.HasIndex("Rounds");
 
                     b.ToTable("Scores");
@@ -513,9 +517,15 @@ namespace LiveScore.Migrations
 
             modelBuilder.Entity("LiveScoring.Model.Matchs", b =>
                 {
-                    b.HasOne("LiveScoring.Model.Athlete", "Athlete")
+                    b.HasOne("LiveScoring.Model.Athlete", "AthleteBlueObj")
                         .WithMany()
                         .HasForeignKey("AthleteBlue")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LiveScoring.Model.Athlete", "AthleteRedObj")
+                        .WithMany()
+                        .HasForeignKey("AthleteRed")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -530,7 +540,9 @@ namespace LiveScore.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Athlete");
+                    b.Navigation("AthleteBlueObj");
+
+                    b.Navigation("AthleteRedObj");
 
                     b.Navigation("Category");
 
@@ -549,9 +561,14 @@ namespace LiveScore.Migrations
 
             modelBuilder.Entity("LiveScoring.Model.Score", b =>
                 {
-                    b.HasOne("LiveScoring.Model.Athlete", "Athlete")
+                    b.HasOne("LiveScoring.Model.Athlete", "AthleteBlueObj")
                         .WithMany()
                         .HasForeignKey("AthleteBlue")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("LiveScoring.Model.Athlete", "AthleteRedObj")
+                        .WithMany()
+                        .HasForeignKey("AthleteRed")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LiveScoring.Model.Round", "Round")
@@ -559,7 +576,9 @@ namespace LiveScore.Migrations
                         .HasForeignKey("Rounds")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Athlete");
+                    b.Navigation("AthleteBlueObj");
+
+                    b.Navigation("AthleteRedObj");
 
                     b.Navigation("Round");
                 });

@@ -34,7 +34,7 @@ const AddAthelete = () => {
     const cid = localStorage.getItem("ID")
 
     const initial = {
-        name: "",
+        athleteName: "",
         email: "",
         contact: "",
         gender: "",
@@ -134,10 +134,10 @@ const AddAthelete = () => {
                                     <TextField
                                         fullWidth
                                         variant='standard'
-                                        id="name"
-                                        name="name"
+                                        id="athleteName"
+                                        name="athleteName"
                                         label="Name"
-                                        value={values.name}
+                                        value={values.athleteName}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
@@ -149,7 +149,7 @@ const AddAthelete = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
+                                    {errors.athleteName && touched.athleteName ? (<Typography variant="subtitle1" color="error">{errors.athleteName}</Typography>) : null}
                                 </Grid>
 
                                 <Grid item xl={12} md={12} sm={12}>
@@ -241,9 +241,9 @@ const AddAthelete = () => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     >
-                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                        <FormControlLabel value="Other" control={<Radio />} label="Other" />
                                     </RadioGroup>
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
 

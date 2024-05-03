@@ -19,6 +19,7 @@ import MatchDetails from './Components/Admin/MatchDetails';
 import Match from './Components/Coordinator/Match';
 import Coach from './Components/Coordinator/Coach';
 import CProfile from './Components/Coordinator/CProfile';
+import EditAthelete from './Components/Coordinator/EditAthelete';
 
 
 function App() {
@@ -195,6 +196,9 @@ function App() {
         },{
           path:"cprofile",
           element:<CProfile/>
+        },{
+          path:"editathelete/:id",
+          element:<EditAthelete />
         }
       ]
     },

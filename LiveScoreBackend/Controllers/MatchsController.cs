@@ -1,4 +1,5 @@
 ﻿using LiveScore.Data;
+using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,10 @@ namespace LiveScore.Controllers
                 return NotFound(new { error = "Matchs Not Found" });
             }
 
-            return await _context.Matchss.Include((c) => c.Category).Include((o) => o.Athlete).Include((t) => t.Tournament)
+            return await _context.Matchss.Include((c) => c.Category)
+                .Include((o) => o.AthleteBlueObj)
+                .Include((o) => o.AthleteRedObj)
+                .Include((t) => t.Tournament)
                 .Select((a) => new {
                    mid = a.MId,
                     matchStatus = a.MatchStatus,
@@ -34,8 +38,8 @@ namespace LiveScore.Controllers
                     numberOfRound = a.NumberOfRound,
                     matchDate = a.MatchDate,
                     matchtime = a.Matchtime,
-                    athleteRed = a.Athlete.AthleteName,
-                    athleteBlue = a.Athlete.AthleteName,
+                    athleteRed = a.AthleteRedObj.AthleteName,
+                    athleteBlue = a.AthleteBlueObj.AthleteName,
                     categoryId = a.Category.CategoryName,
                     tournamentId = a.Tournament.TournamentName,
 
@@ -47,7 +51,8 @@ namespace LiveScore.Controllers
         public async Task<ActionResult<dynamic>> GetMatchById(int id)
         {
             var match = await _context.Matchss.Include((c) => c.Category)
-                                              .Include((o) => o.Athlete)
+                                              .Include((o) => o.AthleteRedObj)
+                                              .Include((p)=> p.AthleteBlueObj)
                                               .Include((t) => t.Tournament)
                                               .Where(m => m.MId == id)
                                               .Select(m => new {
@@ -57,8 +62,8 @@ namespace LiveScore.Controllers
                                                   numberOfRound = m.NumberOfRound,
                                                   matchDate = m.MatchDate,
                                                   matchtime = m.Matchtime,
-                                                  athleteRed = m.Athlete.AthleteName,
-                                                  athleteBlue = m.Athlete.AthleteName,
+                                                  athleteRed = m.AthleteRedObj.AthleteName,
+                                                  athleteBlue = m.AthleteBlueObj.AthleteName,
                                                   categoryId = m.Category.CategoryName,
                                                   tournamentId = m.Tournament.TournamentName
                                               })
@@ -73,7 +78,7 @@ namespace LiveScore.Controllers
         }
 
         [HttpPost("PostMatch")]
-        public async Task<ActionResult<Matchs>> PostMatch(Matchs matchs)
+        public async Task<ActionResult<Matchs>> PostMatch(MatchVm matchs)
         {
             if (matchs == null)
             {
@@ -89,10 +94,24 @@ namespace LiveScore.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Matchss' is null.");
             }
-            _context.Matchss.Add(matchs);
+
+           
+            var match = new Matchs
+            {
+                MatchStatus = matchs.MatchStatus,
+                MatchType = matchs.MatchType,
+                NumberOfRound = matchs.NumberOfRound,
+                MatchDate = matchs.MatchDate,
+                Matchtime = matchs.Matchtime,
+                AthleteBlue = matchs.AthleteBlue,
+                AthleteRed= matchs.AthleteRed,
+                CategoryId = matchs.CategoryId,
+                TournamentId = matchs.TournamentId
+            };
+            _context.Matchss.Add(match);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMatchs", new {id =matchs.MId },matchs);
+            return CreatedAtAction("GetMatchs", new {id = match.MId }, match);
         }
 
         // PUT: api/Athletes/UpdateMatch/5

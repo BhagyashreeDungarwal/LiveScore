@@ -8,6 +8,9 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { GetAtheleteByIdApi } from '../../Redux/Action/CoordinatorAction';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -18,12 +21,19 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const Modal = () => {
+const Modal = ({id}) => {
+const dispatch = useDispatch()
+
 
     const [open, setOpen] = React.useState(false);
 
+    useEffect(() => {
+      dispatch(GetAtheleteByIdApi(id))
+    }, [dispatch,id])
+    
     const handleClickOpen = () => {
         setOpen(true);
+        console.log(id);
     };
     const handleClose = () => {
         setOpen(false);

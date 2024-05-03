@@ -1504,3 +1504,4 @@ C:\Users\MeetGunjan\Documents\GitHub\LiveScore\LiveScoreBackend\obj\Debug\net6.0
 C:\Users\MeetGunjan\Documents\GitHub\LiveScore\LiveScoreBackend\obj\Debug\net6.0\ref\LiveScore.dll
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\CloudinaryDotNet.dll
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\dotenv.net.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\AutoMapper.dll

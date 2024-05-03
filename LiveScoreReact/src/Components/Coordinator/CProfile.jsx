@@ -55,10 +55,10 @@ useEffect(() => {
     validationSchema: acrupdate,
     onSubmit: async (values) => {
       console.log(values)
-      //  await disptach(CoordinatorUpdateProfileApi(cid,values))
+       await disptach(CoordinatorUpdateProfileApi(cid,values))
       if (data) {
         toast.success(data.msg)
-        navigate("/")
+        // navigate("/")
       }
 
       if (error) {
