@@ -60,36 +60,38 @@ const Athelete = () => {
     {
       field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} /></Link>
       ),
     },
-   
+
     { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 190, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "dateOfBirth", headerName: "DateOFBirth", width: 105, headerClassName: "header", headerAlign: "center", align: "center",valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "dateOfBirth", headerName: "DateOFBirth", width: 105, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "age", headerName: "Age", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "categoryName", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center",  },
+    { field: "categoryName", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    {  headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params =>{
-      return(
-      <Box>
-      <Tooltip title="Edit">
-        <Link to={`/coordinator/editathelete/${params.row.id}`} >
-          <IconButton aria-label="Edit" color='primary'>
-            <DriveFileRenameOutlineRounded />
-          </IconButton>
-        </Link>
-        
-        {/* <Modal id={params.row.id} /> */}
-      </Tooltip>
-     </Box>
-      )
-    } },
+    {
+      headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+        return (
+          <Box>
+            <Tooltip title="Edit">
+              <Link to={`/coordinator/editathelete/${params.row.id}`} >
+                <IconButton aria-label="Edit" color='primary'>
+                  <DriveFileRenameOutlineRounded />
+                </IconButton>
+              </Link>
+
+              {/* <Modal id={params.row.id} /> */}
+            </Tooltip>
+          </Box>
+        )
+      }
+    },
 
   ])
 

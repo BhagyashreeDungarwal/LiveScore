@@ -1,5 +1,5 @@
 import './App.css'
-import {  RouterProvider,  createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
 import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
@@ -20,6 +20,7 @@ import Match from './Components/Coordinator/Match';
 import Coach from './Components/Coordinator/Coach';
 import CProfile from './Components/Coordinator/CProfile';
 import EditAthelete from './Components/Coordinator/EditAthelete';
+import EditAtheleteProfile from './Components/Coordinator/EditAtheleteProfile';
 
 
 function App() {
@@ -68,7 +69,7 @@ function App() {
         Sports,
         SportsMartialArts,
         Handshake,
-       
+
       ],
       sidebarRoute: [
         "cdashboard",
@@ -76,7 +77,7 @@ function App() {
         "referee",
         "coach",
         "match",
-        
+
       ],
       name: [
         "Coordinator Dashboard",
@@ -84,15 +85,15 @@ function App() {
         "Referee",
         "Coach",
         "Matches",
-        
+
       ],
-      sideroutername:[
+      sideroutername: [
         "Profile"
       ],
-      siderouteicon:[
+      siderouteicon: [
         Person2Rounded
       ],
-      sideroutelink:[
+      sideroutelink: [
         "cprofile"
       ]
     },
@@ -106,13 +107,13 @@ function App() {
       name: [
         "Referee Dashboard"
       ],
-      sideroutername:[
+      sideroutername: [
         "Profile"
       ],
-      siderouteicon:[
+      siderouteicon: [
         Person2Rounded
       ],
-      sideroutelink:[
+      sideroutelink: [
         "cprofile"
       ]
     }
@@ -123,112 +124,106 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/sadmin",
-      element: (<Header  link="sadmin" icons={sadmin.icon} sidebarRoute={sadmin.sidebarRoute} name={sadmin.name} />
+      element: (<Header link="sadmin" icons={sadmin.icon} sidebarRoute={sadmin.sidebarRoute} name={sadmin.name} />
       ),
-      children:[
+      children: [
         {
-          index:true,
-          element:<SAdminDashboard />,
+          index: true,
+          element: <SAdminDashboard />,
         },
         {
-          path:"sdashboard",
-          element:<SAdminDashboard />
+          path: "sdashboard",
+          element: <SAdminDashboard />
         }
       ]
     },
     {
-      path:"/admin",
+      path: "/admin",
       element: (
-        <Header link="admin"  icons={admin.icon} sidebarRoute={admin.sidebarRoute} name={admin.name} />
+        <Header link="admin" icons={admin.icon} sidebarRoute={admin.sidebarRoute} name={admin.name} />
       ),
-      children:[
+      children: [
         {
-          index:true,
-          element:<AdminDashboard />,
+          index: true,
+          element: <AdminDashboard />,
         },
         {
-          path:"adashboard",
-          element:<AdminDashboard />
-        },{
-          path:"category",
-          element:<CategoryManage/>
-        },{
-          path:"vcoordinator",
-          element:<VerifyCoordinator/>
-        },{
-          path:"refereelist",
-          element:<RefereeList/>
-        },{
-          path:"mtounament",
-          element:<ManageTournament/>
-        },{
-          path:"matchdetails",
-          element:<MatchDetails/>
+          path: "adashboard",
+          element: <AdminDashboard />
+        }, {
+          path: "category",
+          element: <CategoryManage />
+        }, {
+          path: "vcoordinator",
+          element: <VerifyCoordinator />
+        }, {
+          path: "refereelist",
+          element: <RefereeList />
+        }, {
+          path: "mtounament",
+          element: <ManageTournament />
+        }, {
+          path: "matchdetails",
+          element: <MatchDetails />
         }
 
       ]
     },
     {
-      path:"/coordinator",
-      element:(
-        <Header  link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} sideroutername={coordinator.sideroutername}  siderouteicon={coordinator.siderouteicon} sideroutelink={coordinator.sideroutelink} />
+      path: "/coordinator",
+      element: (
+        <Header link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} sideroutername={coordinator.sideroutername} siderouteicon={coordinator.siderouteicon} sideroutelink={coordinator.sideroutelink} />
       ),
-      children:[
+      children: [
         {
-          index:true,
-          element:<CDashboard />,
+          index: true,
+          element: <CDashboard />,
         },
         {
-          path:"cdashboard",
-          element:<CDashboard />
-        },{
-          path:"athelete",
-          element:<Athelete/>
-        },{
-          path:"referee",
-          element:<Referee/>
-        },{
-          path:"coach",
-          element:<Coach/>
-        },{
-          path:"match",
-          element:<Match/>
-        },{
-          path:"cprofile",
-          element:<CProfile/>
-        },{
-          path:"editathelete/:id",
-          element:<EditAthelete />
+          path: "cdashboard",
+          element: <CDashboard />
+        }, {
+          path: "athelete",
+          element: <Athelete />
+        }, {
+          path: "referee",
+          element: <Referee />
+        }, {
+          path: "coach",
+          element: <Coach />
+        }, {
+          path: "match",
+          element: <Match />
+        }, {
+          path: "cprofile",
+          element: <CProfile />
+        }, {
+          path: "editathelete/:id",
+          element: <EditAthelete />
+        }, {
+          path: "editatheletepic/:id",
+          element: <EditAtheleteProfile />
         }
       ]
     },
     {
-      path:"/",
-      element:(<Login/>)
-    },{
-      path:"cregister",
-      element:(<RegisterCoordinator/>)
+      path: "/",
+      element: (<Login />)
+    }, {
+      path: "cregister",
+      element: (<RegisterCoordinator />)
     }
   ])
 
   return (
     <>
-      {/* <Routes> */}
-        {/* <Route path="/" element={<Login />} /> */}
-        {/* <Route path='/sadmindashboard' element={} /> */}
-        {/* <Route path='/adashboard' element={<AdminDashboard />} /> */}
-      {/* </Routes> */}
-
-<RouterProvider router={router} />
-
-
+      <RouterProvider router={router} />
       {/* for react tostify */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgdatasBar={true}
         newestOnTop={false}
-        closeButton={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss

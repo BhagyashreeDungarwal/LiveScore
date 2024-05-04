@@ -10,6 +10,7 @@ import ProtectedRoute from '../../ProtectedRoute';
 import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
+import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 
 function CustomToolbar() {
   return (
@@ -52,29 +53,25 @@ function CustomNoRowsOverlay() {
 
 const ManageTournament = () => {
 
-
   const dispatch = useDispatch()
-  const { tounamentdata ,loading , data, error } = useSelector(state => state.admin)
-
+  const { tounamentdata, loading, data, error } = useSelector(state => state.admin)
   const columns = useMemo(tounamentdata => [
-    // { field: "tId", headerName: "Tournament Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentName", headerName: "Tournament Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "location", headerName: "Location", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center" ,valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------"  },
-    { field: "categoryId", headerName: "Category", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-
+    { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
   ])
 
   useEffect(() => {
     dispatch(getTounamentApi())
-    dispatch(getCategoryApi())
     if (data) {
       toast.success(data.msg)
+      dispatch(ClearMessageAdmin())
     }
     if (error) {
       toast.error(error.msg)
+      dispatch(ClearMessageAdmin())
     }
-  }, [dispatch,data,error])
+  }, [dispatch, data, error])
 
 
   return (
@@ -82,16 +79,15 @@ const ManageTournament = () => {
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Tournament Management" />
       </Box>
-      { loading ?  <Box sx={{ display: "flex", justifyContent: "center" }} >
-          <CircularProgress />
-        </Box> :
+      {loading ? <Box sx={{ display: "flex", justifyContent: "center" }} >
+        <CircularProgress />
+      </Box> :
         <Stack style={{
           marginTop: "1%",
           display: "grid",
-          // width: "90%",
           height: "50vh",
 
-        }}> 
+        }}>
 
           {tounamentdata && tounamentdata.length > 0 ? (
             <DataGrid
@@ -107,21 +103,21 @@ const ManageTournament = () => {
               pageSize={5}
               rowsPerPageOptions={[5]}
             />) : (
-              <DataGrid
-                autoHeight
-                rows={[]}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowHeight={42}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />
-            )
+            <DataGrid
+              autoHeight
+              rows={[]}
+              columns={columns}
+              getRowId={(row) => row.id}
+              rowHeight={42}
+              rowSelection="true"
+              rowSpacingType='margin'
+              slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+              scrollbarSize={1}
+              columnHeaderHeight={37}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />
+          )
           }
         </Stack>
       }

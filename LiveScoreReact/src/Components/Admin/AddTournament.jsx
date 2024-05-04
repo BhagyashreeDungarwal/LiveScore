@@ -23,47 +23,33 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddTournament = () => {
 
     const [open, setOpen] = useState(false);
-
-
-
-
     const theme = useTheme()
-    const { categorydata} = useSelector((state => state.admin))
     const dispatch = useDispatch()
-
     const handleClickOpen = async () => {
         setOpen(true);
-      
+
         console.log(open)
     };
     const handleClose = () => {
         setOpen(false);
     };
 
-
-
-
-
     const initial = {
         TournamentName: "",
-        Location: "",
+        Venue: "",
         TournamentDate: "",
-        CategoryId: "",
     }
 
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: initial,
         validationSchema: tournament,
 
-        onSubmit: async (values ,{ resetForm, setSubmitting }) => {
-           
+        onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
-
                 await dispatch(TounamentPostApi(values))
                 setSubmitting(false)
                 resetForm({ values: "" });
                 dispatch(getTounamentApi())
-               
             } catch (error) {
                 <CircularProgress />
             }
@@ -95,15 +81,12 @@ const AddTournament = () => {
                             top: 8,
                             color: (theme) => theme.palette.grey[500],
                         }}
-                    >
-                        <Close />
+                    > <Close />
                     </IconButton>
                     <DialogContent dividers>
-
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
-                                <Grid item xl={12} md={6} sm={12}>
-
+                                <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -116,7 +99,6 @@ const AddTournament = () => {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-
                                                     <Person2Rounded />
                                                 </InputAdornment>
                                             ),
@@ -124,29 +106,27 @@ const AddTournament = () => {
                                     />
                                     {errors.TournamentName && touched.TournamentName ? (<Typography variant="subtitle1" color="error">{errors.TournamentName}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
-
+                                <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
-                                        id="location"
-                                        name="Location"
-                                        label="Location"
-                                        value={values.Location}
+                                        id="Venue"
+                                        name="Venue"
+                                        label="Venue"
+                                        value={values.Venue}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-
                                                     <LocationOn />
                                                 </InputAdornment>
                                             ),
                                         }}
                                     />
-                                    {errors.Location && touched.Location ? (<Typography variant="subtitle1" color="error">{errors.Location}</Typography>) : null}
+                                    {errors.Venue && touched.Venue ? (<Typography variant="subtitle1" color="error">{errors.Venue}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -168,41 +148,14 @@ const AddTournament = () => {
                                     />
                                     {errors.TournamentDate && touched.TournamentDate ? (<Typography variant="subtitle1" color="error">{errors.TournamentDate}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
-                                    <FormControl variant='standard' fullWidth>
-                                        <InputLabel color='secondary'>Category</InputLabel>
-                                        <Select
-                                            color='secondary'
-                                            
-                                            id='CategoryId'
-                                            label="CategoryId"
-                                            name='CategoryId'
-                                            value={values.CategoryId}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        >
-                                            {categorydata?.map((data) => (
-                                                <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
-                                            ))
-                                            }
-
-                                        </Select>
-                                    </FormControl>
-
-                                    {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
-                                </Grid>
-
-                                <Grid item xl={12} md={6} sm={12}>
-
+                                <Grid item xl={12} md={12} sm={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
                                     </Button>
                                 </Grid>
                             </Grid>
                         </form>
-
                     </DialogContent>
-
                 </BootstrapDialog>
             </React.Fragment>
         </div>

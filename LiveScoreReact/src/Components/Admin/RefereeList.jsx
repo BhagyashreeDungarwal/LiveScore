@@ -52,7 +52,6 @@ const RefereeList = () => {
   const dispatch = useDispatch()
   const { refereedata, loading } = useSelector(state => state.coordinator)
 
-
   const columns = useMemo(refereedata => [
     {
       field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",

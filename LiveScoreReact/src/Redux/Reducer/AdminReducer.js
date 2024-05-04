@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     data: [],
     loading: false,
-    error: null
+    error: null,
 }
 
 const AdminSlice = createSlice({
@@ -11,11 +11,12 @@ const AdminSlice = createSlice({
     initialState,
     reducers: {
 
-        ClearMessage: (state) => {
+        ClearMessageAdmin: (state) => {
+            state.data = null,
+                state.error = null,
+                state.verifydata = null
 
         },
-
-
         // get Category
         GetCategoryStart: (state) => {
             state.loading = true;
@@ -88,7 +89,6 @@ const AdminSlice = createSlice({
         },
 
         // get Tounament
-
         GetMatchStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -121,6 +121,6 @@ const AdminSlice = createSlice({
 
 export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail,
     GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail,
-    TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess,
+    TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess, ClearMessageAdmin
 } = AdminSlice.actions;
 export default AdminSlice.reducer;

@@ -87,7 +87,6 @@ const CProfile = () => {
       disptach(CoordinatorUpdateProfilePicApi(cid, formData))
       disptach(clearMessage())
       handleClose();
-      // dispatch(updateProfileImage(formData))
 
     } else {
       toast.error("Please First Select Image...")
