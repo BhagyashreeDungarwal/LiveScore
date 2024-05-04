@@ -85,65 +85,7 @@ namespace LiveScore.Controllers
 
             return athlete;
         }
-        //PUT: api/Athletes/5
-         //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPut("PutAthelete/{id}")]
-        //public async Task<IActionResult> PutAthlete(int id, [FromForm] Images athleteDto)
-        //{
-        //    //if (id != athleteDto.Id)
-        //    //{
-        //    //    return BadRequest(new { msg = "Mismatched ID in the request body" });
-        //    //}
-
-        //    var athlete = await _context.Athletes.FindAsync(id);
-        //    if (athlete == null)
-        //    {
-        //        return NotFound(new { msg = "Athlete not found" });
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (athleteDto.ImageFile != null)
-        //    {
-        //        string imageUrl = await UploadImage(athleteDto.ImageFile);
-        //        athlete.ImageUrl = imageUrl;
-        //    }
-
-        //    // Update athlete properties
-        //    athlete.AthleteName = athleteDto.AthleteName;
-        //    athlete.Email = athleteDto.Email;
-        //    athlete.Contact = athleteDto.Contact;
-        //    athlete.DateOfBirth = athleteDto.DateOfBirth;
-        //    athlete.Gender = athleteDto.Gender;
-        //    athlete.Height = athleteDto.Height;
-        //    athlete.Weight = athleteDto.Weight;
-        //    athlete.City = athleteDto.City;
-        //    athlete.State = athleteDto.State;
-        //    athlete.CategoryId = athleteDto.CategoryId;
-        //    athlete.CoachId = athleteDto.CoachId;
-        //    athlete.Coordinater = athleteDto.CoordinatorId;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //        return Ok(new { msg = "Successfully Updated!!" });
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!AthleteExists(id))
-        //        {
-        //            return NotFound(new { msg = "Athelete Not Found" });
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-        //}
-
+        
         [HttpPut("UpdateAthlete/{id}")]
         public async Task<IActionResult> UpdateAthlete(int id,UpAthelete athleteDto)
         {
@@ -328,25 +270,67 @@ namespace LiveScore.Controllers
             return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
         }
 
-        // DELETE: api/Athletes/5
-        [HttpDelete("DeleteAthelete/{id}")]
-        public async Task<IActionResult> DeleteAthlete(int id)
+        [HttpPost("BloackAthlete/{id}")]
+        public async Task<ActionResult<Athlete>> BloackAthlete(int id)
         {
-            if (_context.Athletes == null)
-            {
-                return NotFound();
-            }
             var athlete = await _context.Athletes.FindAsync(id);
             if (athlete == null)
             {
-                return NotFound();
+                return NotFound(new {msg = "Athlete Not Found"});
             }
 
-            _context.Athletes.Remove(athlete);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            if(athlete.Status == "UnBlock")
+            {
+                athlete.Status = "Block";
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "Athlete Is Successfully Blocked" });
+            }
+            if(athlete.Status == "Block")
+            {
+                athlete.Status = "UnBlock";
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "Athlete Is Successfully UnBlocked" });
+            }
+            return Ok("Successful");
         }
+        [HttpPost("Retired/{id}")]
+        public async Task<ActionResult<Athlete>> RetiredAthlete(int id)
+        {
+            var athlete = await _context.Athletes.FindAsync(id);
+            if (athlete == null)
+            {
+                return NotFound(new {msg = "Athlete Not Found"});
+            }
+
+            if(athlete.Status == "UnBlock" && athlete.Status == "Block")
+            {
+                athlete.Status = "Retired";
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "Athlete is Retired" });
+            }
+           
+            return Ok("Successful");
+        }
+
+        //// DELETE: api/Athletes/5
+        //[HttpDelete("DeleteAthelete/{id}")]
+        //public async Task<IActionResult> DeleteAthlete(int id)
+        //{
+        //    if (_context.Athletes == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var athlete = await _context.Athletes.FindAsync(id);
+        //    if (athlete == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    _context.Athletes.Remove(athlete);
+        //    await _context.SaveChangesAsync();
+
+        //    return NoContent();
+        //}
 
 
 

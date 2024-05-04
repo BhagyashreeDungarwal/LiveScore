@@ -59,7 +59,7 @@ namespace LiveScore.Controllers
 
         //Put
         [HttpPut("UpdateCoach/{id}")]
-        public async Task<IActionResult> UpdateCoach(int id, [FromBody] Coach coachDto)
+        public async Task<IActionResult> UpdateCoach(int id, Coach coachDto)
         {
             var coach = await _context.Coaches.FindAsync(id);
             if (coach == null)
@@ -219,6 +219,30 @@ namespace LiveScore.Controllers
             }
 
             return $"{Request.Scheme}://{Request.Host}/coach/{fileName}";
+        }
+
+        [HttpPost("BloackCoach/{id}")]
+        public async Task<ActionResult<Coach>> BloackCoach(int id)
+        {
+            var coach = await _context.Coaches.FindAsync(id);
+            if (coach == null)
+            {
+                return NotFound(new { msg = "Coach Not Found" });
+            }
+
+            if (coach.Status == "UnBlock")
+            {
+                coach.Status = "Block";
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "coach Is Successfully Blocked" });
+            }
+            if (coach.Status == "Block")
+            {
+                coach.Status = "UnBlock";
+                await _context.SaveChangesAsync();
+                return Ok(new { msg = "Coach Is Successfully UnBlocked" });
+            }
+            return Ok("Successful");
         }
 
         // DELETE: api/Coaches/5

@@ -68,12 +68,10 @@ namespace LiveScore.Controllers
                                                   tournamentId = m.Tournament.TournamentName
                                               })
                                               .FirstOrDefaultAsync();
-
             if (match == null)
             {
                 return NotFound(new { error = "Match Not Found" });
             }
-
             return match;
         }
 
@@ -94,8 +92,7 @@ namespace LiveScore.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Matchss' is null.");
             }
-
-           
+                       
             var match = new Matchs
             {
                 MatchStatus = matchs.MatchStatus,
@@ -148,10 +145,5 @@ namespace LiveScore.Controllers
         {
             return _context.Matchss.Any(e => e.MId == id);
         }
-        //private bool MatchsExists(int id)
-        //{
-        //    return (_context.Matchss?.Any(e => e.MId == id)).GetValueOrDefault();
-        //}
-
     }
 }

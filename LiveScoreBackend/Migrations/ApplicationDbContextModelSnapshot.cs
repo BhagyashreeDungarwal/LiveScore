@@ -132,6 +132,10 @@ namespace LiveScore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CoachId");
 
                     b.ToTable("Coaches");
@@ -239,6 +243,10 @@ namespace LiveScore.Migrations
                         .IsRequired()
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Weight")
                         .HasColumnType("float");
