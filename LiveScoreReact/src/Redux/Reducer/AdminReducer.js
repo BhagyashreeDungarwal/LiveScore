@@ -10,12 +10,10 @@ const AdminSlice = createSlice({
     name: "Admin",
     initialState,
     reducers: {
-
         ClearMessageAdmin: (state) => {
             state.data = null,
-                state.error = null,
-                state.verifydata = null
-
+            state.error = null,
+            state.verifydata = null
         },
         // get Category
         GetCategoryStart: (state) => {

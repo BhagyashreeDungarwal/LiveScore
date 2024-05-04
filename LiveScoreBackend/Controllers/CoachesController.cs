@@ -34,7 +34,7 @@ namespace LiveScore.Controllers
         {
           if (_context.Coaches == null)
           {
-              return NotFound();
+              return NotFound(new { msg = "Coaches Not Found" });
           }
             return await _context.Coaches.ToListAsync();
         }
