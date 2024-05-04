@@ -474,7 +474,7 @@ namespace LiveScore.Controllers
                 Gender = acrimg.Gender,
                 City = acrimg.City,
                 State = acrimg.State,
-                Status = "Verified",
+                Status = "UnBlock",
                 ImageURL = imageUrl
             };
 
@@ -575,6 +575,30 @@ namespace LiveScore.Controllers
                 return NotFound(new { msg = "Athlete Not Found" });
             }
             return BadRequest(new { msg = "Image file is missing" });
+        }
+
+        [HttpPost("BlockReferee/{id}")]
+        public async Task<ActionResult<ACR>> BlockReferee(int id)
+        {
+            var coach = await _dbcontext.Admin.FindAsync(id);
+            if (coach == null)
+            {
+                return NotFound(new { msg = "Referee Not Found" });
+            }
+
+            if (coach.Status == "UnBlock")
+            {
+                coach.Status = "Block";
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Referee Is Blocked" });
+            }
+            if (coach.Status == "Block")
+            {
+                coach.Status = "UnBlock";
+                await _dbcontext.SaveChangesAsync();
+                return Ok(new { msg = "Referee Is UnBlocked" });
+            }
+            return Ok("Successful");
         }
 
         private async Task<string> UploadImage(IFormFile file)

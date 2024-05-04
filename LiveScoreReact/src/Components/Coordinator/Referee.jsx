@@ -1,12 +1,13 @@
 import AddReferee from "./AddReferee"
-import { Box, CircularProgress, Stack } from '@mui/material'
+import { Box, CircularProgress, Fab, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
+import { BlockRefereeApi, GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from "react-toastify";
+import { Block, VerifiedUser } from "@mui/icons-material";
 
 
 function CustomToolbar() {
@@ -52,6 +53,11 @@ const Referee = () => {
 const dispatch = useDispatch()
 const {refereedata, loading, data, error} = useSelector(state => state.coordinator)
 
+ const handleRequest = async (id) => {
+    await dispatch(BlockRefereeApi(id))
+    dispatch(GetRefereeApi())
+  }
+
 
   const columns = useMemo(refereedata => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
@@ -67,7 +73,27 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
     { field: "lastLogin", headerName: "LastLogin", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    // { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
+      width: 152,
+      renderCell: params => {
+        if (params.row.status === "UnBlock") {   
+        return (
+          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+            <VerifiedUser size="small" sx={{ mr: 1 }} />
+            Block
+          </Fab>
+          )
+        }
+       else if (params.row.status === "Block") {   
+        return (
+          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+            <Block size="small" sx={{ mr: 1 }} />
+            Unblock
+          </Fab>)
+        }
+      }
+    }
     
   ])
 

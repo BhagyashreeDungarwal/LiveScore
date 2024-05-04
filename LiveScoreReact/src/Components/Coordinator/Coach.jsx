@@ -1,14 +1,15 @@
-import { Box, CircularProgress, Fab, Stack } from '@mui/material'
+import { Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { GetCoachApi } from '../../Redux/Action/CoordinatorAction';
+import { BlockCoachApi, GetCoachApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import { toast } from 'react-toastify';
 import AddCoach from './AddCoach';
-import { VerifiedUser } from '@mui/icons-material';
+import { Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 
 function CustomToolbar() {
@@ -51,6 +52,12 @@ const Coach = () => {
   const dispatch = useDispatch()
   const { coachdata, loading, data, error } = useSelector(state => state.coordinator)
 
+
+  const handleRequest = async (id) => {
+    await dispatch(BlockCoachApi(id))
+    dispatch(GetCoachApi())
+  }
+
   const columns = useMemo(coachdata => [
     {
       field: "imageUrl", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
@@ -64,9 +71,49 @@ const Coach = () => {
     { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "experience", headerName: "Experience", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "achievements", headerName: "Achievements", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { headerName: "Actions", width: 150, headerClassName: "header", headerAlign: "center", align: "center", renderCell: param =>{
-    
-    } },
+    // { headerName: "Actions", width: 70, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params =>{
+    // return (
+    //       <Box>
+    //         <Tooltip title="Edit">
+    //           <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
+    //             <IconButton aria-label="Edit" color='primary'>
+    //               <DriveFileRenameOutlineRounded />
+    //             </IconButton>
+    //           </Link>            
+    //         </Tooltip>
+    //       </Box>
+    // )
+    // } },
+    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
+      width: 152,
+      renderCell: params => {
+        if (params.row.status === "UnBlock") {   
+        return (
+          <Box>
+            <Tooltip title="Edit">
+              <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
+                <IconButton aria-label="Edit" color='primary'>
+                  <DriveFileRenameOutlineRounded />
+                </IconButton>
+              </Link>            
+            </Tooltip>
+          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
+            <VerifiedUser size="small" sx={{ mr: 1 }} />
+            Block
+          </Fab>
+           
+          </Box>
+          )
+        }
+       else if (params.row.status === "Block") {   
+        return (
+          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
+            <Block size="small" sx={{ mr: 1 }} />
+            Unblock
+          </Fab>)
+        }
+      }
+    }
 
   ])
 
