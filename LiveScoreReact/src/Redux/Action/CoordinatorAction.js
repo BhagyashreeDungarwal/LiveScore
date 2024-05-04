@@ -13,7 +13,13 @@ import {
     CoordinatorProfileUpdatePicStart,
     CoordinatorProfileUpdatePicSuccess,
     CoordinatorProfileUpdatePicFail,
+<<<<<<< HEAD
+    AtheletePutPicStart,
+    AtheletePutPicSuccess,
+    AtheletePutPicFail,
+=======
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,
+>>>>>>> 411cbc78b7691db59363bc754ea37242562c9615
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -77,6 +83,21 @@ export const AtheletePutApi = (values, id) => async (dispatch) => {
         dispatch(AtheletePutSuccess(data))
     } catch (error) {
         dispatch(AtheletePutFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const AtheletePutPicApi = (values, id) => async (dispatch) => {
+    try {
+        dispatch(AtheletePutPicStart())
+        console.log(values)
+        const { data } = await axios.put(`${url}/Athletes/UpdateAthleteImage/${id}`, values, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        dispatch(AtheletePutPicSuccess(data))
+    } catch (error) {
+        dispatch(AtheletePutPicFail(error.response.data))
         // console.log(e.response.data.msg)
     }
 }

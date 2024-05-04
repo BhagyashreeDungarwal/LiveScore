@@ -59,7 +59,7 @@ const CoordinatorSlice = createSlice({
             state.error = action.payload;
         },
 
-        //Post Athelete
+        //Put Athelete
         AtheletePutStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -72,6 +72,22 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        //Put athlete image Athelete
+        AtheletePutPicStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        AtheletePutPicSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        AtheletePutPicFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
 
         //Post Coordinator
         CoordinatorPostStart: (state) => {
@@ -244,10 +260,16 @@ const CoordinatorSlice = createSlice({
 export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
+<<<<<<< HEAD
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+    CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail, CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess,
+    CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail, clearMessage, AtheletePutPicFail,AtheletePutPicStart,AtheletePutPicSuccess
+=======
     GetRefereeStart, GetRefereetSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail,
     CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail,
     CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess, CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail,
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,
     clearMessage,
+>>>>>>> 411cbc78b7691db59363bc754ea37242562c9615
 } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;
