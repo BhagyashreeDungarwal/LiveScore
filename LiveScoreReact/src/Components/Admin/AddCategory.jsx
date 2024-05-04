@@ -30,8 +30,8 @@ const AddCategory = () => {
     };
 
     const initial = {
-        CategoryName: "",
-        CategoryTime: "",
+        categoryName: "",
+        categoryTime: "",
     }
 
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -84,9 +84,9 @@ const AddCategory = () => {
                                     <TextField
                                         fullWidth
                                         id="name"
-                                        name="CategoryName"
-                                        label="Category Name"
-                                        value={values.CategoryName}
+                                        name="categoryName"
+                                        label="category Name"
+                                        value={values.categoryName}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         variant='standard'
@@ -98,16 +98,16 @@ const AddCategory = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.CategoryName && touched.CategoryName ? (<Typography variant="subtitle1" color="error">{errors.CategoryName}</Typography>) : null}
+                                    {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
 
                                     <TextField
                                         fullWidth
                                         id="time"
-                                        name="CategoryTime"
+                                        name="categoryTime"
                                         label="Time"
-                                        value={values.CategoryTime}
+                                        value={values.categoryTime}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         variant='standard'
@@ -120,7 +120,7 @@ const AddCategory = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.CategoryTime && touched.CategoryTime ? (<Typography variant="subtitle1" color="error">{errors.CategoryTime}</Typography>) : null}
+                                    {errors.categoryTime && touched.categoryTime ? (<Typography variant="subtitle1" color="error">{errors.categoryTime}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
 

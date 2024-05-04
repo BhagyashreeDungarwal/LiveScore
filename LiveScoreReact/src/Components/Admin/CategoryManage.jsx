@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack, } from '@mui/material';
+import { Box, CircularProgress, IconButton, Stack, Tooltip, } from '@mui/material';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import AddCategory from './AddCategory';
 import HeaderFormat from '../Common/HeaderFormat';
@@ -10,6 +10,8 @@ import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import ProtectedRoute from '../../ProtectedRoute';
 import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
+import { Link } from 'react-router-dom';
+import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
 
 // Tolbar for datagrid
 function CustomToolbar() {
@@ -60,6 +62,22 @@ const CategoryManage = () => {
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryTime", headerName: "Time(Minutes)", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
+      renderCell: params => {         
+        return (
+          <Box>
+            <Tooltip title="Edit">
+              <Link to={`/admin/editcategory/${params.row.id}`} >
+                <IconButton aria-label="Edit" color='primary'>
+                  <DriveFileRenameOutlineRounded />
+                </IconButton>
+              </Link>            
+            </Tooltip>
+          </Box>
+          )
+        }
+       
+      }
   ])
 
   useEffect(() => {

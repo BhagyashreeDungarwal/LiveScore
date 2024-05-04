@@ -1,6 +1,7 @@
 import axios from "axios"
 import {
     GetCategoryFail, GetCategoryStart, GetCategorySuccess, CategoryPostStart, CategoryPostSuccess, CategoryPostFail, GetCoordinatorStart,
+    GetCategoryByIdStart, GetCategoryByIdSuccess, GetCategoryByIdFail, CategoryPutStart, CategoryPutSuccess, CategoryPutFail,
     GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail, TounamentPostStart, TounamentPostSuccess,
     TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess,
 } from "../Reducer/AdminReducer"
@@ -39,6 +40,37 @@ export const CategoryPostApi = (values) => async (dispatch) => {
     }
 }
 
+export const GetCategoryByIdApi = (id) => async (dispatch) => {
+    try {
+        dispatch(GetCategoryByIdStart())
+
+        const { data } = await axios.get(`${url}/Categories/GetCategoriesById/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(GetCategoryByIdSuccess(data))
+    } catch (error) {
+        dispatch(GetCategoryByIdFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+
+export const CategoryPutApi = (values, id) => async (dispatch) => {
+    try {
+        dispatch(CategoryPutStart())
+        console.log(values)
+        const { data } = await axios.put(`${url}/Categories/PutCategory/${id}`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(CategoryPutSuccess(data))
+    } catch (error) {
+        dispatch(CategoryPutFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
 export const getCoordinatorApi = () => async (dispatch) => {
     try {
         dispatch(GetCoordinatorStart())

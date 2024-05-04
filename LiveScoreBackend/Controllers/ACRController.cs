@@ -175,22 +175,22 @@ namespace LiveScore.Controllers
             acr.Password = null;
 
             //for message body
-            string messageBody = "<!DOCTYPE html>" +
-                                    "<html>" +
-                                    "<head>" +
-                                    "<title>Welcome to Live Score!</title>" +
-                                    "</head>" +
-                                    "<body>" +
-                                   $" <h2>Respected  {acr.Name},</h2>" +
-                                    "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                    "<p>Welcome aboard!</p>" +
-                                    "<p>Best regards,<br />" +
-                                    " Live Score</p>" +
-                                    "</body>" +
-                                    "</html>";
+            //string messageBody = "<!DOCTYPE html>" +
+            //                        "<html>" +
+            //                        "<head>" +
+            //                        "<title>Welcome to Live Score!</title>" +
+            //                        "</head>" +
+            //                        "<body>" +
+            //                       $" <h2>Respected  {acr.Name},</h2>" +
+            //                        "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                        "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                        "<p>Welcome aboard!</p>" +
+            //                        "<p>Best regards,<br />" +
+            //                        " Live Score</p>" +
+            //                        "</body>" +
+            //                        "</html>";
 
-            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
+            //_emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
             return Ok(new { msg = "Successfully Added Admin" });
         }
 
@@ -330,22 +330,22 @@ namespace LiveScore.Controllers
             acr.Password = null;
 
             //for message body
-            string messageBody = "<!DOCTYPE html>" +
-                                    "<html>" +
-                                    "<head>" +
-                                    "<title>Welcome to Live Score!</title>" +
-                                    "</head>" +
-                                    "<body>" +
-                                   $" <h2>Respected  {acr.Name},</h2>" +
-                                    "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                    "<p>Welcome aboard!</p>" +
-                                    "<p>Best regards,<br />" +
-                                    " Live Score</p>" +
-                                    "</body>" +
-                                    "</html>";
+            //string messageBody = "<!DOCTYPE html>" +
+            //                        "<html>" +
+            //                        "<head>" +
+            //                        "<title>Welcome to Live Score!</title>" +
+            //                        "</head>" +
+            //                        "<body>" +
+            //                       $" <h2>Respected  {acr.Name},</h2>" +
+            //                        "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                        "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                        "<p>Welcome aboard!</p>" +
+            //                        "<p>Best regards,<br />" +
+            //                        " Live Score</p>" +
+            //                        "</body>" +
+            //                        "</html>";
 
-            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
+            //_emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
 
             return Ok(new { msg = "Successfully Added  Coordinator" });
         }
@@ -371,22 +371,22 @@ namespace LiveScore.Controllers
 
             await _dbcontext.SaveChangesAsync();
 
-            string messageBody = "<!DOCTYPE html>" +
-                                "<html>" +
-                                "<head>" +
-                                "<title>Welcome to Live Score!</title>" +
-                                "</head>" +
-                                "<body>" +
-                               $" <h2>Respected  {uacr.Name},</h2>" +
-                                $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                "<p>Welcome aboard!</p>" +
-                                "<p>Best regards,<br />" +
-                                " Live Score</p>" +
-                                "</body>" +
-                                "</html>";
+            //string messageBody = "<!DOCTYPE html>" +
+            //                    "<html>" +
+            //                    "<head>" +
+            //                    "<title>Welcome to Live Score!</title>" +
+            //                    "</head>" +
+            //                    "<body>" +
+            //                   $" <h2>Respected  {uacr.Name},</h2>" +
+            //                    $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                    "<p>Welcome aboard!</p>" +
+            //                    "<p>Best regards,<br />" +
+            //                    " Live Score</p>" +
+            //                    "</body>" +
+            //                    "</html>";
 
-            _emailSender.SendEmail(uacr.Email, "Successfully Registered", messageBody);
+            //_emailSender.SendEmail(uacr.Email, "Successfully Registered", messageBody);
 
             return Ok(new { msg = "Coordinator updated successfully" });
         }
@@ -483,22 +483,22 @@ namespace LiveScore.Controllers
             _dbcontext.Admin.Add(acr);
             await _dbcontext.SaveChangesAsync();
             acr.Password = null;
-            string messageBody = "<!DOCTYPE html>" +
-                                   "<html>" +
-                                   "<head>" +
-                                   "<title>Welcome to Live Score!</title>" +
-                                   "</head>" +
-                                   "<body>" +
-                                  $" <h2>Respected  {acr.Name},</h2>" +
-                                   $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                   "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                   "<p>Welcome aboard!</p>" +
-                                   "<p>Best regards,<br />" +
-                                   " Live Score</p>" +
-                                   "</body>" +
-                                   "</html>";
+            //string messageBody = "<!DOCTYPE html>" +
+            //                       "<html>" +
+            //                       "<head>" +
+            //                       "<title>Welcome to Live Score!</title>" +
+            //                       "</head>" +
+            //                       "<body>" +
+            //                      $" <h2>Respected  {acr.Name},</h2>" +
+            //                       $"<p>Congratulations on joining Live Score! You're now registered as a  {acrimg.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                       "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                       "<p>Welcome aboard!</p>" +
+            //                       "<p>Best regards,<br />" +
+            //                       " Live Score</p>" +
+            //                       "</body>" +
+            //                       "</html>";
 
-            _emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
+            //_emailSender.SendEmail(acr.Email, "SucessFully Registered", messageBody);
 
             return Ok(new { msg = "Successfully Added Referee" });
         }
@@ -525,22 +525,22 @@ namespace LiveScore.Controllers
 
             await _dbcontext.SaveChangesAsync();
 
-            string messageBody = "<!DOCTYPE html>" +
-                                "<html>" +
-                                "<head>" +
-                                "<title>Welcome to Live Score!</title>" +
-                                "</head>" +
-                                "<body>" +
-                               $" <h2>Respected  {uacr.Name},</h2>" +
-                                $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-                                "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-                                "<p>Welcome aboard!</p>" +
-                                "<p>Best regards,<br />" +
-                                " Live Score</p>" +
-                                "</body>" +
-                                "</html>";
+            //string messageBody = "<!DOCTYPE html>" +
+            //                    "<html>" +
+            //                    "<head>" +
+            //                    "<title>Welcome to Live Score!</title>" +
+            //                    "</head>" +
+            //                    "<body>" +
+            //                   $" <h2>Respected  {uacr.Name},</h2>" +
+            //                    $"<p>Congratulations on joining Live Score! You're now registered as a  {acr.Password}. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                    "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                    "<p>Welcome aboard!</p>" +
+            //                    "<p>Best regards,<br />" +
+            //                    " Live Score</p>" +
+            //                    "</body>" +
+            //                    "</html>";
 
-            _emailSender.SendEmail(uacr.Email, "Successfully Updated", messageBody);
+            //_emailSender.SendEmail(uacr.Email, "Successfully Updated", messageBody);
 
             return Ok(new { msg = "Referee updated successfully" });
         }

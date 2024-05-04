@@ -12,8 +12,8 @@ const AdminSlice = createSlice({
     reducers: {
         ClearMessageAdmin: (state) => {
             state.data = null,
-            state.error = null,
-            state.verifydata = null
+                state.error = null,
+                state.verifydata = null
         },
         // get Category
         GetCategoryStart: (state) => {
@@ -39,6 +39,34 @@ const AdminSlice = createSlice({
             state.data = action.payload;
         },
         CategoryPostFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        // get By Id Category
+        GetCategoryByIdStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetCategoryByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.categoryByIddata = action.payload;
+        },
+        GetCategoryByIdFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+        //Put Category
+        CategoryPutStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        CategoryPutSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        CategoryPutFail: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
@@ -118,6 +146,7 @@ const AdminSlice = createSlice({
 })
 
 export const { GetCategoryStart, GetCategorySuccess, GetCategoryFail, CategoryPostStart, CategoryPostSuccess, CategoryPostFail,
+    GetCategoryByIdStart, GetCategoryByIdSuccess, GetCategoryByIdFail, CategoryPutStart, CategoryPutSuccess, CategoryPutFail,
     GetCoordinatorStart, GetCoordinatorSuccess, GetCoordinatorFail, GetTounamentStart, GetTounamentSuccess, GetTounamentFail,
     TounamentPostStart, TounamentPostSuccess, TounamentPostFail, VerifyCoordinatorFail, VerifyCoordinatorStart, VerifyCoordinatorSuccess, ClearMessageAdmin
 } = AdminSlice.actions;

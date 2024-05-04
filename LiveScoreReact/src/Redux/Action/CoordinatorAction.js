@@ -13,13 +13,10 @@ import {
     CoordinatorProfileUpdatePicStart,
     CoordinatorProfileUpdatePicSuccess,
     CoordinatorProfileUpdatePicFail,
-<<<<<<< HEAD
     AtheletePutPicStart,
     AtheletePutPicSuccess,
     AtheletePutPicFail,
-=======
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,
->>>>>>> 411cbc78b7691db59363bc754ea37242562c9615
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
