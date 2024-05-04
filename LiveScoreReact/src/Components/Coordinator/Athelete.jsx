@@ -46,7 +46,7 @@ function CustomNoRowsOverlay() {
         height="240"
 
       />
-      <Box sx={{ mt: 0 }}>No Athelete Added</Box>
+      <Box sx={{ mt: 0 }}>No Athlete Added</Box>
     </div>
   );
 }

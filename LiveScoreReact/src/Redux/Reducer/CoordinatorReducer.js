@@ -59,7 +59,7 @@ const CoordinatorSlice = createSlice({
             state.error = action.payload;
         },
 
-        //Post Athelete
+        //Put Athelete
         AtheletePutStart: (state) => {
             state.loading = true;
             state.error = null;
@@ -72,6 +72,22 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+
+        //Put athlete image Athelete
+        AtheletePutPicStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        AtheletePutPicSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        AtheletePutPicFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
+
 
         //Post Coordinator
         CoordinatorPostStart: (state) => {
@@ -220,6 +236,6 @@ export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePo
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
     GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail, CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess,
-    CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail, clearMessage,
+    CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail, clearMessage, AtheletePutPicFail,AtheletePutPicStart,AtheletePutPicSuccess
 } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;
