@@ -90,7 +90,8 @@ namespace LiveScore.Data
                 entity.Property(c => c.CoachName).IsRequired().HasMaxLength(101); 
                 entity.Property(c => c.Gender).IsRequired().HasMaxLength(101); 
                 entity.Property(c => c.CoachEmail).IsRequired().HasMaxLength(101);
-                entity.Property(c => c.ContactNo).IsRequired().HasMaxLength(101); 
+                entity.Property(c => c.ContactNo).IsRequired().HasMaxLength(101);
+                entity.Property(a => a.Status).IsRequired(false).HasMaxLength(101);
                 entity.Property(c => c.Experience).IsRequired().HasMaxLength(101); 
                 entity.Property(c => c.Achievements).IsRequired().HasMaxLength(101);
 
@@ -110,6 +111,7 @@ namespace LiveScore.Data
                 entity.Property(a => a.Weight).IsRequired(false); 
                 entity.Property(a => a.City).IsRequired().HasMaxLength(101); 
                 entity.Property(a => a.State).IsRequired().HasMaxLength(101);
+                entity.Property(a => a.Status).IsRequired(false).HasMaxLength(101);
                 entity.Property(a => a.CoachId).IsRequired();
                 entity.Property(a => a.Coordinater).IsRequired(); 
                 entity.Property(a => a.CategoryId).IsRequired(); 

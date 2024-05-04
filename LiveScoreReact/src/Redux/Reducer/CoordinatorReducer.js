@@ -73,7 +73,6 @@ const CoordinatorSlice = createSlice({
             state.error = action.payload;
         },
 
-
         //Post Coordinator
         CoordinatorPostStart: (state) => {
             state.loading = true;
@@ -182,7 +181,33 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        //GetById Athelete
+        GetCoachByIdStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetCoachByIdSuccess: (state, action) => {
+            state.loading = false;
+            state.coachByIddata = action.payload;
+        },
+        GetCoachByIdFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
+        //Post Coach
+        CoachPutStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        CoachPutSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        CoachPutFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
 
     },
