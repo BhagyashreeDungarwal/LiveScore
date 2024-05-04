@@ -64,19 +64,29 @@ const Coach = () => {
     { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "experience", headerName: "Experience", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "achievements", headerName: "Achievements", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { headerName: "Actions", width: 150, headerClassName: "header", headerAlign: "center", align: "center", renderCell: param =>{
+    
+    } },
 
   ])
 
   useEffect(() => {
     dispatch(GetCoachApi())
-    if (data) {
-      toast.success(data.msg)
-    }
-    if (error) {
-      toast.error(data.msg)
-    }
-  }, [dispatch, data, error])
+    
+  }, [dispatch])
 
+  useEffect(() => {
+   if (data) {
+      toast.success(data.msg)
+    } 
+  }, [data])
+  
+  useEffect(() => {
+   if (error) {
+      toast.error(data.msg)
+    } 
+  }, [error])
+  
 
   return (
     <Box>
