@@ -46,7 +46,7 @@ function CustomNoRowsOverlay() {
         height="240"
 
       />
-      <Box sx={{ mt: 0 }}>No Coach Added</Box>
+      <Box sx={{ mt: 0 }}>No Athelete Added</Box>
     </div>
   );
 }
@@ -97,15 +97,28 @@ const Athelete = () => {
 
   useEffect(() => {
     dispatch(getAtheleteApi())
+  }, [dispatch])
+
+  useEffect(() => {
     dispatch(getCategoryApi())
+  }, [dispatch])
+
+  useEffect(() => {
     dispatch(GetCoachApi())
+  }, [dispatch])
+
+  useEffect(() => {
     if (data) {
       toast.success(data.msg)
     }
+  }, [data])
+
+  useEffect(() => {
     if (error) {
       toast.error(data.msg)
     }
-  }, [dispatch, data, error])
+  }, [error])
+
 
 
   return (
