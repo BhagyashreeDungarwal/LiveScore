@@ -3,7 +3,7 @@ import {
     GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
-    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileStart,
     CoordinatorProfileSuccess,
     CoordinatorProfileFail,
@@ -13,6 +13,7 @@ import {
     CoordinatorProfileUpdatePicStart,
     CoordinatorProfileUpdatePicSuccess,
     CoordinatorProfileUpdatePicFail,
+    GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -160,6 +161,20 @@ export const GetRefereeApi = () => async (dispatch) => {
         // console.log(e.response.data.msg)
     }
 }
+export const BlockRefereeApi = (id) => async (dispatch) => {
+    try {
+        dispatch(BlockRefereeStart())
+
+        const { data } = await axios.post(`${url}/ACR/BlockReferee/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(BlockRefereeSuccess(data))
+    } catch (error) {
+        dispatch(BlockRefereeFail(error.response.data))
+    }
+}
 export const GetCoachApi = () => async (dispatch) => {
     try {
         dispatch(GetCoachStart())
@@ -188,5 +203,50 @@ export const CoachPostApi = (values) => async (dispatch) => {
     } catch (error) {
         dispatch(CoachPostFail(error.response.data))
         // console.log(e.response.data.msg)
+    }
+}
+export const GetCoachByIdApi = (id) => async (dispatch) => {
+    try {
+        dispatch(GetCoachByIdStart())
+
+        const { data } = await axios.get(`${url}/Coaches/GetCoachesById/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(GetCoachByIdSuccess(data))
+    } catch (error) {
+        dispatch(GetCoachByIdFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+
+export const CoachPutApi = (values, id) => async (dispatch) => {
+    try {
+        dispatch(CoachPutStart())
+        console.log(values)
+        const { data } = await axios.put(`${url}/Coaches/UpdateCoach/${id}`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(CoachPutSuccess(data))
+    } catch (error) {
+        dispatch(CoachPutFail(error.response.data))
+        // console.log(e.response.data.msg)
+    }
+}
+export const BlockCoachApi = (id) => async (dispatch) => {
+    try {
+        dispatch(BlockCoachStart())
+
+        const { data } = await axios.post(`${url}/Coaches/BloackCoach/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(BlockCoachSuccess(data))
+    } catch (error) {
+        dispatch(BlockCoachFail(error.response.data))
     }
 }

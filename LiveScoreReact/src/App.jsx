@@ -21,6 +21,7 @@ import Coach from './Components/Coordinator/Coach';
 import CProfile from './Components/Coordinator/CProfile';
 import EditAthelete from './Components/Coordinator/EditAthelete';
 import EditAtheleteProfile from './Components/Coordinator/EditAtheleteProfile';
+import EditCoach from './Components/Coordinator/EditCoach';
 
 
 function App() {
@@ -203,6 +204,9 @@ function App() {
         }, {
           path: "editatheletepic/:id",
           element: <EditAtheleteProfile />
+        }, {
+          path: "editcoach/:id",
+          element: <EditCoach />
         }
       ]
     },

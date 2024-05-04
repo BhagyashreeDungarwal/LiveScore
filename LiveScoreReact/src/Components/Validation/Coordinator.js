@@ -95,3 +95,11 @@ export const CoachValidate = yup.object({
         }
     ),
 });
+export const UpCoach = yup.object({
+    coachName: yup.string().required('Name is required'),
+    coachEmail: yup.string().email('Invalid email address').required('Email is required'),
+    gender: yup.string().required('Gender is required'),
+    contactNo: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+    experience: yup.string().required('experience is required'),
+    achievements: yup.string().required('Achivement is required'),
+});
