@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import dayjs from 'dayjs';
 import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import { upAthelete } from '../Validation/Coordinator';
+import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -42,7 +43,7 @@ const EditAthelete = () => {
         coachName: "",
     }
 
-    
+
 
     useEffect(() => {
         dispatch(GetAtheleteByIdApi(id));
@@ -68,29 +69,23 @@ const EditAthelete = () => {
         validationSchema: upAthelete,
         onSubmit: async (values) => {
             console.log(values)
-            await dispatch(AtheletePutApi(values, id))
-            
-            if (data) {
-                toast.success(data.msg)
-                // navigate("/")
+            dispatch(AtheletePutApi(values, id))
+            if (data.msg) {
+                navigate("/coordinator/athelete")
             }
-
             if (error) {
                 toast.error(error.msg)
+                dispatch(clearMessage())
             }
         }
     })
-           
+
     const handleClose = () => {
         navigate("/coordinator/athelete")
-      };
-    
+    };
     return (
         <div>
             <React.Fragment>
-                {/* <Button variant="outlined" onClick={handleClickOpen}>
-                    Add Athelete
-                </Button> */}
                 <BootstrapDialog
                     onClose={handleClose}
                     aria-labelledby="customized-dialog-title"
@@ -115,7 +110,7 @@ const EditAthelete = () => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
 
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -138,7 +133,7 @@ const EditAthelete = () => {
                                     {errors.athleteName && touched.athleteName ? (<Typography variant="subtitle1" color="error">{errors.athleteName}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -158,7 +153,7 @@ const EditAthelete = () => {
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -180,7 +175,7 @@ const EditAthelete = () => {
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -203,7 +198,7 @@ const EditAthelete = () => {
                                     {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -222,7 +217,7 @@ const EditAthelete = () => {
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -244,7 +239,7 @@ const EditAthelete = () => {
                                     />
                                     {errors.height && touched.height ? (<Typography variant="subtitle1" color="error">{errors.height}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -267,7 +262,7 @@ const EditAthelete = () => {
                                     {errors.weight && touched.weight ? (<Typography variant="subtitle1" color="error">{errors.weight}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -288,7 +283,7 @@ const EditAthelete = () => {
                                     />
                                     {errors.state && touched.state ? (<Typography variant="subtitle1" color="error">{errors.state}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -310,7 +305,7 @@ const EditAthelete = () => {
                                     {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Coach</InputLabel>
                                         <Select
@@ -330,7 +325,7 @@ const EditAthelete = () => {
                                     </FormControl>
                                     {errors.coachName && touched.coachName ? (<Typography variant="subtitle1" color="error">{errors.coachName}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}    >
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Category</InputLabel>
                                         <Select
@@ -350,8 +345,7 @@ const EditAthelete = () => {
                                     </FormControl>
                                     {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
-
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
                                     </Button>

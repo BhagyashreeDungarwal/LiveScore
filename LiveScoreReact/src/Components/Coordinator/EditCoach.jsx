@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { UpCoach } from '../Validation/Coordinator';
+import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -49,15 +50,16 @@ const EditCoach = () => {
         validationSchema: UpCoach,
         onSubmit: async (values) => {
             console.log(values)
-            await dispatch(CoachPutApi(values, id))
-            
-            if (data) {
-                toast.success(data.msg)
-            }
-
-            if (error) {
-                toast.error(error.msg)
-            }
+           dispatch(CoachPutApi(values, id))
+           dispatch(clearMessage())
+           navigate("/coordinator/coach")
+        //    if (data) {
+        //         dispatch(clearMessage())
+        //     }
+        //     if (error) {
+        //         toast.error(error.msg)
+        //         dispatch(clearMessage())
+        //     }
         }
     })
 
@@ -67,9 +69,6 @@ const EditCoach = () => {
   return (
       <div>
             <React.Fragment>
-                {/* <Button variant="outlined" onClick={handleClickOpen}>
-                    Add Coach
-                </Button> */}
                 <BootstrapDialog
                     onClose={handleClose}
                     aria-labelledby="customized-dialog-title"
@@ -94,7 +93,7 @@ const EditCoach = () => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -117,7 +116,7 @@ const EditCoach = () => {
                                     {errors.coachName && touched.coachName ? (<Typography variant="subtitle1" color="error">{errors.coachName}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="coachEmail"
@@ -137,7 +136,7 @@ const EditCoach = () => {
                                     />
                                     {errors.coachEmail && touched.coachEmail ? (<Typography variant="subtitle1" color="error">{errors.coachEmail}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -160,7 +159,7 @@ const EditCoach = () => {
                                     />
                                     {errors.contactNo && touched.contactNo ? (<Typography variant="subtitle1" color="error">{errors.contactNo}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -181,7 +180,7 @@ const EditCoach = () => {
 
                                 </Grid>
 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -204,7 +203,7 @@ const EditCoach = () => {
                                     {errors.achievements && touched.achievements ? (<Typography variant="subtitle1" color="error">{errors.achievements}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -227,7 +226,7 @@ const EditCoach = () => {
                                     {errors.experience && touched.experience ? (<Typography variant="subtitle1" color="error">{errors.experience}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit

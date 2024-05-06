@@ -129,7 +129,7 @@ const AddAthelete = () => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
 
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12} >
 
                                     <TextField
                                         fullWidth
@@ -152,7 +152,7 @@ const AddAthelete = () => {
                                     {errors.athleteName && touched.athleteName ? (<Typography variant="subtitle1" color="error">{errors.athleteName}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -172,7 +172,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -194,7 +194,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -216,7 +216,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormLabel component="legend">Upload Image</FormLabel>
                                     <input
                                         id="image-upload"
@@ -229,7 +229,7 @@ const AddAthelete = () => {
                                     {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
                                 </Grid>
                               
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -248,7 +248,7 @@ const AddAthelete = () => {
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -270,7 +270,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.height && touched.height ? (<Typography variant="subtitle1" color="error">{errors.height}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -293,7 +293,7 @@ const AddAthelete = () => {
                                     {errors.weight && touched.weight ? (<Typography variant="subtitle1" color="error">{errors.weight}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12} >
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -314,7 +314,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.state && touched.state ? (<Typography variant="subtitle1" color="error">{errors.state}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -336,7 +336,7 @@ const AddAthelete = () => {
                                     {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
                                 </Grid>
                                 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Coach</InputLabel>
                                         <Select
@@ -356,7 +356,7 @@ const AddAthelete = () => {
                                     </FormControl>
                                     {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Category</InputLabel>
                                         <Select
@@ -376,7 +376,7 @@ const AddAthelete = () => {
                                     </FormControl>
                                     {errors.categoryId && touched.categoryId ? (<Typography variant="subtitle1" color="error">{errors.categoryId}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit

@@ -62,14 +62,18 @@ namespace LiveScore.Controllers
         public async Task<IActionResult> UpdateCoach(int id, Coach coachDto)
         {
             var coach = await _context.Coaches.FindAsync(id);
+             if (!CoachExists(id))
+                {
+                    return NotFound(new { msg = "Coach Id Not Found" });
+                }
             if (coach == null)
             {
-                return NotFound(new { error = "Coach not found" });
+                return NotFound(new { msg = "Coach not found" });
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new {msg = "Please fill All Field"});
             }
 
             // Update coach properties
@@ -97,22 +101,19 @@ namespace LiveScore.Controllers
             _emailSender.SendEmail(coach.CoachEmail, "Sucessfully Updated", messageBody);
 
 
-            try
-            {
+            //try
+            //{
                 await _context.SaveChangesAsync();
                 return Ok(new { msg = "Coach information successfully updated" });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoachExists(id))
-                {
-                    return NotFound(new { error = "Coach Id Not Found" });
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+               
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
         }
 
         [HttpPut("UpdateCoachImage/{id}")]
@@ -144,7 +145,7 @@ namespace LiveScore.Controllers
                 {
                     if (!CoachExists(id))
                     {
-                        return NotFound(new { error = "Coach Id Not Found" });
+                        return NotFound(new { error = "Coach  Not Found" });
                     }
                     else
                     {
@@ -221,7 +222,7 @@ namespace LiveScore.Controllers
             return $"{Request.Scheme}://{Request.Host}/coach/{fileName}";
         }
 
-        [HttpPost("BloackCoach/{id}")]
+        [HttpPost("BlockCoach/{id}")]
         public async Task<ActionResult<Coach>> BloackCoach(int id)
         {
             var coach = await _context.Coaches.FindAsync(id);

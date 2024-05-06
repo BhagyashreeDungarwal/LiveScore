@@ -1,5 +1,5 @@
 import AddReferee from "./AddReferee"
-import { Box, CircularProgress, Fab, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,6 +8,8 @@ import NoData from "./../Images/NoData.jpg"
 import { BlockRefereeApi, GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from "react-toastify";
 import { Block, VerifiedUser } from "@mui/icons-material";
+import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer";
+import { Link } from "react-router-dom";
 
 
 function CustomToolbar() {
@@ -43,7 +45,7 @@ function CustomNoRowsOverlay() {
         height="240"
 
       />
-      <Box sx={{ mt: 0 }}>No Category Added</Box>
+      <Box sx={{ mt: 0 }}>No Referee Added</Box>
     </div>
   );
 }
@@ -62,7 +64,7 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
   const columns = useMemo(refereedata => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
      renderCell: (params) => (
-        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+      <Avatar src={params.value} alt="Avatar" />
       ), },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -101,9 +103,11 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
     dispatch(GetRefereeApi())
   if(data){
         toast.success(data.msg)
+        dispatch(clearMessage())
     }
     if(error){
         toast.error(data.msg)
+        dispatch(clearMessage())
     }
   }, [dispatch,data,error])
 
@@ -112,17 +116,19 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
        <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Referee Management" />
-      </Box>{
+      </Box>
+      {
       loading ? <CircularProgress /> :
       <Stack style={{
         marginTop: "1%",
         display: "grid",
         // width: "100%",
-        height: "80vh",
+        height: "70vh",
 
       }}>
         {refereedata && refereedata.length > 0 ? (
           <DataGrid
+          autoHeight
             rows={refereedata}
             columns={columns}
             getRowId={(row) => row.id}

@@ -132,7 +132,7 @@ const AddCoach = () => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12}  xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -155,7 +155,7 @@ const AddCoach = () => {
                                     {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={6} sm={12}>
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="email"
@@ -175,7 +175,7 @@ const AddCoach = () => {
                                     />
                                     {errors.email && touched.email ? (<Typography variant="subtitle1" color="error">{errors.email}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormLabel component="legend">Upload Image</FormLabel>
                                     <input
                                         id="image-upload"
@@ -188,7 +188,7 @@ const AddCoach = () => {
                                     />
                                     {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -211,7 +211,7 @@ const AddCoach = () => {
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -232,13 +232,13 @@ const AddCoach = () => {
 
                                 </Grid>
 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12}xs={12}>
 
                                     <TextField
                                         fullWidth
                                         id="achivement"
                                         name="achivement"
-                                        label="Achivements"
+                                        label="Achievements"
                                         variant='standard'
                                         value={values.achivement}
                                         onChange={handleChange}
@@ -255,7 +255,7 @@ const AddCoach = () => {
                                     {errors.achivement && touched.achivement ? (<Typography variant="subtitle1" color="error">{errors.achivement}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={6} md={6} sm={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
 
                                     <TextField
                                         fullWidth
@@ -278,7 +278,7 @@ const AddCoach = () => {
                                     {errors.experience && touched.experience ? (<Typography variant="subtitle1" color="error">{errors.experience}</Typography>) : null}
 
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit

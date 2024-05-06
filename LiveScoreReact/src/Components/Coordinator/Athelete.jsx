@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import { DriveFileRenameOutline, DriveFileRenameOutlineRounded } from '@mui/icons-material';
 import Modal from '../Common/Modal';
+import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 // import { useState } from 'react';
 
 function CustomToolbar() {
@@ -110,12 +111,14 @@ const Athelete = () => {
   useEffect(() => {
     if (data) {
       toast.success(data.msg)
+      dispatch(clearMessage())
     }
   }, [data])
 
   useEffect(() => {
     if (error) {
       toast.error(data.msg)
+      dispatch(clearMessage())
     }
   }, [error])
 

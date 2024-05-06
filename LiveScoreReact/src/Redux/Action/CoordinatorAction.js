@@ -3,7 +3,7 @@ import {
     GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
-    GetRefereeStart, GetRefereetSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart, GetCoachtSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
+    GetRefereeStart, GetRefereeSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart, GetCoachSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileStart,
     CoordinatorProfileSuccess,
     CoordinatorProfileFail,
@@ -17,6 +17,9 @@ import {
     AtheletePutPicSuccess,
     AtheletePutPicFail,
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,
+    CoachPutPicStart,
+    CoachPutPicSuccess,
+    CoachPutPicFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -173,7 +176,7 @@ export const GetRefereeApi = () => async (dispatch) => {
                 "Content-Type": "application/json"
             }
         })
-        dispatch(GetRefereetSuccess(data))
+        dispatch(GetRefereeSuccess(data))
     } catch (error) {
         dispatch(GetRefereeFail(error.response.data))
         // console.log(e.response.data.msg)
@@ -202,7 +205,7 @@ export const GetCoachApi = () => async (dispatch) => {
                 "Content-Type": "application/json"
             }
         })
-        dispatch(GetCoachtSuccess(data))
+        dispatch(GetCoachSuccess(data))
     } catch (error) {
         dispatch(GetCoachFail(error.response.data))
         // console.log(e.response.data.msg)
@@ -258,7 +261,7 @@ export const BlockCoachApi = (id) => async (dispatch) => {
     try {
         dispatch(BlockCoachStart())
 
-        const { data } = await axios.post(`${url}/Coaches/BloackCoach/${id}`, {
+        const { data } = await axios.post(`${url}/Coaches/BlockCoach/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -266,5 +269,20 @@ export const BlockCoachApi = (id) => async (dispatch) => {
         dispatch(BlockCoachSuccess(data))
     } catch (error) {
         dispatch(BlockCoachFail(error.response.data))
+    }
+}
+
+export const CoachPutPicApi = (id, values) => async (dispatch) => {
+    try {
+        dispatch(CoachPutPicStart())
+        console.log(values)
+        const { data } = await axios.put(`${url}/Coaches/UpdateCoachImage/${id}`, values, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        dispatch(CoachPutPicSuccess(data))
+    } catch (error) {
+        dispatch(CoachPutPicFail(error.response.data))
     }
 }

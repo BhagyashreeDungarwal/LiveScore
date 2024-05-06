@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import AddCoach from './AddCoach';
 import { Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 
 
 function CustomToolbar() {
@@ -56,61 +57,61 @@ const Coach = () => {
   const handleRequest = async (id) => {
     await dispatch(BlockCoachApi(id))
     dispatch(GetCoachApi())
+  //  if (data) {
+  //   toast.success(data.msg)
+  //   dispatch(clearMessage())
+  // }
+  // if (error) {
+  //   toast.error(data.msg)
+  //   dispatch(clearMessage())
+  // }
+    
   }
 
   const columns = useMemo(coachdata => [
     {
-      field: "imageUrl", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
+      field: "imageUrl", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+        <Link to={`/coordinator/editcoachpic/${params.row.coachId}`}> <Avatar src={params.value} alt="Avatar" /></Link>
       ),
     },
-    { field: "coachName", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coachEmail", headerName: "Email", width: 170, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coachName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coachEmail", headerName: "Email", width: 200, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contactNo", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "experience", headerName: "Experience", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "achievements", headerName: "Achievements", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    // { headerName: "Actions", width: 70, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params =>{
-    // return (
-    //       <Box>
-    //         <Tooltip title="Edit">
-    //           <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
-    //             <IconButton aria-label="Edit" color='primary'>
-    //               <DriveFileRenameOutlineRounded />
-    //             </IconButton>
-    //           </Link>            
-    //         </Tooltip>
-    //       </Box>
-    // )
-    // } },
-    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
-      width: 152,
+    {
+      headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
+      width: 180,
       renderCell: params => {
-        if (params.row.status === "UnBlock") {   
-        return (
-          <Box>
-            <Tooltip title="Edit">
-              <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
-                <IconButton aria-label="Edit" color='primary'>
-                  <DriveFileRenameOutlineRounded />
-                </IconButton>
-              </Link>            
-            </Tooltip>
-          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
-            <VerifiedUser size="small" sx={{ mr: 1 }} />
-            Block
-          </Fab>
-           
-          </Box>
+        if (params.row.status === "UnBlock") {
+          return (
+            <Box sx={{p:1}}>
+              <Tooltip title="Edit">
+                <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
+                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem',mr:1 }}>
+                <DriveFileRenameOutlineRounded  size="small" sx={{ mr: 1 }}/>Edit
+                </Fab>
+                  {/* <IconButton aria-label="Edit" color='primary'>
+                    <DriveFileRenameOutlineRounded />Edit
+                  </IconButton> */}
+                </Link>
+              </Tooltip>
+              <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
+                <VerifiedUser size="small" sx={{ mr: 1 }} />
+                Block
+              </Fab>
+
+            </Box>
           )
         }
-       else if (params.row.status === "Block") {   
-        return (
-          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
-            <Block size="small" sx={{ mr: 1 }} />
-            Unblock
-          </Fab>)
+        else if (params.row.status === "Block") {
+          return (
+            <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
+              <Block size="small" sx={{ mr: 1 }} />
+              Unblock
+            </Fab>)
         }
       }
     }
@@ -119,32 +120,35 @@ const Coach = () => {
 
   useEffect(() => {
     dispatch(GetCoachApi())
-    
   }, [dispatch])
 
   useEffect(() => {
-   if (data) {
+    if (data) {
       toast.success(data.msg)
-    } 
+       dispatch(clearMessage())
+    }
   }, [data])
-  
+
   useEffect(() => {
-   if (error) {
+    if (error) {
       toast.error(data.msg)
-    } 
+       dispatch(clearMessage())
+    }
   }, [error])
-  
+
 
   return (
     <Box>
-
+      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+        <HeaderFormat title="Coach Management" />
+      </Box>
       {
         loading ? <CircularProgress /> :
           <Stack style={{
             marginTop: "1%",
             display: "grid",
             width: "90%",
-            height: "78vh",
+            height: "70vh",
 
           }}>{
 
@@ -153,7 +157,7 @@ const Coach = () => {
                   rows={coachdata}
                   columns={columns}
                   getRowId={(row) => row.coachId}
-                  rowHeight={53}
+                  // rowHeight={53}
                   rowSelection={true}
                   rowSpacingType='margin'
                   slots={{ toolbar: CustomToolbar }}

@@ -59,16 +59,6 @@ const AddReferee = () => {
         city: "",
     }
 
-useEffect(() => {
-   if (data) {
-      toast.success(data.msg)
-      console.log(data.msg)
-   }
-   if(error){
-     toast.error(error.msg)
-    console.log(error.msg)
-   }
-}, [ data, error])
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
@@ -89,13 +79,13 @@ useEffect(() => {
                 formData.append('City', values.city);
                 formData.append('State', values.state);
                 await disptach(RefereePostApi(formData))
-                if (data) {
-                    toast.success(data.msg)
-                }
+                // if (data) {
+                //     toast.success(data.msg)
+                // }
 
-                if (error) {
-                    toast.error(error.msg)
-                }
+                // if (error) {
+                //     toast.error(error.msg)
+                // }
             } catch (error) {
                 <CircularProgress />
             }
@@ -380,7 +370,7 @@ useEffect(() => {
                                     variant="contained"
                                     color="primary"
                                     fullWidth >
-                                    Register
+                                    Add Referee
                                 </Button>
                             </Grid>
                         </Grid>

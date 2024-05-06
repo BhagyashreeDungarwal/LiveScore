@@ -1,5 +1,5 @@
-import { AddPhotoAlternateRounded } from '@mui/icons-material'
-import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, Slide, TextField } from '@mui/material'
+import { AddPhotoAlternateRounded, Close } from '@mui/icons-material'
+import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide, TextField } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -45,10 +45,10 @@ const EditAtheleteProfile = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
-      console.log(formData.get("ImageFile"))
-      dispatch(AtheletePutPicApi(formData, id))
+      // console.log(formData.get("ImageFile"))
+      await dispatch(AtheletePutPicApi(formData, id))
+      navigate("/coordinator/athelete")
       dispatch(clearMessage())
-      handleClose();
 
     } else {
       toast.error("Please First Select Image...")
@@ -62,8 +62,19 @@ const EditAtheleteProfile = () => {
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle>Update Athlete Picture</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: 'absolute',
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <Close />
+      </IconButton>
       <DialogContent>
-
         <Avatar
           src={atheleteByIddata ? atheleteByIddata.imageUrl : image}
           sx={{
@@ -89,11 +100,7 @@ const EditAtheleteProfile = () => {
           startIcon={<AddPhotoAlternateRounded />}>
           Update Image
         </Button>
-
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Close</Button>
-      </DialogActions>
     </Dialog>
   )
 }

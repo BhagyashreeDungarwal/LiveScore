@@ -23,6 +23,7 @@ import EditAthelete from './Components/Coordinator/EditAthelete';
 import EditAtheleteProfile from './Components/Coordinator/EditAtheleteProfile';
 import EditCoach from './Components/Coordinator/EditCoach';
 import EditCategory from './Components/Admin/EditCategory';
+import EditCoachPic from './Components/Coordinator/EditCoachPic';
 
 
 function App() {
@@ -211,6 +212,9 @@ function App() {
         }, {
           path: "editcoach/:id",
           element: <EditCoach />
+        }, {
+          path: "editcoachpic/:id",
+          element: <EditCoachPic />
         }
       ]
     },
