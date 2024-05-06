@@ -294,22 +294,22 @@ namespace LiveScore.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MId"), 1L, 1);
 
                     b.Property<int?>("AthleteBlue")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("AthleteRed")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Flag")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("MatchDate")
                         .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("MatchStatus")
-                        .IsRequired()
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
@@ -321,9 +321,16 @@ namespace LiveScore.Migrations
                     b.Property<DateTime>("Matchtime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("NextMatchId")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumberOfRound")
                         .HasMaxLength(101)
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TournamentId")
                         .IsRequired()
@@ -528,14 +535,12 @@ namespace LiveScore.Migrations
                     b.HasOne("LiveScoring.Model.Athlete", "AthleteBlueObj")
                         .WithMany()
                         .HasForeignKey("AthleteBlue")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LiveScoring.Model.Athlete", "AthleteRedObj")
                         .WithMany()
                         .HasForeignKey("AthleteRed")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("LiveScoring.Model.Category", "Category")
                         .WithMany()

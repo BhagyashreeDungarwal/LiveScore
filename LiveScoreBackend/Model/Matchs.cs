@@ -19,6 +19,10 @@ namespace LiveScoring.Model
         public DateTime Matchtime { get; set; }
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
+
+        public int NextMatchId { get; set; }
+        public string Flag { get; set; }
+        public string Status { get; set; }
         public int? CategoryId { get; set; }
         public int? TournamentId  { get; set; }
         [JsonIgnore]
