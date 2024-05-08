@@ -71,6 +71,7 @@ const EditAthelete = () => {
             console.log(values)
             dispatch(AtheletePutApi(values, id))
             if (data.msg) {
+                dispatch(clearMessage()) 
                 navigate("/coordinator/athelete")
             }
             if (error) {

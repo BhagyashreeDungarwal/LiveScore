@@ -20,6 +20,9 @@ import {
     CoachPutPicStart,
     CoachPutPicSuccess,
     CoachPutPicFail,
+    GetMatchStart,
+    GetMatchSuccess,
+    GetMatchFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -208,7 +211,6 @@ export const GetCoachApi = () => async (dispatch) => {
         dispatch(GetCoachSuccess(data))
     } catch (error) {
         dispatch(GetCoachFail(error.response.data))
-        // console.log(e.response.data.msg)
     }
 }
 export const CoachPostApi = (values) => async (dispatch) => {
@@ -223,7 +225,6 @@ export const CoachPostApi = (values) => async (dispatch) => {
         dispatch(CoachPostSuccess(data))
     } catch (error) {
         dispatch(CoachPostFail(error.response.data))
-        // console.log(e.response.data.msg)
     }
 }
 export const GetCoachByIdApi = (id) => async (dispatch) => {
@@ -238,7 +239,6 @@ export const GetCoachByIdApi = (id) => async (dispatch) => {
         dispatch(GetCoachByIdSuccess(data))
     } catch (error) {
         dispatch(GetCoachByIdFail(error.response.data))
-        // console.log(e.response.data.msg)
     }
 }
 
@@ -254,7 +254,6 @@ export const CoachPutApi = (values, id) => async (dispatch) => {
         dispatch(CoachPutSuccess(data))
     } catch (error) {
         dispatch(CoachPutFail(error.response.data))
-        // console.log(e.response.data.msg)
     }
 }
 export const BlockCoachApi = (id) => async (dispatch) => {
@@ -284,5 +283,21 @@ export const CoachPutPicApi = (id, values) => async (dispatch) => {
         dispatch(CoachPutPicSuccess(data))
     } catch (error) {
         dispatch(CoachPutPicFail(error.response.data))
+    }
+}
+
+
+export const GetMatchApi = () => async (dispatch) => {
+    try {
+        dispatch(GetMatchStart())
+
+        const { data } = await axios.get(`${url}/Matchs/GetMatchs`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(GetMatchSuccess(data))
+    } catch (error) {
+        dispatch(GetMatchFail(error.response.data))
     }
 }

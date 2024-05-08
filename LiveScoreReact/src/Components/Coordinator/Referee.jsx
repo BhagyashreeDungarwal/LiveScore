@@ -66,7 +66,7 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
      renderCell: (params) => (
       <Avatar src={params.value} alt="Avatar" />
       ), },
-    { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "athleteName", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },

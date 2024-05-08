@@ -55,17 +55,9 @@ const Coach = () => {
 
 
   const handleRequest = async (id) => {
-    await dispatch(BlockCoachApi(id))
+    dispatch(BlockCoachApi(id))
     dispatch(GetCoachApi())
-  //  if (data) {
-  //   toast.success(data.msg)
-  //   dispatch(clearMessage())
-  // }
-  // if (error) {
-  //   toast.error(data.msg)
-  //   dispatch(clearMessage())
-  // }
-    
+
   }
 
   const columns = useMemo(coachdata => [
@@ -87,22 +79,18 @@ const Coach = () => {
       renderCell: params => {
         if (params.row.status === "UnBlock") {
           return (
-            <Box sx={{p:1}}>
+            <Box sx={{ p: 1 }}>
               <Tooltip title="Edit">
                 <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
-                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem',mr:1 }}>
-                <DriveFileRenameOutlineRounded  size="small" sx={{ mr: 1 }}/>Edit
-                </Fab>
-                  {/* <IconButton aria-label="Edit" color='primary'>
-                    <DriveFileRenameOutlineRounded />Edit
-                  </IconButton> */}
+                  <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                    <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} />Edit
+                  </Fab>
                 </Link>
               </Tooltip>
               <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.coachId)}>
                 <VerifiedUser size="small" sx={{ mr: 1 }} />
                 Block
               </Fab>
-
             </Box>
           )
         }
@@ -125,14 +113,14 @@ const Coach = () => {
   useEffect(() => {
     if (data) {
       toast.success(data.msg)
-       dispatch(clearMessage())
+      dispatch(clearMessage())
     }
   }, [data])
 
   useEffect(() => {
     if (error) {
       toast.error(data.msg)
-       dispatch(clearMessage())
+      dispatch(clearMessage())
     }
   }, [error])
 

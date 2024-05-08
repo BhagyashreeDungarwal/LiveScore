@@ -178,6 +178,7 @@ namespace LiveScore.Controllers
                 Experience = coachimg.Experience,
                 ContactNo = coachimg.ContactNo,
                 Gender = coachimg.Gender,
+                Status = "UnBlock",
                 ImageUrl = imageUrl,
             };
 

@@ -10,7 +10,6 @@ import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlL
 import { AthleteValidate } from '../Validation/Coordinator';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { AtheletePostApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 
 
@@ -55,7 +54,7 @@ const AddAthelete = () => {
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
                 const formdata = new FormData()
-                formdata.append('AthleteName', values.name)
+                formdata.append('AthleteName', values.athleteName)
                 formdata.append('Email', values.email)
                 formdata.append('Contact', values.contact)
                 formdata.append('Gender', values.gender)

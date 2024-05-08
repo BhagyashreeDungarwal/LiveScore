@@ -24,7 +24,7 @@ namespace LiveScore.Controllers
         {
             if (_context.Matchss == null)
             {
-                return NotFound(new { error = "Matchs Not Found" });
+                return NotFound(new { msg = "Matchs Not Found" });
             }
 
             return await _context.Matchss.Include((c) => c.Category)
@@ -37,11 +37,11 @@ namespace LiveScore.Controllers
                     matchType = a.MatchType,
                     numberOfRound = a.NumberOfRound,
                     matchDate = a.MatchDate,
-                    matchtime = a.Matchtime,
+                    matchTime = a.Matchtime,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
-                    categoryId = a.Category.CategoryName,
-                    tournamentId = a.Tournament.TournamentName,
+                    category = a.Category.CategoryName,
+                    tournament = a.Tournament.TournamentName,
 
                 }).ToListAsync();
         }
@@ -80,12 +80,12 @@ namespace LiveScore.Controllers
         {
             if (matchs == null)
             {
-                return BadRequest(new { error = "Invalid Match DATA" });
+                return BadRequest(new {msg = "Please Enter All Details" });
             }
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(new { msg = "Please Enter All Details" });
             }
 
             if (_context.Matchss == null)
@@ -95,7 +95,7 @@ namespace LiveScore.Controllers
                        
             var match = new Matchs
             {
-                MatchStatus = matchs.MatchStatus,
+                MatchStatus = "Upcoming",
                 MatchType = matchs.MatchType,
                 NumberOfRound = matchs.NumberOfRound,
                 MatchDate = matchs.MatchDate,
@@ -108,7 +108,7 @@ namespace LiveScore.Controllers
             _context.Matchss.Add(match);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetMatchs", new {id = match.MId }, match);
+            return Ok(new { msg = "Successsfully Added Match"});
         }
 
         // PUT: api/Athletes/UpdateMatch/5
@@ -117,7 +117,7 @@ namespace LiveScore.Controllers
         {
             if (id != match.MId)
             {
-                return BadRequest();
+                return BadRequest(new { msg = "Match Not Found" });
             }
 
             _context.Entry(match).State = EntityState.Modified;

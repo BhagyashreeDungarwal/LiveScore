@@ -1,4 +1,4 @@
-import { Box, CircularProgress, IconButton, Stack, Tooltip, } from '@mui/material';
+import { Box, CircularProgress, Fab, IconButton, Stack, Tooltip, } from '@mui/material';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import AddCategory from './AddCategory';
 import HeaderFormat from '../Common/HeaderFormat';
@@ -62,22 +62,25 @@ const CategoryManage = () => {
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryTime", headerName: "Time(Minutes)", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
-      renderCell: params => {         
+    {
+      headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
+      renderCell: params => {
         return (
           <Box>
             <Tooltip title="Edit">
               <Link to={`/admin/editcategory/${params.row.id}`} >
-                <IconButton aria-label="Edit" color='primary'>
-                  <DriveFileRenameOutlineRounded />
-                </IconButton>
-              </Link>            
+                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                  {/* <IconButton aria-label="Edit" color='primary'> */}
+                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
+                  {/* </IconButton> */}
+                </Fab>
+              </Link>
             </Tooltip>
           </Box>
-          )
-        }
-       
+        )
       }
+
+    }
   ])
 
   useEffect(() => {
@@ -142,4 +145,4 @@ const CategoryManage = () => {
   )
 }
 
-export default ProtectedRoute(CategoryManage,'admin')
+export default ProtectedRoute(CategoryManage, 'admin')

@@ -24,7 +24,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const AddCoach = () => {
-
     const theme = useTheme()
     const { data, error } = useSelector((state => state.coordinator))
     const dispatch = useDispatch()
@@ -35,7 +34,7 @@ const AddCoach = () => {
         contact: "",
         gender: "",
         experience: "",
-        achivement: "",
+        achievement: "",
         image: null,
     }
 
@@ -54,7 +53,6 @@ const AddCoach = () => {
     const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: CoachValidate,
-
         onSubmit: async (values) => {
             console.log(values);
             try {
@@ -63,7 +61,7 @@ const AddCoach = () => {
                 formdata.append('CoachEmail', values.email)
                 formdata.append('ContactNo', values.contact)
                 formdata.append('Gender', values.gender)
-                formdata.append('Achievements', values.achivement)
+                formdata.append('Achievements', values.achievement)
                 formdata.append('Experience', values.experience)
                 formdata.append('ImageFile', values.image)
 
@@ -85,11 +83,8 @@ const AddCoach = () => {
 
     const handleFile = (e) => {
         const file = e.target.files[0]
-
         setFieldValue('image', file)
         console.log("file 1", file)
-        // const reader = new FileReader()
-        // reader.readAsDataURL(file)
     }
 
     const [open, setOpen] = React.useState(false);
@@ -131,9 +126,7 @@ const AddCoach = () => {
                     <DialogContent dividers>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
-
-                                <Grid item xl={12} md={6} sm={12}  xs={12}>
-
+                                <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         id="name"
@@ -154,7 +147,6 @@ const AddCoach = () => {
                                     />
                                     {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
                                 </Grid>
-
                                 <Grid item xl={12} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
@@ -189,7 +181,6 @@ const AddCoach = () => {
                                     {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12} xs={12}>
-
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -229,18 +220,15 @@ const AddCoach = () => {
                                         <FormControlLabel value="other" control={<Radio />} label="Other" />
                                     </RadioGroup>
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
-
                                 </Grid>
-
-                                <Grid item xl={6} md={6} sm={12}xs={12}>
-
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
-                                        id="achivement"
-                                        name="achivement"
+                                        id="achievement"
+                                        name="achievement"
                                         label="Achievements"
                                         variant='standard'
-                                        value={values.achivement}
+                                        value={values.achievement}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
@@ -252,11 +240,9 @@ const AddCoach = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.achivement && touched.achivement ? (<Typography variant="subtitle1" color="error">{errors.achivement}</Typography>) : null}
+                                    {errors.achievement && touched.achievement ? (<Typography variant="subtitle1" color="error">{errors.achievement}</Typography>) : null}
                                 </Grid>
-
                                 <Grid item xl={6} md={6} sm={12} xs={12}>
-
                                     <TextField
                                         fullWidth
                                         id="experience"
@@ -276,10 +262,8 @@ const AddCoach = () => {
                                         }}
                                     />
                                     {errors.experience && touched.experience ? (<Typography variant="subtitle1" color="error">{errors.experience}</Typography>) : null}
-
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
-
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
                                     </Button>

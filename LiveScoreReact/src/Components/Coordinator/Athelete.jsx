@@ -1,4 +1,4 @@
-import { Box, CircularProgress, IconButton, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
@@ -10,8 +10,7 @@ import { toast } from 'react-toastify';
 import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import { DriveFileRenameOutline, DriveFileRenameOutlineRounded } from '@mui/icons-material';
-import Modal from '../Common/Modal';
+import {  DriveFileRenameOutlineRounded } from '@mui/icons-material';
 import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 // import { useState } from 'react';
 
@@ -61,33 +60,31 @@ const Athelete = () => {
     {
       field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} /></Link>
+        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><Avatar src={params.value} alt="Avatar" /></Link>
       ),
     },
 
     { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 190, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "contact", headerName: "Contact", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "dateOfBirth", headerName: "DateOFBirth", width: 105, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "dateOfBirth", headerName: "DateOFBirth", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "age", headerName: "Age", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "categoryName", headerName: "Category", width: 80, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coordinater", headerName: "Coordinater", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coordinater", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
       headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
         return (
           <Box>
             <Tooltip title="Edit">
               <Link to={`/coordinator/editathelete/${params.row.id}`} >
-                <IconButton aria-label="Edit" color='primary'>
-                  <DriveFileRenameOutlineRounded />
-                </IconButton>
+                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
+                </Fab>
               </Link>
-
-              {/* <Modal id={params.row.id} /> */}
             </Tooltip>
           </Box>
         )
@@ -122,8 +119,6 @@ const Athelete = () => {
     }
   }, [error])
 
-
-
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
@@ -134,9 +129,7 @@ const Athelete = () => {
           <Stack style={{
             marginTop: "1%",
             display: "grid",
-            // width: "100%",
             height: "80vh",
-
           }}>
             {
               atheletedata && atheletedata.length > 0 ? (
@@ -153,7 +146,6 @@ const Athelete = () => {
                   pageSize={5}
                   rowsPerPageOptions={[5]}
                 />) : (
-
                 <DataGrid
                   autoHeight
                   rows={[]}

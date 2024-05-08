@@ -57,7 +57,7 @@ const ManageTournament = () => {
   const { tounamentdata, loading, data, error } = useSelector(state => state.admin)
   const columns = useMemo(tounamentdata => [
     { field: "tournamentName", headerName: "Tournament Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "location", headerName: "Location", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "venue", headerName: "Venue", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
   ])
 

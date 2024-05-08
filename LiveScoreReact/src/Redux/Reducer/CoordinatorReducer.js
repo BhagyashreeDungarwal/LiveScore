@@ -263,6 +263,20 @@ const CoordinatorSlice = createSlice({
             state.error = action.payload;
         },
 
+        //GEt Match
+        GetMatchStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        GetMatchSuccess: (state, action) => {
+            state.loading = false;
+            state.matchdata = action.payload;
+        },
+        GetMatchFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
+
     },
 })
 
@@ -274,7 +288,7 @@ export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePo
     RefereePostFail, GetRefereeStart, GetRefereeSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart,
     GetCoachSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail,
     CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess, CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail,
-    GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail,CoachPutPicFail,CoachPutPicStart,CoachPutPicSuccess,
-    clearMessage,
+    GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail, CoachPutPicFail, CoachPutPicStart, CoachPutPicSuccess,
+    clearMessage, GetMatchFail, GetMatchStart, GetMatchSuccess
 } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

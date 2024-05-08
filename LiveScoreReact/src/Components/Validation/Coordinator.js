@@ -13,12 +13,11 @@ export const AthleteValidate = yup.object({
     state: yup.string().required('State is required'),
     image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
         (value) => {
-            if (!value) return false; // if no file is selected
+            if (!value) return false;
             return (
-                value && // value is not undefined or null
-                ['image/jpeg', 'image/png'].includes(value.type) // check if the file type is JPEG or PNG
+                value &&
+                ['image/jpeg', 'image/png'].includes(value.type)
             );
-            // Check if the file type is either JPEG or PNG
         }
     ),
     categoryId: yup.string().required('Category is required'),
@@ -48,17 +47,14 @@ export const acr = yup.object({
     email: yup.string().email('Invalid email address').required('Email is required'),
     password: yup.string().min(8, "Password is too short - Minimum 8 Character Required.").required("Please Enter Your Password"),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
-    // age: yup.number().required('Age is required').positive('Age must be a positive number').integer('Age must be an integer').min(5, 'Age must be at least 5 years old').max(80, 'Age must be less than or equal to 80 years old'),
     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')
         .min(new Date('1900-01-01'), 'Date of birth must be after 1900-01-01'),
     image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
         (value) => {
-            if (!value) return false; // if no file is selected
+            if (!value) return false;
             return (
-                value && // value is not undefined or null
-                ['image/jpeg', 'image/png'].includes(value.type) // check if the file type is JPEG or PNG
+                value && ['image/jpeg', 'image/png'].includes(value.type)
             );
-            // Check if the file type is either JPEG or PNG
         }
     ),
     gender: yup.string().required('Gender is required'),
@@ -75,23 +71,20 @@ export const acrupdate = yup.object({
     city: yup.string().required('City is required'),
 });
 
-
-
 export const CoachValidate = yup.object({
     name: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     gender: yup.string().required('Gender is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     experience: yup.string().required('experience is required'),
-    achivement: yup.string().required('Achivement is required'),
+    achievement: yup.string().required('Achievement is required'),
     image: yup.mixed().required('Image is required').test('fileType', 'Only PNG and JPG images are allowed',
         (value) => {
-            if (!value) return false; // if no file is selected
+            if (!value) return false;
             return (
-                value && // value is not undefined or null
-                ['image/jpeg', 'image/png'].includes(value.type) // check if the file type is JPEG or PNG
+                value &&
+                ['image/jpeg', 'image/png'].includes(value.type)
             );
-            // Check if the file type is either JPEG or PNG
         }
     ),
 });
@@ -101,5 +94,37 @@ export const UpCoach = yup.object({
     gender: yup.string().required('Gender is required'),
     contactNo: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     experience: yup.string().required('experience is required'),
-    achievements: yup.string().required('Achivement is required'),
+    achievements: yup.string().required('Achievement is required'),
 });
+
+export const matchvalidate = ({
+    MatchType: yup.string().required('Match Type is required'),
+    NumberOfRound: yup.number().required('No. Of Round is required').positive('No. Of Round must be a positive number').integer('No. Of Round must be an integer').min(3, 'No. Of Round must be at least 3'),
+    MatchDate: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')
+        .test('is-future', 'Date must be in the future', value => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set today's date to start of day
+            const selectedDate = new Date(value);
+            selectedDate.setHours(0, 0, 0, 0); // Set selected date to start of day
+            return selectedDate > today; // Check if selected date is greater than today
+        }),
+    Matchtime: yup.date().required('Time is required').min(new Date(), 'Time must be in the future')
+        .test('is-future', 'Time must be in the future', value => {
+            const now = new Date(); // Get the current date and time
+            const selectedTime = new Date(value); // Convert the input value to a Date object
+            const nowHours = now.getHours();
+            const nowMinutes = now.getMinutes();
+            const selectedHours = selectedTime.getHours();
+            const selectedMinutes = selectedTime.getMinutes();
+
+            // Calculate total minutes for comparison
+            const nowTotalMinutes = nowHours * 60 + nowMinutes;
+            const selectedTotalMinutes = selectedHours * 60 + selectedMinutes;
+
+            return selectedTotalMinutes > nowTotalMinutes; // Check if selected time is greater than current time
+        }),
+    AthleteBlue: yup.string().required('Athlete Blue is required'),
+    AthleteRed: yup.string().required('Athlete Red is required'),
+    CategoryId: yup.string().required('Please Select Category'),
+    TournamentId: yup.string().required('Please Select Tournament'),
+}) 

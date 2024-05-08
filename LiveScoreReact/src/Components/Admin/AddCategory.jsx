@@ -80,7 +80,6 @@ const AddCategory = () => {
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
                                 <Grid item xl={12} md={12} sm={12}>
-
                                     <TextField
                                         fullWidth
                                         id="name"
@@ -91,22 +90,23 @@ const AddCategory = () => {
                                         onChange={handleChange}
                                         variant='standard'
                                         InputProps={{
+                                            style: { textTransform: "capitalize" },
                                             startAdornment: (
                                                 <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
                                                     <Person2Rounded />
                                                 </InputAdornment>
-                                            ),
+                                            )
                                         }}
                                     />
                                     {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
-
                                     <TextField
                                         fullWidth
                                         id="time"
                                         name="categoryTime"
                                         label="Time"
+                                        type='number'
                                         value={values.categoryTime}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -123,7 +123,6 @@ const AddCategory = () => {
                                     {errors.categoryTime && touched.categoryTime ? (<Typography variant="subtitle1" color="error">{errors.categoryTime}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
-
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
                                     </Button>
