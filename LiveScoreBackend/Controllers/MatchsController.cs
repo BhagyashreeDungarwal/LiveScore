@@ -3,6 +3,7 @@ using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -80,35 +81,45 @@ namespace LiveScore.Controllers
         {
             if (matchs == null)
             {
-                return BadRequest(new {msg = "Please Enter All Details" });
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return BadRequest(new { msg = "Please Enter All Details" });
             }
 
-            if (_context.Matchss == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Matchss' is null.");
-            }
-                       
-            var match = new Matchs
-            {
-                MatchStatus = "Upcoming",
-                MatchType = matchs.MatchType,
-                NumberOfRound = matchs.NumberOfRound,
-                MatchDate = matchs.MatchDate,
-                Matchtime = matchs.Matchtime,
-                AthleteBlue = matchs.AthleteBlue,
-                AthleteRed= matchs.AthleteRed,
-                CategoryId = matchs.CategoryId,
-                TournamentId = matchs.TournamentId
-            };
-            _context.Matchss.Add(match);
-            await _context.SaveChangesAsync();
+            // Validate other parameters as needed
 
-            return Ok(new { msg = "Successsfully Added Match"});
+            // Check if either AthleteRed or AthleteBlue is already participating in another match
+            var existingMatch = await _context.Matchss
+                .Where(m => m.MatchStatus != "Completed") // Exclude completed matches
+                .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
+
+            if (existingMatch != null)
+            {
+                return BadRequest(new { msg = "One of the athletes is already participating in another match." });
+            }
+
+            try
+            {
+                // Call the stored procedure
+                await _context.Database.ExecuteSqlRawAsync(
+                    "EXEC InsertMatch @MatchStatus, @MatchType, @NumberOfRound, @MatchDate, @MatchTime, @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
+                    parameters: new[]
+                    {
+                        new SqlParameter("@MatchStatus", "Upcoming"),
+                        new SqlParameter("@MatchType", matchs.MatchType),
+                        new SqlParameter("@NumberOfRound", matchs.NumberOfRound),
+                        new SqlParameter("@MatchDate", matchs.MatchDate),
+                        new SqlParameter("@MatchTime", matchs.Matchtime),
+                        new SqlParameter("@AthleteRed", matchs.AthleteRed),
+                        new SqlParameter("@AthleteBlue", matchs.AthleteBlue),
+                        new SqlParameter("@CategoryId", matchs.CategoryId),
+                        new SqlParameter("@TournamentId", matchs.TournamentId)
+                    });
+
+                return Ok(new { msg = "Successfully Added Match" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { msg = "An error occurred while processing the request.", error = ex.Message });
+            }
         }
 
         // PUT: api/Athletes/UpdateMatch/5

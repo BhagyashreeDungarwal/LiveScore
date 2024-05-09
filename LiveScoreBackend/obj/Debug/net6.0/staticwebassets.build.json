@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nc4PUjpOdxGcmbMDQNsBj2ZRJQ7e/+dlR1Nk5OsnWSs=",
+  "Hash": "dXajSKzY69tmcawahsHMFKFaHNrwfI4ynKGh/wYUPAg=",
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -306,6 +306,23 @@
       "OriginalItemSpec": "wwwroot\\coach\\9da397d2-6fb5-403c-81ca-c48cded68466.jpg"
     },
     {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\af8794e8-bea6-406e-b0dd-c413663cbb77.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "coach/af8794e8-bea6-406e-b0dd-c413663cbb77.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\coach\\af8794e8-bea6-406e-b0dd-c413663cbb77.jpg"
+    },
+    {
       "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\bd43ccf4-cd51-4c4a-8c4e-e5f8d5720475.jpg",
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
@@ -372,6 +389,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\0463ece7-2020-42be-a1c9-c80360a9eb81.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\064c572a-88c6-40c6-ab53-b3a3c7b13ca6.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "images/064c572a-88c6-40c6-ab53-b3a3c7b13ca6.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\064c572a-88c6-40c6-ab53-b3a3c7b13ca6.jpg"
     },
     {
       "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\084d3902-5f93-449c-8859-f2bc94f114ad.jpg",
@@ -508,6 +542,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\2bb44dd9-054c-42ef-96b2-7223fd55e00f.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\33308958-f839-4197-b269-13f7fddf149d.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "images/33308958-f839-4197-b269-13f7fddf149d.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\33308958-f839-4197-b269-13f7fddf149d.jpg"
     },
     {
       "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\3dd86832-9c08-47b5-b030-b8afcaa18f6f.jpg",
@@ -763,6 +814,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\c41cb1ae-4cc8-48fe-9ab5-fa0d7fa64a14.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\dc67a13e-94c6-45e1-bf52-fa90b6e36894.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "images/dc67a13e-94c6-45e1-bf52-fa90b6e36894.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\dc67a13e-94c6-45e1-bf52-fa90b6e36894.jpg"
     },
     {
       "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\e3d406bc-121a-4e55-a82d-957c337faf01.jpg",

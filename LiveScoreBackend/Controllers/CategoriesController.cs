@@ -48,6 +48,24 @@ namespace LiveScore.Controllers
             return category;
         }
 
+        [HttpGet("GetAthleteByCategory/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetAthleteByCategory(int categoryId)
+        {
+            // Retrieve the category with the specified ID including its associated athletes
+            var athletes = await _context.Athletes.Where(a => a.CategoryId ==  categoryId).ToListAsync();
+
+            if (athletes == null)
+            {
+                return NotFound();
+            }
+
+            // Extract the athletes from the category's associated athletes
+            //var athletes = category.Athletes.ToList();
+
+            return Ok(athletes);
+        }
+
+
         [HttpPut("PutCategory/{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {

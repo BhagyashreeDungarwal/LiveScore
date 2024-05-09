@@ -86,15 +86,15 @@ const Match = () => {
 
 
   const columns = useMemo(matchdata => [
-    { field: "tournament", headerName: "Tournament", width: 120, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchType", headerName: "Match Type", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchStatus", headerName: "Match Status", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "tournament", headerName: "Tournament", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-    { field: "matchTime", headerName: "Match Time", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchTime", headerName: "Match Time", width: 160, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "numberOfRound", headerName: "No. Of Round", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "athleteRed", headerName: "Athlete Red", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "athleteBlue", headerName: "Athlete Blue", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "numberOfRound", headerName: "Rounds", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "athleteRed", headerName: "Athlete Red", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "athleteBlue", headerName: "Athlete Blue", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
   ])
 
   return (
@@ -114,7 +114,7 @@ const Match = () => {
                 <DataGrid
                   rows={matchdata}
                   columns={columns}
-                  getRowId={(row) => row.id}
+                  getRowId={(row) => row.mid}
                   rowHeight={54}
                   rowSelection="true"
                   rowSpacingType='margin'

@@ -1,21 +1,168 @@
-import { Close } from "@mui/icons-material";
+import { Close, DoneAll } from "@mui/icons-material";
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Select, Slide, TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { matchvalidate } from "../Validation/Coordinator";
+import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
+import Stack from '@mui/material/Stack';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Check from '@mui/icons-material/Check';
+import SettingsIcon from '@mui/icons-material/Settings';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import VideoLabelIcon from '@mui/icons-material/VideoLabel';
+import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
+
+
+
+const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
+  display: 'flex',
+  height: 22,
+  alignItems: 'center',
+  ...(ownerState.active && {
+    color: '#784af4',
+  }),
+  '& .QontoStepIcon-completedIcon': {
+    color: '#784af4',
+    zIndex: 1,
+    fontSize: 18,
+  },
+  '& .QontoStepIcon-circle': {
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    backgroundColor: 'currentColor',
+  },
+}));
+
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function QontoStepIcon(props) {
+  const { active, completed, className } = props;
+
+  return (
+    <QontoStepIconRoot ownerState={{ active }} className={className}>
+      {completed ? (
+        <Check className="QontoStepIcon-completedIcon" />
+      ) : (
+        <div className="QontoStepIcon-circle" />
+      )}
+    </QontoStepIconRoot>
+  );
+}
+
+QontoStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+};
+
+const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 22,
+  },
+  [`&.${stepConnectorClasses.active}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage:
+        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    height: 3,
+    border: 0,
+    backgroundColor:
+      theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+    borderRadius: 1,
+  },
+}));
+
+const ColorlibStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+  zIndex: 1,
+  color: '#fff',
+  width: 50,
+  height: 50,
+  display: 'flex',
+  borderRadius: '50%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  ...(ownerState.active && {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+  }),
+  ...(ownerState.completed && {
+    backgroundImage:
+      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+  }),
+}));
+
+
+function ColorlibStepIcon(props) {
+  const { active, completed, className } = props;
+
+  const icons = {
+    1: <SettingsIcon />,
+    2: <GroupAddIcon />,
+    3: <DoneAll />,
+  };
+
+  return (
+    <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
+      {icons[String(props.icon)]}
+    </ColorlibStepIconRoot>
+  );
+}
+
+ColorlibStepIcon.propTypes = {
+  /**
+   * Whether this step is active.
+   * @default false
+   */
+  active: PropTypes.bool,
+  className: PropTypes.string,
+  /**
+   * Mark the step as completed. Is passed to child components.
+   * @default false
+   */
+  completed: PropTypes.bool,
+  /**
+   * The label displayed in the step icon.
+   */
+  icon: PropTypes.node,
+};
+
+const steps = ['Select Data', 'Match Information', 'Confirmation'];
 
 const AddMatch = () => {
-  const theme = useTheme()
+  // const theme = useTheme()
   const [open, setOpen] = React.useState(false);
-  const { coachdata } = useSelector((state => state.coordinator))
-  const { categorydata ,tounamentdata } = useSelector((state => state.admin))
-  const dispatch = useDispatch()
+//   const { coachdata } = useSelector((state => state.coordinator))
+//   const { categorydata ,tounamentdata } = useSelector((state => state.admin))
+//   const dispatch = useDispatch()
+// const { active, completed, className } = props;
 
   const handleClickOpen = () => {
     console.log("open")
@@ -26,24 +173,24 @@ const AddMatch = () => {
     setOpen(false);
   };
 
-  const initial = {
-    MatchType: "",
-    NumberOfRound: "",
-    MatchDate: "",
-    Matchtime: "",
-    AthleteBlue: "",
-    AthleteRed: "",
-    CategoryId: "",
-    TournamentId: "",
-  }
+  // const initial = {
+  //   MatchType: "",
+  //   NumberOfRound: "",
+  //   MatchDate: "",
+  //   Matchtime: "",
+  //   AthleteBlue: "",
+  //   AthleteRed: "",
+  //   CategoryId: "",
+  //   TournamentId: "",
+  // }
 
-  const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
-    initialValues: initial,
-    validationSchema: matchvalidate,
-    onSubmit: async (values) => {
-      console.log(values)
-    }
-  })
+  // const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
+  //   initialValues: initial,
+  //   validationSchema: matchvalidate,
+  //   onSubmit: async (values) => {
+  //     console.log(values)
+  //   }
+  // })
 
 
 
@@ -59,7 +206,7 @@ const AddMatch = () => {
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>Update Coach Picture</DialogTitle>
+          <DialogTitle>Add Match</DialogTitle>
           <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -73,179 +220,17 @@ const AddMatch = () => {
             <Close />
           </IconButton>
           <DialogContent>
-            <form>
-              <Grid container spacing={1}>
-                <Grid item xl={12} md={6} sm={12} xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    id="MatchType"
-                    name="MatchType"
-                    label="Match Type"
-                    variant='standard'
-                    type="text"
-                    value={values.MatchType}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                          {/* <Person2Rounded /> */}
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  {/* {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null} */}
-                </Grid>
-                <Grid item xl={12} md={6} sm={12} xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    id="NumberOfRound"
-                    name="NumberOfRound"
-                    label="Number Of Round"
-                    type="number"
-                    variant='standard'
-                    value={values.NumberOfRound}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                          {/* <Person2Rounded /> */}
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  {/* {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null} */}
-                </Grid>
-                <Grid item xl={12} md={6} sm={12} xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    id="MatchDate"
-                    name="MatchDate"
-                    label="Match Date"
-                    type="date"
-                    variant='standard'
-                    value={values.MatchDate}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                          {/* <Person2Rounded /> */}
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  {/* {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null} */}
-                </Grid>
-                <Grid item xl={12} md={6} sm={12} xs={12} lg={6}>
-                  <TextField
-                    fullWidth
-                    id="Matchtime"
-                    name="Matchtime"
-                    label="Matchtime"
-                    variant='standard'
-                    type="time"
-                    value={values.Matchtime}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                          {/* <Person2Rounded /> */}
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  {/* {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null} */}
-                </Grid>
-                <Grid item xl={6} md={6} sm={12} xs={12}>
-                  <FormControl variant='filled' fullWidth>
-                    <InputLabel color='secondary'>Athlete Red</InputLabel>
-                    <Select
-                      color='secondary'
-                      id="categoryId"
-                      name="categoryId"
-                      label="category"
-                      value={values.AthleteRed}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      {/* {categorydata?.map((data) => (
-                        <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
-                      ))
-                      } */}
-                    </Select>
-                  </FormControl>
-                  {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
-                </Grid>
-                <Grid item xl={6} md={6} sm={12} xs={12}>
-                  <FormControl variant='filled' fullWidth>
-                    <InputLabel color='secondary'>Athlete Blue</InputLabel>
-                    <Select
-                      color='secondary'
-                      id="categoryId"
-                      name="categoryId"
-                      label="category"
-                      value={values.AthleteBlue}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      {/* {categorydata?.map((data) => (
-                        <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
-                      ))
-                      } */}
-                    </Select>
-                  </FormControl>
-                  {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
-                </Grid>
-                <Grid item xl={6} md={6} sm={12} xs={12}>
-                  <FormControl variant='filled' fullWidth>
-                    <InputLabel color='secondary'>Category</InputLabel>
-                    <Select
-                      color='secondary'
-                      id="categoryId"
-                      name="categoryId"
-                      label="category"
-                      value={values.CategoryId}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      {categorydata?.map((data) => (
-                        <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
-                      ))
-                      }
-                    </Select>
-                  </FormControl>
-                  {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
-                </Grid>
-                <Grid item xl={6} md={6} sm={12} xs={12}>
-                  <FormControl variant='filled' fullWidth>
-                    <InputLabel color='secondary'>Tournament</InputLabel>
-                    <Select
-                      color='secondary'
-                      id="categoryId"
-                      name="categoryId"
-                      label="category"
-                      value={values.TournamentId}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    >
-                      {tounamentdata?.map((data) => (
-                        <MenuItem key={data.TId} value={data.TId}>{data.tournamentName}</MenuItem>
-                      ))
-                      }
-                    </Select>
-                  </FormControl>
-                  {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
-                </Grid>
-                <Grid item xl={12} md={12} sm={12} xs={12}>
-                  <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
+             <Stack sx={{ width: '100%' }} spacing={4}>
+     
+      <Stepper alternativeLabel activeStep={1} connector={<ColorlibConnector />}>
+        {steps.map((label) => (
+          <Step key={label}>
+            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </Stack>
+           
           </DialogContent>
         </Dialog>
       </React.Fragment>
