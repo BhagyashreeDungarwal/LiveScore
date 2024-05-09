@@ -309,6 +309,9 @@ namespace LiveScore.Migrations
                         .IsRequired()
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MatchGroup")
+                        .HasColumnType("int");
+
                     b.Property<string>("MatchStatus")
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
@@ -327,10 +330,6 @@ namespace LiveScore.Migrations
                     b.Property<int>("NumberOfRound")
                         .HasMaxLength(101)
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TournamentId")
                         .IsRequired()

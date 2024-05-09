@@ -22,7 +22,7 @@ namespace LiveScoring.Model
 
         public int NextMatchId { get; set; }
         public string Flag { get; set; }
-        public string Status { get; set; }
+        public int MatchGroup { get; set; }
         public int? CategoryId { get; set; }
         public int? TournamentId  { get; set; }
         [JsonIgnore]
