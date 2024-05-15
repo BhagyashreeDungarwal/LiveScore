@@ -46,7 +46,7 @@ namespace LiveScoring.Model
         public double? Weight { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string Status { get; set; } = "UnBlocked";
+        public string Status { get; set; } = "UnBlock";
         public int CategoryId { get; set; }
 
         [JsonIgnore]

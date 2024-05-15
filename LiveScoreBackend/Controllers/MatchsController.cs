@@ -129,14 +129,29 @@ namespace LiveScore.Controllers
 
         // PUT: api/Athletes/UpdateMatch/5
         [HttpPut("UpdateMatch/{id}")]
-        public async Task<IActionResult> UpdateMatch(int id, Matchs match)
+        public async Task<IActionResult> UpdateMatch(int id, MatchUp matchDTO)
         {
-            if (id != match.MId)
+            //if (id != matchDTO.MId)
+            //{
+            //    return BadRequest(new { msg = "Match Not Found" });
+            //}
+
+            var match = await _context.Matchss.FindAsync(id);
+
+            if (match == null)
             {
-                return BadRequest(new { msg = "Match Not Found" });
+                return NotFound();
             }
 
-            _context.Entry(match).State = EntityState.Modified;
+            // Map only the properties that you want to update
+            // Assuming you are using AutoMapper, if not, you can manually map the properties
+            match.MatchStatus = matchDTO.MatchStatus;
+            match.MatchType = matchDTO.MatchType;
+            match.NumberOfRound = matchDTO.NumberOfRound;
+            match.AthleteRed = matchDTO.AthleteRed;
+            match.AthleteBlue = matchDTO.AthleteBlue;
+            match.CategoryId = matchDTO.CategoryId;
+            match.TournamentId = matchDTO.TournamentId;
 
             try
             {
@@ -156,7 +171,6 @@ namespace LiveScore.Controllers
 
             return NoContent();
         }
-
 
         [HttpPut("UpdateNextMatchId/{id}")]
         public async Task<IActionResult> UpdateNextMatchId(int id, [FromBody] Matchs match)

@@ -48,6 +48,7 @@ namespace LiveScore.Controllers
                     gender = a.Gender,
                     city = a.City,
                     state = a.State,
+                    status = a.Status,
                     coachName = a.Coach.CoachName,
                     categoryName = a.Category.CategoryName,
                     coordinater = a.acr.Name,
@@ -254,15 +255,15 @@ namespace LiveScore.Controllers
             //                       "</body>" +
             //                       "</html>";
 
-            //_emailSender.SendEmail(athlete.Email, "SucessFully Registered", messageBody);
+            //_emailSender.SendEmail(athlete.Email, "SuccessFully Registered", messageBody);
 
             return Ok("Athlete created successfully.");
 
         }
         
 
-        [HttpPost("BloackAthlete/{id}")]
-        public async Task<ActionResult<Athlete>> BloackAthlete(int id)
+        [HttpPost("BlockAthlete/{id}")]
+        public async Task<ActionResult<Athlete>> BlockAthlete(int id)
         {
             var athlete = await _context.Athletes.FindAsync(id);
             if (athlete == null)

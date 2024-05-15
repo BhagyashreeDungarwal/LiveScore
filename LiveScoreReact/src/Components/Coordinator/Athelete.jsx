@@ -5,12 +5,12 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
 import { useEffect, useMemo } from 'react';
-import { GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import { BlockAthleteApi, GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
 import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import {  DriveFileRenameOutlineRounded } from '@mui/icons-material';
+import {  Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 // import { useState } from 'react';
 
@@ -55,12 +55,18 @@ const Athelete = () => {
 
   const dispatch = useDispatch()
   const { atheletedata, loading, data, error } = useSelector(state => state.coordinator)
+   const handleRequest = async (id) => {
+    dispatch(BlockAthleteApi(id))
+    dispatch(getAtheleteApi())
+  }
+
+   const imgurl = "http://localhost:5032/images/";
 
   const columns = useMemo(atheletedata => [
     {
       field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><Avatar src={params.value} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><Avatar src={`${imgurl}${params.value}`} alt="Avatar" /></Link>
       ),
     },
 
@@ -76,9 +82,10 @@ const Athelete = () => {
     { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "coordinater", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
-      headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
-        return (
-          <Box>
+      headerName: "Action", width: 180, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+          if (params.row.status === "UnBlock") {
+          return (
+           <Box>
             <Tooltip title="Edit">
               <Link to={`/coordinator/editathelete/${params.row.id}`} >
                 <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
@@ -86,11 +93,23 @@ const Athelete = () => {
                 </Fab>
               </Link>
             </Tooltip>
+            <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+                <VerifiedUser size="small" sx={{ mr: 1 }} />
+                Block
+              </Fab>
           </Box>
-        )
+          )
+        }
+        else if (params.row.status === "Block") {
+          return (
+            <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+              <Block size="small" sx={{ mr: 1 }} />
+              Unblock
+            </Fab>)
+          
       }
-    },
-
+    }
+  }
   ])
 
   useEffect(() => {

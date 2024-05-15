@@ -59,14 +59,14 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
     await dispatch(BlockRefereeApi(id))
     dispatch(GetRefereeApi())
   }
-
+ const imgurl = "http://localhost:5032/ACR/";
 
   const columns = useMemo(refereedata => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
      renderCell: (params) => (
-      <Avatar src={params.value} alt="Avatar" />
+      <Avatar src={`${imgurl}${params.value}`} alt="Avatar" />
       ), },
-    { field: "athleteName", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },

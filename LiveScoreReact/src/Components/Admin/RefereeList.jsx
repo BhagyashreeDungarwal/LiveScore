@@ -51,12 +51,13 @@ function CustomNoRowsOverlay() {
 const RefereeList = () => {
   const dispatch = useDispatch()
   const { refereedata, loading } = useSelector(state => state.coordinator)
+ const imgurl = "http://localhost:5032/ACR/";
 
   const columns = useMemo(refereedata => [
     {
       field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+        <img src={`${imgurl}${params.value}`} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
       ),
     },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },

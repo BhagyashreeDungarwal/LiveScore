@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack } from "@mui/material"
+import { Box, CircularProgress, Fab, Stack, Tooltip } from "@mui/material"
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from "@mui/x-data-grid";
 import NoData from "./../Images/NoData.jpg"
 import HeaderFormat from "../Common/HeaderFormat";
@@ -10,6 +10,7 @@ import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import AddMatch from "./AddMatch";
 import { getCategoryApi, getTounamentApi } from "../../Redux/Action/AdminAction";
+import { DriveFileRenameOutlineRounded } from "@mui/icons-material";
 
 function CustomToolbar() {
   return (
@@ -86,6 +87,7 @@ const Match = () => {
 
 
   const columns = useMemo(matchdata => [
+    { field: "matchGroup", headerName: "GroupId", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournament", headerName: "Tournament", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -95,6 +97,19 @@ const Match = () => {
     { field: "numberOfRound", headerName: "Rounds", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "athleteRed", headerName: "Athlete Red", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "athleteBlue", headerName: "Athlete Blue", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
+     {
+      headerName: "Action", width: 100, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+        return(
+          <Box>
+             <Tooltip title="Edit">
+                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
+                </Fab>
+            </Tooltip>
+          </Box>
+        )
+      }
+    }
   ])
 
   return (
@@ -107,7 +122,7 @@ const Match = () => {
           <Stack style={{
             marginTop: "1%",
             display: "grid",
-            height: "70vh",
+            height: "78vh",
           }}>
             {
               matchdata && matchdata.length > 0 ? (

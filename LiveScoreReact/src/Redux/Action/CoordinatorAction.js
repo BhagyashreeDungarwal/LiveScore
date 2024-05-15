@@ -1,7 +1,7 @@
 import axios from "axios"
 import {
     GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
-    GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail,
+    GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail, BlockAthleteStart, BlockAthleteSuccess, BlockAthleteFail,
     CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess, RefereePostFail,
     GetRefereeStart, GetRefereeSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart, GetCoachSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail,
     CoordinatorProfileStart,
@@ -107,6 +107,21 @@ export const AtheletePutPicApi = (values, id) => async (dispatch) => {
         // console.log(e.response.data.msg)
     }
 }
+export const BlockAthleteApi = (id) => async (dispatch) => {
+    try {
+        dispatch(BlockAthleteStart())
+
+        const { data } = await axios.post(`${url}/Athletes/BlockAthlete/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(BlockAthleteSuccess(data))
+    } catch (error) {
+        dispatch(BlockAthleteFail(error.response.data))
+    }
+}
+
 export const CoordinatorPostApi = (values) => async (dispatch) => {
     try {
         dispatch(CoordinatorPostStart())
@@ -308,7 +323,7 @@ export const GetAthleteByCatApi = (categoryId) => async (dispatch) => {
     try {
         dispatch(GetAtheleteByCategoryStart())
 
-        const { data } = await axios.get(`${url}/Categories/GetAthleteByCategory/${categoryId}`,  {
+        const { data } = await axios.get(`${url}/Categories/GetAthleteByCategory/${categoryId}`, {
             headers: {
                 "Content-Type": "application/json"
             }

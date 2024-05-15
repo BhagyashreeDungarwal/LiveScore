@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { CategoryPutApi, GetCategoryByIdApi } from '../../Redux/Action/AdminAction';
 import { category } from '../Validation/Admin';
+import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -47,12 +48,15 @@ const EditCategory = () => {
             console.log(values)
             await dispatch(CategoryPutApi(values, id))
             
-            if (data) {
-                toast.success(data.msg)
+            if (data.msg) {
+                dispatch(ClearMessageAdmin())
+                navigate("/admin/category")
+                // toast.success(data.msg)
             }
 
             if (error) {
                 toast.error(error.msg)
+                dispatch(ClearMessageAdmin())
             }
         },
     })

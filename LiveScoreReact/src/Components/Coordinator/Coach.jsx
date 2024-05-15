@@ -57,7 +57,6 @@ const Coach = () => {
   const handleRequest = async (id) => {
     dispatch(BlockCoachApi(id))
     dispatch(GetCoachApi())
-
   }
    
   const imgurl = "http://localhost:5032/coach/";

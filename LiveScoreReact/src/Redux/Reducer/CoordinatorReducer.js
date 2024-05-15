@@ -84,6 +84,19 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        //Block Athlete
+        BlockAthleteStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        BlockAthleteSuccess: (state, action) => {
+            state.loading = false;
+            state.blockdata = action.payload;
+        },
+        BlockAthleteFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
 
 
 
@@ -297,11 +310,11 @@ const CoordinatorSlice = createSlice({
 
 export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePostStart, AtheletePostSuccess, AtheletePostFail,
     GetAtheleteByIdStart, GetAtheleteByIdSuccess, GetAtheleteByIdFail, AtheletePutStart, AtheletePutSuccess, AtheletePutFail, AtheletePutPicStart,
-    AtheletePutPicSuccess, AtheletePutPicFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess,
+    AtheletePutPicSuccess, AtheletePutPicFail, BlockAthleteStart, BlockAthleteSuccess, BlockAthleteFail, CoordinatorPostStart, CoordinatorPostSuccess, CoordinatorPostFail, RefereePostStart, RefereePostSuccess,
     RefereePostFail, GetRefereeStart, GetRefereeSuccess, GetRefereeFail, BlockRefereeStart, BlockRefereeSuccess, BlockRefereeFail, GetCoachStart,
     GetCoachSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail,
     CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess, CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail,
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail, CoachPutPicFail, CoachPutPicStart, CoachPutPicSuccess,
-    clearMessage, GetMatchFail, GetMatchStart, GetMatchSuccess ,GetAtheleteByCategoryFail,GetAtheleteByCategoryStart,GetAtheleteByCategorySuccess
+    clearMessage, GetMatchFail, GetMatchStart, GetMatchSuccess, GetAtheleteByCategoryFail, GetAtheleteByCategoryStart, GetAtheleteByCategorySuccess
 } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

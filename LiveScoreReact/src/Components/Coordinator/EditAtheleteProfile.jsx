@@ -19,6 +19,7 @@ const EditAtheleteProfile = () => {
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
 
+   const imgurl = "http://localhost:5032/images/";
   useEffect(() => {
     dispatch(GetAtheleteByIdApi(id));
   }, [dispatch, id])
@@ -76,7 +77,7 @@ const EditAtheleteProfile = () => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={atheleteByIddata ? atheleteByIddata.imageUrl : image}
+          src={atheleteByIddata ? `${imgurl}${atheleteByIddata.imageUrl}` : image}
           sx={{
             height: "12rem",
             width: "12rem",

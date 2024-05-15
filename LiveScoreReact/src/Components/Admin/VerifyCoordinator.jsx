@@ -58,11 +58,12 @@ const VerifyCoordinator = () => {
     await dispatch(VerifyCoordinatorApi(id))
   }
 
+   const imgurl = "http://localhost:5032/ACR/";
   const columns = useMemo(coordinatordata => [
     {
       field: "imageURL", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Avatar src={params.value} />
+        <Avatar src={`${imgurl}${params.value}`} />
         // <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
       ),
     },
