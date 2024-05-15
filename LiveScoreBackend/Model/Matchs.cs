@@ -9,7 +9,7 @@ namespace LiveScoring.Model
     {
         public int MId { get; set; }
         public string? MatchStatus { get; set; }
-        public string MatchType { get; set; }
+        public string? MatchType { get; set; }
         public int NumberOfRound { get; set; }
 
         [DataType(DataType.Date)]
@@ -20,9 +20,9 @@ namespace LiveScoring.Model
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
 
-        public int NextMatchId { get; set; }
-        public string Flag { get; set; }
+        public int? NextMatchId { get; set; }       
         public int MatchGroup { get; set; }
+        public int? Flag { get; set; }
         public int? CategoryId { get; set; }
         public int? TournamentId  { get; set; }
         [JsonIgnore]
@@ -36,6 +36,8 @@ namespace LiveScoring.Model
 
         [JsonIgnore]
         public virtual Athlete? AthleteBlueObj { get; set; }
+        [JsonIgnore]
+        public virtual Athlete? Athleteflag { get; set; }
 
     }
 }

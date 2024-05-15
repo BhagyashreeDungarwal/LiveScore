@@ -168,6 +168,11 @@ namespace LiveScore.Data
                     .WithMany()
                     .HasForeignKey(m => m.AthleteBlue)
                     .OnDelete(DeleteBehavior.Restrict); 
+                
+                entity.HasOne(m => m.Athleteflag)
+                    .WithMany()
+                    .HasForeignKey(m => m.Flag)
+                    .OnDelete(DeleteBehavior.Restrict); 
             });
 
                 modelBuilder.Entity<Round>(entity =>

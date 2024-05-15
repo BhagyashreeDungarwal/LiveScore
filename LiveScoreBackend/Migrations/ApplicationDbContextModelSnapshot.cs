@@ -302,8 +302,8 @@ namespace LiveScore.Migrations
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Flag")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Flag")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("MatchDate")
                         .IsRequired()
@@ -317,14 +317,13 @@ namespace LiveScore.Migrations
                         .HasColumnType("nvarchar(101)");
 
                     b.Property<string>("MatchType")
-                        .IsRequired()
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
                     b.Property<DateTime>("Matchtime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("NextMatchId")
+                    b.Property<int?>("NextMatchId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberOfRound")
@@ -342,6 +341,8 @@ namespace LiveScore.Migrations
                     b.HasIndex("AthleteRed");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Flag");
 
                     b.HasIndex("TournamentId");
 
@@ -546,6 +547,11 @@ namespace LiveScore.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("LiveScoring.Model.Athlete", "Athleteflag")
+                        .WithMany()
+                        .HasForeignKey("Flag")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("LiveScoring.Model.Tournament", "Tournament")
                         .WithMany()
                         .HasForeignKey("TournamentId")
@@ -555,6 +561,8 @@ namespace LiveScore.Migrations
                     b.Navigation("AthleteBlueObj");
 
                     b.Navigation("AthleteRedObj");
+
+                    b.Navigation("Athleteflag");
 
                     b.Navigation("Category");
 
