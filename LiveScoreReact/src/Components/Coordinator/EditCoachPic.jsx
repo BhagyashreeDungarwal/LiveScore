@@ -21,6 +21,8 @@ const EditCoachPic = () => {
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
 
+   const imgurl = "http://localhost:5032/coach/";
+
   useEffect(() => {
     dispatch(GetCoachByIdApi(id));
   }, [dispatch, id])
@@ -29,6 +31,7 @@ const EditCoachPic = () => {
     navigate("/coordinator/coach")
   };
 
+  
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -77,7 +80,7 @@ const EditCoachPic = () => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={coachByIddata ? coachByIddata.imageUrl : image}
+          src={coachByIddata ? `${imgurl}${coachByIddata.imageUrl}` : image}
           sx={{
             height: "12rem",
             width: "12rem",

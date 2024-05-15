@@ -20,12 +20,15 @@ namespace LiveScore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageUploader _imageUploader;
 
-        public CoachesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
+
+        public CoachesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender, IImageUploader uploadImage)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
-            _emailSender = emailSender;                
+            _emailSender = emailSender;
+            _imageUploader = uploadImage;
         }
 
         // GET: api/Coaches
@@ -130,10 +133,17 @@ namespace LiveScore.Controllers
                 return BadRequest(ModelState);
             }
 
-            string imageUrl = coach.ImageUrl;
             if (updateImg.ImageFile != null)
             {
-                imageUrl = await UploadImage(updateImg.ImageFile);
+                // Delete existing image if it exists
+                if (!string.IsNullOrEmpty(coach.ImageUrl))
+                {
+                    // Delete existing image file
+                    _imageUploader.DeleteImage(coach.ImageUrl, "coach");
+                }
+
+                // Upload and update new image
+                string imageUrl = await _imageUploader.UploadImg(updateImg.ImageFile, "coach");
                 coach.ImageUrl = imageUrl;
 
                 try
@@ -153,7 +163,6 @@ namespace LiveScore.Controllers
                     }
                 }
             }
-
             return BadRequest(new { msg = "Image file is missing" });
         }
 
@@ -168,7 +177,7 @@ namespace LiveScore.Controllers
               return Problem("Entity set 'ApplicationDbContext.Coaches'  is null.");
           }
 
-            string imageUrl = await UploadImage(coachimg.ImageFile);
+            string imageUrl = await _imageUploader.UploadImg(coachimg.ImageFile, "coach");
 
             var coach = new Coach
             {
@@ -204,24 +213,17 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Successfully Added Coach"});
         }
 
-        private async Task<string> UploadImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return null;
-            }
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "coach");
-            var filePath = Path.Combine(uploadsFolder, fileName);
+        // Method to delete image file
+        //private void DeleteImage(string imageUrl)
+        //{
+        //    var imagePath = Path.Combine(_webHostEnvironment.WebRootPath, , Path.GetFileName(imageUrl));
+        //    if (System.IO.File.Exists(imagePath))
+        //    {
+        //        System.IO.File.Delete(imagePath);
+        //    }
+        //}
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-            return $"{Request.Scheme}://{Request.Host}/coach/{fileName}";
-        }
 
         [HttpPost("BlockCoach/{id}")]
         public async Task<ActionResult<Coach>> BloackCoach(int id)

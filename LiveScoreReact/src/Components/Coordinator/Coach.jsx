@@ -59,12 +59,14 @@ const Coach = () => {
     dispatch(GetCoachApi())
 
   }
+   
+  const imgurl = "http://localhost:5032/coach/";
 
   const columns = useMemo(coachdata => [
     {
-      field: "imageUrl", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
+      field: `imageUrl`, headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editcoachpic/${params.row.coachId}`}> <Avatar src={params.value} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editcoachpic/${params.row.coachId}`}> <Avatar src={`${imgurl}${params.value}`} alt="Avatar" /></Link>
       ),
     },
     { field: "coachName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },

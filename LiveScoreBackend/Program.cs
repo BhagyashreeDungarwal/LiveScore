@@ -58,6 +58,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 //For Email Services
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IImageUploader, UploadImage>();
 
 
 var app = builder.Build();          

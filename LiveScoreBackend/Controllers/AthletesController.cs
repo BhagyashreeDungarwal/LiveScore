@@ -9,6 +9,7 @@ using LiveScoring.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Macs;
 
 namespace LiveScore.Controllers
 {
@@ -17,14 +18,14 @@ namespace LiveScore.Controllers
     public class AthletesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IEmailSender _emailSender;
+        private readonly IImageUploader _imageUploader;
 
-        public AthletesController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
+        public AthletesController(ApplicationDbContext context, IEmailSender emailSender,IImageUploader imageUploader)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
             _emailSender = emailSender;
+            _imageUploader = imageUploader;
         }
 
         // GET: api/Athletes
@@ -168,37 +169,36 @@ namespace LiveScore.Controllers
 
             if (updateImg.ImageFile != null)
             {
-                // Delete the old image if it exists
+                // Delete existing image if it exists
                 if (!string.IsNullOrEmpty(athlete.ImageUrl))
                 {
-                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Path.GetFileName(athlete.ImageUrl));
-                    if (System.IO.File.Exists(oldImagePath))
+                    // Delete existing image file
+                    _imageUploader.DeleteImage(athlete.ImageUrl, "images");
+                }
+
+                // Upload and update new image
+                string imageUrl = await _imageUploader.UploadImg(updateImg.ImageFile, "images");
+                athlete.ImageUrl = imageUrl;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return Ok(new { msg = "Athlete image successfully updated" });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AthleteExists(id))
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        return NotFound(new { msg = "Athlete Not Found" });
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
+            }
+            return BadRequest(new { msg = "Image file is missing" });
 
-                // Upload the new image
-                string imageUrl = await UploadImage(updateImg.ImageFile);
-                athlete.ImageUrl = imageUrl;
-            }
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { msg = "Athlete image successfully updated" });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AthleteExists(id))
-                {
-                    return NotFound(new { msg = "Athlete Not Found" });
-                }
-                else
-                {
-                    throw;
-                }
-            }
         }
 
 
@@ -217,9 +217,7 @@ namespace LiveScore.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-
-            string imageUrl = await UploadImage(athleteDto.ImageFile);
+            string imageUrl = await _imageUploader.UploadImg(athleteDto.ImageFile, "images");
 
             var athlete = new Athlete
             {
@@ -261,26 +259,7 @@ namespace LiveScore.Controllers
             return Ok("Athlete created successfully.");
 
         }
-        private async Task<string> UploadImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return null;
-            }
-
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-
-
-            return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
-            //return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
-        }
+        
 
         [HttpPost("BloackAthlete/{id}")]
         public async Task<ActionResult<Athlete>> BloackAthlete(int id)
@@ -324,26 +303,6 @@ namespace LiveScore.Controllers
            
             return Ok("Successful");
         }
-
-        //// DELETE: api/Athletes/5
-        //[HttpDelete("DeleteAthelete/{id}")]
-        //public async Task<IActionResult> DeleteAthlete(int id)
-        //{
-        //    if (_context.Athletes == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var athlete = await _context.Athletes.FindAsync(id);
-        //    if (athlete == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Athletes.Remove(athlete);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
 
         private bool AthleteExists(int id)
         {

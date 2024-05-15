@@ -23,13 +23,15 @@ namespace LiveScore.Controllers
         private readonly PasswordService _pservice;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IEmailSender _emailSender;
-        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger, PasswordService pservice, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender)
+        private readonly IImageUploader _imageUploader;
+        public ACRController(ApplicationDbContext dbContext, ILogger<ACR> logger, PasswordService pservice, IWebHostEnvironment webHostEnvironment, IEmailSender emailSender, IImageUploader imageUploader)
         {
             _dbcontext = dbContext;
             _logger = logger;
             _pservice = pservice;
             _webHostEnvironment = webHostEnvironment;
             _emailSender = emailSender;
+            _imageUploader = imageUploader;
         }
 
         [HttpGet("GetACR")]
@@ -307,7 +309,7 @@ namespace LiveScore.Controllers
             {
                 return BadRequest(new { msg = "Contact already exists" });
             }
-            string imageUrl = await UploadImage(acrimg.ImageFile);
+            string imageUrl = await _imageUploader.UploadImg(acrimg.ImageFile, "images");
 
             var acr = new ACR
             {
@@ -407,20 +409,28 @@ namespace LiveScore.Controllers
 
             if (updateImg.ImageFile != null)
             {
-                string imageUrl = await UploadImage(updateImg.ImageFile);
-                coordinator.ImageURL = imageUrl;
-            }
+                // Delete existing image if it exists
+                if (!string.IsNullOrEmpty(coordinator.ImageURL))
+                {
+                    // Delete existing image file
+                    _imageUploader.DeleteImage(coordinator.ImageURL, "ACR");
+                }
 
-            try
-            {
-                await _dbcontext.SaveChangesAsync();
-                return Ok(new { msg = "Coordinator Profile Picture successfully updated" });
+                // Upload and update new image
+                string imageUrl = await _imageUploader.UploadImg(updateImg.ImageFile, "ACR");
+                coordinator.ImageURL = imageUrl;
+
+                try
+                {
+                    await _dbcontext.SaveChangesAsync();
+                    return Ok(new { msg = "Coordinator Profile Picture successfully updated" });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound(new { msg = "Coordinator Not Found" });
+                }
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                    return NotFound(new { msg = "Coordinator  Not Found" });
-                
-            }
+            return BadRequest(new { msg = "Image file is missing" });
         }
 
         //Refree Section
@@ -461,8 +471,7 @@ namespace LiveScore.Controllers
             {
                 return BadRequest(new { msg = "Contact already exists" });
             }
-
-            string imageUrl = await UploadImage(acrimg.ImageFile);
+            string imageUrl = await _imageUploader.UploadImg(acrimg.ImageFile, "ACR");
 
             var acr = new ACR
             {
@@ -561,18 +570,26 @@ namespace LiveScore.Controllers
 
             if (updateImg.ImageFile != null)
             {
-                string imageUrl = await UploadImage(updateImg.ImageFile);
-                referee.ImageURL = imageUrl;
-            }
+                // Delete existing image if it exists
+                if (!string.IsNullOrEmpty(referee.ImageURL))
+                {
+                    // Delete existing image file
+                    _imageUploader.DeleteImage(referee.ImageURL, "ACR");
+                }
 
-            try
-            {
-                await _dbcontext.SaveChangesAsync();
-                return Ok(new { msg = "Referee image successfully updated" });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return NotFound(new { msg = "Athlete Not Found" });
+                // Upload and update new image
+                string imageUrl = await _imageUploader.UploadImg(updateImg.ImageFile, "ACR");
+                referee.ImageURL = imageUrl;
+
+                try
+                {
+                    await _dbcontext.SaveChangesAsync();
+                    return Ok(new { msg = "Referee image successfully updated" });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound(new { msg = "Referee Not Found" });
+                }
             }
             return BadRequest(new { msg = "Image file is missing" });
         }
@@ -601,22 +618,22 @@ namespace LiveScore.Controllers
             return Ok("Successful");
         }
 
-        private async Task<string> UploadImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return null;
-            }
+        //private async Task<string> UploadImage(IFormFile file)
+        //{
+        //    if (file == null || file.Length == 0)
+        //    {
+        //        return null;
+        //    }
 
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "ACR");
-            var filePath = Path.Combine(uploadsFolder, fileName);
+        //    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+        //    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "ACR");
+        //    var filePath = Path.Combine(uploadsFolder, fileName);
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-            }
-            return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
-        }
+        //    using (var stream = new FileStream(filePath, FileMode.Create))
+        //    {
+        //        await file.CopyToAsync(stream);
+        //    }
+        //    return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
+        //}
     }
 }
