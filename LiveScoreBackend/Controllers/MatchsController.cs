@@ -34,6 +34,7 @@ namespace LiveScore.Controllers
                 .Include((t) => t.Tournament)
                 .Select((a) => new {
                    mid = a.MId,
+                    matchGroup = a.MatchGroup,
                     matchStatus = a.MatchStatus,
                     matchType = a.MatchType,
                     numberOfRound = a.NumberOfRound,
@@ -41,6 +42,8 @@ namespace LiveScore.Controllers
                     matchTime = a.Matchtime,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
+                    nextMatchId =  a.NextMatchId,
+                    flag = a.Flag,                   
                     category = a.Category.CategoryName,
                     tournament = a.Tournament.TournamentName,
 
@@ -65,6 +68,8 @@ namespace LiveScore.Controllers
                                                   matchtime = m.Matchtime,
                                                   athleteRed = m.AthleteRedObj.AthleteName,
                                                   athleteBlue = m.AthleteBlueObj.AthleteName,
+                                                  nextMatchId = m.NextMatchId,
+                                                  flag = m.Flag,
                                                   categoryId = m.Category.CategoryName,
                                                   tournamentId = m.Tournament.TournamentName
                                               })
@@ -91,10 +96,10 @@ namespace LiveScore.Controllers
                 .Where(m => m.MatchStatus != "Completed") // Exclude completed matches
                 .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
 
-            if (existingMatch != null)
-            {
-                return BadRequest(new { msg = "One of the athletes is already participating in another match." });
-            }
+            //if (existingMatch != null)
+            //{
+            //    return BadRequest(new { msg = "One of the athletes is already participating in another match." });
+            //}
 
             try
             {
@@ -150,6 +155,62 @@ namespace LiveScore.Controllers
             }
 
             return NoContent();
+        }
+
+
+        [HttpPut("UpdateNextMatchId/{id}")]
+        public async Task<IActionResult> UpdateNextMatchId(int id, [FromBody] Matchs match)
+        {
+            if (id != match.MId)
+            {
+                return BadRequest(new { msg = "Match Not Found" });
+            }
+
+            try
+            {
+                // Call the stored procedure directly through DbContext.Database.ExecuteSqlRawAsync
+                await _context.Database.ExecuteSqlRawAsync("EXEC UpdateNextMatchId @Umid, @Flag, @MatchStatus, @MatchType, @NumberOfRound",
+                    new SqlParameter("@Umid",id),
+                    new SqlParameter("@Flag", match.Flag),
+                    new SqlParameter("@MatchStatus", match.MatchStatus),
+                    new SqlParameter("@MatchType", match.MatchType),
+                    new SqlParameter("@NumberOfRound", match.NumberOfRound));
+
+                //Console.WriteLine(match.Flag);
+                //Console.WriteLine(Console.ReadLine());
+              
+                               
+                // Exclude 'MId' column from the INSERT statement
+                var modifiedMatch = new Matchs
+                {
+                    AthleteRed = match.AthleteRed,
+                    AthleteBlue = match.AthleteBlue,
+                    NextMatchId = match.NextMatchId,
+                    CategoryId = match.CategoryId,
+                    TournamentId = match.TournamentId,
+                    MatchStatus = match.MatchStatus,
+                    MatchDate = match.MatchDate,
+                    Matchtime = match.Matchtime
+                };
+
+
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MatchExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         private bool MatchExists(int id)

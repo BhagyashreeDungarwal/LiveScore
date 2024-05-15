@@ -166,11 +166,22 @@ namespace LiveScore.Controllers
                 return BadRequest(ModelState);
             }
 
-                if (updateImg.ImageFile != null)
+            if (updateImg.ImageFile != null)
+            {
+                // Delete the old image if it exists
+                if (!string.IsNullOrEmpty(athlete.ImageUrl))
                 {
-                    string imageUrl = await UploadImage(updateImg.ImageFile);
-                    athlete.ImageUrl = imageUrl;
+                    var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Path.GetFileName(athlete.ImageUrl));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
                 }
+
+                // Upload the new image
+                string imageUrl = await UploadImage(updateImg.ImageFile);
+                athlete.ImageUrl = imageUrl;
+            }
 
             try
             {
@@ -188,7 +199,6 @@ namespace LiveScore.Controllers
                     throw;
                 }
             }
-            return BadRequest(new { msg = "Image file is missing" });
         }
 
 
@@ -269,6 +279,7 @@ namespace LiveScore.Controllers
 
 
             return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
+            //return $"{Request.Scheme}://{Request.Host}/images/{fileName}";
         }
 
         [HttpPost("BloackAthlete/{id}")]
@@ -294,6 +305,7 @@ namespace LiveScore.Controllers
             }
             return Ok("Successful");
         }
+
         [HttpPost("Retired/{id}")]
         public async Task<ActionResult<Athlete>> RetiredAthlete(int id)
         {

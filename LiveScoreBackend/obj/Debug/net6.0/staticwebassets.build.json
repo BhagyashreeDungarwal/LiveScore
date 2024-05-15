@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "Hash": "w8As/0nJY/JVn4PrATFseuLyfvueh4PnUlSO8AO6Sgc=",
+=======
+  "Hash": "Q1f+Ykiiht6VBtISqqCScqhOkgmAML/69Osnjna9obQ=",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -226,12 +230,16 @@
       "OriginalItemSpec": "wwwroot\\ACR\\f51821b3-2b99-470a-8d90-41a4bb621018.jpg"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\1308b4a9-0320-49ef-9891-ec36d270ed83.jpg",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
       "BasePath": "_content/LiveScore",
-      "RelativePath": "coach/349e8dfb-d788-48f9-a7f6-129df650c23f.jpg",
+      "RelativePath": "coach/1308b4a9-0320-49ef-9891-ec36d270ed83.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -242,15 +250,19 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\coach\\349e8dfb-d788-48f9-a7f6-129df650c23f.jpg"
+      "OriginalItemSpec": "wwwroot\\coach\\1308b4a9-0320-49ef-9891-ec36d270ed83.jpg"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\527bd550-3641-4dc8-aaa0-4a0f581f5f51.jpg",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\1729b6ac-e570-46f3-927b-c074723531bf.jpg",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
       "BasePath": "_content/LiveScore",
-      "RelativePath": "coach/527bd550-3641-4dc8-aaa0-4a0f581f5f51.jpg",
+      "RelativePath": "coach/1729b6ac-e570-46f3-927b-c074723531bf.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -261,15 +273,19 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\coach\\527bd550-3641-4dc8-aaa0-4a0f581f5f51.jpg"
+      "OriginalItemSpec": "wwwroot\\coach\\1729b6ac-e570-46f3-927b-c074723531bf.jpg"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\6a9ab849-8707-4954-aaa9-0b6b0bf2ede8.jpg",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\39617bfc-f5ae-4bb1-ac64-863b8f07490d.jpg",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
       "BasePath": "_content/LiveScore",
-      "RelativePath": "coach/6a9ab849-8707-4954-aaa9-0b6b0bf2ede8.jpg",
+      "RelativePath": "coach/39617bfc-f5ae-4bb1-ac64-863b8f07490d.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -280,15 +296,19 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\coach\\6a9ab849-8707-4954-aaa9-0b6b0bf2ede8.jpg"
+      "OriginalItemSpec": "wwwroot\\coach\\39617bfc-f5ae-4bb1-ac64-863b8f07490d.jpg"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\8082ba2a-b5a0-40c6-b570-198b91d131fc.jpg",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\ccdd54e2-6423-46a5-addd-5d68cd463d2f.jpg",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
       "BasePath": "_content/LiveScore",
-      "RelativePath": "coach/8082ba2a-b5a0-40c6-b570-198b91d131fc.jpg",
+      "RelativePath": "coach/ccdd54e2-6423-46a5-addd-5d68cd463d2f.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -299,15 +319,19 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\coach\\8082ba2a-b5a0-40c6-b570-198b91d131fc.jpg"
+      "OriginalItemSpec": "wwwroot\\coach\\ccdd54e2-6423-46a5-addd-5d68cd463d2f.jpg"
     },
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\8cb1e5f3-5398-401c-b36e-0a897bec968d.png",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\00dc5135-cca6-4c37-a8a5-401ed9b6910f.jpg",
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
       "BasePath": "_content/LiveScore",
-      "RelativePath": "coach/8cb1e5f3-5398-401c-b36e-0a897bec968d.png",
+      "RelativePath": "images/00dc5135-cca6-4c37-a8a5-401ed9b6910f.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -318,6 +342,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
+<<<<<<< HEAD
       "OriginalItemSpec": "wwwroot\\coach\\8cb1e5f3-5398-401c-b36e-0a897bec968d.png"
     },
     {
@@ -395,6 +420,9 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\coach\\d2697923-950b-429d-8df9-149ba6c86397.jpg"
+=======
+      "OriginalItemSpec": "wwwroot\\images\\00dc5135-cca6-4c37-a8a5-401ed9b6910f.jpg"
+>>>>>>> ce251766acf7dc42aa3ab586da25834af267d3d5
     },
     {
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\031c4aaf-e5bc-4119-8a49-97500a911e0d.jpg",
