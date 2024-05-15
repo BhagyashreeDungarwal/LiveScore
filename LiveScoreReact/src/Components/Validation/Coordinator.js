@@ -97,34 +97,34 @@ export const UpCoach = yup.object({
     achievements: yup.string().required('Achievement is required'),
 });
 
-export const matchvalidate = ({
+export const MatchValidate = yup.object().shape({
     MatchType: yup.string().required('Match Type is required'),
-    NumberOfRound: yup.number().required('No. Of Round is required').positive('No. Of Round must be a positive number').integer('No. Of Round must be an integer').min(3, 'No. Of Round must be at least 3'),
-    MatchDate: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')
+    NumberOfRound: yup.number()
+        .required('No. Of Round is required')
+        .positive('No. Of Round must be a positive number')
+        .integer('No. Of Round must be an integer')
+        .min(3, 'No. Of Round must be at least 3'),
+    MatchDate: yup.date()
+        .required('Date is required')
+        .min(new Date(), 'Date must be in the future')
         .test('is-future', 'Date must be in the future', value => {
+            if (!value) return false;
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set today's date to start of day
+            today.setHours(0, 0, 0, 0); // Set today's date to the start of the day
             const selectedDate = new Date(value);
-            selectedDate.setHours(0, 0, 0, 0); // Set selected date to start of day
-            return selectedDate > today; // Check if selected date is greater than today
+            selectedDate.setHours(0, 0, 0, 0); // Set the selected date to the start of the day
+            return selectedDate > today; // Check if the selected date is greater than today
         }),
-    Matchtime: yup.date().required('Time is required').min(new Date(), 'Time must be in the future')
-        .test('is-future', 'Time must be in the future', value => {
+    Matchtime: yup.date()
+        .required('Time is required')
+        .test('is-future-time', 'Time must be in the future', value => {
+            if (!value) return false;
             const now = new Date(); // Get the current date and time
             const selectedTime = new Date(value); // Convert the input value to a Date object
-            const nowHours = now.getHours();
-            const nowMinutes = now.getMinutes();
-            const selectedHours = selectedTime.getHours();
-            const selectedMinutes = selectedTime.getMinutes();
-
-            // Calculate total minutes for comparison
-            const nowTotalMinutes = nowHours * 60 + nowMinutes;
-            const selectedTotalMinutes = selectedHours * 60 + selectedMinutes;
-
-            return selectedTotalMinutes > nowTotalMinutes; // Check if selected time is greater than current time
+            return selectedTime > now; // Check if the selected time is greater than the current time
         }),
     AthleteBlue: yup.string().required('Athlete Blue is required'),
     AthleteRed: yup.string().required('Athlete Red is required'),
     CategoryId: yup.string().required('Please Select Category'),
     TournamentId: yup.string().required('Please Select Tournament'),
-}) 
+});

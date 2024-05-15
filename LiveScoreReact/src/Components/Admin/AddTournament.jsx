@@ -1,11 +1,10 @@
-import { Close, DateRangeRounded, LocationOn, Person2Rounded, Timer } from '@mui/icons-material';
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Select, TextField, Typography, styled, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-import { toast } from 'react-toastify';
+import { Close, DateRangeRounded, LocationOn, Person2Rounded} from '@mui/icons-material';
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment,  TextField, Typography, styled, useTheme } from '@mui/material';
+import React, { useState } from 'react'
 import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import { TounamentPostApi, getCategoryApi, getTounamentApi } from '../../Redux/Action/AdminAction';
+import { useDispatch } from 'react-redux';
+import { TounamentPostApi,  getTounamentApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 
 
