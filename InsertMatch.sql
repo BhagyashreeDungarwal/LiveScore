@@ -1,6 +1,6 @@
-USE [LiveScores]
+USE [LiveScore]
 GO
-/****** Object:  StoredProcedure [dbo].[InsertMatch]    Script Date: 5/16/2024 10:07:02 AM ******/
+/****** Object:  StoredProcedure [dbo].[InsertMatchs]    Script Date: 5/16/2024 1:03:55 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,27 +10,44 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[InsertMatch]
+ALTER PROCEDURE [dbo].[InsertMatchs]
     @MatchStatus VARCHAR(50),
     @MatchType VARCHAR(50),
     @NumberOfRound INT,
     @MatchDate DATE,
-    @MatchTime TIME,
+    @Gender VARCHAR(50),
     @AthleteRed INT,
     @AthleteBlue INT,
     @CategoryId INT,
     @TournamentId INT
 AS
 BEGIN
-    DECLARE @MatchGroup INT;
+    DECLARE @MatchGroup INT, @AthleteRedGender VARCHAR(50), @AthleteBlueGender VARCHAR(50);
+
+    -- Check if both athletes have the same gender
+    SELECT @AthleteRedGender = Gender FROM Athletes WHERE Id = @AthleteRed;
+    SELECT @AthleteBlueGender = Gender FROM Athletes WHERE Id = @AthleteBlue;
+
+    IF @AthleteRedGender <> @AthleteBlueGender
+    BEGIN
+        RAISERROR('Athlete genders do not match.', 16, 1); -- Corrected RAISERROR spelling
+        RETURN; -- Exit the stored procedure if genders do not match
+    END
+
+	 -- Check if the gender matches the athletes' genders
+    IF @Gender <> @AthleteRedGender OR @Gender <> @AthleteBlueGender
+    BEGIN
+        RAISERROR('Gender does not match athlete genders.', 16, 1);
+        RETURN; -- Exit the stored procedure if gender does not match athlete genders
+    END
 
     -- Step 1: Determine MatchGroup
     SELECT @MatchGroup = ISNULL(MAX(MatchGroup), 0) + 1
     FROM Matchss;
 
     -- Step 2: Insert into Matchss table
-    INSERT INTO Matchss (MatchStatus, MatchType, NumberOfRound, MatchDate,  AthleteRed, AthleteBlue, CategoryId, TournamentId, MatchGroup)
-    VALUES (@MatchStatus, @MatchType, @NumberOfRound, @MatchDate,  @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId, @MatchGroup);
+    INSERT INTO Matchss (MatchStatus, MatchType, NumberOfRound, MatchDate, Gender, AthleteRed, AthleteBlue, CategoryId, TournamentId, MatchGroup)
+    VALUES (@MatchStatus, @MatchType, @NumberOfRound, @MatchDate,@Gender,  @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId, @MatchGroup);
 
     -- Step 3: Display Athlete information including gender based on Category
     SELECT A.AthleteName, A.Email, A.Contact, A.ImageUrl, A.DateOfBirth, A.Gender, A.Height, A.Weight, A.City, A.State

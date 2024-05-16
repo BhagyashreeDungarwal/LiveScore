@@ -144,6 +144,7 @@ namespace LiveScore.Data
                 entity.Property(m => m.AthleteBlue).IsRequired(false); 
                 entity.Property(m => m.NextMatchId); 
                 entity.Property(m => m.MatchGroup); 
+                entity.Property(m => m.Gender); 
                 entity.Property(m => m.Flag).IsRequired(false);
                 entity.Property(m => m.CategoryId).IsRequired(false); 
                 entity.Property(m => m.TournamentId).IsRequired();

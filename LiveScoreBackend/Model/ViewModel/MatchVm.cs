@@ -12,7 +12,7 @@ namespace LiveScore.Model.ViewModel
         public DateTime? MatchDate { get; set; }
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
-
+        public string? Gender { get; set; }
         public int? NextMatchId { get; set; }
         public int MatchGroup { get; set; }
         public int? Flag { get; set; }

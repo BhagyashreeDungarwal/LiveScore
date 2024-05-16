@@ -305,6 +305,9 @@ namespace LiveScore.Migrations
                     b.Property<int?>("Flag")
                         .HasColumnType("int");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("MatchDate")
                         .IsRequired()
                         .HasColumnType("datetime2");

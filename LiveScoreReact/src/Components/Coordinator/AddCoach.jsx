@@ -11,7 +11,7 @@ import { CoachValidate } from '../Validation/Coordinator';
 import { AlternateEmailRounded, EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { CoachPostApi } from '../../Redux/Action/CoordinatorAction';
+import { CoachPostApi, GetCoachApi } from '../../Redux/Action/CoordinatorAction';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -66,6 +66,7 @@ const AddCoach = () => {
                 formdata.append('ImageFile', values.image)
 
                 await dispatch(CoachPostApi(formdata))
+                dispatch(GetCoachApi())
                 if (data) {
                     toast.success(data.msg)
                 }
