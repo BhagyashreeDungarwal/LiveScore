@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240516044548_Minors")]
-    partial class Minors
+    [Migration("20240516052314_AddToDb")]
+    partial class AddToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -306,6 +306,9 @@ namespace LiveScore.Migrations
 
                     b.Property<int?>("Flag")
                         .HasColumnType("int");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("MatchDate")
                         .IsRequired()

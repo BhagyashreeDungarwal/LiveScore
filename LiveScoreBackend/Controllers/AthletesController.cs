@@ -88,7 +88,23 @@ namespace LiveScore.Controllers
 
             return athlete;
         }
-        
+
+        [HttpGet("GetAthleteByCatAndGen/{categoryId}/{gender}")]
+        public async Task<ActionResult<IEnumerable<Athlete>>> GetAthleteByCatAndGen(int categoryId, string gender)
+        {
+            // Fetch athletes by category and gender
+            var athletes = await _context.Athletes
+                .Where(a => a.CategoryId == categoryId && a.Gender == gender)
+                .ToListAsync();
+
+            if (athletes == null || athletes.Count == 0)
+            {
+                return NotFound(); // Return 404 if no athletes are found
+            }
+
+            return athletes; // Return the fetched athletes
+        }
+
         [HttpPut("UpdateAthlete/{id}")]
         public async Task<IActionResult> UpdateAthlete(int id,UpAthelete athleteDto)
         {

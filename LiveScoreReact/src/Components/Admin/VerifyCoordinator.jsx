@@ -74,10 +74,10 @@ const VerifyCoordinator = () => {
     { field: "gender", headerName: "Gender", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "age", headerName: "Age", width: 40, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "lastLogin", headerName: "LastLogin", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "city", headerName: "City", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
-      field: "status", headerName: "Status", width: 140, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+      field: "status", headerName: "Status", width: 130, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
         if (params.row.status === "Not Verified") {
           return <Chip icon={<Circle fontSize='small' color='error' />} label={params.row.status} color='error' variant='outlined' size='small' />
         }

@@ -103,13 +103,14 @@ namespace LiveScore.Controllers
             {
                 // Call the stored procedure
                 await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC InsertMatch @MatchStatus, @MatchType, @NumberOfRound, @MatchDate,  @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
+                    "EXEC InsertMatchs @MatchStatus, @MatchType, @NumberOfRound, @MatchDate,@Gender , @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
                     parameters: new[]
                     {
                         new SqlParameter("@MatchStatus", "Upcoming"),
                         new SqlParameter("@MatchType", matchs.MatchType),
                         new SqlParameter("@NumberOfRound", matchs.NumberOfRound),
                         new SqlParameter("@MatchDate", matchs.MatchDate),
+                        new SqlParameter("@Gender", matchs.Gender),
                         new SqlParameter("@AthleteRed", matchs.AthleteRed),
                         new SqlParameter("@AthleteBlue", matchs.AthleteBlue),
                         new SqlParameter("@CategoryId", matchs.CategoryId),

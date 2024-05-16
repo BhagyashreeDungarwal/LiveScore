@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LiveScore.Migrations
 {
-    public partial class AddTodb : Migration
+    public partial class AddToDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -170,15 +170,15 @@ namespace LiveScore.Migrations
                     MId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MatchStatus = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
-                    MatchType = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: false),
+                    MatchType = table.Column<string>(type: "nvarchar(101)", maxLength: 101, nullable: true),
                     NumberOfRound = table.Column<int>(type: "int", maxLength: 101, nullable: false),
                     MatchDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Matchtime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AthleteRed = table.Column<int>(type: "int", nullable: true),
                     AthleteBlue = table.Column<int>(type: "int", nullable: true),
                     NextMatchId = table.Column<int>(type: "int", nullable: true),
-                    Flag = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MatchGroup = table.Column<int>(type: "int", nullable: false),
+                    Flag = table.Column<int>(type: "int", nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     TournamentId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -194,6 +194,12 @@ namespace LiveScore.Migrations
                     table.ForeignKey(
                         name: "FK_Matchss_Athletes_AthleteRed",
                         column: x => x.AthleteRed,
+                        principalTable: "Athletes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matchss_Athletes_Flag",
+                        column: x => x.Flag,
                         principalTable: "Athletes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -307,6 +313,11 @@ namespace LiveScore.Migrations
                 name: "IX_Matchss_CategoryId",
                 table: "Matchss",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matchss_Flag",
+                table: "Matchss",
+                column: "Flag");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Matchss_TournamentId",
