@@ -320,9 +320,6 @@ namespace LiveScore.Migrations
                         .HasMaxLength(101)
                         .HasColumnType("nvarchar(101)");
 
-                    b.Property<DateTime>("Matchtime")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("NextMatchId")
                         .HasColumnType("int");
 

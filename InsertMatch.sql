@@ -1,14 +1,6 @@
--- ================================================
--- Template generated from Template Explorer using:
--- Create Procedure (New Menu).SQL
---
--- Use the Specify Values for Template Parameters 
--- command (Ctrl-Shift-M) to fill in the parameter 
--- values below.
---
--- This block of comments will not be included in
--- the definition of the procedure.
--- ================================================
+USE [LiveScores]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMatch]    Script Date: 5/16/2024 10:07:02 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -18,7 +10,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE InsertMatch
+ALTER PROCEDURE [dbo].[InsertMatch]
     @MatchStatus VARCHAR(50),
     @MatchType VARCHAR(50),
     @NumberOfRound INT,
@@ -37,8 +29,8 @@ BEGIN
     FROM Matchss;
 
     -- Step 2: Insert into Matchss table
-    INSERT INTO Matchss (MatchStatus, MatchType, NumberOfRound, MatchDate, MatchTime, AthleteRed, AthleteBlue, CategoryId, TournamentId, MatchGroup)
-    VALUES (@MatchStatus, @MatchType, @NumberOfRound, @MatchDate, @MatchTime, @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId, @MatchGroup);
+    INSERT INTO Matchss (MatchStatus, MatchType, NumberOfRound, MatchDate,  AthleteRed, AthleteBlue, CategoryId, TournamentId, MatchGroup)
+    VALUES (@MatchStatus, @MatchType, @NumberOfRound, @MatchDate,  @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId, @MatchGroup);
 
     -- Step 3: Display Athlete information including gender based on Category
     SELECT A.AthleteName, A.Email, A.Contact, A.ImageUrl, A.DateOfBirth, A.Gender, A.Height, A.Weight, A.City, A.State
@@ -56,4 +48,3 @@ BEGIN
     SET MatchGroup = MatchGroup + 1;
 
 END;
-GO

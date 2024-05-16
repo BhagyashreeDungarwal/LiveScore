@@ -39,7 +39,6 @@ namespace LiveScore.Controllers
                     matchType = a.MatchType,
                     numberOfRound = a.NumberOfRound,
                     matchDate = a.MatchDate,
-                    matchTime = a.Matchtime,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
                     nextMatchId =  a.NextMatchId,
@@ -65,7 +64,6 @@ namespace LiveScore.Controllers
                                                   matchType = m.MatchType,
                                                   numberOfRound = m.NumberOfRound,
                                                   matchDate = m.MatchDate,
-                                                  matchtime = m.Matchtime,
                                                   athleteRed = m.AthleteRedObj.AthleteName,
                                                   athleteBlue = m.AthleteBlueObj.AthleteName,
                                                   nextMatchId = m.NextMatchId,
@@ -105,14 +103,13 @@ namespace LiveScore.Controllers
             {
                 // Call the stored procedure
                 await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC InsertMatch @MatchStatus, @MatchType, @NumberOfRound, @MatchDate, @MatchTime, @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
+                    "EXEC InsertMatch @MatchStatus, @MatchType, @NumberOfRound, @MatchDate,  @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
                     parameters: new[]
                     {
                         new SqlParameter("@MatchStatus", "Upcoming"),
                         new SqlParameter("@MatchType", matchs.MatchType),
                         new SqlParameter("@NumberOfRound", matchs.NumberOfRound),
                         new SqlParameter("@MatchDate", matchs.MatchDate),
-                        new SqlParameter("@MatchTime", matchs.Matchtime),
                         new SqlParameter("@AthleteRed", matchs.AthleteRed),
                         new SqlParameter("@AthleteBlue", matchs.AthleteBlue),
                         new SqlParameter("@CategoryId", matchs.CategoryId),
@@ -150,8 +147,7 @@ namespace LiveScore.Controllers
             match.NumberOfRound = matchDTO.NumberOfRound;
             match.AthleteRed = matchDTO.AthleteRed;
             match.AthleteBlue = matchDTO.AthleteBlue;
-            match.CategoryId = matchDTO.CategoryId;
-            match.TournamentId = matchDTO.TournamentId;
+            match.MatchDate = matchDTO.MatchDate;
 
             try
             {
@@ -204,7 +200,6 @@ namespace LiveScore.Controllers
                     TournamentId = match.TournamentId,
                     MatchStatus = match.MatchStatus,
                     MatchDate = match.MatchDate,
-                    Matchtime = match.Matchtime
                 };
 
 
