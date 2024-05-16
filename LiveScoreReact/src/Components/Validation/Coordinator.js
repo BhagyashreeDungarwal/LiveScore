@@ -115,14 +115,6 @@ export const MatchValidate = yup.object().shape({
             selectedDate.setHours(0, 0, 0, 0); // Set the selected date to the start of the day
             return selectedDate > today; // Check if the selected date is greater than today
         }),
-    Matchtime: yup.date()
-        .required('Time is required')
-        .test('is-future-time', 'Time must be in the future', value => {
-            if (!value) return false;
-            const now = new Date(); // Get the current date and time
-            const selectedTime = new Date(value); // Convert the input value to a Date object
-            return selectedTime > now; // Check if the selected time is greater than the current time
-        }),
     AthleteBlue: yup.string().required('Athlete Blue is required'),
     AthleteRed: yup.string().required('Athlete Red is required'),
     CategoryId: yup.string().required('Please Select Category'),

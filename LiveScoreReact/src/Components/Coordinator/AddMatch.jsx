@@ -1,5 +1,5 @@
 import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEmotionsRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, Timer, TimerRounded } from "@mui/icons-material";
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, Slide, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Select, Slide, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -153,7 +153,17 @@ ColorlibStepIcon.propTypes = {
 
 const steps = ['Select Data', 'Select Athlete', 'Scheduling'];
 
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '50%',
+  bgcolor: 'background.paper',
+  border: '1px solid #000',
+  boxShadow: 14,
+  p: 4,
+};
 
 
 const AddMatch = () => {
@@ -187,14 +197,18 @@ const AddMatch = () => {
       setActiveStep((prevStep) => prevStep + 1);
     }
   };
-
-
+  const ToSelectAthlete = (id) => {
+    
+    dispatch(GetAthleteByCatApi(id));
+    setActiveStep((prevStep) => prevStep + 1);
+    console.log(getAthleteByCat)
+  }
+  
 
   const initial = {
     MatchType: "",
     NumberOfRound: "",
     MatchDate: "",
-    Matchtime: "",
     AthleteBlue: "",
     AthleteRed: "",
     CategoryId: "",
@@ -212,12 +226,12 @@ const AddMatch = () => {
   })
 
   // for get athlete by category
-  const handleCategoryChange = (event) => {
-    const categoryId = event.target.value;
-    setFieldValue("CategoryId", categoryId);  // Update Formik value
-    dispatch(GetAthleteByCatApi(categoryId));  // Dispatch action to get athletes
-    event.preventDefault();
-  };
+  // const handleCategoryChange = (id) => {
+
+  //   // setFieldValue("CategoryId", categoryId);  // Update Formik value
+  //   dispatch(GetAthleteByCatApi(id));  // Dispatch action to get athletes
+
+  // };
 
 
   return (
@@ -226,28 +240,29 @@ const AddMatch = () => {
         Add Match
       </Button>
 
-      <Dialog
+      <Modal
         open={open}
-        TransitionComponent={Transition}
-        keepMounted
         onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-        fullWidth
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      // fullWidth
       >
-        <DialogTitle>Add Match</DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <Close />
-        </IconButton>
-        <DialogContent>
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Add Match
+          </Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
           <Stack sx={{ width: '100%' }} spacing={4}>
             <Stepper alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
               {steps.map((label) => (
@@ -298,7 +313,7 @@ const AddMatch = () => {
                           color="secondary"
                           variant="filled"
                           value={values.CategoryId}
-                          onChange={handleCategoryChange}
+                          onChange={handleChange}
                           onBlur={handleBlur}
                           input={<OutlinedInput
                             startAdornment={<InputAdornment position="start">
@@ -307,13 +322,20 @@ const AddMatch = () => {
                           />}
                         >
                           {categorydata?.map((data) => (
-                            <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
+                            <MenuItem key={data.id} value={data.id} >{data.categoryName}</MenuItem>
                           ))
                           }
                         </Select>
                       </FormControl>
                       {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
+                      <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
+                        <Button disabled={activeStep === 0} onClick={handleBack}>
+                          Back
+                        </Button>
+                          <Button onClick={() => ToSelectAthlete(values.CategoryId)}>Next</Button>
+                      </Grid>
                     </Grid>
+
                   </Grid>
                 )}
                 {activeStep === 1 && (
@@ -363,13 +385,23 @@ const AddMatch = () => {
                               </InputAdornment>}
                             />}
                           >
-                             <MenuItem>No Athlete Added</MenuItem>
+                            <MenuItem>No Athlete Added</MenuItem>
                             {getAthleteByCat?.map((data) => (
                               <MenuItem key={data.id} value={data.id}>{data.athleteName}</MenuItem>
                             ))}
                           </Select>
                         </FormControl>
                         {errors.AthleteBlue && touched.AthleteBlue ? (<Typography variant="subtitle1" color="error">{errors.AthleteBlue}</Typography>) : null}
+                        <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
+                          <Button disabled={activeStep === 0} onClick={handleBack}>
+                            Back
+                          </Button>
+                          {activeStep === steps.length - 1 ? (
+                            <Button onClick={handleSubmit}>Submit</Button>
+                          ) : (
+                            <Button onClick={handleNext}>Next</Button>
+                          )}
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -397,27 +429,6 @@ const AddMatch = () => {
                           }}
                         />
                         {errors.MatchDate && touched.MatchDate ? (<Typography variant="subtitle1" color="error">{errors.MatchDate}</Typography>) : null}
-                      </Grid>
-                      <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <TextField
-                          id="Matchtime"
-                          name="Matchtime"
-                          label="Match Time"
-                          type="time"
-                          fullWidth
-                          variant="standard"
-                          value={values.Matchtime}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                <TimerRounded />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        {errors.Matchtime && touched.Matchtime ? (<Typography variant="subtitle1" color="error">{errors.Matchtime}</Typography>) : null}
                       </Grid>
                       <Grid item lg={12} md={12} sm={12} xs={12}>
                         <TextField
@@ -459,27 +470,26 @@ const AddMatch = () => {
                           }}
                         />
                         {errors.NumberOfRound && touched.NumberOfRound ? (<Typography variant="subtitle1" color="error">{errors.NumberOfRound}</Typography>) : null}
+                        <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
+                          <Button disabled={activeStep === 0} onClick={handleBack}>
+                            Back
+                          </Button>
+                          {activeStep === steps.length - 1 ? (
+                            <Button onClick={handleSubmit}>Submit</Button>
+                          ) : (
+                            <Button onClick={handleNext}>Next</Button>
+                          )}
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 )}
 
               </Grid>
-              <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
-                <Button disabled={activeStep === 0} onClick={handleBack}>
-                  Back
-                </Button>
-                {activeStep === steps.length - 1 ? (
-                  <Button onClick={handleSubmit}>Submit</Button>
-                ) : (
-                  <Button onClick={handleNext}>Next</Button>
-                )}
-              </Grid>
             </Grid>
           </form>
-
-        </DialogContent>
-      </Dialog>
+        </Box>
+      </Modal>
     </React.Fragment>
   )
 }
