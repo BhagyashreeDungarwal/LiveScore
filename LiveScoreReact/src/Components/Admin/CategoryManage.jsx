@@ -61,7 +61,10 @@ const CategoryManage = () => {
   const columns = useMemo(categorydata => [
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "categoryTime", headerName: "Time(Minutes)", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "minWeight", headerName: "Minimum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center" , valueFormatter: (params) => params.value ? `${params.value} Kg` :""  },
+    { field: "maxWeight", headerName: "Maximum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center" , valueFormatter: (params) => params.value ? `${params.value} Kg` :"" },
+    { field: "minAge", headerName: "Minimum Age", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "maxAge", headerName: "Maximum Age", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     {
       headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
       renderCell: params => {

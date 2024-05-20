@@ -2,7 +2,10 @@ import * as yup from "yup";
 
 export const category = yup.object({
     categoryName: yup.string().required('Category Name is Required'),
-    categoryTime: yup.number().required('Category Time is Required'),
+    minAge: yup.number().required('Minimum Age is Required'),
+    maxAge: yup.number().required('Maximum Age is Required'),
+    minWeight: yup.number().required('Minimum Weight is Required'),
+    maxWeight: yup.number().required('Maximum Weight is Required'),
 });
 
 export const tournament = yup.object({

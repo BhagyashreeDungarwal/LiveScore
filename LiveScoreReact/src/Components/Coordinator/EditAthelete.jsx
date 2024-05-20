@@ -25,7 +25,6 @@ const EditAthelete = () => {
     const theme = useTheme()
     const { data, error, atheleteByIddata } = useSelector((state) => state.coordinator);
     const { coachdata } = useSelector((state => state.coordinator))
-    const { categorydata } = useSelector((state => state.admin))
     const dispatch = useDispatch()
     const { id } = useParams()
     const navigate = useNavigate()
@@ -39,7 +38,6 @@ const EditAthelete = () => {
         dateOfBirth: "",
         city: "",
         state: "",
-        categoryName: "",
         coachName: "",
     }
 
@@ -326,26 +324,16 @@ const EditAthelete = () => {
                                     </FormControl>
                                     {errors.coachName && touched.coachName ? (<Typography variant="subtitle1" color="error">{errors.coachName}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12} xs={12}    >
-                                    <FormControl variant='filled' fullWidth>
-                                        <InputLabel color='secondary'>Category</InputLabel>
-                                        <Select
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
+                                        <TextField
                                             color='secondary'
                                             id="categoryName"
                                             name="categoryName"
                                             label="category"
-                                            value={values.categoryName}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        >
-                                            {categorydata?.map((data) => (
-                                                <MenuItem key={data.categoryName} value={data.categoryName}>{data.categoryName}</MenuItem>
-                                            ))
-                                            }
-                                        </Select>
-                                    </FormControl>
-                                    {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
-                                </Grid>
+                                            readOnly
+                                            value={atheleteByIddata? atheleteByIddata.categoryName :""}
+                                      />
+                                     </Grid>
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
@@ -354,7 +342,6 @@ const EditAthelete = () => {
                             </Grid>
                         </form>
                     </DialogContent>
-
                 </BootstrapDialog>
             </React.Fragment>
         </div>

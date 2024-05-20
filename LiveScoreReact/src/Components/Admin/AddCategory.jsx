@@ -1,9 +1,9 @@
-import { Close, Person2Rounded, Timer } from '@mui/icons-material';
+import { ChildCare, Close, MonitorWeight, Person2Rounded } from '@mui/icons-material';
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, TextField, Typography, styled, useTheme } from '@mui/material';
 import React from 'react'
 import { category } from '../Validation/Admin';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { CategoryPostApi, getCategoryApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 
@@ -31,7 +31,10 @@ const AddCategory = () => {
 
     const initial = {
         categoryName: "",
-        categoryTime: "",
+        minAge: "",
+        maxAge: "",
+        minWeight: "",
+        maxWeight: "",
     }
 
     const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
@@ -100,14 +103,14 @@ const AddCategory = () => {
                                     />
                                     {errors.categoryName && touched.categoryName ? (<Typography variant="subtitle1" color="error">{errors.categoryName}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={12} sm={12}>
+                                <Grid item xl={6} md={6} sm={12}>
                                     <TextField
                                         fullWidth
-                                        id="time"
-                                        name="categoryTime"
-                                        label="Time"
+                                        id="minAge"
+                                        name="minAge"
+                                        label="Mimimum Age"
                                         type='number'
-                                        value={values.categoryTime}
+                                        value={values.minAge}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         variant='standard'
@@ -115,12 +118,78 @@ const AddCategory = () => {
                                             startAdornment: (
                                                 <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
 
-                                                    <Timer />
+                                                    <ChildCare />
                                                 </InputAdornment>
                                             ),
                                         }}
                                     />
-                                    {errors.categoryTime && touched.categoryTime ? (<Typography variant="subtitle1" color="error">{errors.categoryTime}</Typography>) : null}
+                                    {errors.minAge && touched.minAge ? (<Typography variant="subtitle1" color="error">{errors.minAge}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="maxAge"
+                                        name="maxAge"
+                                        label="Maximum Age"
+                                        type='number'
+                                        value={values.maxAge}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        variant='standard'
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                    <ChildCare />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    {errors.maxAge && touched.maxAge ? (<Typography variant="subtitle1" color="error">{errors.maxAge}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="minWeight"
+                                        name="minWeight"
+                                        label="Mimimum Weight"
+                                        type='number'
+                                        value={values.minWeight}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        variant='standard'
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                    <MonitorWeight />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    {errors.minWeight && touched.minWeight ? (<Typography variant="subtitle1" color="error">{errors.minWeight}</Typography>) : null}
+                                </Grid>
+                                <Grid item xl={6} md={6} sm={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="time"
+                                        name="maxWeight"
+                                        label="Maximum Weght"
+                                        type='number'
+                                        value={values.maxWeight}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        variant='standard'
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+
+                                                    <MonitorWeight />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    {errors.maxWeight && touched.maxWeight ? (<Typography variant="subtitle1" color="error">{errors.maxWeight}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>

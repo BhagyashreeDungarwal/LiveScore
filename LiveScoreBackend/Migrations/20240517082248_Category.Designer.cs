@@ -4,6 +4,7 @@ using LiveScore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LiveScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240517082248_Category")]
+    partial class Category
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,6 +273,11 @@ namespace LiveScore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("CategoryAge")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasMaxLength(101)
@@ -280,26 +287,6 @@ namespace LiveScore.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<int?>("MaxAge")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MaxWeight")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MinAge")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MinWeight")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

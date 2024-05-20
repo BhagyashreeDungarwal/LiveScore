@@ -120,7 +120,7 @@ namespace LiveScore.Controllers
             }
 
             var coach = await _context.Coaches.FirstOrDefaultAsync(c => c.CoachName == athleteDto.CoachName);
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryName == athleteDto.CategoryName);
+            //var category = await _context.Categories.FirstOrDefaultAsync(c => c.CategoryName == athleteDto.CategoryName);
 
             // Update athlete properties
             athlete.AthleteName = athleteDto.AthleteName;
@@ -132,25 +132,61 @@ namespace LiveScore.Controllers
             athlete.Weight = athleteDto.Weight;
             athlete.City = athleteDto.City;
             athlete.State = athleteDto.State;
-            athlete.CategoryId = category.Id;
             athlete.CoachId = coach.CoachId;
 
-           // string messageBody = "<!DOCTYPE html>" +
-           //                       "<html>" +
-           //                       "<head>" +
-           //                       "<title>Welcome to Live Score!</title>" +
-           //                       "</head>" +
-           //"<body>" +
-           //                      $" <h2>Respected  {athlete.AthleteName},</h2>" +
-           //                       "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
-           //                       "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
-           //                       "<p>Welcome aboard!</p>" +
-           //                       "<p>Best regards,<br />" +
-           //                       " Live Score</p>" +
-           //                       "</body>" +
-           //                       "</html>";
+            // Calculate age based on DateOfBirth
+            var age = DateTime.Now.Year - athlete.DateOfBirth.Year;
+            if (DateTime.Now.Month < athlete.DateOfBirth.Month ||
+                (DateTime.Now.Month == athlete.DateOfBirth.Month && DateTime.Now.Day < athlete.DateOfBirth.Day))
+            {
+                age--;
+            }
 
-           // _emailSender.SendEmail(athlete.Email, "SucessFully Registered", messageBody);
+            // Validate age
+            var ageCategory = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age);
+            if (ageCategory == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete based on age" });
+            }
+
+            // Validate weight
+            var weightCategory = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinWeight <= athlete.Weight && c.MaxWeight >= athlete.Weight);
+            if (weightCategory == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete based on weight" });
+            }
+
+            // Find the appropriate category based on age and weight
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age &&
+                                          c.MinWeight <= athlete.Weight && c.MaxWeight >= athlete.Weight 
+                                          //&& c.Gender == athlete.Gender
+                                          );
+            if (category == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete" });
+            }
+            athlete.CategoryId = category.Id;
+
+
+            // string messageBody = "<!DOCTYPE html>" +
+            //                       "<html>" +
+            //                       "<head>" +
+            //                       "<title>Welcome to Live Score!</title>" +
+            //                       "</head>" +
+            //"<body>" +
+            //                      $" <h2>Respected  {athlete.AthleteName},</h2>" +
+            //                       "<p>Congratulations on joining Live Score! You're now registered as a coordinator. Get ready to manage live score updates and ensure seamless sports experiences for our users.</p>" +
+            //                       "<p>Explore our platform tools to optimize your coordination tasks. For assistance, our support team is here to help.</p>" +
+            //                       "<p>Welcome aboard!</p>" +
+            //                       "<p>Best regards,<br />" +
+            //                       " Live Score</p>" +
+            //                       "</body>" +
+            //                       "</html>";
+
+            // _emailSender.SendEmail(athlete.Email, "SucessFully Registered", messageBody);
 
             try
             {
@@ -235,6 +271,24 @@ namespace LiveScore.Controllers
                 return BadRequest(ModelState);
             }
             string imageUrl = await _imageUploader.UploadImg(athleteDto.ImageFile, "images");
+            // Calculate age based on DateOfBirth
+            var age = DateTime.Now.Year - athleteDto.DateOfBirth.Year;
+            if (DateTime.Now.Month < athleteDto.DateOfBirth.Month ||
+                (DateTime.Now.Month == athleteDto.DateOfBirth.Month && DateTime.Now.Day < athleteDto.DateOfBirth.Day))
+            {
+                age--;
+            }
+
+            // Find the appropriate category based on age and weight
+            var category = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age &&
+                                          c.MinWeight <= athleteDto.Weight && c.MaxWeight >= athleteDto.Weight 
+                                          //&& c.Gender == athleteDto.Gender
+                                          );
+            if (category == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete" });
+            }
 
             var athlete = new Athlete
             {
@@ -247,7 +301,7 @@ namespace LiveScore.Controllers
                 Weight = athleteDto.Weight,
                 City = athleteDto.City,
                 State = athleteDto.State,
-                CategoryId = athleteDto.CategoryId,
+                CategoryId = category.Id,
                 CoachId = athleteDto.CoachId,
                 Coordinater = athleteDto.CoordinatorId,
                 ImageUrl = imageUrl

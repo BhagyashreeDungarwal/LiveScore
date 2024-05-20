@@ -42,7 +42,7 @@ const AddAthelete = () => {
         dateOfBirth: "",
         city: "",
         state: "",
-        categoryId: "",
+        // categoryId: "",
         coachId: "",
         image: null,
     }
@@ -63,7 +63,7 @@ const AddAthelete = () => {
                 formdata.append('DateOfBirth', values.dateOfBirth)
                 formdata.append('City', values.city)
                 formdata.append('State', values.state)
-                formdata.append('CategoryId', values.categoryId)
+                // formdata.append('CategoryId', values.categoryId)
                 formdata.append('CoachId', values.coachId)
                 formdata.append('CoordinatorId', cid)
                 formdata.append('ImageFile', values.image)
@@ -355,7 +355,7 @@ const AddAthelete = () => {
                                     </FormControl>
                                     {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={6} md={6} sm={12} xs={12}>
+                                {/* <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Category</InputLabel>
                                         <Select
@@ -374,7 +374,7 @@ const AddAthelete = () => {
                                         </Select>
                                     </FormControl>
                                     {errors.categoryId && touched.categoryId ? (<Typography variant="subtitle1" color="error">{errors.categoryId}</Typography>) : null}
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>

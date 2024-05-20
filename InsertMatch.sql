@@ -1,6 +1,6 @@
 USE [LiveScore]
 GO
-/****** Object:  StoredProcedure [dbo].[InsertMatchs]    Script Date: 5/16/2024 1:03:55 PM ******/
+/****** Object:  StoredProcedure [dbo].[InsertMatchs]    Script Date: 5/20/2024 12:24:07 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

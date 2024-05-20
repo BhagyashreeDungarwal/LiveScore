@@ -42,6 +42,7 @@ namespace LiveScore.Controllers
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
                     nextMatchId =  a.NextMatchId,
+                    gender = a.Gender,
                     flag = a.Flag,                   
                     category = a.Category.CategoryName,
                     tournament = a.Tournament.TournamentName,
@@ -94,10 +95,10 @@ namespace LiveScore.Controllers
                 .Where(m => m.MatchStatus != "Completed") // Exclude completed matches
                 .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
 
-            //if (existingMatch != null)
-            //{
-            //    return BadRequest(new { msg = "One of the athletes is already participating in another match." });
-            //}
+            if (existingMatch != null)
+            {
+                return BadRequest(new { msg = "One of the athletes is already participating in another match." });
+            }
 
             try
             {

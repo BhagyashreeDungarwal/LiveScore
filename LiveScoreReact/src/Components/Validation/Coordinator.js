@@ -20,7 +20,7 @@ export const AthleteValidate = yup.object({
             );
         }
     ),
-    categoryId: yup.string().required('Category is required'),
+    // categoryId: yup.string().required('Category is required'),
     coachId: yup.string().required('Coach is required'),
 
 });
@@ -37,7 +37,7 @@ export const upAthelete = yup.object({
     city: yup.string().required('City is required'),
     state: yup.string().required('State is required'),
     coachName: yup.string().required("Coach Name is Required"),
-    categoryName: yup.string().required("Category Name is Required")
+    // categoryName: yup.string().required("Category Name is Required")
 
 })
 

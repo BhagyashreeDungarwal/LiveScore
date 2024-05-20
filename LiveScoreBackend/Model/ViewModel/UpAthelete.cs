@@ -23,7 +23,7 @@ namespace LiveScore.Model.ViewModel
 
         public string State { get; set; }
 
-        public string CategoryName { get; set; }
+        //public string CategoryName { get; set; }
 
         public string CoachName { get; set; }
 
