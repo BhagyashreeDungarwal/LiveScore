@@ -279,6 +279,22 @@ namespace LiveScore.Controllers
                 age--;
             }
 
+            // Validate age
+            var ageCategory = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age);
+            if (ageCategory == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete based on age" });
+            }
+
+            // Validate weight
+            var weightCategory = await _context.Categories
+                .FirstOrDefaultAsync(c => c.MinWeight <= athleteDto.Weight && c.MaxWeight >= athleteDto.Weight);
+            if (weightCategory == null)
+            {
+                return BadRequest(new { msg = "No suitable category found for the athlete based on weight" });
+            }
+
             // Find the appropriate category based on age and weight
             var category = await _context.Categories
                 .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age &&
@@ -327,7 +343,7 @@ namespace LiveScore.Controllers
 
             //_emailSender.SendEmail(athlete.Email, "SuccessFully Registered", messageBody);
 
-            return Ok("Athlete created successfully.");
+            return Ok(new { msg = "Athlete created successfully." });
 
         }
         

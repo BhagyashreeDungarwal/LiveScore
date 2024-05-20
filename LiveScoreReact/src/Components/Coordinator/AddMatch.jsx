@@ -15,7 +15,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { AddMatchApi, GetAthleteByCatApi } from "../../Redux/Action/CoordinatorAction";
+import { AddMatchApi, GetAthleteByCatApi, GetMatchApi } from "../../Redux/Action/CoordinatorAction";
 import { useState } from "react";
 import { GetCategory, GetTournament } from "../Apis/Admin";
 import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
@@ -249,6 +249,7 @@ const AddMatch = () => {
     onSubmit: (values) => {
       console.log(values)
       dispatch(AddMatchApi(values))
+      dispatch(GetMatchApi())
       // alert('Form submitted successfully!');
       handleClose();
     }

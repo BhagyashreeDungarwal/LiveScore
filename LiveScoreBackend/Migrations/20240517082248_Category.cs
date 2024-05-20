@@ -28,13 +28,6 @@ namespace LiveScore.Migrations
                 nullable: false,
                 defaultValue: "");
 
-            migrationBuilder.AddColumn<string>(
-                name: "WeightUpTo",
-                table: "Categories",
-                type: "nvarchar(50)",
-                maxLength: 50,
-                nullable: false,
-                defaultValue: "");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -45,10 +38,6 @@ namespace LiveScore.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Gender",
-                table: "Categories");
-
-            migrationBuilder.DropColumn(
-                name: "WeightUpTo",
                 table: "Categories");
 
             migrationBuilder.AddColumn<int>(

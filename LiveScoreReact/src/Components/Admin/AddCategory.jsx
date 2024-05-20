@@ -108,7 +108,7 @@ const AddCategory = () => {
                                         fullWidth
                                         id="minAge"
                                         name="minAge"
-                                        label="Mimimum Age"
+                                        label="Minimum Age"
                                         type='number'
                                         value={values.minAge}
                                         onBlur={handleBlur}
@@ -152,7 +152,7 @@ const AddCategory = () => {
                                         fullWidth
                                         id="minWeight"
                                         name="minWeight"
-                                        label="Mimimum Weight"
+                                        label="Minimum Weight"
                                         type='number'
                                         value={values.minWeight}
                                         onBlur={handleBlur}
@@ -174,7 +174,7 @@ const AddCategory = () => {
                                         fullWidth
                                         id="time"
                                         name="maxWeight"
-                                        label="Maximum Weght"
+                                        label="Maximum Weight"
                                         type='number'
                                         value={values.maxWeight}
                                         onBlur={handleBlur}
