@@ -26,6 +26,9 @@ import {
     GetAtheleteByCategoryStart,
     GetAtheleteByCategorySuccess,
     GetAtheleteByCategoryFail,
+    AddMatchStart,
+    AddMatchSuccess,
+    AddMatchFail,
 } from "../Reducer/CoordinatorReducer"
 
 const url = "http://localhost:5032/api"
@@ -331,5 +334,20 @@ export const GetAthleteByCatApi = (categoryId) => async (dispatch) => {
         dispatch(GetAtheleteByCategorySuccess(data))
     } catch (error) {
         dispatch(GetAtheleteByCategoryFail(error.response.data))
+    }
+}
+
+export const AddMatchApi = (values) => async (dispatch) => {
+    try {
+        dispatch(AddMatchStart())
+
+        const { data } = await axios.post(`${url}/Matchs/PostMatch`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        dispatch(AddMatchSuccess(data))
+    } catch (error) {
+        dispatch(AddMatchFail(error.response.data))
     }
 }

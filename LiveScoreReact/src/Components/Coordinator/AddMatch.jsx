@@ -1,7 +1,7 @@
 import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEmotionsRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, Timer, TimerRounded } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Select, Slide, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select, Slide, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MatchValidate } from "../Validation/Coordinator";
 import PropTypes from 'prop-types';
@@ -15,7 +15,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { GetAthleteByCatApi } from "../../Redux/Action/CoordinatorAction";
+import { AddMatchApi, GetAthleteByCatApi } from "../../Redux/Action/CoordinatorAction";
+import { useState } from "react";
+import { GetCategory, GetTournament } from "../Apis/Admin";
+import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
 
 // for Slider
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -168,8 +171,33 @@ const style = {
 
 const AddMatch = () => {
   const theme = useTheme()
-  const { categorydata, tounamentdata, getAthleteByCat } = useSelector((state => state.admin))
   const dispatch = useDispatch()
+  const [category, setCategory] = useState()
+  const [tournament, setTournament] = useState()
+  const [athlete, setAthlete] = useState()
+
+  useEffect(() => {
+    getCategory()
+    getTournament()
+  }, [])
+
+  const getCategory = async () => {
+    const { data } = await GetCategory()
+    data && setCategory(data)
+  }
+
+  const getTournament = async () => {
+    const { data } = await GetTournament()
+    data && setTournament(data)
+  }
+
+
+  const getAthleteByCatAndGender = async (id, gender) => {
+    const { data } = await GetAthleteByCategoryAndGender(id, gender)
+    data && setAthlete(data)
+  }
+
+
   // const { active, completed, className } = props;
 
   //   for dialog box start
@@ -197,13 +225,12 @@ const AddMatch = () => {
       setActiveStep((prevStep) => prevStep + 1);
     }
   };
-  const ToSelectAthlete = (id) => {
-    
-    dispatch(GetAthleteByCatApi(id));
+  const ToSelectAthlete = (id, gender) => {
+    getAthleteByCatAndGender(id, gender)
     setActiveStep((prevStep) => prevStep + 1);
-    console.log(getAthleteByCat)
+    // console.log(getAthleteByCat)
   }
-  
+
 
   const initial = {
     MatchType: "",
@@ -213,25 +240,21 @@ const AddMatch = () => {
     AthleteRed: "",
     CategoryId: "",
     TournamentId: "",
+    Gender: ""
   }
 
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: initial,
     validationSchema: MatchValidate,
     onSubmit: (values) => {
       console.log(values)
-      alert('Form submitted successfully!');
+      dispatch(AddMatchApi(values))
+      // alert('Form submitted successfully!');
       handleClose();
     }
   })
 
-  // for get athlete by category
-  // const handleCategoryChange = (id) => {
 
-  //   // setFieldValue("CategoryId", categoryId);  // Update Formik value
-  //   dispatch(GetAthleteByCatApi(id));  // Dispatch action to get athletes
-
-  // };
 
 
   return (
@@ -245,7 +268,6 @@ const AddMatch = () => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-      // fullWidth
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -295,7 +317,7 @@ const AddMatch = () => {
                             </InputAdornment>}
                           />}
                         >
-                          {tounamentdata?.map((data) => (
+                          {tournament?.map((data) => (
                             <MenuItem key={data.tId} value={data.tId}>{data.tournamentName}</MenuItem>
                           ))
                           }
@@ -321,21 +343,43 @@ const AddMatch = () => {
                             </InputAdornment>}
                           />}
                         >
-                          {categorydata?.map((data) => (
+                          {category?.map((data) => (
                             <MenuItem key={data.id} value={data.id} >{data.categoryName}</MenuItem>
                           ))
                           }
                         </Select>
                       </FormControl>
                       {errors.CategoryId && touched.CategoryId ? (<Typography variant="subtitle1" color="error">{errors.CategoryId}</Typography>) : null}
+
+                    </Grid>
+                    <Grid item xl={12} md={12} sm={12} xs={12}>
+                      <FormLabel component="legend">Gender</FormLabel>
+                      <RadioGroup
+                        row
+                        aria-label="Gender"
+                        id="Gender"
+                        name="Gender"
+                        size='small'
+                        value={values.Gender}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      >
+                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                        <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                      </RadioGroup>
+                      {errors.Gender && touched.Gender ? (<Typography variant="subtitle1" color="error">{errors.Gender}</Typography>) : null}
                       <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
                         <Button disabled={activeStep === 0} onClick={handleBack}>
                           Back
                         </Button>
-                          <Button onClick={() => ToSelectAthlete(values.CategoryId)}>Next</Button>
+                        <Button onClick={(e) => {
+                          e.stopPropagation()
+                          e.preventDefault()
+                          ToSelectAthlete(values.CategoryId, values.Gender)
+                        }}>Next</Button>
                       </Grid>
                     </Grid>
-
                   </Grid>
                 )}
                 {activeStep === 1 && (
@@ -359,10 +403,15 @@ const AddMatch = () => {
                               </InputAdornment>}
                             />}
                           >
-                            {getAthleteByCat?.map((data) => (
-                              <MenuItem key={data.id} value={data.id}>{data.athleteName}</MenuItem>
-                            ))
-                            }
+                            {athlete && athlete.length > 0 ? (
+                              athlete.map((data) => (
+                                <MenuItem key={data.id} value={data.id}>
+                                  {data.athleteName}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>No athletes added</MenuItem>
+                            )}
                           </Select>
                         </FormControl>
                         {errors.AthleteRed && touched.AthleteRed ? (<Typography variant="subtitle1" color="error">{errors.AthleteRed}</Typography>) : null}
@@ -385,10 +434,15 @@ const AddMatch = () => {
                               </InputAdornment>}
                             />}
                           >
-                            <MenuItem>No Athlete Added</MenuItem>
-                            {getAthleteByCat?.map((data) => (
-                              <MenuItem key={data.id} value={data.id}>{data.athleteName}</MenuItem>
-                            ))}
+                            {athlete && athlete.length > 0 ? (
+                              athlete.map((data) => (
+                                <MenuItem key={data.id} value={data.id}>
+                                  {data.athleteName}
+                                </MenuItem>
+                              ))
+                            ) : (
+                              <MenuItem disabled>No athletes added</MenuItem>
+                            )}
                           </Select>
                         </FormControl>
                         {errors.AthleteBlue && touched.AthleteBlue ? (<Typography variant="subtitle1" color="error">{errors.AthleteBlue}</Typography>) : null}

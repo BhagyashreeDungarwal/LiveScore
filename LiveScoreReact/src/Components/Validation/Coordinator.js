@@ -119,4 +119,5 @@ export const MatchValidate = yup.object().shape({
     AthleteRed: yup.string().required('Athlete Red is required'),
     CategoryId: yup.string().required('Please Select Category'),
     TournamentId: yup.string().required('Please Select Tournament'),
+    Gender: yup.string().required('Gender is required'),
 });
