@@ -92,7 +92,7 @@ namespace LiveScore.Controllers
 
             // Check if either AthleteRed or AthleteBlue is already participating in another match
             var existingMatch = await _context.Matchss
-                .Where(m => m.MatchStatus != "Completed") // Exclude completed matches
+                .Where(m => m.MatchStatus != "Disable") // Exclude Disable matches
                 .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
 
             if (existingMatch != null)
