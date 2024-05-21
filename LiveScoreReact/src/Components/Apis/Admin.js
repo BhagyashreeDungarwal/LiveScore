@@ -14,13 +14,21 @@ export const GetCategory = async () => {
     return error
   }
 }
-export const GetTournament = async () => {
+export const GetCategoryById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Tournaments/GetTournaments`, {
+    const data = await axios.get(`${url}/Categories/GetCategoriesById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
     })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+export const GetTournament = async () => {
+  try {
+    const data = await axios.get(`${url}/Tournaments/GetTournaments`)
     return data
   } catch (error) {
     return error
@@ -41,7 +49,7 @@ export const GetCoordinator = async () => {
 
 export const GetReferee = async () => {
   try {
-    const { data } = await axios.get(`${url}/ACR/Referee`, {
+    const data = await axios.get(`${url}/ACR/Referee`, {
       headers: {
         "Content-Type": "application/json"
       }

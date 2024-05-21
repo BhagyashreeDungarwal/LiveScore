@@ -15,20 +15,7 @@ const CoordinatorSlice = createSlice({
             state.error = null,
                 state.data = null
         },
-        // get Athelete
-        GetAtheleteStart: (state) => {
-            state.loading = true;
-            state.error = null;
-        },
-        GetAtheleteSuccess: (state, action) => {
-            state.loading = false;
-            state.atheletedata = action.payload;
-        },
-        GetAtheleteFail: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
-
+       
         //Post Athelete
         AtheletePostStart: (state) => {
             state.loading = true;

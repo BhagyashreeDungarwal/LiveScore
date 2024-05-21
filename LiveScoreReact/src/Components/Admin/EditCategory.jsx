@@ -1,13 +1,14 @@
-import {  ChildCare, Close, MonitorWeight, Person2Rounded } from '@mui/icons-material';
+import { ChildCare, Close, MonitorWeight, Person2Rounded } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, Grid, IconButton, InputAdornment, TextField, Typography, styled, useTheme } from '@mui/material';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
-import { CategoryPutApi, GetCategoryByIdApi } from '../../Redux/Action/AdminAction';
 import { category } from '../Validation/Admin';
 import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
+import { GetCategoryById } from '../Apis/Admin';
+import { CategoryPutApi } from '../../Redux/AdminRedux';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -22,9 +23,8 @@ const EditCategory = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {id} = useParams()
-    const { data, error,categoryByIddata} = useSelector((state) => state.admin)
-
+    const { id } = useParams()
+    const { data, error } = useSelector((state) => state.admin)
     const initial = {
         categoryName: "",
         minAge: "",
@@ -32,31 +32,23 @@ const EditCategory = () => {
         minWeight: "",
         maxWeight: "",
     }
-
+    const getCategoryById = async () => {
+        const { data } = await GetCategoryById(id)
+        data && setValues(data)
+    }
     useEffect(() => {
-      dispatch(GetCategoryByIdApi(id));
-    }, [dispatch,id])
-    
-    useEffect(() => {
-      if(categoryByIddata){
-        setValues(categoryByIddata)
-      }
-    }, [categoryByIddata])
-    
-
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit,setValues } = useFormik({
+        getCategoryById()
+    }, [])
+    const { values, touched, errors, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
         validationSchema: category,
-         onSubmit: async (values) => {
+        onSubmit: async (values) => {
             console.log(values)
-            await dispatch(CategoryPutApi(values, id))
-            
+            dispatch(CategoryPutApi(values, id))
             if (data.msg) {
                 dispatch(ClearMessageAdmin())
                 navigate("/admin/category")
-                // toast.success(data.msg)
             }
-
             if (error) {
                 toast.error(error.msg)
                 dispatch(ClearMessageAdmin())
@@ -66,10 +58,10 @@ const EditCategory = () => {
 
     const handleClose = () => {
         navigate("/admin/category")
-      };
+    };
 
-  return (
-    <div>
+    return (
+        <div>
             <React.Fragment>
                 <BootstrapDialog
                     onClose={handleClose}
@@ -121,7 +113,7 @@ const EditCategory = () => {
                                         fullWidth
                                         id="minAge"
                                         name="minAge"
-                                        label="Mimimum Age"
+                                        label="Minimum Age"
                                         type='number'
                                         value={values.minAge}
                                         onBlur={handleBlur}
@@ -165,7 +157,7 @@ const EditCategory = () => {
                                         fullWidth
                                         id="minWeight"
                                         name="minWeight"
-                                        label="Mimimum Weight"
+                                        label="Minimum Weight"
                                         type='number'
                                         value={values.minWeight}
                                         onBlur={handleBlur}
@@ -187,7 +179,7 @@ const EditCategory = () => {
                                         fullWidth
                                         id="time"
                                         name="maxWeight"
-                                        label="Maximum Weght"
+                                        label="Maximum Weight"
                                         type='number'
                                         value={values.maxWeight}
                                         onBlur={handleBlur}
@@ -218,7 +210,7 @@ const EditCategory = () => {
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-  )
+    )
 }
 
 export default EditCategory

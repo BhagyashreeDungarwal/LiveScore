@@ -86,51 +86,49 @@ const RefereeList = () => {
   }, [])
 
   return (
-    <div>
-      <Box>
-        <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
-          <HeaderFormat title="Referee Management" />
-        </Box>
-        {loading ? <Box sx={{ display: "flex", justifyContent: "center" }} >
-          <CircularProgress />
-        </Box> :
-          <Stack style={{
-            marginTop: "1%",
-            display: "grid",
-            height: "60vh",
-          }}>
-            {referee && referee.length > 0 ? (
-              <DataGrid
-                rows={referee}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowHeight={53}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />) : (<DataGrid
-                autoHeight
-                rows={[]}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowHeight={42}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />)
-            }
-          </Stack>
-        }
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+        <HeaderFormat title="Referee Management" />
       </Box>
-    </div>
+      {loading ? <Box sx={{ display: "flex", justifyContent: "center" }} >
+        <CircularProgress />
+      </Box> :
+        <Stack style={{
+          marginTop: "1%",
+          display: "grid",
+          height: "60vh",
+        }}>
+          {referee && referee.length > 0 ? (
+            <DataGrid
+              rows={referee}
+              columns={columns}
+              getRowId={(row) => row.id}
+              rowHeight={53}
+              rowSelection="true"
+              rowSpacingType='margin'
+              slots={{ toolbar: CustomToolbar }}
+              scrollbarSize={1}
+              columnHeaderHeight={37}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />) : (<DataGrid
+              autoHeight
+              rows={[]}
+              columns={columns}
+              getRowId={(row) => row.id}
+              rowHeight={42}
+              rowSelection="true"
+              rowSpacingType='margin'
+              slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+              scrollbarSize={1}
+              columnHeaderHeight={37}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+            />)
+          }
+        </Stack>
+      }
+    </Box>
   )
 }
 export default ProtectedRoute(RefereeList, 'admin')

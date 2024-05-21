@@ -11,7 +11,6 @@ const url = "http://localhost:5032/api"
 export const getCategoryApi = () => async (dispatch) => {
     try {
         dispatch(GetCategoryStart())
-
         const { data } = await axios.get(`${url}/Categories/GetCategories`, {
             headers: {
                 "Content-Type": "application/json"

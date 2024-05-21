@@ -5,7 +5,7 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
 import {useState, useEffect, useMemo } from 'react';
-import { BlockAthleteApi,  getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import { BlockAthleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import {  Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
@@ -58,7 +58,7 @@ const Athelete = () => {
   const { data, error } = useSelector(state => state.coordinator)
    const handleRequest = async (id) => {
     dispatch(BlockAthleteApi(id))
-    dispatch(getAtheleteApi())
+    getAthlete()
   }
 
    const imgurl = "http://localhost:5032/images/";
@@ -130,11 +130,11 @@ const Athelete = () => {
     getAthlete()
     if (data) {
       toast.success(data.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
     if (error) {
       toast.error(error.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
   }, [data, error])
 

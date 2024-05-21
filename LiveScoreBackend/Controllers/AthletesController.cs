@@ -257,7 +257,7 @@ namespace LiveScore.Controllers
 
         // POST: api/Athletes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("PostAthelete")]
+        [HttpPost("PostAthlete")]
         public async Task<ActionResult<Athlete>> PostAthlete([FromForm]Images athleteDto)
         {
            
