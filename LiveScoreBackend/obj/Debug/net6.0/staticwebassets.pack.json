@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\ACR\\5f62c9fc-2e2c-49cc-9edd-e68ab06efcad.jpg"
     },
     {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\995e9ba9-a8fe-4279-8aee-6cef61d095ae.jpg",
+      "PackagePath": "staticwebassets\\ACR\\995e9ba9-a8fe-4279-8aee-6cef61d095ae.jpg"
+    },
+    {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\be15aadb-52ba-401b-81fd-f1af86a48427.jpg",
       "PackagePath": "staticwebassets\\ACR\\be15aadb-52ba-401b-81fd-f1af86a48427.jpg"
     },
@@ -39,6 +43,10 @@
     {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\84e79942-c92b-4d9b-add7-442b604832a1.jpg",
       "PackagePath": "staticwebassets\\coach\\84e79942-c92b-4d9b-add7-442b604832a1.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\ad861357-2e90-49fb-beb1-88858aad2867.jpg",
+      "PackagePath": "staticwebassets\\coach\\ad861357-2e90-49fb-beb1-88858aad2867.jpg"
     },
     {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\dd31a7a7-14eb-46d5-80c9-dd0279a458a1.jpg",
@@ -109,12 +117,24 @@
       "PackagePath": "staticwebassets\\images\\87b8d492-e545-42c4-bf7e-f41bbf83cacb.jpg"
     },
     {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\8a8ef3ff-94d9-4450-a7ed-986eaf8baec0.jpg",
+      "PackagePath": "staticwebassets\\images\\8a8ef3ff-94d9-4450-a7ed-986eaf8baec0.jpg"
+    },
+    {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\995e476b-ece4-436e-af7d-4f28853dee50.jpg",
       "PackagePath": "staticwebassets\\images\\995e476b-ece4-436e-af7d-4f28853dee50.jpg"
     },
     {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\ad1f3625-272c-4b09-a49a-7027a48cca9a.jpg",
+      "PackagePath": "staticwebassets\\images\\ad1f3625-272c-4b09-a49a-7027a48cca9a.jpg"
+    },
+    {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\ca86a09e-4212-4ad0-9c97-03a08a33e508.jpg",
       "PackagePath": "staticwebassets\\images\\ca86a09e-4212-4ad0-9c97-03a08a33e508.jpg"
+    },
+    {
+      "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\d7d0019a-5e8d-4ecf-9cee-2cd20f611ee4.jpg",
+      "PackagePath": "staticwebassets\\images\\d7d0019a-5e8d-4ecf-9cee-2cd20f611ee4.jpg"
     },
     {
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\d8034a23-7a1c-499e-8160-d66424e3ac21.jpg",

@@ -87,7 +87,7 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Admin");
+                    b.ToTable("Admin", (string)null);
                 });
 
             modelBuilder.Entity("LiveScore.Model.Coach", b =>
@@ -138,7 +138,7 @@ namespace LiveScore.Migrations
 
                     b.HasKey("CoachId");
 
-                    b.ToTable("Coaches");
+                    b.ToTable("Coaches", (string)null);
                 });
 
             modelBuilder.Entity("LiveScore.Model.Viewers", b =>
@@ -183,7 +183,7 @@ namespace LiveScore.Migrations
 
                     b.HasKey("VId");
 
-                    b.ToTable("Viewerss");
+                    b.ToTable("Viewerss", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Athlete", b =>
@@ -259,7 +259,7 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("Coordinater");
 
-                    b.ToTable("Athletes");
+                    b.ToTable("Athletes", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Category", b =>
@@ -302,7 +302,7 @@ namespace LiveScore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Matchs", b =>
@@ -366,7 +366,7 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("Matchss");
+                    b.ToTable("Matchss", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Role", b =>
@@ -383,7 +383,7 @@ namespace LiveScore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Round", b =>
@@ -422,7 +422,7 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("MatchId");
 
-                    b.ToTable("Rounds");
+                    b.ToTable("Rounds", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Score", b =>
@@ -485,7 +485,7 @@ namespace LiveScore.Migrations
 
                     b.HasIndex("Rounds");
 
-                    b.ToTable("Scores");
+                    b.ToTable("Scores", (string)null);
                 });
 
             modelBuilder.Entity("LiveScoring.Model.Tournament", b =>
@@ -511,7 +511,7 @@ namespace LiveScore.Migrations
 
                     b.HasKey("TId");
 
-                    b.ToTable("Tournaments");
+                    b.ToTable("Tournaments", (string)null);
                 });
 
             modelBuilder.Entity("LiveScore.Model.ACR", b =>
