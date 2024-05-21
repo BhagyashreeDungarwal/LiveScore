@@ -1,10 +1,9 @@
-import { Box, CircularProgress, Fab, IconButton, Stack, Tooltip, } from '@mui/material';
+import { Box, CircularProgress, Fab, Stack, Tooltip, } from '@mui/material';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import AddCategory from './AddCategory';
 import HeaderFormat from '../Common/HeaderFormat';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategoryApi } from '../../Redux/Action/AdminAction';
 import { useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
@@ -12,8 +11,9 @@ import ProtectedRoute from '../../ProtectedRoute';
 import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 import { Link } from 'react-router-dom';
 import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
+import { GetCategory } from '../Apis/Admin';
 
-// Tolbar for datagrid
+// Toolbar for dataGrid
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -55,14 +55,15 @@ function CustomNoRowsOverlay() {
 
 
 const CategoryManage = () => {
+  const [category, setCategory] = useState()
   const dispatch = useDispatch()
-  const { categorydata, loading, data, error } = useSelector(state => state.admin)
+  const { loading, data, error } = useSelector(state => state.admin)
 
-  const columns = useMemo(categorydata => [
+  const columns = useMemo(() => [
     { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "minWeight", headerName: "Minimum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center" , valueFormatter: (params) => params.value ? `${params.value} Kg` :""  },
-    { field: "maxWeight", headerName: "Maximum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center" , valueFormatter: (params) => params.value ? `${params.value} Kg` :"" },
+    { field: "minWeight", headerName: "Minimum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? `${params.value} Kg` : "" },
+    { field: "maxWeight", headerName: "Maximum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? `${params.value} Kg` : "" },
     { field: "minAge", headerName: "Minimum Age", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "maxAge", headerName: "Maximum Age", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     {
@@ -73,9 +74,7 @@ const CategoryManage = () => {
             <Tooltip title="Edit">
               <Link to={`/admin/editcategory/${params.row.id}`} >
                 <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
-                  {/* <IconButton aria-label="Edit" color='primary'> */}
                   <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
-                  {/* </IconButton> */}
                 </Fab>
               </Link>
             </Tooltip>
@@ -84,10 +83,19 @@ const CategoryManage = () => {
       }
 
     }
-  ])
+  ], [])
+
+  const getCategory = async () => {
+    const { data } = await GetCategory()
+    data && setCategory(data)
+  }
 
   useEffect(() => {
-    dispatch(getCategoryApi())
+    getCategory()
+  }, [])
+
+
+  useEffect(() => {
     if (data) {
       toast.success(data.msg)
       dispatch(ClearMessageAdmin())
@@ -111,9 +119,9 @@ const CategoryManage = () => {
             width: "90%",
             height: "60vh",
           }}>{
-              categorydata && categorydata.length > 0 ? (
+              category && category.length > 0 ? (
                 <DataGrid
-                  rows={categorydata}
+                  rows={category}
                   columns={columns}
                   getRowId={(row) => row.id}
                   rowHeight={42}

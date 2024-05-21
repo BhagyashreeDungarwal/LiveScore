@@ -3,12 +3,14 @@ import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { VerifyCoordinatorApi, getCoordinatorApi } from '../../Redux/Action/AdminAction';
+import { VerifyCoordinatorApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import dayjs from 'dayjs';
 import { Block, Circle, VerifiedUser } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import NoData from "./../Images/NoData.jpg"
+import { useState } from 'react';
+import { GetCoordinator } from '../Apis/Admin';
 
 
 function CustomToolbar() {
@@ -50,22 +52,33 @@ function CustomNoRowsOverlay() {
 
 
 const VerifyCoordinator = () => {
+  const [coordinator, setCoordinator] = useState()
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
-  const { coordinatordata, verifydata, error, loading ,blockdata ,unblockdata } = useSelector(state => state.admin)
+  const { verifydata, error,  blockdata, unblockdata } = useSelector(state => state.admin)
+
+  const getCoordinator = async () => {
+    setLoading(true)
+    try {
+      const { data } = await GetCoordinator()
+      data && setCoordinator(data)
+    } catch (error) {
+      console.log("Some Error ", error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
 
   const handleRequest = async (id) => {
-    await dispatch(VerifyCoordinatorApi(id))
+    dispatch(VerifyCoordinatorApi(id))
   }
 
-   const imgurl = "http://localhost:5032/ACR/";
-  const columns = useMemo(coordinatordata => [
+  const img_url = "http://localhost:5032/images/";
+  const columns = useMemo(() => [
     {
       field: "imageURL", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
-      renderCell: (params) => (
-        <Avatar src={`${imgurl}${params.value}`} />
-        // <img src={params.value} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
-      ),
+      renderCell: (params) => (<Avatar src={`${img_url}${params.value}`} />),
     },
     { field: "name", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 230, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -73,7 +86,6 @@ const VerifyCoordinator = () => {
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 120, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "gender", headerName: "Gender", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "age", headerName: "Age", width: 40, headerClassName: "header", headerAlign: "center", align: "center" },
-    // { field: "lastLogin", headerName: "LastLogin", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
@@ -92,26 +104,26 @@ const VerifyCoordinator = () => {
       headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
       width: 122,
       renderCell: params => {
-        if (params.row.status === "Not Verified") {   
-        return (
-          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
-            <VerifiedUser size="small" sx={{ mr: 1 }} />
-            Accept
-          </Fab>)
+        if (params.row.status === "Not Verified") {
+          return (
+            <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+              <VerifiedUser size="small" sx={{ mr: 1 }} />
+              Accept
+            </Fab>)
         }
-       else if (params.row.status === "Verified") {   
-        return (
-          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
-            <Block size="small" sx={{ mr: 1 }} />
-            Block
-          </Fab>)
+        else if (params.row.status === "Verified") {
+          return (
+            <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+              <Block size="small" sx={{ mr: 1 }} />
+              Block
+            </Fab>)
         }
-       else if (params.row.status === "Block") {   
-        return (
-          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
-            <Block size="small" sx={{ mr: 1 }} />
-            Unblock
-          </Fab>)
+        else if (params.row.status === "Block") {
+          return (
+            <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+              <Block size="small" sx={{ mr: 1 }} />
+              Unblock
+            </Fab>)
         }
       }
     }
@@ -119,26 +131,23 @@ const VerifyCoordinator = () => {
   ])
 
   useEffect(() => {
-    dispatch(getCoordinatorApi())
-
+    getCoordinator()
     if (verifydata) {
       toast.success(verifydata.msg)
-      dispatch(getCoordinatorApi())
+      getCoordinator()
     }
     if (blockdata) {
       toast.success(blockdata.msg)
-      dispatch(getCoordinatorApi())
+      getCoordinator()
     }
     if (unblockdata) {
       toast.success(unblockdata.msg)
-      dispatch(getCoordinatorApi())
+      getCoordinator()
     }
     if (error) {
       toast.error(error.msg)
     }
-
-  }, [dispatch, verifydata, error ,blockdata,unblockdata])
-
+  }, [verifydata, error, blockdata, unblockdata])
 
   return (
     <div>
@@ -151,46 +160,40 @@ const VerifyCoordinator = () => {
             <Stack style={{
               marginTop: "1%",
               display: "grid",
-              // width: "90%",
               height: "60vh",
-
             }}>
-              {
-                coordinatordata && coordinatordata.length > 0 ? (
-                  <DataGrid
-                    rows={coordinatordata}
-                    columns={columns}
-                    getRowId={(row) => row.id}
-                    rowHeight={53}
-                    rowSelection="true"
-                    rowSpacingType='margin'
-                    slots={{ toolbar: CustomToolbar }}
-                    scrollbarSize={1}
-                    columnHeaderHeight={37}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                  />) : (
-
-                  <DataGrid
-                    autoHeight
-                    rows={[]}
-                    columns={columns}
-                    getRowId={(row) => row.id}
-                    rowHeight={53}
-                    rowSelection="true"
-                    rowSpacingType='margin'
-                    slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                    scrollbarSize={1}
-                    columnHeaderHeight={37}
-                    pageSize={5}
-                    rowsPerPageOptions={[5]}
-                  />
-                )
+              {coordinator && coordinator.length > 0 ? (
+                <DataGrid
+                  rows={coordinator}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  rowHeight={53}
+                  rowSelection="true"
+                  rowSpacingType='margin'
+                  slots={{ toolbar: CustomToolbar }}
+                  scrollbarSize={1}
+                  columnHeaderHeight={37}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />) : (<DataGrid
+                  autoHeight
+                  rows={[]}
+                  columns={columns}
+                  getRowId={(row) => row.id}
+                  rowHeight={53}
+                  rowSelection="true"
+                  rowSpacingType='margin'
+                  slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                  scrollbarSize={1}
+                  columnHeaderHeight={37}
+                  pageSize={5}
+                  rowsPerPageOptions={[5]}
+                />
+              )
               }
             </Stack>
         }
       </Box>
-
     </div>
   )
 }

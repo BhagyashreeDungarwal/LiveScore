@@ -289,6 +289,19 @@ const CoordinatorSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
+        //Add Match
+        AddMatchStart: (state) => {
+            state.loading = true;
+            state.error = null;
+        },
+        AddMatchSuccess: (state, action) => {
+            state.loading = false;
+            state.data = action.payload;
+        },
+        AddMatchFail: (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        },
         //Get Athlete By Category
         GetAtheleteByCategoryStart: (state) => {
             state.loading = true;
@@ -315,6 +328,6 @@ export const { GetAtheleteStart, GetAtheleteSuccess, GetAtheleteFail, AtheletePo
     GetCoachSuccess, GetCoachFail, CoachPostStart, CoachPostSuccess, CoachPostFail, CoordinatorProfileSuccess, CoordinatorProfileFail, CoordinatorProfileStart, CoordinatorProfileUpdateFail,
     CoordinatorProfileUpdateStart, CoordinatorProfileUpdateSuccess, CoordinatorProfileUpdatePicStart, CoordinatorProfileUpdatePicSuccess, CoordinatorProfileUpdatePicFail,
     GetCoachByIdStart, GetCoachByIdSuccess, GetCoachByIdFail, CoachPutStart, CoachPutSuccess, CoachPutFail, BlockCoachStart, BlockCoachSuccess, BlockCoachFail, CoachPutPicFail, CoachPutPicStart, CoachPutPicSuccess,
-    clearMessage, GetMatchFail, GetMatchStart, GetMatchSuccess, GetAtheleteByCategoryFail, GetAtheleteByCategoryStart, GetAtheleteByCategorySuccess
+    clearMessage, GetMatchFail, GetMatchStart, GetMatchSuccess, GetAtheleteByCategoryFail, GetAtheleteByCategoryStart, GetAtheleteByCategorySuccess,AddMatchFail,AddMatchStart,AddMatchSuccess
 } = CoordinatorSlice.actions;
 export default CoordinatorSlice.reducer;

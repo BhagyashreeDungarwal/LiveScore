@@ -2,12 +2,11 @@ import { Box, CircularProgress, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import NoData from "./../Images/NoData.jpg"
-
-
+import { GetReferee } from '../Apis/Admin';
 
 function CustomToolbar() {
   return (
@@ -49,16 +48,14 @@ function CustomNoRowsOverlay() {
 
 
 const RefereeList = () => {
-  const dispatch = useDispatch()
-  const { refereedata, loading } = useSelector(state => state.coordinator)
- const imgurl = "http://localhost:5032/ACR/";
+  const [referee, setReferee] = useState([])
+  const [loading, setLoading] = useState(true);
+  const img_url = "http://localhost:5032/ACR/";
 
-  const columns = useMemo(refereedata => [
+  const columns = useMemo(() => [
     {
       field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
-      renderCell: (params) => (
-        <img src={`${imgurl}${params.value}`} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />
-      ),
+      renderCell: (params) => (<img src={`${img_url}${params.value}`} alt="Avatar" style={{ width: 50, height: 50, borderRadius: '50%' }} />),
     },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -70,12 +67,23 @@ const RefereeList = () => {
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+  ], [])
 
-  ])
+  const getReferee = async () => {
+    setLoading(true); // Start loading
+    try {
+      const { data } = await GetReferee();
+      data && setReferee(data);
+    } catch (error) {
+      console.error('Error fetching referee data:', error);
+    } finally {
+      setLoading(false); // End loading
+    }
+  }
 
   useEffect(() => {
-    dispatch(GetRefereeApi())
-  }, [dispatch])
+    getReferee()
+  }, [])
 
   return (
     <div>
@@ -89,15 +97,11 @@ const RefereeList = () => {
           <Stack style={{
             marginTop: "1%",
             display: "grid",
-            // width: "100%",
             height: "60vh",
-
           }}>
-
-
-            {refereedata && refereedata.length > 0 ? (
+            {referee && referee.length > 0 ? (
               <DataGrid
-                rows={refereedata}
+                rows={referee}
                 columns={columns}
                 getRowId={(row) => row.id}
                 rowHeight={53}
@@ -108,7 +112,7 @@ const RefereeList = () => {
                 columnHeaderHeight={37}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
-              />) :( <DataGrid
+              />) : (<DataGrid
                 autoHeight
                 rows={[]}
                 columns={columns}
@@ -126,9 +130,7 @@ const RefereeList = () => {
           </Stack>
         }
       </Box>
-
     </div>
   )
 }
-
 export default ProtectedRoute(RefereeList, 'admin')

@@ -82,7 +82,7 @@ namespace LiveScore.Data
 
                 entity.Property(c => c.Id).HasColumnName("Cid"); 
                 entity.Property(c => c.CategoryName).IsRequired().HasMaxLength(101); 
-                entity.Property(c => c.Gender).IsRequired().HasMaxLength(10); 
+                entity.Property(c => c.Gender).IsRequired(false).HasMaxLength(10); 
                 entity.Property(c => c.MinAge).IsRequired().HasMaxLength(10); 
                 entity.Property(c => c.MaxAge).IsRequired().HasMaxLength(10); 
                 entity.Property(c => c.MinWeight).IsRequired().HasMaxLength(10); 
