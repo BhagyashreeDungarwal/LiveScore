@@ -26,3 +26,28 @@ export const GetTournament = async () => {
     return error
   }
 }
+export const GetCoordinator = async () => {
+  try {
+    const data = await axios.get(`${url}/ACR/Coordinator`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const GetReferee = async () => {
+  try {
+    const { data } = await axios.get(`${url}/ACR/Referee`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}

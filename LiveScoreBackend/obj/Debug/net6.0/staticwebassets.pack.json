@@ -61,12 +61,24 @@
       "PackagePath": "staticwebassets\\images\\0d9558c7-7019-4ca2-ace4-567478afbaec.jpg"
     },
     {
+      "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\113452dd-ee83-48db-a695-f88e5424dc54.jpg",
+      "PackagePath": "staticwebassets\\images\\113452dd-ee83-48db-a695-f88e5424dc54.jpg"
+    },
+    {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\1501144e-a418-4a21-8ce0-b7e8a5c40689.jpg",
       "PackagePath": "staticwebassets\\images\\1501144e-a418-4a21-8ce0-b7e8a5c40689.jpg"
     },
     {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\1b234bda-0465-4115-8c59-6a90f2fa4637.jpg",
       "PackagePath": "staticwebassets\\images\\1b234bda-0465-4115-8c59-6a90f2fa4637.jpg"
+    },
+    {
+      "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\321c70ad-82d1-4645-9c93-08462ac9b4a6.jpg",
+      "PackagePath": "staticwebassets\\images\\321c70ad-82d1-4645-9c93-08462ac9b4a6.jpg"
+    },
+    {
+      "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\3641f74c-e008-4c52-b046-3f97a3fb378d.jpg",
+      "PackagePath": "staticwebassets\\images\\3641f74c-e008-4c52-b046-3f97a3fb378d.jpg"
     },
     {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\5adfd819-11d0-4f5b-a874-b7bee1ec63dd.jpg",
@@ -87,6 +99,14 @@
     {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\8566b27a-0d56-40b7-a6f6-ea081a9957a1.jpg",
       "PackagePath": "staticwebassets\\images\\8566b27a-0d56-40b7-a6f6-ea081a9957a1.jpg"
+    },
+    {
+      "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\85d6508b-9b24-43b8-b537-2dac123e8889.jpg",
+      "PackagePath": "staticwebassets\\images\\85d6508b-9b24-43b8-b537-2dac123e8889.jpg"
+    },
+    {
+      "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\87b8d492-e545-42c4-bf7e-f41bbf83cacb.jpg",
+      "PackagePath": "staticwebassets\\images\\87b8d492-e545-42c4-bf7e-f41bbf83cacb.jpg"
     },
     {
       "Id": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\995e476b-ece4-436e-af7d-4f28853dee50.jpg",
