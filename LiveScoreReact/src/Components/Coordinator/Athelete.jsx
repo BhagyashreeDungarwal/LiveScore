@@ -1,18 +1,16 @@
-import { Avatar, Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab,  Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
-import { useEffect, useMemo } from 'react';
-import { BlockAthleteApi, GetCoachApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import {useState, useEffect, useMemo } from 'react';
+import { BlockAthleteApi,  getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
-import { getCategoryApi } from '../../Redux/Action/AdminAction';
-import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import {  Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
-// import { useState } from 'react';
+import { GetAthlete } from '../Apis/Coordinator';
 
 function CustomToolbar() {
   return (
@@ -53,8 +51,11 @@ function CustomNoRowsOverlay() {
 
 const Athelete = () => {
 
+  const [athlete, setAthlete] = useState()
+  
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
-  const { atheletedata, loading, data, error } = useSelector(state => state.coordinator)
+  const { data, error } = useSelector(state => state.coordinator)
    const handleRequest = async (id) => {
     dispatch(BlockAthleteApi(id))
     dispatch(getAtheleteApi())
@@ -62,7 +63,7 @@ const Athelete = () => {
 
    const imgurl = "http://localhost:5032/images/";
 
-  const columns = useMemo(atheletedata => [
+  const columns = useMemo(() => [
     {
       field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
@@ -110,33 +111,32 @@ const Athelete = () => {
       }
     }
   }
-  ])
+  ], [])
 
+  const getAthlete =  async () => {
+    setLoading(true)
+    try {
+    const {data} = await GetAthlete()
+    data && setAthlete(data)
+    } catch (error) {
+      console.log("Something Went Wrong", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
+  
   useEffect(() => {
-    dispatch(getAtheleteApi())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(getCategoryApi())
-  }, [dispatch])
-
-  useEffect(() => {
-    dispatch(GetCoachApi())
-  }, [dispatch])
-
-  useEffect(() => {
+    getAthlete()
     if (data) {
       toast.success(data.msg)
-      dispatch(clearMessage())
+      dispatch((clearMessage))
     }
-  }, [data])
-
-  useEffect(() => {
     if (error) {
-      toast.error(data.msg)
-      dispatch(clearMessage())
+      toast.error(error.msg)
+      dispatch((clearMessage))
     }
-  }, [error])
+  }, [data, error])
 
   return (
     <Box>
@@ -151,9 +151,9 @@ const Athelete = () => {
             height: "80vh",
           }}>
             {
-              atheletedata && atheletedata.length > 0 ? (
+              athlete && athlete.length > 0 ? (
                 <DataGrid
-                  rows={atheletedata}
+                  rows={athlete}
                   columns={columns}
                   getRowId={(row) => row.id}
                   rowHeight={54}

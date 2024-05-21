@@ -1,16 +1,18 @@
-import { Avatar, Box, CircularProgress, Fab, IconButton, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab,  Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { BlockCoachApi, GetCoachApi } from '../../Redux/Action/CoordinatorAction';
+import { BlockCoachApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import { toast } from 'react-toastify';
 import AddCoach from './AddCoach';
 import { Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
+import { useState } from 'react';
+import { GetCoach } from '../Apis/Coordinator';
 
 
 function CustomToolbar() {
@@ -50,18 +52,21 @@ function CustomNoRowsOverlay() {
   );
 }
 const Coach = () => {
+
+  const [coach, setCoach] = useState()
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
-  const { coachdata, loading, data, error } = useSelector(state => state.coordinator)
+  const {  data, error } = useSelector(state => state.coordinator)
 
 
   const handleRequest = async (id) => {
     dispatch(BlockCoachApi(id))
-    dispatch(GetCoachApi())
+    getCoach()
   }
    
   const imgurl = "http://localhost:5032/coach/";
 
-  const columns = useMemo(coachdata => [
+  const columns = useMemo(() => [
     {
       field: `imageUrl`, headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
@@ -105,25 +110,33 @@ const Coach = () => {
       }
     }
 
-  ])
+  ], [])
+
+  const getCoach = async () => {
+    setLoading(true)
+    try {
+    const {data} = await GetCoach()
+    data && setCoach(data)
+  }
+     catch (error) {
+      console.log("Something Went Wrong", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
 
   useEffect(() => {
-    dispatch(GetCoachApi())
-  }, [dispatch])
-
-  useEffect(() => {
+    getCoach() 
     if (data) {
       toast.success(data.msg)
-      dispatch(clearMessage())
+      dispatch((clearMessage))
     }
-  }, [data])
-
-  useEffect(() => {
     if (error) {
-      toast.error(data.msg)
-      dispatch(clearMessage())
+      toast.error(error.msg)
+      dispatch((clearMessage))
     }
-  }, [error])
+  }, [data, error])
 
 
   return (
@@ -141,9 +154,9 @@ const Coach = () => {
 
           }}>{
 
-              coachdata && coachdata.length > 0 ? (
+              coach && coach.length > 0 ? (
                 <DataGrid
-                  rows={coachdata}
+                  rows={coach}
                   columns={columns}
                   getRowId={(row) => row.coachId}
                   // rowHeight={53}

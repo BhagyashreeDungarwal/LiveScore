@@ -9,8 +9,11 @@ import { useFormik } from 'formik';
 import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment, Select, FormControl, InputLabel } from '@mui/material';
 import { AthleteValidate } from '../Validation/Coordinator';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { AtheletePostApi, getAtheleteApi } from '../../Redux/Action/CoordinatorAction';
+import { useDispatch } from 'react-redux';
+import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
+import { GetAthlete, GetCoach } from '../Apis/Coordinator';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 
 
@@ -26,11 +29,22 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddAthelete = () => {
 
     const theme = useTheme()
-    const { coachdata } = useSelector((state => state.coordinator))
-    const { categorydata } = useSelector((state => state.admin))
+    const [coach, setCoach] = useState()
     const dispatch = useDispatch()
 
     const cid = localStorage.getItem("ID")
+
+    const getCoach = async () => {
+      
+        const {data} = await GetCoach()
+        data && setCoach(data)
+    }
+
+    useEffect(() => {
+      getCoach()
+    }, [])
+    
+    
 
     const initial = {
         athleteName: "",
@@ -42,7 +56,6 @@ const AddAthelete = () => {
         dateOfBirth: "",
         city: "",
         state: "",
-        // categoryId: "",
         coachId: "",
         image: null,
     }
@@ -63,7 +76,6 @@ const AddAthelete = () => {
                 formdata.append('DateOfBirth', values.dateOfBirth)
                 formdata.append('City', values.city)
                 formdata.append('State', values.state)
-                // formdata.append('CategoryId', values.categoryId)
                 formdata.append('CoachId', values.coachId)
                 formdata.append('CoordinatorId', cid)
                 formdata.append('ImageFile', values.image)
@@ -71,7 +83,7 @@ const AddAthelete = () => {
                 await dispatch(AtheletePostApi(formdata))
                 setSubmitting(false)
                 resetForm({ values: "" });
-                dispatch(getAtheleteApi())
+               await GetAthlete()
                 console.log(cid);
             } catch (error) {
                 <CircularProgress />
@@ -347,7 +359,7 @@ const AddAthelete = () => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         >
-                                            {coachdata?.map((data) => (
+                                            {coach?.map((data) => (
                                                 <MenuItem key={data.coachId} value={data.coachId}>{data.coachName}</MenuItem>
                                             ))
                                             }
@@ -355,26 +367,7 @@ const AddAthelete = () => {
                                     </FormControl>
                                     {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
                                 </Grid>
-                                {/* <Grid item xl={6} md={6} sm={12} xs={12}>
-                                    <FormControl variant='filled' fullWidth>
-                                        <InputLabel color='secondary'>Category</InputLabel>
-                                        <Select
-                                            color='secondary'
-                                            id="categoryId"
-                                            name="categoryId"
-                                            label="category"
-                                            value={values.categoryId}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        >
-                                            {categorydata?.map((data) => (
-                                                <MenuItem key={data.id} value={data.id}>{data.categoryName}</MenuItem>
-                                            ))
-                                            }
-                                        </Select>
-                                    </FormControl>
-                                    {errors.categoryId && touched.categoryId ? (<Typography variant="subtitle1" color="error">{errors.categoryId}</Typography>) : null}
-                                </Grid> */}
+                               
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>

@@ -1,8 +1,8 @@
-import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEmotionsRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, Timer, TimerRounded } from "@mui/icons-material";
-import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select, Slide, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, } from "@mui/icons-material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select, Slide, TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { MatchValidate } from "../Validation/Coordinator";
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -11,11 +11,9 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
-import SettingsIcon from '@mui/icons-material/Settings';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { AddMatchApi, GetAthleteByCatApi, GetMatchApi } from "../../Redux/Action/CoordinatorAction";
+import { AddMatchApi,  GetMatchApi } from "../../Redux/Action/CoordinatorAction";
 import { useState } from "react";
 import { GetCategory, GetTournament } from "../Apis/Admin";
 import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
@@ -197,7 +195,6 @@ const AddMatch = () => {
     data && setAthlete(data)
   }
 
-
   // const { active, completed, className } = props;
 
   //   for dialog box start
@@ -254,8 +251,6 @@ const AddMatch = () => {
       handleClose();
     }
   })
-
-
 
 
   return (

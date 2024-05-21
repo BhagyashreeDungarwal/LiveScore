@@ -1,15 +1,16 @@
 import AddReferee from "./AddReferee"
-import { Avatar, Box, CircularProgress, Fab, Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { BlockRefereeApi, GetRefereeApi } from '../../Redux/Action/CoordinatorAction';
-import { toast } from "react-toastify";
+import { BlockRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import { Block, VerifiedUser } from "@mui/icons-material";
 import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { GetReferee } from "../Apis/Coordinator";
+import { toast } from "react-toastify";
 
 
 function CustomToolbar() {
@@ -53,15 +54,17 @@ function CustomNoRowsOverlay() {
 const Referee = () => {
 
 const dispatch = useDispatch()
-const {refereedata, loading, data, error} = useSelector(state => state.coordinator)
+const [referee, setReferee] = useState([])
+const [loading, setLoading] = useState(false)
+const {data, error} = useSelector(state => state.coordinator)
 
  const handleRequest = async (id) => {
     await dispatch(BlockRefereeApi(id))
-    dispatch(GetRefereeApi())
+    getRef()
   }
  const imgurl = "http://localhost:5032/ACR/";
 
-  const columns = useMemo(refereedata => [
+  const columns = useMemo(() => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
      renderCell: (params) => (
       <Avatar src={`${imgurl}${params.value}`} alt="Avatar" />
@@ -96,20 +99,30 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
         }
       }
     }
-    
-  ])
+  ], [])
 
+  const getRef = async () => {
+    setLoading(true)
+    try {
+    const {data} = await GetReferee()
+    data && setReferee(data)} catch (error) {
+      console.log("Something Went Wrong", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  
   useEffect(() => {
-    dispatch(GetRefereeApi())
-  if(data){
-        toast.success(data.msg)
-        dispatch(clearMessage())
+    getRef()
+     if (data) {
+      toast.success(data.msg)
+      dispatch((clearMessage))
     }
-    if(error){
-        toast.error(data.msg)
-        dispatch(clearMessage())
+    if (error) {
+      toast.error(error.msg)
+      dispatch((clearMessage))
     }
-  }, [dispatch,data,error])
+  }, [data, error])
 
   return (
     <div>
@@ -126,10 +139,10 @@ const {refereedata, loading, data, error} = useSelector(state => state.coordinat
         height: "70vh",
 
       }}>
-        {refereedata && refereedata.length > 0 ? (
+        {referee && referee.length > 0 ? (
           <DataGrid
           autoHeight
-            rows={refereedata}
+            rows={referee}
             columns={columns}
             getRowId={(row) => row.id}
             rowHeight={53}

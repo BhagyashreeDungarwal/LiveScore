@@ -9,11 +9,12 @@ import { useFormik } from 'formik';
 import { TextField,  Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment,useTheme, Input } from '@mui/material';
 import { useState } from 'react';
 import { acr } from '../Validation/Coordinator';
-import { AccessibilityNewRounded, AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material';
+import {  AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import { RefereePostApi } from '../../Redux/Action/CoordinatorAction';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { GetReferee } from '../Apis/Admin';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -59,7 +60,16 @@ const AddReferee = () => {
         city: "",
     }
 
-
+  useEffect(() => {
+        if (data) {
+            toast.success(data.msg)
+            console.log(data.msg)
+        }
+        if (error) {
+            toast.error(error.msg)
+            console.log(error.msg)
+        }
+    }, [data, error])
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
@@ -79,13 +89,16 @@ const AddReferee = () => {
                 formData.append('City', values.city);
                 formData.append('State', values.state);
                 await disptach(RefereePostApi(formData))
-                // if (data) {
-                //     toast.success(data.msg)
-                // }
+                await GetReferee()
+                if (data) {
+                    toast.success(data.msg)
+                }
 
-                // if (error) {
-                //     toast.error(error.msg)
-                // }
+                if (error) {
+                    toast.error(error.msg)
+                }
+                console.log(values)
+                console.log(formData);
             } catch (error) {
                 <CircularProgress />
             }

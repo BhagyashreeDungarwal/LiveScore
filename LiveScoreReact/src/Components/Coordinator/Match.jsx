@@ -5,12 +5,12 @@ import HeaderFormat from "../Common/HeaderFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer";
-import { GetMatchApi, getAtheleteApi } from "../../Redux/Action/CoordinatorAction";
 import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import AddMatch from "./AddMatch";
-import { getCategoryApi, getTounamentApi } from "../../Redux/Action/AdminAction";
 import { DriveFileRenameOutlineRounded } from "@mui/icons-material";
+import { useState } from "react";
+import { GetMatch } from "../Apis/Coordinator";
 
 function CustomToolbar() {
   return (
@@ -51,25 +51,14 @@ function CustomNoRowsOverlay() {
 
 const Match = () => {
 
+  const [match, setMatch] = useState()
   const dispatch = useDispatch()
-  const {  matchdata, loading, data, error } = useSelector(state => state.coordinator)
+  const [loading, setLoading] = useState(true)
+  const { data, error } = useSelector(state => state.coordinator)
 
   useEffect(() => {
-    dispatch(GetMatchApi())
-  }, [dispatch])
-
-  // useEffect(() => {
-  //   dispatch(getAtheleteApi())
-  // }, [dispatch])
-
-  // useEffect(() => {
-  //   dispatch(getCategoryApi())
-  // }, [dispatch])
-
-  // useEffect(() => {
-  //   dispatch(getTounamentApi())
-  // }, [dispatch])
-
+   getMatch()
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -86,7 +75,7 @@ const Match = () => {
   }, [error])
 
 
-  const columns = useMemo(matchdata => [
+  const columns = useMemo(() => [
     { field: "matchGroup", headerName: "GroupId", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournament", headerName: "Tournament", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -109,7 +98,33 @@ const Match = () => {
         )
       }
     }
-  ])
+  ], [])
+
+  const getMatch = async () => {
+    setLoading(true)
+    try {
+     const {data} = await GetMatch()
+     data && setMatch(data)
+    }
+    catch(e){
+      console.log("Something Went Wrong.",e);
+    }finally{
+      setLoading(false)
+    }
+  }
+  
+ useEffect(() => {
+    getMatch() 
+    if (data) {
+      toast.success(data.msg)
+      dispatch((clearMessage))
+    }
+    if (error) {
+      toast.error(error.msg)
+      dispatch((clearMessage))
+    }
+  }, [data, error])
+
 
   return (
     <Box>
@@ -124,9 +139,9 @@ const Match = () => {
             height: "78vh",
           }}>
             {
-              matchdata && matchdata.length > 0 ? (
+              match && match.length > 0 ? (
                 <DataGrid
-                  rows={matchdata}
+                  rows={match}
                   columns={columns}
                   getRowId={(row) => row.mid}
                   rowHeight={54}
