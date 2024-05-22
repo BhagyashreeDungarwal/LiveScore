@@ -1,12 +1,15 @@
 // import React from 'react'
-import { Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import ProtectedRoute from '../../ProtectedRoute'
+import HeaderFormat from '../Common/HeaderFormat'
 
 const AdminDashboard = () => {
   return (
-    <div>
-      <Typography variant="h1" color="initial">Admin DashBoard</Typography>
-    </div>
+   <Box>
+    <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+        <HeaderFormat title="Dashboard" />
+      </Box>
+   </Box>
   )
 }
 

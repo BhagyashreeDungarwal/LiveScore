@@ -284,7 +284,7 @@ namespace LiveScore.Controllers
             {
                 coordinator.Status = "Verified";
                 await _dbcontext.SaveChangesAsync();
-                return Ok(new { msg = "Successfully Verified Coordinator" });
+                return Ok(new { msg = "Successfully Unblock Coordinator" });
             }   
             return Ok("Successful");
         } 
@@ -309,7 +309,7 @@ namespace LiveScore.Controllers
             {
                 return BadRequest(new { msg = "Contact already exists" });
             }
-            string imageUrl = await _imageUploader.UploadImg(acrimg.ImageFile, "images");
+            string imageUrl = await _imageUploader.UploadImg(acrimg.ImageFile, "ACR");
 
             var acr = new ACR
             {

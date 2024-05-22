@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import { tournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { TounamentPostApi,  getTounamentApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
+import { TournamentPostApi } from '../../Redux/AdminRedux';
 
 
 
@@ -43,17 +43,15 @@ const AddTournament = () => {
         initialValues: initial,
         validationSchema: tournament,
 
-        onSubmit: async (values, { resetForm, setSubmitting }) => {
+        onSubmit:  (values, { resetForm, setSubmitting }) => {
             try {
-                await dispatch(TounamentPostApi(values))
+                 dispatch(TournamentPostApi(values))
                 setSubmitting(false)
                 resetForm({ values: "" });
-                dispatch(getTounamentApi())
             } catch (error) {
                 <CircularProgress />
             }
         },
-
     })
 
 

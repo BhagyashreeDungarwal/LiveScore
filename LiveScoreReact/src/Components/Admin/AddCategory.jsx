@@ -4,8 +4,9 @@ import React from 'react'
 import { category } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { CategoryPostApi, getCategoryApi } from '../../Redux/Action/AdminAction';
+// import { CategoryPostApi, getCategoryApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
+import { CategoryPostApi } from '../../Redux/AdminRedux';
 
 
 
@@ -42,10 +43,10 @@ const AddCategory = () => {
         validationSchema: category,
         onSubmit: async (values, { resetForm, setSubmitting }) => {
             try {
-                await dispatch(CategoryPostApi(values))
+                dispatch(CategoryPostApi(values))
                 setSubmitting(false)
                 resetForm({ values: "" });
-                dispatch(getCategoryApi())
+                // dispatch(getCategoryApi())
             } catch (error) {
                 <CircularProgress />
             }

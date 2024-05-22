@@ -33,21 +33,7 @@ import {
 
 const url = "http://localhost:5032/api"
 
-export const getAtheleteApi = () => async (dispatch) => {
-    try {
-        dispatch(GetAtheleteStart())
 
-        const { data } = await axios.get(`${url}/Athletes/getAthelete`, {
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        dispatch(GetAtheleteSuccess(data))
-    } catch (error) {
-        dispatch(GetAtheleteFail(error.response.data))
-        // console.log(e.response.data.msg)
-    }
-}
 
 export const AtheletePostApi = (values) => async (dispatch) => {
     try {

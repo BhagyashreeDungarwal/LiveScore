@@ -3,7 +3,7 @@ import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
-import { VerifyCoordinatorApi } from '../../Redux/Action/AdminAction';
+// import { VerifyCoordinatorApi } from '../../Redux/Action/AdminAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import dayjs from 'dayjs';
 import { Block, Circle, VerifiedUser } from '@mui/icons-material';
@@ -11,6 +11,7 @@ import { toast } from 'react-toastify';
 import NoData from "./../Images/NoData.jpg"
 import { useState } from 'react';
 import { GetCoordinator } from '../Apis/Admin';
+import { VerifyCoordinatorApi } from '../../Redux/AdminRedux';
 
 
 function CustomToolbar() {
@@ -55,7 +56,7 @@ const VerifyCoordinator = () => {
   const [coordinator, setCoordinator] = useState()
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
-  const { verifydata, error,  blockdata, unblockdata } = useSelector(state => state.admin)
+  const { verifyData, error, blockdata, unblockdata } = useSelector(state => state.admin)
 
   const getCoordinator = async () => {
     setLoading(true)
@@ -72,9 +73,10 @@ const VerifyCoordinator = () => {
 
   const handleRequest = async (id) => {
     dispatch(VerifyCoordinatorApi(id))
+    getCoordinator()
   }
 
-  const img_url = "http://localhost:5032/images/";
+  const img_url = "http://localhost:5032/ACR/";
   const columns = useMemo(() => [
     {
       field: "imageURL", headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
@@ -132,22 +134,22 @@ const VerifyCoordinator = () => {
 
   useEffect(() => {
     getCoordinator()
-    if (verifydata) {
-      toast.success(verifydata.msg)
+    if (verifyData) {
+      toast.success(verifyData.msg)
       getCoordinator()
     }
-    if (blockdata) {
-      toast.success(blockdata.msg)
-      getCoordinator()
-    }
-    if (unblockdata) {
-      toast.success(unblockdata.msg)
-      getCoordinator()
-    }
+    // if (blockdata) {
+    //   toast.success(blockdata.msg)
+    //   getCoordinator()
+    // }
+    // if (unblockdata) {
+    //   toast.success(unblockdata.msg)
+    //   getCoordinator()
+    // }
     if (error) {
       toast.error(error.msg)
     }
-  }, [verifydata, error, blockdata, unblockdata])
+  }, [verifyData, error,])
 
   return (
     <div>

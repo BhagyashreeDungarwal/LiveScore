@@ -30,7 +30,7 @@ export const GetAthlete = async () => {
 
 export const GetReferee = async () => {
   try {
-    const {data }= await axios.get(`${url}/ACR/Referee`, {
+    const data = await axios.get(`${url}/ACR/Referee`, {
       headers: {
         "Content-Type": "application/json"
       }
