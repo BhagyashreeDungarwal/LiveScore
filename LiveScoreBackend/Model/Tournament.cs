@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using LiveScore.Model;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,10 +18,10 @@ namespace LiveScoring.Model
         [DataType(DataType.Date)]
         public DateTime TournamentDate { get; set; }
 
-        //public int? CategoryId { get; set; }
+        public int? TournamentCoordinator { get; set; }
 
-        //[JsonIgnore]
-        //public virtual Category? Category { get; set; }
+        [JsonIgnore]
+        public virtual ACR? Coordinator { get; set; }
 
     }
 }

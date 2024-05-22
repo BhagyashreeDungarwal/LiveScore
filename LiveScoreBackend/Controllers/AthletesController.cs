@@ -36,7 +36,10 @@ namespace LiveScore.Controllers
             {
                 return NotFound(new { msg = "Athelete Not Found" });
             }
-            return await _context.Athletes.Include((e)=> e.Coach).Include((c) => c.Category).Include((o)=> o.acr)
+            return await _context.Athletes
+                .Include((e)=> e.Coach)
+                .Include((c) => c.Category)
+                .Include((o)=> o.acr)
                 .Select((a)=> new {
                     id = a.Id,
                     athleteName = a.AthleteName,

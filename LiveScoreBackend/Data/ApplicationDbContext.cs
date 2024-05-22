@@ -151,7 +151,13 @@ namespace LiveScore.Data
                 entity.Property(m => m.Gender); 
                 entity.Property(m => m.Flag).IsRequired(false);
                 entity.Property(m => m.CategoryId).IsRequired(false); 
+                entity.Property(m => m.MatchCoordinator).IsRequired(false); 
+                entity.Property(m => m.Referee1).IsRequired(false); 
+                entity.Property(m => m.Referee2).IsRequired(false); 
+                entity.Property(m => m.Referee3).IsRequired(false); 
+                entity.Property(m => m.CategoryId).IsRequired(false); 
                 entity.Property(m => m.TournamentId).IsRequired();
+
 
                 entity.HasOne(m => m.Tournament)
                 .WithMany()
@@ -176,7 +182,27 @@ namespace LiveScore.Data
                 entity.HasOne(m => m.Athleteflag)
                     .WithMany()
                     .HasForeignKey(m => m.Flag)
-                    .OnDelete(DeleteBehavior.Restrict); 
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.Coordinator)
+                   .WithMany()
+                   .HasForeignKey(a => a.MatchCoordinator)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.RefereeF)
+                   .WithMany()
+                   .HasForeignKey(a => a.Referee1)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.RefereeS)
+                   .WithMany()
+                   .HasForeignKey(a => a.Referee2)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(a => a.RefereeT)
+                   .WithMany()
+                   .HasForeignKey(a => a.Referee3)
+                   .OnDelete(DeleteBehavior.Restrict);
             });
 
                 modelBuilder.Entity<Round>(entity =>
@@ -229,8 +255,14 @@ namespace LiveScore.Data
 
                 entity.Property(t => t.TournamentName).IsRequired().HasMaxLength(101); 
                 entity.Property(t => t.Venue).IsRequired().HasMaxLength(101); 
-                entity.Property(t => t.TournamentDate); 
-               
+                entity.Property(t => t.TournamentDate);
+                entity.Property(t => t.TournamentCoordinator);
+
+                entity.HasOne(a => a.Coordinator)
+                   .WithMany()
+                   .HasForeignKey(a => a.TournamentCoordinator)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             });
 
             modelBuilder.Entity<Viewers>(entity =>

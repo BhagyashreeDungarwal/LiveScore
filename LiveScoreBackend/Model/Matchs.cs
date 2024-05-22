@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using LiveScore.Model;
 
 namespace LiveScoring.Model
 {
@@ -36,6 +37,23 @@ namespace LiveScoring.Model
         public virtual Athlete? AthleteBlueObj { get; set; }
         [JsonIgnore]
         public virtual Athlete? Athleteflag { get; set; }
+
+        public int? MatchCoordinator { get; set; }
+        public int? Referee1 { get; set; }
+        public int? Referee2 { get; set; }
+        public int? Referee3 { get; set; }
+
+        [JsonIgnore]
+        public virtual ACR? Coordinator { get; set; }
+      
+        [JsonIgnore]
+        public virtual ACR? RefereeF { get; set; }
+       
+        [JsonIgnore]
+        public virtual ACR? RefereeS { get; set; }
+       
+        [JsonIgnore]
+        public virtual ACR? RefereeT { get; set; }
 
     }
 }

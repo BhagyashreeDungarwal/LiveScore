@@ -18,13 +18,24 @@ namespace LiveScore.Controllers
         }
 
         [HttpGet("GetTournaments")]
-       public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
+       public async Task<ActionResult<IEnumerable<dynamic>>> GetTournaments()
         {
            if (_dbContext.Tournaments == null)
            {
                 return NotFound(new { error = "Tournament Not Found" });
             }
-            return await _dbContext.Tournaments.ToListAsync();
+            return await _dbContext.Tournaments
+                .Include((c) => c.Coordinator)
+                .Select((a) => new
+                {
+                    tId = a.TId,
+                    tournamentName = a.TournamentName,
+                    venue = a.Venue,
+                    tournamentDate = a.TournamentDate,
+                    tournamentCoordinator =a.Coordinator.Name
+
+                })
+                .ToListAsync();
         }
       
 

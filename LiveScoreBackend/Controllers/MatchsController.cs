@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Concurrent;
 using System.IO;
 
 namespace LiveScore.Controllers
@@ -13,7 +14,11 @@ namespace LiveScore.Controllers
     [ApiController]
     public class MatchsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context; 
+        private static readonly ConcurrentDictionary<string, (DateTime Expiration, int AccessCount)> _otpStore = new ConcurrentDictionary<string, (DateTime Expiration, int AccessCount)>();
+        private static readonly TimeSpan _otpValidity = TimeSpan.FromMinutes(15); // OTP valid for 15 minutes
+
+
 
         public MatchsController(ApplicationDbContext context)
         {
@@ -32,6 +37,10 @@ namespace LiveScore.Controllers
                 .Include((o) => o.AthleteBlueObj)
                 .Include((o) => o.AthleteRedObj)
                 .Include((t) => t.Tournament)
+                .Include((c)=> c.Coordinator)
+                .Include((r) => r.RefereeF)
+                .Include((r) => r.RefereeS)
+                .Include((r) => r.RefereeT)
                 .Select((a) => new {
                    mid = a.MId,
                     matchGroup = a.MatchGroup,
@@ -45,6 +54,10 @@ namespace LiveScore.Controllers
                     gender = a.Gender,
                     flag = a.Flag,                   
                     category = a.Category.CategoryName,
+                    matchCoordinator = a.Coordinator.Name,
+                    referee1 = a.RefereeF.Name,
+                    referee2 = a.RefereeS.Name,
+                    referee3 = a.RefereeT.Name,
                     tournament = a.Tournament.TournamentName,
 
                 }).ToListAsync();
@@ -58,6 +71,10 @@ namespace LiveScore.Controllers
                                               .Include((o) => o.AthleteRedObj)
                                               .Include((p)=> p.AthleteBlueObj)
                                               .Include((t) => t.Tournament)
+                                              .Include((c) => c.Coordinator)
+                                              .Include((r) => r.RefereeF)
+                                              .Include((r) => r.RefereeS)
+                                              .Include((r) => r.RefereeT)
                                               .Where(m => m.MId == id)
                                               .Select(m => new {
                                                   mid = m.MId,
@@ -70,6 +87,10 @@ namespace LiveScore.Controllers
                                                   nextMatchId = m.NextMatchId,
                                                   flag = m.Flag,
                                                   categoryId = m.Category.CategoryName,
+                                                  matchCoordinator = m.Coordinator.Name,
+                                                  referee1 = m.RefereeF.Name,
+                                                  referee2 = m.RefereeS.Name,
+                                                  referee3 = m.RefereeT.Name,
                                                   tournamentId = m.Tournament.TournamentName
                                               })
                                               .FirstOrDefaultAsync();
@@ -90,14 +111,17 @@ namespace LiveScore.Controllers
 
             // Validate other parameters as needed
 
-            // Check if either AthleteRed or AthleteBlue is already participating in another match
-            var existingMatch = await _context.Matchss
-                .Where(m => m.MatchStatus != "Disable") // Exclude Disable matches
-                .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
-
-            if (existingMatch != null)
+            if (matchs.TournamentId != null)
             {
-                return BadRequest(new { msg = "One of the athletes is already participating in another match." });
+                // Check if either AthleteRed or AthleteBlue is already participating in another match
+                var existingMatch = await _context.Matchss
+                    .Where(m => m.MatchStatus != "Disable" && m.TournamentId == matchs.TournamentId) // Exclude Disable matches and match from different tournament
+                    .FirstOrDefaultAsync(m => m.AthleteRed == matchs.AthleteRed || m.AthleteBlue == matchs.AthleteBlue);
+
+                if (existingMatch != null)
+                {
+                    return BadRequest(new { msg = "One of the athletes is already participating in another match in the same tournament." });
+                }
             }
 
             try
@@ -124,6 +148,42 @@ namespace LiveScore.Controllers
             {
                 return StatusCode(500, new { msg = "An error occurred while processing the request.", error = ex.Message });
             }
+        }
+
+        // PUT: api/Matches/AssignMatch/5
+        [HttpPut("AssignMatch/{id}")]
+        public async Task<IActionResult> AssignMatch(int id, MatchAssign matchAssignDTO)
+        {
+            var match = await _context.Matchss.FindAsync(id);
+
+            if (match == null)
+            {
+                return NotFound(new { msg = "Match Not Found" });
+            }
+
+            // Map the properties from the DTO to the match entity
+            match.MatchCoordinator = matchAssignDTO.MatchCoordinator;
+            match.Referee1 = matchAssignDTO.Referee1;
+            match.Referee2 = matchAssignDTO.Referee2;
+            match.Referee3 = matchAssignDTO.Referee3;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!MatchExists(id))
+                {
+                    return NotFound(new { msg = "Match Not Found" });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // PUT: api/Athletes/UpdateMatch/5
@@ -187,10 +247,6 @@ namespace LiveScore.Controllers
                     new SqlParameter("@MatchStatus", match.MatchStatus),
                     new SqlParameter("@MatchType", match.MatchType),
                     new SqlParameter("@NumberOfRound", match.NumberOfRound));
-
-                //Console.WriteLine(match.Flag);
-                //Console.WriteLine(Console.ReadLine());
-              
                                
                 // Exclude 'MId' column from the INSERT statement
                 var modifiedMatch = new Matchs
@@ -203,7 +259,6 @@ namespace LiveScore.Controllers
                     MatchStatus = match.MatchStatus,
                     MatchDate = match.MatchDate,
                 };
-
 
                 return Ok();
             }
@@ -221,6 +276,85 @@ namespace LiveScore.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        // GET: api/Matches/GenerateOtp
+        [HttpGet("GenerateOtp")]
+        public async Task<IActionResult> GenerateOtp()
+        {
+            var otp = await Generate6DigitOtpAsync();
+            var expiration = DateTime.UtcNow.Add(_otpValidity);
+
+            _otpStore[otp] = (expiration, 0);
+
+            // Optionally, start a background task to clean up expired OTPs
+            Task.Run(CleanUpExpiredOtps);
+
+            return Ok(new { otp });
+        }
+
+        // POST: api/Matches/ValidateOtp
+        [HttpPost("ValidateOtp")]
+        public IActionResult ValidateOtp([FromBody] string otp)
+        {
+            if (_otpStore.TryGetValue(otp, out var otpInfo))
+            {
+                if (otpInfo.Expiration < DateTime.UtcNow)
+                {
+                    _otpStore.TryRemove(otp, out _);
+                    return BadRequest(new { msg = "OTP expired" });
+                }
+
+                if (otpInfo.AccessCount < 3)
+                {
+                    _otpStore[otp] = (otpInfo.Expiration, otpInfo.AccessCount + 1);
+                    return Ok(new { msg = "OTP validated successfully" });
+                }
+                else
+                {
+                    return BadRequest(new { msg = "OTP has already been accessed 3 times" });
+                }
+            }
+            else
+            {
+                return NotFound(new { msg = "OTP not found" });
+            }
+        }
+
+        // GET: api/Matches/GetStoredOtps (Debugging endpoint)
+        [HttpGet("GetStoredOtps")]
+        public IActionResult GetStoredOtps()
+        {
+            var otps = _otpStore.Select(kvp => new
+            {
+                Otp = kvp.Key,
+                Expiration = kvp.Value.Expiration,
+                AccessCount = kvp.Value.AccessCount
+            }).ToList();
+
+            return Ok(otps);
+        }
+
+        private Task<string> Generate6DigitOtpAsync()
+        {
+            return Task.Run(() =>
+            {
+                var random = new Random();
+                var otp = random.Next(100000, 999999).ToString("D6");
+                return otp;
+            });
+        }
+
+        private void CleanUpExpiredOtps()
+        {
+            var now = DateTime.UtcNow;
+            foreach (var key in _otpStore.Keys)
+            {
+                if (_otpStore.TryGetValue(key, out var otpInfo) && otpInfo.Expiration < now)
+                {
+                    _otpStore.TryRemove(key, out _);
+                }
             }
         }
 
