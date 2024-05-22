@@ -61,6 +61,7 @@ const ManageTournament = () => {
     { field: "tournamentName", headerName: "Tournament Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "venue", headerName: "Venue", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "tournamentCoordinator", headerName: "Coordinator", width: 110, headerClassName: "header", headerAlign: "center", align: "center"},
   ])
 
   const getTournament = async () => {

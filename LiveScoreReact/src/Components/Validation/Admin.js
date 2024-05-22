@@ -18,5 +18,6 @@ export const tournament = yup.object({
             const selectedDate = new Date(value);
             selectedDate.setHours(0, 0, 0, 0); // Set selected date to start of day
             return selectedDate > today; // Check if selected date is greater than today
-        })
+        }),
+    tournamentCoordinator: yup.string().required('Coach is required'),
 });
