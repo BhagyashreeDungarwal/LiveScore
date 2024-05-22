@@ -1,10 +1,12 @@
 import { AddPhotoAlternateRounded, Close } from '@mui/icons-material'
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide, TextField } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AtheletePutPicApi, GetAtheleteByIdApi } from '../../Redux/Action/CoordinatorAction'
+// import { AtheletePutPicApi } from '../../Redux/Action/CoordinatorAction'
 import { toast } from 'react-toastify'
+import { GetAthleteById } from '../Apis/Coordinator'
+import { AthletePutPicApi, clearMessage } from '../../Redux/CoordinatorRedux'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -14,18 +16,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EditAtheleteProfile = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const { atheleteByIddata } = useSelector(state => state.coordinator)
-  const [image, setImage] = React.useState(atheleteByIddata ? atheleteByIddata.imageUrl : "");
+  const [image, setImage] = useState({
+    imageUrl:""
+  });
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
 
-   const imgurl = "http://localhost:5032/images/";
+  const img_url = "http://localhost:5032/images/";
+
+  const getAthleteById = async () => {
+    try {
+      const { data } = await GetAthleteById(id);
+      data && setImage(data)
+    } catch (error) {
+      console.error("Error fetching athlete data:", error);
+    }
+  }
   useEffect(() => {
-    dispatch(GetAtheleteByIdApi(id));
-  }, [dispatch, id])
+    getAthleteById()
+  }, [id])
+
 
   const handleClose = () => {
-    navigate("/coordinator/athelete")
+    navigate("/coordinator/athlete")
   };
 
 
@@ -47,8 +60,9 @@ const EditAtheleteProfile = () => {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
       // console.log(formData.get("ImageFile"))
-      await dispatch(AtheletePutPicApi(formData, id))
-      navigate("/coordinator/athelete")
+      // console.log(id)
+      dispatch(AthletePutPicApi({ values: formData, id }))
+      navigate("/coordinator/athlete")
       dispatch(clearMessage())
 
     } else {
@@ -77,13 +91,14 @@ const EditAtheleteProfile = () => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={atheleteByIddata ? `${imgurl}${atheleteByIddata.imageUrl}` : image}
+          src={image.imageUrl ? `${img_url}${image.imageUrl}` : ""}
           sx={{
             height: "12rem",
             width: "12rem",
             margin: "auto",
             boxShadow: "3px 3px 6px"
-          }} />
+          }}
+          alt='hello' />
         <TextField
           // sx={{ margin: "2rem 0 ", }}
           id="name"

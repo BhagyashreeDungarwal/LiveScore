@@ -1,16 +1,15 @@
 import { Avatar, Box, CircularProgress, Fab,  Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
-import AddAthelete from './AddAthelete'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
 import {useState, useEffect, useMemo } from 'react';
-import { BlockAthleteApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import {  Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 import { GetAthlete } from '../Apis/Coordinator';
+import AddAthlete from './AddAthlete';
+import { BlockAthleteApi, clearMessage } from '../../Redux/CoordinatorRedux';
 
 function CustomToolbar() {
   return (
@@ -22,7 +21,7 @@ function CustomToolbar() {
         slotProps={{ tooltip: { title: 'Change density' } }}
       />
       <Box sx={{ flexGrow: 1 }} />
-      <AddAthelete />
+      <AddAthlete />
     </GridToolbarContainer>
   );
 }
@@ -49,10 +48,9 @@ function CustomNoRowsOverlay() {
   );
 }
 
-const Athelete = () => {
+const Athlete = () => {
 
   const [athlete, setAthlete] = useState()
-  
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
   const { data, error } = useSelector(state => state.coordinator)
@@ -61,13 +59,13 @@ const Athelete = () => {
     getAthlete()
   }
 
-   const imgurl = "http://localhost:5032/images/";
+   const img_url = "http://localhost:5032/images/";
 
   const columns = useMemo(() => [
     {
       field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editatheletepic/${params.row.id}`}><Avatar src={`${imgurl}${params.value}`} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editAthletePic/${params.row.id}`}><Avatar src={`${img_url}${params.value}`} alt="Avatar" /></Link>
       ),
     },
 
@@ -81,14 +79,14 @@ const Athelete = () => {
     { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "categoryName", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "coachName", headerName: "Coach", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "coordinater", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "coordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
       headerName: "Action", width: 180, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
           if (params.row.status === "UnBlock") {
           return (
            <Box>
             <Tooltip title="Edit">
-              <Link to={`/coordinator/editathelete/${params.row.id}`} >
+              <Link to={`/coordinator/editAthlete/${params.row.id}`} >
                 <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
                   <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
                 </Fab>
@@ -141,7 +139,7 @@ const Athelete = () => {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
-        <HeaderFormat title="Athelete Management" />
+        <HeaderFormat title="Athlete Management" />
       </Box>
       {
         loading ? <CircularProgress /> :
@@ -189,4 +187,4 @@ const Athelete = () => {
 }
 
 
-export default Athelete
+export default Athlete

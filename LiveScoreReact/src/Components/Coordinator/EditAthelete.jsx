@@ -1,15 +1,14 @@
-import { AddLocationAltRounded, AlternateEmailRounded, Close, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
+import { AddLocationAltRounded, AlternateEmailRounded, CategoryRounded, Close, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography, styled, useTheme } from '@mui/material';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { AtheletePutApi, GetAtheleteByIdApi, GetCoachApi } from '../../Redux/Action/CoordinatorAction';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import dayjs from 'dayjs';
-import { getCategoryApi } from '../../Redux/Action/AdminAction';
-import { upAthelete } from '../Validation/Coordinator';
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
+import { GetAthleteById, GetCoach } from '../Apis/Coordinator';
+import { upAthlete } from '../Validation/Coordinator';
+import { AthletePutApi, clearMessage } from '../../Redux/CoordinatorRedux';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -22,9 +21,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 
 const EditAthelete = () => {
+    const [category, setCategory] = useState()
+    const { data, error } = useSelector(state => state.coordinator)
     const theme = useTheme()
-    const { data, error, atheleteByIddata } = useSelector((state) => state.coordinator);
-    const { coachdata } = useSelector((state => state.coordinator))
+    const [coach, setCoach] = useState()
     const dispatch = useDispatch()
     const { id } = useParams()
     const navigate = useNavigate()
@@ -41,36 +41,32 @@ const EditAthelete = () => {
         coachName: "",
     }
 
+    const getAthleteById = async () => {
+        const { data } = await GetAthleteById(id)
+        data && setValues(data)
+        data && setCategory(data.categoryName)
+    }
+
+    const getCoach = async () => {
+        const { data } = await GetCoach()
+        data && setCoach(data)
+    }
 
 
     useEffect(() => {
-        dispatch(GetAtheleteByIdApi(id));
-    }, [dispatch, id])
-
-    useEffect(() => {
-        if (atheleteByIddata) {
-            setValues(atheleteByIddata)
-        }
-    }, [atheleteByIddata])
-
-    useEffect(() => {
-        dispatch(getCategoryApi())
-    }, [dispatch])
-
-    useEffect(() => {
-        dispatch(GetCoachApi())
-    }, [dispatch])
+        getAthleteById()
+        getCoach()
+    }, [])
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
-        validationSchema: upAthelete,
+        validationSchema: upAthlete,
         onSubmit: async (values) => {
-            console.log(values)
-            dispatch(AtheletePutApi(values, id))
-            if (data.msg) {
-                dispatch(clearMessage()) 
-                navigate("/coordinator/athelete")
+            dispatch(AthletePutApi({values, id}))
+            if (data && data.msg) {
+                dispatch(clearMessage())
+                navigate("/coordinator/athlete")
             }
             if (error) {
                 toast.error(error.msg)
@@ -80,7 +76,7 @@ const EditAthelete = () => {
     })
 
     const handleClose = () => {
-        navigate("/coordinator/athelete")
+        navigate("/coordinator/athlete")
     };
     return (
         <div>
@@ -91,7 +87,7 @@ const EditAthelete = () => {
                     open="true"
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                        Edit Athelete
+                        Edit Athlete
                     </DialogTitle>
                     <IconButton
                         aria-label="close"
@@ -108,9 +104,7 @@ const EditAthelete = () => {
                     <DialogContent dividers>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
-
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
-
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -174,7 +168,7 @@ const EditAthelete = () => {
                                     />
                                     {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                                 </Grid>
-                                <Grid item xl={12} md={6} sm={12} xs={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
@@ -197,7 +191,7 @@ const EditAthelete = () => {
                                     {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
                                 </Grid>
 
-                                <Grid item xl={12} md={12} sm={12} xs={12}>
+                                <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
                                         row
@@ -209,9 +203,9 @@ const EditAthelete = () => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     >
-                                        <FormControlLabel value="Male" control={<Radio />} label="Male" />
-                                        <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                                        <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                                        <FormControlLabel value="Male" control={<Radio size='small' />} label="Male" />
+                                        <FormControlLabel value="Female" control={<Radio size='small' />} label="Female" />
+                                        <FormControlLabel value="Other" control={<Radio size='small' />} label="Other" />
                                     </RadioGroup>
                                     {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
 
@@ -308,6 +302,7 @@ const EditAthelete = () => {
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Coach</InputLabel>
                                         <Select
+                                            size='small'
                                             color='secondary'
                                             id="coachName"
                                             name="coachName"
@@ -316,7 +311,7 @@ const EditAthelete = () => {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         >
-                                            {coachdata?.map((data) => (
+                                            {coach?.map((data) => (
                                                 <MenuItem key={data.coachName} value={data.coachName}>{data.coachName}</MenuItem>
                                             ))
                                             }
@@ -325,15 +320,22 @@ const EditAthelete = () => {
                                     {errors.coachName && touched.coachName ? (<Typography variant="subtitle1" color="error">{errors.coachName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12} xs={12}>
-                                        <TextField
-                                            color='secondary'
-                                            id="categoryName"
-                                            name="categoryName"
-                                            label="category"
-                                            readOnly
-                                            value={atheleteByIddata? atheleteByIddata.categoryName :""}
-                                      />
-                                     </Grid>
+                                    <TextField
+                                        fullWidth
+                                        variant='standard'
+                                        id="athleteName"
+                                        name="athleteName"
+                                        label="Name"
+                                        value={category}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
+                                                    <CategoryRounded />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </Grid>
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit

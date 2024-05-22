@@ -50,6 +50,7 @@ export const AtheletePostApi = (values) => async (dispatch) => {
         // console.log(e.response.data.msg)
     }
 }
+
 export const GetAtheleteByIdApi = (id) => async (dispatch) => {
     try {
         dispatch(GetAtheleteByIdStart())

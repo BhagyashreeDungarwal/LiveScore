@@ -51,7 +51,7 @@ namespace LiveScore.Controllers
                     status = a.Status,
                     coachName = a.Coach.CoachName,
                     categoryName = a.Category.CategoryName,
-                    coordinater = a.acr.Name,
+                    coordinator = a.acr.Name,
                 }).ToListAsync();
         }
 
@@ -144,7 +144,7 @@ namespace LiveScore.Controllers
 
             // Validate age
             var ageCategory = await _context.Categories
-                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age);
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >=zq age);
             if (ageCategory == null)
             {
                 return BadRequest(new { msg = "No suitable category found for the athlete based on age" });

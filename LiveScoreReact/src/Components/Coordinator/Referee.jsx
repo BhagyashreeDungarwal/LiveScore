@@ -5,12 +5,11 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { BlockRefereeApi } from '../../Redux/Action/CoordinatorAction';
 import { Block, VerifiedUser } from "@mui/icons-material";
-import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer";
 import { useState } from "react";
 import { GetReferee } from "../Apis/Coordinator";
 import { toast } from "react-toastify";
+import { BlockRefereeApi, clearMessage } from "../../Redux/CoordinatorRedux";
 
 
 function CustomToolbar() {
@@ -58,16 +57,16 @@ const [referee, setReferee] = useState([])
 const [loading, setLoading] = useState(false)
 const {data, error} = useSelector(state => state.coordinator)
 
- const handleRequest = async (id) => {
-    await dispatch(BlockRefereeApi(id))
+ const handleRequest =  (id) => {
+     dispatch(BlockRefereeApi(id))
     getRef()
   }
- const imgurl = "http://localhost:5032/ACR/";
+ const img_url = "http://localhost:5032/ACR/";
 
   const columns = useMemo(() => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
      renderCell: (params) => (
-      <Avatar src={`${imgurl}${params.value}`} alt="Avatar" />
+      <Avatar src={`${img_url}${params.value}`} alt="Avatar" />
       ), },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -116,11 +115,11 @@ const {data, error} = useSelector(state => state.coordinator)
     getRef()
      if (data) {
       toast.success(data.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
     if (error) {
       toast.error(error.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
   }, [data, error])
 

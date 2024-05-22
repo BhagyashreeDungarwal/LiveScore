@@ -27,6 +27,18 @@ export const GetAthlete = async () => {
     return error
   }
 }
+export const GetAthleteById = async (id) => {
+  try {
+    const  data  = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
+      headers: {
+          "Content-Type": "application/json"
+      }
+  })
+    return data
+  } catch (error) {
+    return error
+  }
+}
 
 export const GetReferee = async () => {
   try {
@@ -44,6 +56,19 @@ export const GetReferee = async () => {
 export const GetCoach = async () => {
   try {
     const data = await axios.get(`${url}/Coaches/GetCoaches`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+
+}
+export const GetCoachById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Coaches/GetCoachesById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }

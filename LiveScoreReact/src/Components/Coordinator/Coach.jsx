@@ -4,15 +4,14 @@ import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDe
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { BlockCoachApi } from '../../Redux/Action/CoordinatorAction';
 import ProtectedRoute from '../../ProtectedRoute';
 import { toast } from 'react-toastify';
 import AddCoach from './AddCoach';
 import { Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
 import { useState } from 'react';
 import { GetCoach } from '../Apis/Coordinator';
+import { BlockCoachApi, clearMessage } from '../../Redux/CoordinatorRedux';
 
 
 function CustomToolbar() {
@@ -64,13 +63,13 @@ const Coach = () => {
     getCoach()
   }
    
-  const imgurl = "http://localhost:5032/coach/";
+  const img_url = "http://localhost:5032/coach/";
 
   const columns = useMemo(() => [
     {
       field: `imageUrl`, headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editcoachpic/${params.row.coachId}`}> <Avatar src={`${imgurl}${params.value}`} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editCoachPic/${params.row.coachId}`}> <Avatar src={`${img_url}${params.value}`} alt="Avatar" /></Link>
       ),
     },
     { field: "coachName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
@@ -87,7 +86,7 @@ const Coach = () => {
           return (
             <Box sx={{ p: 1 }}>
               <Tooltip title="Edit">
-                <Link to={`/coordinator/editcoach/${params.row.coachId}`} >
+                <Link to={`/coordinator/editCoach/${params.row.coachId}`} >
                   <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
                     <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} />Edit
                   </Fab>
@@ -130,11 +129,11 @@ const Coach = () => {
     getCoach() 
     if (data) {
       toast.success(data.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
     if (error) {
       toast.error(error.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
   }, [data, error])
 

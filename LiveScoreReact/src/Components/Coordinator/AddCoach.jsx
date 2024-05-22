@@ -9,11 +9,8 @@ import { useFormik } from 'formik';
 import { TextField, Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment } from '@mui/material';
 import { CoachValidate } from '../Validation/Coordinator';
 import { AlternateEmailRounded, EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import { CoachPostApi } from '../../Redux/Action/CoordinatorAction';
-import { GetCoach } from '../Apis/Coordinator';
-import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { CoachPostApi } from '../../Redux/CoordinatorRedux';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -27,8 +24,8 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const AddCoach = () => {
     const theme = useTheme()
-    const { data, error } = useSelector((state => state.coordinator))
     const dispatch = useDispatch()
+    const [open, setOpen] = React.useState(false);
 
     const initial = {
         name: "",
@@ -40,23 +37,10 @@ const AddCoach = () => {
         image: null,
     }
 
-    useEffect(() => {
-        if (data) {
-            toast.success(data.msg)
-            console.log(data.msg)
-        }
-        if (error) {
-            toast.error(error.msg)
-            console.log(error.msg)
-        }
-    }, [data, error])
-
-
     const { values, touched, errors, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: CoachValidate,
         onSubmit: async (values) => {
-            console.log(values);
             try {
                 const formdata = new FormData()
                 formdata.append('CoachName', values.name)
@@ -67,16 +51,7 @@ const AddCoach = () => {
                 formdata.append('Experience', values.experience)
                 formdata.append('ImageFile', values.image)
 
-                await dispatch(CoachPostApi(formdata))
-                await GetCoach()
-                if (data) {
-                    toast.success(data.msg)
-                }
-                if (error) {
-                    toast.error(error.msg)
-                }
-                console.log(values)
-                console.log(formdata);
+                 dispatch(CoachPostApi(formdata))
             } catch (error) {
                 <CircularProgress />
             }
@@ -87,13 +62,11 @@ const AddCoach = () => {
     const handleFile = (e) => {
         const file = e.target.files[0]
         setFieldValue('image', file)
-        console.log("file 1", file)
     }
 
-    const [open, setOpen] = React.useState(false);
+    
 
     const handleClickOpen = () => {
-        console.log("open")
         setOpen(true);
     };
     const handleClose = () => {
@@ -101,7 +74,6 @@ const AddCoach = () => {
     };
 
     return (
-        <div>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
                     Add Coach
@@ -277,7 +249,6 @@ const AddCoach = () => {
 
                 </BootstrapDialog>
             </React.Fragment>
-        </div>
     )
 }
 

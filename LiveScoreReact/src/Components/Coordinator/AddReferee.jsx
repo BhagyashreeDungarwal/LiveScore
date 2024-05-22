@@ -1,20 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import { useFormik } from 'formik';
-import { TextField,  Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment,useTheme, Input } from '@mui/material';
+import {Dialog,DialogTitle,DialogContent,IconButton, TextField,  Button, Grid, Typography, RadioGroup, FormControlLabel, Radio, FormLabel, CircularProgress, InputAdornment,useTheme, Input } from '@mui/material';
 import { useState } from 'react';
 import { acr } from '../Validation/Coordinator';
-import {  AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material';
-import { toast } from 'react-toastify';
-import { RefereePostApi } from '../../Redux/Action/CoordinatorAction';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { GetReferee } from '../Apis/Admin';
+import {  AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff ,Close } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { RefereePostApi } from '../../Redux/CoordinatorRedux';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -29,8 +21,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const AddReferee = () => {
  
    const theme = useTheme()
-    const { data, error,  } = useSelector((state) => state.coordinator);
-   const disptach = useDispatch()
+   const dispatch = useDispatch()
 
 
     const [type, setType] = useState("password")
@@ -60,17 +51,6 @@ const AddReferee = () => {
         city: "",
     }
 
-  useEffect(() => {
-        if (data) {
-            toast.success(data.msg)
-            console.log(data.msg)
-        }
-        if (error) {
-            toast.error(error.msg)
-            console.log(error.msg)
-        }
-    }, [data, error])
-
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues: initial,
         validationSchema: acr,
@@ -83,22 +63,11 @@ const AddReferee = () => {
                 formData.append('Name', values.name);
                 formData.append('Password', values.password);
                 formData.append('Contact', values.contact);
-                // formData.append('Age', values.age);
                 formData.append('DateOfBirth', values.dateOfBirth);
                 formData.append('Gender', values.gender);
                 formData.append('City', values.city);
                 formData.append('State', values.state);
-                await disptach(RefereePostApi(formData))
-                await GetReferee()
-                if (data) {
-                    toast.success(data.msg)
-                }
-
-                if (error) {
-                    toast.error(error.msg)
-                }
-                console.log(values)
-                console.log(formData);
+                dispatch(RefereePostApi(formData))
             } catch (error) {
                 <CircularProgress />
             }
@@ -106,10 +75,7 @@ const AddReferee = () => {
     })
 
     const handleImageChange = (event) => {
-        // Extract the file from the event object
         const file = event.target.files[0];
-
-        // Set the file in formik values
         setFieldValue('image', file);
     };
 
@@ -149,7 +115,7 @@ const AddReferee = () => {
                             color: (theme) => theme.palette.grey[500],
                         }}
                     >
-                        <CloseIcon />
+                        <Close />
                     </IconButton>
                     <DialogContent dividers>
                        <form onSubmit={handleSubmit}>

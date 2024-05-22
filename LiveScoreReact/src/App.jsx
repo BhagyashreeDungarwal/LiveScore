@@ -8,7 +8,7 @@ import { Category, Dashboard, Handshake, MilitaryTech, Person2, Person2Rounded, 
 import Header from './Components/Common/Header';
 // import Rdashboard from './Components/Referee/Rdashboard';
 import CDashboard from './Components/Coordinator/CDashboard';
-import Athelete from './Components/Coordinator/Athelete';
+import Athelete from './Components/Coordinator/Athlete';
 import RegisterCoordinator from './Components/Coordinator/RegisterCoordinator';
 import Referee from './Components/Coordinator/Referee';
 import VerifyCoordinator from './Components/Admin/VerifyCoordinator';
@@ -24,6 +24,7 @@ import EditAtheleteProfile from './Components/Coordinator/EditAtheleteProfile';
 import EditCoach from './Components/Coordinator/EditCoach';
 import EditCategory from './Components/Admin/EditCategory';
 import EditCoachPic from './Components/Coordinator/EditCoachPic';
+import Athlete from './Components/Coordinator/Athlete';
 
 
 function App() {
@@ -75,8 +76,8 @@ function App() {
 
       ],
       sidebarRoute: [
-        "cdashboard",
-        "athelete",
+        "cDashboard",
+        "athlete",
         "referee",
         "coach",
         "match",
@@ -84,20 +85,20 @@ function App() {
       ],
       name: [
         "Coordinator Dashboard",
-        "Athelete",
+        "Athlete",
         "Referee",
         "Coach",
         "Matches",
 
       ],
-      sideroutername: [
+      sideRouterName: [
         "Profile"
       ],
-      siderouteicon: [
+      sideRouteIcon: [
         Person2Rounded
       ],
-      sideroutelink: [
-        "cprofile"
+      sideRouteLink: [
+        "cProfile"
       ]
     },
     referee: {
@@ -178,7 +179,7 @@ function App() {
     {
       path: "/coordinator",
       element: (
-        <Header link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} sideroutername={coordinator.sideroutername} siderouteicon={coordinator.siderouteicon} sideroutelink={coordinator.sideroutelink} />
+        <Header link="coordinator" icons={coordinator.icon} sidebarRoute={coordinator.sidebarRoute} name={coordinator.name} sideRouterName={coordinator.sideRouterName} sideRouteIcon={coordinator.sideRouteIcon} sideRouteLink={coordinator.sideRouteLink} />
       ),
       children: [
         {
@@ -186,11 +187,11 @@ function App() {
           element: <CDashboard />,
         },
         {
-          path: "cdashboard",
+          path: "cDashboard",
           element: <CDashboard />
         }, {
-          path: "athelete",
-          element: <Athelete />
+          path: "athlete",
+          element: <Athlete />
         }, {
           path: "referee",
           element: <Referee />
@@ -201,19 +202,19 @@ function App() {
           path: "match",
           element: <Match />
         }, {
-          path: "cprofile",
+          path: "cProfile",
           element: <CProfile />
         }, {
-          path: "editathelete/:id",
+          path: "editAthlete/:id",
           element: <EditAthelete />
         }, {
-          path: "editatheletepic/:id",
+          path: "editAthletePic/:id",
           element: <EditAtheleteProfile />
         }, {
-          path: "editcoach/:id",
+          path: "editCoach/:id",
           element: <EditCoach />
         }, {
-          path: "editcoachpic/:id",
+          path: "editCoachPic/:id",
           element: <EditCoachPic />
         }
       ]
