@@ -6,9 +6,8 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { category } from '../Validation/Admin';
-import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 import { GetCategoryById } from '../Apis/Admin';
-import { CategoryPutApi } from '../../Redux/AdminRedux';
+import { CategoryPutApi, clearMessageAdmin } from '../../Redux/AdminRedux';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -44,14 +43,14 @@ const EditCategory = () => {
         validationSchema: category,
         onSubmit: async (values) => {
             console.log(values)
-            dispatch(CategoryPutApi(values, id))
-            if (data.msg) {
-                dispatch(ClearMessageAdmin())
+            dispatch(CategoryPutApi({values, id}))
+            if (data) {
                 navigate("/admin/category")
+                // dispatch(ClearMessageAdmin())
             }
             if (error) {
                 toast.error(error.msg)
-                dispatch(ClearMessageAdmin())
+                dispatch(clearMessageAdmin())
             }
         },
     })

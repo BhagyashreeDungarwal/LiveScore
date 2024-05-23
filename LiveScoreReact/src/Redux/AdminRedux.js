@@ -13,15 +13,12 @@ const url = "http://localhost:5032/api"
 export const CategoryPostApi = createAsyncThunk(
     'admin/categoryPost',
     async (values, { rejectWithValue }) => {
-        console.log("hee from up")
         try {
             const { data } = await axios.post(`${url}/Categories/PostCategory`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-            console.log("hi after api")
-            console.log(data)
             return data
         } catch (error) {
             return rejectWithValue(error.response.data)

@@ -61,7 +61,7 @@ export const acr = yup.object({
     state: yup.string().required('State is required'),
     city: yup.string().required('City is required'),
 });
-export const acrupdate = yup.object({
+export const acrUpdate = yup.object({
     name: yup.string().required('Name is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
     dateOfBirth: yup.date().required('Date of Birth is required').max(new Date(), 'Date of birth cannot be in the future')

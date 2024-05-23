@@ -11,8 +11,11 @@ import { DriveFileRenameOutlineRounded, HowToReg } from "@mui/icons-material";
 import { useState } from "react";
 import { GetMatch } from "../Apis/Coordinator";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
+=======
+>>>>>>> 7b749fcf184ab084186a1a4c2405a27e52d500ce
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -129,14 +132,13 @@ const Match = () => {
     getMatch() 
     if (data) {
       toast.success(data.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
     if (error) {
       toast.error(error.msg)
-      dispatch((clearMessage))
+      dispatch((clearMessage()))
     }
   }, [data, error])
-
 
   return (
     <Box>
@@ -150,8 +152,7 @@ const Match = () => {
             display: "grid",
             height: "78vh",
           }}>
-            {
-              match && match.length > 0 ? (
+            { match && match.length > 0 ? (
                 <DataGrid
                   rows={match}
                   columns={columns}

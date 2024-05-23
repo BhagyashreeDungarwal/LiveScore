@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { clearMessage } from "../../Redux/Reducer/CoordinatorReducer"
+import { clearMessage } from "../../Redux/CoordinatorRedux"
 
 
   

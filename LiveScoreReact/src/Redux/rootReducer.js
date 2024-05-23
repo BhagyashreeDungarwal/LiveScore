@@ -1,12 +1,10 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import loginSlice from "./Reducer/loginReducer";
-// import CoordinatorSlice from "./Reducer/CoordinatorReducer";
 import AdminRedux from "./AdminRedux";
 import CoordinatorRedux from "./CoordinatorRedux";
-// import AdminSlice from "./Reducer/AdminReducer";
+import LoginRedux from "./LoginRedux";
 
 const rootReducer = combineReducers({
-    login: loginSlice,
+    login: LoginRedux,
     coordinator: CoordinatorRedux,
     admin: AdminRedux
 
