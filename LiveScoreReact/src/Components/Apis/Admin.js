@@ -34,6 +34,19 @@ export const GetTournament = async () => {
     return error
   }
 }
+
+export const GetTournamentById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Tournaments/GetTournamentById/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
 export const GetCoordinator = async () => {
   try {
     const data = await axios.get(`${url}/ACR/Coordinator`, {

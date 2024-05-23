@@ -19,5 +19,18 @@ export const tournament = yup.object({
             selectedDate.setHours(0, 0, 0, 0); // Set selected date to start of day
             return selectedDate > today; // Check if selected date is greater than today
         }),
-    tournamentCoordinator: yup.string().required('Coach is required'),
+    TournamentCoordinator: yup.string().required('Coordinator is required'),
+});
+export const uptournament = yup.object({
+    tournamentName: yup.string().required('Name is Required'),
+    venue: yup.string().required('Venue  is Required'),
+    tournamentDate: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')
+        .test('is-future', 'Date must be in the future', value => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set today's date to start of day
+            const selectedDate = new Date(value);
+            selectedDate.setHours(0, 0, 0, 0); // Set selected date to start of day
+            return selectedDate > today; // Check if selected date is greater than today
+        }),
+    coordinatorName: yup.string().required('Coordinator is required'),
 });

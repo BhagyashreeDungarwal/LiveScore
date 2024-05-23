@@ -29,11 +29,11 @@ export const GetAthlete = async () => {
 }
 export const GetAthleteById = async (id) => {
   try {
-    const  data  = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
+    const data = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
       headers: {
-          "Content-Type": "application/json"
+        "Content-Type": "application/json"
       }
-  })
+    })
     return data
   } catch (error) {
     return error
@@ -90,5 +90,19 @@ export const GetMatch = async () => {
   } catch (error) {
     return error
   }
+}
+
+export const GetMatchById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+
 }
 

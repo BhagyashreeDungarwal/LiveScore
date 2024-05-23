@@ -228,14 +228,27 @@ export const CoachPutPicApi = createAsyncThunk(
     }
 );
 
-
-
-
 export const AddMatchApi = createAsyncThunk(
     'coordinator/matchPost',
     async (values, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(`${url}/Matchs/PostMatch`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const AssignMatchApi = createAsyncThunk(
+    'coordinator/assignMatch',
+    async ({ values, id }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/Matchs/AssignMatch/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -445,6 +458,18 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(AddMatchApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            })
+            .addCase(AssignMatchApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(AssignMatchApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(AssignMatchApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

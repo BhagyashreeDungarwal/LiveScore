@@ -147,7 +147,7 @@ namespace LiveScore.Controllers
 
             // Validate age
             var ageCategory = await _context.Categories
-                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >=zq age);
+                .FirstOrDefaultAsync(c => c.MinAge <= age && c.MaxAge >= age);
             if (ageCategory == null)
             {
                 return BadRequest(new { msg = "No suitable category found for the athlete based on age" });

@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack, } from '@mui/material';
+import { Box, CircularProgress, Fab, Stack, Tooltip, } from '@mui/material';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import HeaderFormat from '../Common/HeaderFormat';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,8 @@ import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 import { GetTournament } from '../Apis/Admin';
+import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 function CustomToolbar() {
   return (
@@ -62,6 +64,23 @@ const ManageTournament = () => {
     { field: "venue", headerName: "Venue", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "tournamentCoordinator", headerName: "Coordinator", width: 110, headerClassName: "header", headerAlign: "center", align: "center"},
+     {
+      headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
+      renderCell: params => {
+        return (
+          <Box>
+            <Tooltip title="Edit">
+              <Link to={`/admin/edittournament/${params.row.tId}`} >
+                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
+                </Fab>
+              </Link>
+            </Tooltip>
+          </Box>
+        )
+      }
+
+    }
   ])
 
   const getTournament = async () => {

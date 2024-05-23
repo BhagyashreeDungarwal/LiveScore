@@ -25,6 +25,8 @@ import EditCoach from './Components/Coordinator/EditCoach';
 import EditCategory from './Components/Admin/EditCategory';
 import EditCoachPic from './Components/Coordinator/EditCoachPic';
 import Athlete from './Components/Coordinator/Athlete';
+import EditTournament from './Components/Admin/EditTournament';
+import AssignMatch from './Components/Coordinator/AssignMatch';
 
 
 function App() {
@@ -55,7 +57,7 @@ function App() {
         "category",
         "vcoordinator",
         "refereelist",
-        "mtounament",
+        "mtournament",
         "matchdetails"
       ], name: [
         "Admin Dashboard",
@@ -164,7 +166,7 @@ function App() {
           path: "refereelist",
           element: <RefereeList />
         }, {
-          path: "mtounament",
+          path: "mtournament",
           element: <ManageTournament />
         }, {
           path: "matchdetails",
@@ -172,6 +174,9 @@ function App() {
         }, {
           path: "editcategory/:id",
           element: <EditCategory />
+        }, {
+          path: "edittournament/:id",
+          element: <EditTournament />
         }
 
       ]
@@ -216,6 +221,9 @@ function App() {
         }, {
           path: "editCoachPic/:id",
           element: <EditCoachPic />
+        }, {
+          path: "assignMatch/:id",
+          element: <AssignMatch />
         }
       ]
     },
