@@ -10,10 +10,11 @@ import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlL
 import { AthleteValidate } from '../Validation/Coordinator';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
+// import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
 import { GetAthlete, GetCoach } from '../Apis/Coordinator';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { AthletePostApi } from '../../Redux/CoordinatorRedux';
 
 
 
@@ -26,7 +27,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const AddAthelete = () => {
+const AddAthlete = () => {
 
     const theme = useTheme()
     const [coach, setCoach] = useState()
@@ -35,16 +36,16 @@ const AddAthelete = () => {
     const cid = localStorage.getItem("ID")
 
     const getCoach = async () => {
-      
-        const {data} = await GetCoach()
+
+        const { data } = await GetCoach()
         data && setCoach(data)
     }
 
     useEffect(() => {
-      getCoach()
+        getCoach()
     }, [])
-    
-    
+
+
 
     const initial = {
         athleteName: "",
@@ -80,10 +81,10 @@ const AddAthelete = () => {
                 formdata.append('CoordinatorId', cid)
                 formdata.append('ImageFile', values.image)
 
-                await dispatch(AtheletePostApi(formdata))
+                 dispatch(AthletePostApi(formdata))
                 setSubmitting(false)
                 resetForm({ values: "" });
-               await GetAthlete()
+                await GetAthlete()
                 console.log(cid);
             } catch (error) {
                 <CircularProgress />
@@ -114,7 +115,7 @@ const AddAthelete = () => {
         <div>
             <React.Fragment>
                 <Button variant="outlined" onClick={handleClickOpen}>
-                    Add Athelete
+                    Add Athlete
                 </Button>
                 <BootstrapDialog
                     onClose={handleClose}
@@ -122,7 +123,7 @@ const AddAthelete = () => {
                     open={open}
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                        Add Athelete
+                        Add Athlete
                     </DialogTitle>
                     <IconButton
                         aria-label="close"
@@ -239,7 +240,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.image && touched.image ? (<Typography variant="subtitle1" color="error">{errors.image}</Typography>) : null}
                                 </Grid>
-                              
+
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormLabel component="legend">Gender</FormLabel>
                                     <RadioGroup
@@ -346,7 +347,7 @@ const AddAthelete = () => {
                                     />
                                     {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
                                 </Grid>
-                                
+
                                 <Grid item xl={6} md={6} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Coach</InputLabel>
@@ -367,7 +368,7 @@ const AddAthelete = () => {
                                     </FormControl>
                                     {errors.coachId && touched.coachId ? (<Typography variant="subtitle1" color="error">{errors.coachId}</Typography>) : null}
                                 </Grid>
-                               
+
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
 
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
@@ -384,4 +385,4 @@ const AddAthelete = () => {
     )
 }
 
-export default AddAthelete
+export default AddAthlete

@@ -1,11 +1,11 @@
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide, TextField } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { CoachPutPicApi, GetCoachByIdApi } from '../../Redux/Action/CoordinatorAction'
 import { AddPhotoAlternateRounded, Close } from '@mui/icons-material'
 import { toast } from 'react-toastify'
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer'
+import { GetCoachById } from '../Apis/Coordinator'
+import { CoachPutPicApi, clearMessage } from '../../Redux/CoordinatorRedux'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -16,16 +16,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EditCoachPic = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const { coachByIddata } = useSelector(state => state.coordinator)
-  const [image, setImage] = React.useState(coachByIddata ? coachByIddata.imageUrl : "");
+  const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
 
-   const imgurl = "http://localhost:5032/coach/";
+   const img_url = "http://localhost:5032/coach/";
 
-  useEffect(() => {
-    dispatch(GetCoachByIdApi(id));
-  }, [dispatch, id])
+   const getCoach = async () => {
+    const { data } = await GetCoachById(id)
+    data && setImage(data)
+}
+   useEffect(() => {
+  getCoach()
+  }, [])
 
   const handleClose = () => {
     navigate("/coordinator/coach")
@@ -50,8 +53,7 @@ const EditCoachPic = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile)
-      dispatch(CoachPutPicApi(id, formData))
-      navigate("/coordinator/coach")
+      dispatch(CoachPutPicApi({id, values: formData}))
       dispatch(clearMessage())
 
     } else {
@@ -80,7 +82,7 @@ const EditCoachPic = () => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={coachByIddata ? `${imgurl}${coachByIddata.imageUrl}` : image}
+          src={image ? `${img_url}${image.imageUrl}` : ""}
           sx={{
             height: "12rem",
             width: "12rem",

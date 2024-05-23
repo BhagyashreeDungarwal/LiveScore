@@ -1,13 +1,13 @@
-import { AddLocationAltRounded, AlternateEmailRounded, Close, DateRangeRounded, EmojiEvents, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography, styled, useTheme } from '@mui/material';
+import { AlternateEmailRounded, Close, EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, TextField, Typography, styled, useTheme } from '@mui/material';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { CoachPutApi, GetCoachByIdApi } from '../../Redux/Action/CoordinatorAction';
-import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { UpCoach } from '../Validation/Coordinator';
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer';
+import { GetCoachById } from '../Apis/Coordinator';
+import { CoachPutApi, clearMessage } from '../../Redux/CoordinatorRedux';
+import { toast } from 'react-toastify';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -22,9 +22,9 @@ const EditCoach = () => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const {id} = useParams()
-    const { data, error,coachByIddata} = useSelector((state) => state.coordinator)
+    const { id } = useParams()
 
+    const {  data, error } = useSelector(state => state.coordinator)
     const initial = {
         coachName: "",
         coachEmail: "",
@@ -34,40 +34,36 @@ const EditCoach = () => {
         achievements: "",
     }
 
-    useEffect(() => {
-        dispatch(GetCoachByIdApi(id));
-    }, [dispatch, id])
+    const getCoach = async () => {
+        const { data } = await GetCoachById(id)
+        data && setValues(data)
+    }
 
     useEffect(() => {
-        if (coachByIddata) {
-            setValues(coachByIddata)
-        }
-    }, [coachByIddata])
+        getCoach()
+    }, [])
 
-
-     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
         validationSchema: UpCoach,
         onSubmit: async (values) => {
             console.log(values)
-           dispatch(CoachPutApi(values, id))
-           dispatch(clearMessage())
-           navigate("/coordinator/coach")
-        //    if (data) {
-        //         dispatch(clearMessage())
-        //     }
-        //     if (error) {
-        //         toast.error(error.msg)
-        //         dispatch(clearMessage())
-        //     }
+            dispatch(CoachPutApi({values, id}))
+            if (data && data.msg) {
+                navigate("/coordinator/coach")
+                dispatch(clearMessage())
+            }
+            if (error) {
+                toast.error(error.msg)
+            }
         }
     })
 
     const handleClose = () => {
         navigate("/coordinator/coach")
-      };
-  return (
-      <div>
+    };
+    return (
+        <div>
             <React.Fragment>
                 <BootstrapDialog
                     onClose={handleClose}
@@ -92,9 +88,7 @@ const EditCoach = () => {
                     <DialogContent dividers>
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
-
                                 <Grid item xl={12} md={6} sm={12} xs={12}>
-
                                     <TextField
                                         fullWidth
                                         id="coachName"
@@ -107,7 +101,6 @@ const EditCoach = () => {
                                         InputProps={{
                                             startAdornment: (
                                                 <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-
                                                     <Person2Rounded />
                                                 </InputAdornment>
                                             ),
@@ -239,7 +232,7 @@ const EditCoach = () => {
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-  )
+    )
 }
 
 export default EditCoach

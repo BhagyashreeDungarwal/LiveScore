@@ -25,7 +25,7 @@ export const AthleteValidate = yup.object({
 
 });
 
-export const upAthelete = yup.object({
+export const upAthlete = yup.object({
     athleteName: yup.string().required('Name is required'),
     email: yup.string().email('Invalid email address').required('Email is required'),
     contact: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),

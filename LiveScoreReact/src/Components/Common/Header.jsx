@@ -11,7 +11,7 @@ import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material'
 
 const drawerWidth = 240;
 
-const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon, sideroutelink }) => {
+const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon, sideRouteLink }) => {
     const theme = useTheme()
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
@@ -134,7 +134,7 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                             </Tooltip>
                             <Menu
                                 sx={{ mt: '45px', maxWidth: "15%" }}
-                                id="menu-appbar"
+                                id="menu-AppBar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -148,7 +148,7 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {sideroutelink?.map((text, index) => (
+                                {sideRouteLink?.map((text, index) => (
                                     <MenuItem key={text} sx={{ maxHeight: "2%" }} >
                                         <ListItemButton
                                             component={Link}
@@ -164,9 +164,9 @@ const Header = ({ link, icons, sidebarRoute, name, sideroutername, siderouteicon
                                                     mr: 1,
                                                     justifyContent: "center",
                                                 }}>
-                                                {React.createElement(siderouteicon[index % siderouteicon.length])}
+                                                {React.createElement(sideRouteIcon[index % sideRouteIcon.length])}
                                             </ListItemIcon>
-                                            <ListItemText primary={sideroutername[index]} sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
+                                            <ListItemText primary={sideRouterName[index]} sx={{ opacity: open ? 1 : 0, fontSize: "2rem" }} />
                                         </ListItemButton>
                                     </MenuItem>
 

@@ -13,15 +13,12 @@ import StepLabel from '@mui/material/StepLabel';
 import Check from '@mui/icons-material/Check';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { AddMatchApi,  GetMatchApi } from "../../Redux/Action/CoordinatorAction";
 import { useState } from "react";
 import { GetCategory, GetTournament } from "../Apis/Admin";
 import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
+import { AddMatchApi } from "../../Redux/CoordinatorRedux";
 
-// for Slider
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+
 
 const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
@@ -217,7 +214,7 @@ const AddMatch = () => {
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       console.log('last step');
-      alert('Form submitted successfully!'); // You can replace this with your form submission logic
+      alert('Form submitted successfully!'); 
     } else {
       setActiveStep((prevStep) => prevStep + 1);
     }
@@ -225,7 +222,6 @@ const AddMatch = () => {
   const ToSelectAthlete = (id, gender) => {
     getAthleteByCatAndGender(id, gender)
     setActiveStep((prevStep) => prevStep + 1);
-    // console.log(getAthleteByCat)
   }
 
 
@@ -244,10 +240,7 @@ const AddMatch = () => {
     initialValues: initial,
     validationSchema: MatchValidate,
     onSubmit: (values) => {
-      console.log(values)
       dispatch(AddMatchApi(values))
-      dispatch(GetMatchApi())
-      // alert('Form submitted successfully!');
       handleClose();
     }
   })
