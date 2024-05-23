@@ -5,6 +5,6 @@
         public string TournamentName { get; set; }
         public string Venue { get; set; }
         public DateTime TournamentDate { get; set; }
-        public string CoordinatorName { get; set; }
+        public int CoordinatorName { get; set; }
     }
 }
