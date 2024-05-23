@@ -30,7 +30,7 @@ import Athlete from './Components/Coordinator/Athlete';
 function App() {
 
   const sidebar = {
-    sadmin: {
+    sAdmin: {
       icon: [
         Dashboard
       ],
@@ -100,35 +100,15 @@ function App() {
       sideRouteLink: [
         "cProfile"
       ]
-    },
-    referee: {
-      icon: [
-        Dashboard
-      ],
-      sidebarRoute: [
-        "rdashboard"
-      ],
-      name: [
-        "Referee Dashboard"
-      ],
-      sideroutername: [
-        "Profile"
-      ],
-      siderouteicon: [
-        Person2Rounded
-      ],
-      sideroutelink: [
-        "cprofile"
-      ]
     }
   }
 
-  const { admin, coordinator, sadmin } = sidebar
+  const { admin, coordinator, sAdmin } = sidebar
 
   const router = createBrowserRouter([
     {
-      path: "/sadmin",
-      element: (<Header link="sadmin" icons={sadmin.icon} sidebarRoute={sadmin.sidebarRoute} name={sadmin.name} />
+      path: "/sAdmin",
+      element: (<Header link="sAdmin" icons={sAdmin.icon} sidebarRoute={sAdmin.sidebarRoute} name={sAdmin.name} />
       ),
       children: [
         {

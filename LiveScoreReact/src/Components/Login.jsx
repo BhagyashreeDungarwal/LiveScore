@@ -19,11 +19,10 @@ import {
 } from '@mui/material';
 import { login } from './Validation/Login.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginApi } from '../Redux/Action/loginAction.js';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { clearMessageLogin } from '../Redux/Reducer/loginReducer.js';
+import { LoginApi, clearMessageLogin } from '../Redux/LoginRedux.js';
 
 
 
@@ -34,15 +33,12 @@ const Login = () => {
   const { data, error, loading } = useSelector((state) => state.login);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // making intial state 
+  // making initial state 
   const initialValues = {
     email: '',
     password: '',
-    // remember: false
   };
 
-  // setting role and message
-  // const expirationTime = Date.now() + 10 * 60 * 1000; // 10 minutes
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,18 +77,14 @@ const Login = () => {
     }
 
     if (error) {
-      // console.log(error.msg)
       toast.error(error.msg)
       dispatch(clearMessageLogin())
     }
-
     if (loading) {
       setIsSubmitting(true)
     }
-  }, [data, error, dispatch ])
+  }, [data, error, dispatch])
 
-
-  // using formik for validation and submitting
   const {
     values,
     errors,
@@ -101,11 +93,11 @@ const Login = () => {
     handleChange,
     handleSubmit,
   } = useFormik({
-    initialValues: initialValues, // Fix typo here
+    initialValues: initialValues,
     validationSchema: login,
     onSubmit: (values, { resetForm, }) => {
       setIsSubmitting(true)
-      dispatch(loginApi(values))
+      dispatch(LoginApi(values))
       resetForm({ values: "" });
       setIsSubmitting(false)
     },

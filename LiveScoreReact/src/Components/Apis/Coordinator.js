@@ -77,7 +77,6 @@ export const GetCoachById = async (id) => {
   } catch (error) {
     return error
   }
-
 }
 export const GetMatch = async () => {
   try {
@@ -91,4 +90,19 @@ export const GetMatch = async () => {
     return error
   }
 }
+
+
+export const GetCoordinatorProfile = async (id) => {
+  try {
+    const data = await axios.get(`${url}/ACR/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
 

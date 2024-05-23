@@ -16,7 +16,7 @@ import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector
 import { useState } from "react";
 import { GetCategory, GetTournament } from "../Apis/Admin";
 import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
-import { AddMatchApi } from "../../Redux/CoordinatorRedux";
+import { AddMatchApi, clearMessage } from "../../Redux/CoordinatorRedux";
 
 
 
@@ -241,6 +241,7 @@ const AddMatch = () => {
     validationSchema: MatchValidate,
     onSubmit: (values) => {
       dispatch(AddMatchApi(values))
+      dispatch(clearMessage())
       handleClose();
     }
   })

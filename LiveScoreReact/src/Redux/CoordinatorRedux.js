@@ -85,17 +85,6 @@ export const CoordinatorPostApi = createAsyncThunk(
     }
 );
 
-export const CoordinatorProfileApi = createAsyncThunk(
-    'coordinator/getProfile',
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get(`${url}/ACR/${id}`);
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.response.data);
-        }
-    }
-);
 
 export const CoordinatorUpdateProfileApi = createAsyncThunk(
     'coordinator/updateProfile',
@@ -115,7 +104,7 @@ export const CoordinatorUpdateProfileApi = createAsyncThunk(
 
 export const CoordinatorUpdateProfilePicApi = createAsyncThunk(
     'coordinator/updateProfilePic',
-    async ({ id, values }, { rejectWithValue }) => {
+    async ({ values,id }, { rejectWithValue }) => {
         try {
             const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
                 headers: {
@@ -325,18 +314,6 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(CoordinatorPostApi.rejected, (state, action) => {
-                state.error = action.payload;
-                state.loading = false;
-            })
-            .addCase(CoordinatorProfileApi.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(CoordinatorProfileApi.fulfilled, (state, action) => {
-                state.data = action.payload;
-                state.loading = false;
-            })
-            .addCase(CoordinatorProfileApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

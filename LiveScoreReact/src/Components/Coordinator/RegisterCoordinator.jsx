@@ -6,9 +6,9 @@ import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounde
 import { useFormik } from 'formik'
 import { acr, } from '../Validation/Coordinator'
 import { useDispatch, useSelector } from 'react-redux'
-import { CoordinatorPostApi } from '../../Redux/Action/CoordinatorAction'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { CoordinatorPostApi } from '../../Redux/CoordinatorRedux'
 
 
 
@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom'
 const RegisterCoordinator = () => {
     const theme = useTheme()
     const { data, error, } = useSelector((state) => state.coordinator);
-    const disptach = useDispatch()
+    const dispatch = useDispatch()
 
 
     const [type, setType] = useState("password")
@@ -50,11 +50,10 @@ const RegisterCoordinator = () => {
     useEffect(() => {
         if (data) {
             toast.success(data.msg)
-            console.log(data.msg)
+            navigate("/")
         }
         if (error) {
             toast.error(error.msg)
-            console.log(error.msg)
         }
     }, [data, error])
 
@@ -75,7 +74,7 @@ const RegisterCoordinator = () => {
             formData.append('Gender', values.gender);
             formData.append('City', values.city);
             formData.append('State', values.state);
-            await disptach(CoordinatorPostApi(formData))
+            dispatch(CoordinatorPostApi(formData))
             if (data) {
                 toast.success(data.msg)
                 navigate("/")

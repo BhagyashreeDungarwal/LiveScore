@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import HeaderFormat from '../Common/HeaderFormat'
-import { Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Avatar } from '@mui/material'
-import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material'
+import { Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, Slide, Avatar } from '@mui/material'
+import { AddLocationAltRounded, AddPhotoAlternateRounded, DateRangeRounded, LocationCityRounded, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
 import { useFormik } from 'formik'
-import { acrupdate } from '../Validation/Coordinator'
+import { acrUpdate } from '../Validation/Coordinator'
 import { toast } from 'react-toastify'
-import { CoordinatorProfileApi, CoordinatorUpdateProfileApi, CoordinatorUpdateProfilePicApi } from '../../Redux/Action/CoordinatorAction'
+// import { CoordinatorProfileApi, CoordinatorUpdateProfileApi, CoordinatorUpdateProfilePicApi } from '../../Redux/Action/CoordinatorAction'
 import dayjs from 'dayjs'
-import { clearMessage } from '../../Redux/Reducer/CoordinatorReducer'
+import { GetCoordinatorProfile } from '../Apis/Coordinator'
+import { CoordinatorUpdateProfileApi, CoordinatorUpdateProfilePicApi, clearMessage } from '../../Redux/CoordinatorRedux'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -17,11 +18,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const CProfile = () => {
   const theme = useTheme()
-  const { data, error, cprofiledata } = useSelector((state) => state.coordinator);
+  const { data, error ,loading } = useSelector((state) => state.coordinator);
   const [open, setOpen] = React.useState(false);
-  const [image, setImage] = React.useState(cprofiledata ? cprofiledata.imageURL : "");
+  const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
- const imgurl = "http://localhost:5032/ACR/";
+  const img_url = "http://localhost:5032/ACR/";
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,7 +31,7 @@ const CProfile = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const disptach = useDispatch()
+  const dispatch = useDispatch()
   const cid = localStorage.getItem("ID")
   const initial = {
     name: "",
@@ -41,37 +42,37 @@ const CProfile = () => {
     city: "",
   }
 
+  const getCoordinatorProfile = async () => {
+    const { data } = await GetCoordinatorProfile(cid)
+    data && setValues(data)
+    data && setImage(data)
+  }
+
+
   useEffect(() => {
-    disptach(CoordinatorProfileApi(cid))
-  }, [cid, disptach]);
+    getCoordinatorProfile()
+  }, []);
 
 
   useEffect(() => {
     if (data) {
       toast.success(data.msg);
-      disptach(clearMessage())
-      disptach(CoordinatorProfileApi(cid))
+      dispatch(clearMessage())
+      getCoordinatorProfile()
     }
   }, [data]);
 
   useEffect(() => {
     if (error) {
       toast.error(error.msg);
-      disptach(clearMessage())
+      dispatch(clearMessage())
     }
   }, [error]);
 
 
-  useEffect(() => {
-    if (cprofiledata) {
-      setValues(cprofiledata);
-    }
-  }, [cprofiledata]);
-
   const handleImage = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file)
-
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
@@ -81,13 +82,13 @@ const CProfile = () => {
     reader.readAsDataURL(file)
   }
 
-  const handleUpadteImage = async () => {
+  const handleUpdateImage = async () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
-      console.log(formData.get("ImageFile"))
-      disptach(CoordinatorUpdateProfilePicApi(cid, formData))
-      disptach(clearMessage())
+      dispatch(CoordinatorUpdateProfilePicApi({ values: formData, id:cid }))
+      getCoordinatorProfile()
+      dispatch(clearMessage())
       handleClose();
 
     } else {
@@ -96,27 +97,24 @@ const CProfile = () => {
   }
   const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
     initialValues: initial,
-    validationSchema: acrupdate,
+    validationSchema: acrUpdate,
     onSubmit: async (values) => {
       console.log(values)
-      
-       await disptach(CoordinatorUpdateProfileApi(cid,values))
+      dispatch(CoordinatorUpdateProfileApi({ id: cid, values }))
       if (data) {
         toast.success(data.msg)
-      await disptach(CoordinatorUpdateProfileApi(cid, values))
+        getCoordinatorProfile()
+        if (data) {
+          toast.success(data.msg)
+          getCoordinatorProfile()
+          dispatch(clearMessage())
+        }
 
-      if (data) {
-        toast.success(data.msg)
-        disptach(CoordinatorProfileApi(cid))
-        disptach(clearMessage())
-        // navigate("/")
-      }
-
-      if (error) {
-        toast.error(error.msg)
+        if (error) {
+          toast.error(error.msg)
+        }
       }
     }
-  }
   })
   return (
     <Box>
@@ -145,7 +143,7 @@ const CProfile = () => {
                 boxShadow: "3px 3px 6px"
               }}
               alt="The house from the offer."
-              src={cprofiledata ? `${imgurl}${cprofiledata.imageURL}` : ""}
+              src={image ? `${img_url}${image.imageURL}` : image}
             />
             <Button
               type="submit"
@@ -165,7 +163,7 @@ const CProfile = () => {
               <DialogTitle>Update Profile Picture</DialogTitle>
               <DialogContent>
 
-                <Avatar src={cprofiledata ? `${imgurl}${cprofiledata.imageURL}` : image} sx={{
+                <Avatar src={image ? `${img_url}${image.imageURL}` : ""} sx={{
                   height: "12rem",
                   width: "12rem",
                   margin: "auto",
@@ -187,9 +185,9 @@ const CProfile = () => {
                   color="primary"
                   sx={{ display: "block" }}
                   fullWidth
-                  onClick={handleUpadteImage}
+                  onClick={handleUpdateImage}
                   startIcon={<AddPhotoAlternateRounded />}>
-                  Update Image
+                 {loading ? 'Updating...' : 'Update '}
                 </Button>
 
               </DialogContent>
@@ -356,7 +354,7 @@ const CProfile = () => {
                     variant="contained"
                     color="primary"
                     fullWidth >
-                    Update
+                    {loading ? 'Updating...' : 'Update'}
                   </Button>
                 </Grid>
               </Grid>

@@ -9,8 +9,8 @@ import ProtectedRoute from '../../ProtectedRoute';
 import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
-import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 import { GetTournament } from '../Apis/Admin';
+import { clearMessageAdmin } from '../../Redux/AdminRedux';
 
 function CustomToolbar() {
   return (
@@ -80,11 +80,11 @@ const ManageTournament = () => {
     getTournament()
     if (data) {
       toast.success(data.msg)
-      dispatch(ClearMessageAdmin())
+      dispatch(clearMessageAdmin())
     }
     if (error) {
       toast.error(error.msg)
-      dispatch(ClearMessageAdmin())
+      dispatch(clearMessageAdmin())
     }
   }, [data, error])
 

@@ -8,10 +8,10 @@ import { useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import ProtectedRoute from '../../ProtectedRoute';
-import { ClearMessageAdmin } from '../../Redux/Reducer/AdminReducer';
 import { Link } from 'react-router-dom';
 import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
 import { GetCategory } from '../Apis/Admin';
+import { clearMessageAdmin } from '../../Redux/AdminRedux';
 
 // Toolbar for dataGrid
 function CustomToolbar() {
@@ -60,7 +60,7 @@ const CategoryManage = () => {
   const { loading, data, error } = useSelector(state => state.admin)
 
   const columns = useMemo(() => [
-    { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    // { field: "id", headerName: "Id", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "categoryName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "minWeight", headerName: "Minimum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? `${params.value} Kg` : "" },
     { field: "maxWeight", headerName: "Maximum Weight", width: 150, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? `${params.value} Kg` : "" },
@@ -98,7 +98,7 @@ const CategoryManage = () => {
   useEffect(() => {
     if (data) {
       toast.success(data.msg)
-      dispatch(ClearMessageAdmin())
+      dispatch(clearMessageAdmin())
     }
     if (error) {
       toast.error(error.msg)
