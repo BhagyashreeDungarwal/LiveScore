@@ -1,4 +1,5 @@
 ﻿using LiveScore.Data;
+using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,11 +29,11 @@ namespace LiveScore.Controllers
                 .Include((c) => c.Coordinator)
                 .Select((a) => new
                 {
-                    tId = a.TId,
-                    tournamentName = a.TournamentName,
-                    venue = a.Venue,
-                    tournamentDate = a.TournamentDate,
-                    tournamentCoordinator =a.Coordinator.Name
+                    TId = a.TId,
+                    TournamentName = a.TournamentName,
+                    Venue = a.Venue,
+                    TournamentDate = a.TournamentDate,
+                    TournamentCoordinator =a.Coordinator.Name
 
                 })
                 .ToListAsync();
@@ -40,14 +41,24 @@ namespace LiveScore.Controllers
       
 
         [HttpGet("GetTournamentById/{id}")]
-        public async Task<ActionResult<Tournament>> GetTournament(int id)
+        public async Task<ActionResult<dynamic>> GetTournament(int id)
         {
             if(_dbContext.Tournaments == null)
             {
                 return NotFound(new {error = "Tournamnet Not Found"});
             }
 
-            var tournament = await _dbContext.Tournaments.FindAsync(id);
+            var tournament = await _dbContext.Tournaments
+                .Include((c) => c.Coordinator)
+                .Where((a) => a.TId == id)
+                .Select((a) => new
+                {
+                    tournamentName = a.TournamentName,
+                    venue = a.Venue,
+                    tournamentDate = a.TournamentDate,
+                    coordinatorName = a.Coordinator.Name
+
+                }).FirstOrDefaultAsync();
 
             if (tournament == null)
             {
@@ -81,14 +92,22 @@ namespace LiveScore.Controllers
         }
 
         [HttpPut("PutTournament/{id}")]
-        public async Task<IActionResult> PutTournament(int id,Tournament tournament)
+        public async Task<IActionResult> PutTournament(int id,TournamentVM tournamentvm)
         {
+            var tournament = await _dbContext.Tournaments.FindAsync(id);
             if(id != tournament.TId)
             {
                 return BadRequest(new { error = "Id Didn't Match" });
             }
 
-            _dbContext.Entry(tournament).State = EntityState.Modified;
+            var coordinatorName = await _dbContext.Admin.FirstOrDefaultAsync(c => c.Name == tournamentvm.CoordinatorName);
+
+            //update properties
+            tournament.TournamentName = tournamentvm.TournamentName;
+            tournament.Venue = tournamentvm.Venue;
+            tournament.TournamentDate = tournamentvm.TournamentDate;
+            tournament.TournamentCoordinator = coordinatorName.Id;
+
             try
             {
                 await _dbContext.SaveChangesAsync();

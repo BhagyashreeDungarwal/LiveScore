@@ -1,15 +1,15 @@
 import { Close, DateRangeRounded, LocationOn, Person2Rounded} from '@mui/icons-material';
-import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment,  InputLabel,  MenuItem,  Select,  TextField, Typography, styled, useTheme } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment,  InputLabel,  MenuItem,  Select,  TextField, Typography, styled, useTheme } from '@mui/material';
 import React, { useState } from 'react'
-import { tournament } from '../Validation/Admin';
+import {  uptournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import ProtectedRoute from '../../ProtectedRoute';
-import { TournamentPostApi } from '../../Redux/AdminRedux';
-import { GetCoordinator } from '../Apis/Admin';
+import { useDispatch, useSelector } from 'react-redux';
+import { GetCoordinator, GetTournamentById } from '../Apis/Admin';
 import { useEffect } from 'react';
-
-
+import { toast } from 'react-toastify';
+import { TournamentPutApi, clearMessageAdmin } from '../../Redux/AdminRedux';
+import { useNavigate, useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -20,66 +20,69 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-
-const AddTournament = () => {
+const EditTournament = () => {
 
     const [coordinator, setCoordinator] = useState()
-    const [open, setOpen] = useState(false);
-    const theme = useTheme()
+    const theme = useTheme()    
     const dispatch = useDispatch()
-    const handleClickOpen = async () => {
-        setOpen(true);
-
-        console.log(open)
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const navigate = useNavigate()
+    const { id } = useParams()
+    const { data, error } = useSelector((state) => state.admin)
 
     const initial = {
-        TournamentName: "",
-        Venue: "",
-        TournamentDate: "",
-        TournamentCoordinator: ""
+        tournamentName: "",
+        venue: "",
+        tournamentDate: "",
+        coordinatorName: ""
     }
 
     const getCoordinator = async () => {
       const { data } = await GetCoordinator()
         data && setCoordinator(data)
     }
+
+    const getTournamentByid = async () => {
+      const { data } = await GetTournamentById(id)
+        data && setValues(data)
+    }
+    
+   
+
      useEffect(() => {
+        getTournamentByid()
         getCoordinator()
     }, [])
     
-    const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
-        validationSchema: tournament,
-
-        onSubmit:  (values, { resetForm, setSubmitting }) => {
-            try {
-                 dispatch(TournamentPostApi(values))
-                setSubmitting(false)
-                resetForm({ values: "" });
-            } catch (error) {
-                <CircularProgress />
+        validationSchema: uptournament,
+        onSubmit: async (values) => {
+            dispatch(TournamentPutApi({values, id}))
+            if (data && data.msg) {
+                navigate("/admin/mtournament")
+                 dispatch(clearMessageAdmin())
             }
-        },
+            if (error) {
+                toast.error(error.msg)
+                dispatch(clearMessageAdmin())
+            }
+        }
     })
 
+    const handleClose = () => {
+        navigate("/admin/mtournament")
+    };
 
-    return (
-        <div>
+  return (
+   <div>
             <React.Fragment>
-                <Button variant="outlined" onClick={handleClickOpen}>
-                    Add Tournament
-                </Button>
                 <BootstrapDialog
                     onClose={handleClose}
                     aria-labelledby="customized-dialog-title"
-                    open={open}
+                    open="true"
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                        Add Tournament
+                        Edit Tournament
                     </DialogTitle>
                     <IconButton
                         aria-label="close"
@@ -90,9 +93,11 @@ const AddTournament = () => {
                             top: 8,
                             color: (theme) => theme.palette.grey[500],
                         }}
-                    > <Close />
+                    >
+                        <Close />
                     </IconButton>
                     <DialogContent dividers>
+
                         <form onSubmit={handleSubmit}>
                             <Grid container spacing={1}>
                                 <Grid item xl={12} md={12} sm={12}>
@@ -100,9 +105,9 @@ const AddTournament = () => {
                                         fullWidth
                                         variant='standard'
                                         id="name"
-                                        name="TournamentName"
+                                        name="tournamentName"
                                         label="Tournament Name"
-                                        value={values.TournamentName}
+                                        value={values.tournamentName}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
@@ -113,16 +118,16 @@ const AddTournament = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.TournamentName && touched.TournamentName ? (<Typography variant="subtitle1" color="error">{errors.TournamentName}</Typography>) : null}
+                                    {errors.tournamentName && touched.tournamentName ? (<Typography variant="subtitle1" color="error">{errors.tournamentName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
-                                        id="Venue"
-                                        name="Venue"
+                                        id="venue"
+                                        name="venue"
                                         label="Venue"
-                                        value={values.Venue}
+                                        value={values.venue}
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                         InputProps={{
@@ -133,18 +138,18 @@ const AddTournament = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.Venue && touched.Venue ? (<Typography variant="subtitle1" color="error">{errors.Venue}</Typography>) : null}
+                                    {errors.venue && touched.venue ? (<Typography variant="subtitle1" color="error">{errors.venue}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
                                     <TextField
                                         fullWidth
                                         variant='standard'
                                         id="date"
-                                        name="TournamentDate"
+                                        name="tournamentDate"
                                         label="Tournament Date"
                                         type="date"
-                                        InputLabelProps={{ shrink: true }}
-                                        value={values.TournamentDate}
+                                        InputLabelProps={{ shrink: true }}                                        
+                                        value={dayjs(values.tournamentDate).format('YYYY-MM-DD')}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         InputProps={{
@@ -155,27 +160,27 @@ const AddTournament = () => {
                                             ),
                                         }}
                                     />
-                                    {errors.TournamentDate && touched.TournamentDate ? (<Typography variant="subtitle1" color="error">{errors.TournamentDate}</Typography>) : null}
+                                    {errors.tournamentDate && touched.tournamentDate ? (<Typography variant="subtitle1" color="error">{errors.tournamentDate}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
                                     <FormControl variant='filled' fullWidth>
                                         <InputLabel color='secondary'>Coordinator</InputLabel>
                                         <Select
                                             color='secondary'
-                                            id="TournamentCoordinator"
-                                            name="TournamentCoordinator"
-                                            label="TournamentCoordinator"
-                                            value={values.TournamentCoordinator}
+                                            id="coordinatorName"
+                                            name="coordinatorName"
+                                            label="coordinatorName"
+                                            value={values.coordinatorName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         >
                                             {coordinator?.map((data) => (
-                                                <MenuItem key={data.id} value={data.id}>{data.name}</MenuItem>
+                                                <MenuItem key={data.id} value={data.name}>{data.name}</MenuItem>
                                             ))
                                             }
                                         </Select>
                                     </FormControl>
-                                    {errors.TournamentCoordinator && touched.TournamentCoordinator ? (<Typography variant="subtitle1" color="error">{errors.TournamentCoordinator}</Typography>) : null}
+                                    {errors.coordinatorName && touched.coordinatorName ? (<Typography variant="subtitle1" color="error">{errors.coordinatorName}</Typography>) : null}
                                 </Grid>
                                 <Grid item xl={12} md={12} sm={12}>
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
@@ -188,7 +193,7 @@ const AddTournament = () => {
                 </BootstrapDialog>
             </React.Fragment>
         </div>
-    )
+  )
 }
 
-export default ProtectedRoute(AddTournament, 'admin')
+export default EditTournament

@@ -1,4 +1,4 @@
-import  { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
@@ -51,6 +51,22 @@ export const TournamentPostApi = createAsyncThunk(
                     "Content-Type": "application/json"
                 }
             });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const TournamentPutApi = createAsyncThunk(
+    'admin/tournamentPut',
+    async ({ values, id }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/Tournaments/PutTournament/${id}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
             return data;
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -123,6 +139,17 @@ const AdminSlice = createSlice({
             .addCase(TournamentPostApi.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
+            }).addCase(TournamentPutApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(TournamentPutApi.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload;
+            })
+            .addCase(TournamentPutApi.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
             .addCase(VerifyCoordinatorApi.pending, (state) => {
                 state.loading = true;
@@ -136,10 +163,10 @@ const AdminSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            
+
 
     },
 })
 
-export const { clearMessageAdmin} = AdminSlice.actions;
+export const { clearMessageAdmin } = AdminSlice.actions;
 export default AdminSlice.reducer;

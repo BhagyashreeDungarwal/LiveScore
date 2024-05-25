@@ -162,12 +162,17 @@ namespace LiveScore.Controllers
             {
                 return NotFound(new { msg = "Match Not Found" });
             }
+            var coordinatorName = await _context.Admin.FirstOrDefaultAsync(c => c.Name == matchAssignDTO.MatchCoordinator);
+            var Referee1 = await _context.Admin.FirstOrDefaultAsync(c => c.Name == matchAssignDTO.Referee1);
+            var Referee2 = await _context.Admin.FirstOrDefaultAsync(c => c.Name == matchAssignDTO.Referee2);
+            var Referee3 = await _context.Admin.FirstOrDefaultAsync(c => c.Name == matchAssignDTO.Referee3);
+            
 
             // Map the properties from the DTO to the match entity
-            match.MatchCoordinator = matchAssignDTO.MatchCoordinator;
-            match.Referee1 = matchAssignDTO.Referee1;
-            match.Referee2 = matchAssignDTO.Referee2;
-            match.Referee3 = matchAssignDTO.Referee3;
+            match.MatchCoordinator = coordinatorName.Id;
+            match.Referee1 = Referee1.Id;
+            match.Referee2 = Referee2.Id;
+            match.Referee3 = Referee3.Id;
 
             try
             {
@@ -185,7 +190,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new { msg = "Successfully Assigned Match" });
         }
 
         // PUT: api/Athletes/UpdateMatch/5
@@ -229,7 +234,7 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return NoContent();
+            return Ok(new {msg = "Successfully Updated Match"});
         }
 
         [HttpPut("UpdateNextMatchId/{id}")]

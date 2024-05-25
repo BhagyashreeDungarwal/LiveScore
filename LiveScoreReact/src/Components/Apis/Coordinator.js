@@ -29,11 +29,11 @@ export const GetAthlete = async () => {
 }
 export const GetAthleteById = async (id) => {
   try {
-    const  data  = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
+    const data = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
       headers: {
-          "Content-Type": "application/json"
+        "Content-Type": "application/json"
       }
-  })
+    })
     return data
   } catch (error) {
     return error
@@ -91,10 +91,16 @@ export const GetMatch = async () => {
   }
 }
 
+<<<<<<< HEAD
+export const GetMatchById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
+=======
 
 export const GetCoordinatorProfile = async (id) => {
   try {
     const data = await axios.get(`${url}/ACR/${id}`, {
+>>>>>>> 7b749fcf184ab084186a1a4c2405a27e52d500ce
       headers: {
         "Content-Type": "application/json"
       }
@@ -103,6 +109,12 @@ export const GetCoordinatorProfile = async (id) => {
   } catch (error) {
     return error
   }
+<<<<<<< HEAD
+
+}
+
+=======
 }
 
 
+>>>>>>> 7b749fcf184ab084186a1a4c2405a27e52d500ce

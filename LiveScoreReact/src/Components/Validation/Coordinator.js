@@ -121,3 +121,10 @@ export const MatchValidate = yup.object().shape({
     TournamentId: yup.string().required('Please Select Tournament'),
     Gender: yup.string().required('Gender is required'),
 });
+
+export const AssignMatch = yup.object().shape({
+    matchCoordinator: yup.string().required('Please Select Coodinator'),
+    referee1: yup.string().required('Please Select Referee1'),
+    referee2: yup.string().required('Please Select Referee2'),
+    referee3: yup.string().required('Please Select Referee3'),
+});

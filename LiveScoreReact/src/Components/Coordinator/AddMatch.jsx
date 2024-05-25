@@ -1,5 +1,5 @@
 import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, } from "@mui/icons-material";
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select, Slide, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select,  TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
