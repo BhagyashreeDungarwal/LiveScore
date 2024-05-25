@@ -1,28 +1,50 @@
+import React from 'react';
+import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import dayjs from 'dayjs';
 
-import {  Card } from 'react-bootstrap';
+const img_url = "http://localhost:5032/images/";
 
-const MatchCard = () => {
-  return (  
-    <div>
-          <Card className=" m-2 p-3 " style={{ borderColor:"#141c33",borderRadius:"7px",color:"white",backgroundColor:"#141c33"}}>
-            <Card.Body>
-               <div className="d-flex justify-content-between mb-2">
-              <Card.Title className="font-weight-bold">LiveScore</Card.Title>
-              <Card.Text>Mon, 12:30 PM</Card.Text>
-              </div>
-              <div className="d-flex justify-content-between align-items-center">
-                <img src="https://media.istockphoto.com/id/1454026690/photo/portrait-of-female-volleyball-player-holding-a-volleyball-ball-at-sports-court.jpg?s=2048x2048&w=is&k=20&c=TrbS88KkqWUjGFdHpyhgHh1e6h0gIoZlJozquRlQgCU=" style={{height:"8vh",clipPath: "circle()", margin:3}} alt="Live" />
-                <h3 style={{margin:"7px"}}>V/S</h3>
-                <img src="https://media.istockphoto.com/id/1454026690/photo/portrait-of-female-volleyball-player-holding-a-volleyball-ball-at-sports-court.jpg?s=2048x2048&w=is&k=20&c=TrbS88KkqWUjGFdHpyhgHh1e6h0gIoZlJozquRlQgCU=" style={{height:"8vh",clipPath: "circle()", margin:3}} alt="Live" />
-              </div>
-              <div className="d-flex justify-content-between mb-2">
-                <span>Bhagyashree</span>
-                <span>Bhagyashree</span>
-              </div>
-            </Card.Body>
-          </Card>                
-    </div>
-    );
+const MatchCard = ({matchDate,athleteRedImg,athleteBlueImg,athleteRedName,athleteBlueName}) => {
+  const formattedDate = dayjs(matchDate).format(' MMM D, YYYY');
+  return (
+      <Card sx={{ maxWidth: 300, maxHeight: 170,borderRadius: "7px", mx: 1,  color: "white", backgroundColor: "#141c33" }}>
+        <CardContent sx={{ alignItems: "center" }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h5" component="div" color="grey">
+              LiveScore
+            </Typography>
+            <Typography variant="body2" component="div" color="grey">
+              {formattedDate}
+            </Typography>
+          </Box>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <CardMedia
+              component="img"
+              image={`${img_url}${athleteRedImg}`}
+              alt="Live"
+              sx={{ height: '8vh', clipPath: 'circle()' }}
+            />
+            <Typography variant="h4" component="div" color="grey">
+              V/S
+            </Typography>
+            <CardMedia
+              component="img"
+              image={`${img_url}${athleteBlueImg}`}
+              alt="Live"
+              sx={{ height: '8vh', clipPath: 'circle()' }}
+            />
+          </Box>
+          <Box display="flex" justifyContent="space-between" mb={2} mt={1}>
+            <Typography variant="body2" color="grey">
+              {athleteRedName}
+            </Typography>
+            <Typography variant="body2" color="grey">
+              {athleteBlueName}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+  );
 }
 
-export default MatchCard
+export default MatchCard;

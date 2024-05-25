@@ -483,7 +483,7 @@ namespace LiveScore.Controllers
                 Gender = acrimg.Gender,
                 City = acrimg.City,
                 State = acrimg.State,
-                Status = "UnBlock",
+                Status = "Verified",
                 ImageURL = imageUrl
             };
 
