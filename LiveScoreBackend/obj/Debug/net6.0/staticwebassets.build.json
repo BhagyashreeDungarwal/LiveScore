@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
+  "Hash": "2t48+y1MKc+UnOHSWLKGryvApfbHVBQvtMHYWdi9oTk=",
+=======
   "Hash": "vbgP23z+BIfFzhOGknmnKNYw0Cro6u5rQ5mdL7uOZiY=",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -93,17 +97,27 @@
       "OriginalItemSpec": "wwwroot\\ACR\\5d082eb8-ec9f-43ef-8b6e-4ff63e14200e.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\8c382df4-d8fc-499a-8c5a-fc5a444f716c.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\8c382df4-d8fc-499a-8c5a-fc5a444f716c.jpg",
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "BasePath": "_content/LiveScore",
       "RelativePath": "ACR/8c382df4-d8fc-499a-8c5a-fc5a444f716c.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+<<<<<<< HEAD
+=======
       "AssetMergeBehavior": "PreferTarget",
       "AssetMergeSource": "",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
@@ -112,7 +126,11 @@
       "OriginalItemSpec": "wwwroot\\ACR\\8c382df4-d8fc-499a-8c5a-fc5a444f716c.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\995e9ba9-a8fe-4279-8aee-6cef61d095ae.jpg",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\995e9ba9-a8fe-4279-8aee-6cef61d095ae.jpg",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
@@ -150,7 +168,28 @@
       "OriginalItemSpec": "wwwroot\\ACR\\be15aadb-52ba-401b-81fd-f1af86a48427.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\ec917b33-20f3-4a7e-8b39-4cb4d8d5049e.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "ACR/ec917b33-20f3-4a7e-8b39-4cb4d8d5049e.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ACR\\ec917b33-20f3-4a7e-8b39-4cb4d8d5049e.jpg"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\fb9aa5a8-b60a-4b56-beef-8a9ed12b4b08.jpg",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\ec917b33-20f3-4a7e-8b39-4cb4d8d5049e.jpg",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
@@ -207,17 +246,27 @@
       "OriginalItemSpec": "wwwroot\\coach\\13b0fc04-cb13-4558-869f-cdce85161284.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\329e4f70-3b36-4c1a-ba22-b11dc19d71d4.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\329e4f70-3b36-4c1a-ba22-b11dc19d71d4.jpg",
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "BasePath": "_content/LiveScore",
       "RelativePath": "coach/329e4f70-3b36-4c1a-ba22-b11dc19d71d4.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+<<<<<<< HEAD
+=======
       "AssetMergeBehavior": "PreferTarget",
       "AssetMergeSource": "",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
@@ -226,7 +275,11 @@
       "OriginalItemSpec": "wwwroot\\coach\\329e4f70-3b36-4c1a-ba22-b11dc19d71d4.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\392e706d-3f07-4e96-a1c6-190e3f736cfe.jpg",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\392e706d-3f07-4e96-a1c6-190e3f736cfe.jpg",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
@@ -283,17 +336,27 @@
       "OriginalItemSpec": "wwwroot\\coach\\84e79942-c92b-4d9b-add7-442b604832a1.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\a70d0036-25da-438f-b136-70696cb14fea.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\a70d0036-25da-438f-b136-70696cb14fea.jpg",
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "BasePath": "_content/LiveScore",
       "RelativePath": "coach/a70d0036-25da-438f-b136-70696cb14fea.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+<<<<<<< HEAD
+=======
       "AssetMergeBehavior": "PreferTarget",
       "AssetMergeSource": "",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
@@ -302,7 +365,11 @@
       "OriginalItemSpec": "wwwroot\\coach\\a70d0036-25da-438f-b136-70696cb14fea.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\coach\\ad861357-2e90-49fb-beb1-88858aad2867.jpg",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\coach\\ad861357-2e90-49fb-beb1-88858aad2867.jpg",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
@@ -359,10 +426,17 @@
       "OriginalItemSpec": "wwwroot\\coach\\dfebb9c3-4220-447f-884c-8e1625556296.jpg"
     },
     {
+<<<<<<< HEAD
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\048b24eb-0653-48d1-82c4-6932671c5390.jpg",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+=======
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\048b24eb-0653-48d1-82c4-6932671c5390.jpg",
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
       "BasePath": "_content/LiveScore",
       "RelativePath": "images/048b24eb-0653-48d1-82c4-6932671c5390.jpg",
       "AssetKind": "All",
