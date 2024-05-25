@@ -102,6 +102,7 @@ export const GetMatchById = async (id) => {
   } catch (error) {
     return error
   }
+<<<<<<< HEAD
 }
 
 
@@ -145,3 +146,20 @@ export const StoreOtpApi = async () => {
   }
 }
 
+=======
+}
+
+export const GetCoordinatorProfile = async (id) => {
+  try {
+    const data = await axios.get(`${url}/ACR/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+
+}
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2

@@ -13,7 +13,10 @@ import { GetMatch } from "../Apis/Coordinator";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
 import { Link } from "react-router-dom";
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
@@ -59,7 +62,7 @@ const Match = () => {
   const { data, error } = useSelector(state => state.coordinator)
 
   useEffect(() => {
-   getMatch()
+    getMatch()
   }, [])
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const Match = () => {
     { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-   { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "numberOfRound", headerName: "Rounds", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "athleteRed", headerName: "Athlete Red", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
@@ -91,21 +94,21 @@ const Match = () => {
     { field: "referee1", headerName: "Referee 1", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "referee2", headerName: "Referee 2", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "referee3", headerName: "Referee 3", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-     {
+    {
       headerName: "Action", width: 200, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
-        return(
+        return (
           <Box>
-             <Tooltip title="Edit">
-                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
-                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: "1px" }} /> Edit
-                </Fab>
+            <Tooltip title="Edit">
+              <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                <DriveFileRenameOutlineRounded size="small" sx={{ mr: "1px" }} /> Edit
+              </Fab>
             </Tooltip>
-             <Tooltip title="Assign Referee and Coordinator">
-               <Link to={`/coordinator/assignMatch/${params.row.mid}`} >
+            <Tooltip title="Assign Referee and Coordinator">
+              <Link to={`/coordinator/assignMatch/${params.row.mid}`} >
                 <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }}>
                   <HowToReg size="small" sx={{ mr: "1px" }} /> Assign
                 </Fab>
-                </Link>
+              </Link>
             </Tooltip>
           </Box>
         )
@@ -116,18 +119,18 @@ const Match = () => {
   const getMatch = async () => {
     setLoading(true)
     try {
-     const {data} = await GetMatch()
-     data && setMatch(data)
+      const { data } = await GetMatch()
+      data && setMatch(data)
     }
-    catch(e){
-      console.log("Something Went Wrong.",e);
-    }finally{
+    catch (e) {
+      console.log("Something Went Wrong.", e);
+    } finally {
       setLoading(false)
     }
   }
-  
- useEffect(() => {
-    getMatch() 
+
+  useEffect(() => {
+    getMatch()
     if (data) {
       toast.success(data.msg)
       dispatch((clearMessage()))
@@ -150,35 +153,35 @@ const Match = () => {
             display: "grid",
             height: "78vh",
           }}>
-            { match && match.length > 0 ? (
-                <DataGrid
-                  rows={match}
-                  columns={columns}
-                  getRowId={(row) => row.mid}
-                  rowHeight={54}
-                  rowSelection="true"
-                  rowSpacingType='margin'
-                  slots={{ toolbar: CustomToolbar }}
-                  scrollbarSize={1}
-                  columnHeaderHeight={37}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                />) : (
-                <DataGrid
-                  autoHeight
-                  rows={[]}
-                  columns={columns}
-                  getRowId={(row) => row.id}
-                  rowHeight={42}
-                  rowSelection="true"
-                  rowSpacingType='margin'
-                  slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                  scrollbarSize={1}
-                  columnHeaderHeight={37}
-                  pageSize={5}
-                  rowsPerPageOptions={[5]}
-                />
-              )
+            {match && match.length > 0 ? (
+              <DataGrid
+                rows={match}
+                columns={columns}
+                getRowId={(row) => row.mid}
+                rowHeight={54}
+                rowSelection="true"
+                rowSpacingType='margin'
+                slots={{ toolbar: CustomToolbar }}
+                scrollbarSize={1}
+                columnHeaderHeight={37}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />) : (
+              <DataGrid
+                autoHeight
+                rows={[]}
+                columns={columns}
+                getRowId={(row) => row.id}
+                rowHeight={42}
+                rowSelection="true"
+                rowSpacingType='margin'
+                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                scrollbarSize={1}
+                columnHeaderHeight={37}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
+            )
             }
           </Stack>
       }

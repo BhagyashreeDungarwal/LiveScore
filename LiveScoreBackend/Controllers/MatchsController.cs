@@ -50,6 +50,8 @@ namespace LiveScore.Controllers
                     matchDate = a.MatchDate,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
+                    athleteRedImg = a.AthleteRedObj.ImageUrl,
+                    athleteBlueImg = a.AthleteRedObj.ImageUrl,
                     nextMatchId =  a.NextMatchId,
                     gender = a.Gender,
                     flag = a.Flag,                   

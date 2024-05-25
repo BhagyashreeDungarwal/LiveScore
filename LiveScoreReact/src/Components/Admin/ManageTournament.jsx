@@ -10,9 +10,15 @@ import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { GetTournament } from '../Apis/Admin';
+<<<<<<< HEAD
 import { clearMessageAdmin } from '../../Redux/AdminRedux';
 import { Link } from 'react-router-dom';
 import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
+=======
+import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { clearMessageAdmin } from '../../Redux/AdminRedux';
+>>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
 
 function CustomToolbar() {
   return (
@@ -63,8 +69,11 @@ const ManageTournament = () => {
     { field: "tournamentName", headerName: "Tournament Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "venue", headerName: "Venue", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournamentDate", headerName: "Date", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-    { field: "tournamentCoordinator", headerName: "Coordinator", width: 110, headerClassName: "header", headerAlign: "center", align: "center"},
-     {
+    {
+      field: "tournamentCoordinator", headerName: "Coordinator", width: 110, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.tournamentCoordinator ? params.row.tournamentCoordinator : '------',
+    },
+    {
       headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center", width: 122,
       renderCell: params => {
         return (
