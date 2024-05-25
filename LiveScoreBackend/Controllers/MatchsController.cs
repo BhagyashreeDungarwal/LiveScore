@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 using System.IO;
 
@@ -14,15 +15,15 @@ namespace LiveScore.Controllers
     [ApiController]
     public class MatchsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context; 
-        private static readonly ConcurrentDictionary<string, (DateTime Expiration, int AccessCount)> _otpStore = new ConcurrentDictionary<string, (DateTime Expiration, int AccessCount)>();
+        private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _cache;
         private static readonly TimeSpan _otpValidity = TimeSpan.FromMinutes(15); // OTP valid for 15 minutes
+        private static readonly ConcurrentDictionary<string, bool> _otpKeys = new ConcurrentDictionary<string, bool>();
 
-
-
-        public MatchsController(ApplicationDbContext context)
+        public MatchsController(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         [HttpGet("GetMatchs")]
@@ -286,36 +287,49 @@ namespace LiveScore.Controllers
             }
         }
 
-        // GET: api/Matches/GenerateOtp
-        [HttpGet("GenerateOtp")]
-        public async Task<IActionResult> GenerateOtp()
+        [HttpGet("GenerateOtp/{matchGroup}")]
+        public async Task<IActionResult> GenerateOtp(int matchGroup)
         {
+            if (!MatchExists(matchGroup))
+            {
+                return NotFound(new { msg = "Match group not found" });
+            }
+
             var otp = await Generate6DigitOtpAsync();
             var expiration = DateTime.UtcNow.Add(_otpValidity);
 
-            _otpStore[otp] = (expiration, 0);
+            // Store OTP and match group in cache
+            _cache.Set(otp, (matchGroup, expiration, 0), expiration);
+
+            // Track the OTP key for cleanup
+            _otpKeys.TryAdd(otp, true);
 
             // Optionally, start a background task to clean up expired OTPs
             Task.Run(CleanUpExpiredOtps);
 
-            return Ok(new { otp });
+            return Ok(new {AccessKey=otp,MatchGroup= matchGroup });
         }
-
         // POST: api/Matches/ValidateOtp
         [HttpPost("ValidateOtp")]
-        public IActionResult ValidateOtp([FromBody] string otp)
+        public IActionResult ValidateOtp([FromBody] ValidateOtpRequest request)
         {
-            if (_otpStore.TryGetValue(otp, out var otpInfo))
+            if (_cache.TryGetValue(request.Otp, out (int MatchGroup, DateTime Expiration, int AccessCount) otpInfo))
             {
                 if (otpInfo.Expiration < DateTime.UtcNow)
                 {
-                    _otpStore.TryRemove(otp, out _);
+                    _cache.Remove(request.Otp);
+                    _otpKeys.TryRemove(request.Otp, out _);
                     return BadRequest(new { msg = "OTP expired" });
+                }
+
+                if (otpInfo.MatchGroup != request.MatchGroup)
+                {
+                    return BadRequest(new { msg = "Match group does not match" });
                 }
 
                 if (otpInfo.AccessCount < 3)
                 {
-                    _otpStore[otp] = (otpInfo.Expiration, otpInfo.AccessCount + 1);
+                    _cache.Set(request.Otp, (otpInfo.MatchGroup, otpInfo.Expiration, otpInfo.AccessCount + 1), otpInfo.Expiration);
                     return Ok(new { msg = "OTP validated successfully" });
                 }
                 else
@@ -333,16 +347,18 @@ namespace LiveScore.Controllers
         [HttpGet("GetStoredOtps")]
         public IActionResult GetStoredOtps()
         {
-            var otps = _otpStore.Select(kvp => new
+            var otps = _otpKeys.Keys.ToList();
+            var otpDetails = otps.Select(otp =>
             {
-                Otp = kvp.Key,
-                Expiration = kvp.Value.Expiration,
-                AccessCount = kvp.Value.AccessCount
-            }).ToList();
+                if (_cache.TryGetValue(otp, out (int MatchGroup, DateTime Expiration, int AccessCount) otpInfo))
+                {
+                    return new { Otp = otp, MatchGroup = otpInfo.MatchGroup, Expiration = otpInfo.Expiration, AccessCount = otpInfo.AccessCount };
+                }
+                return null;
+            }).Where(details => details != null).ToList();
 
-            return Ok(otps);
+            return Ok(otpDetails);
         }
-
         private Task<string> Generate6DigitOtpAsync()
         {
             return Task.Run(() =>
@@ -356,18 +372,25 @@ namespace LiveScore.Controllers
         private void CleanUpExpiredOtps()
         {
             var now = DateTime.UtcNow;
-            foreach (var key in _otpStore.Keys)
+            foreach (var otp in _otpKeys.Keys)
             {
-                if (_otpStore.TryGetValue(key, out var otpInfo) && otpInfo.Expiration < now)
+                if (_cache.TryGetValue(otp, out (DateTime Expiration, int AccessCount) otpInfo) && otpInfo.Expiration < now)
                 {
-                    _otpStore.TryRemove(key, out _);
+                    _cache.Remove(otp);
+                    _otpKeys.TryRemove(otp, out _);
                 }
             }
         }
 
-        private bool MatchExists(int id)
+        private bool MatchExists(int matchGroup)
         {
-            return _context.Matchss.Any(e => e.MId == id);
+            return _context.Matchss.Any(e => e.MatchGroup == matchGroup);
+        }
+
+        public class ValidateOtpRequest
+        {
+            public string Otp { get; set; }
+            public int MatchGroup { get; set; }
         }
     }
 }

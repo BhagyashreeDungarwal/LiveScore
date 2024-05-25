@@ -1506,3 +1506,8 @@ D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Cloudin
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\dotenv.net.dll
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\AutoMapper.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\AutoMapper.dll
+D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
