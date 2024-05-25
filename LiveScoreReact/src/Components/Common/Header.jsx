@@ -7,6 +7,7 @@ import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListI
 import { useTheme } from '@mui/material/styles'
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
+import logo from "../Images/Logof.png"
 
 
 const drawerWidth = 240;
@@ -55,13 +56,14 @@ const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon
 
     const drawer = (
         <div>
-            <Typography variant="h3" style={{
+            {/* <Typography variant="h3" style={{
                 fontSize: "2.7rem",
                 // fontFamily:"monospace"
-            }} color="initial">Live Score</Typography>
+            }} color="initial">Live Score</Typography> */}
+            <img src={logo} alt="Live Score" style={{ width: "15vw", height: "15vh", marginRight: "5px" }} />
             {/* <Toolbar /> */}
             {/* <Divider /> */}
-            <List sx={{ mt: "3vh" }}>
+            <List sx={{  }}>
                 {sidebarRoute?.map((text, index) => (
                     <ListItem key={text} disablePadding sx={{ display: "block" }}>
                         <ListItemButton
@@ -172,10 +174,10 @@ const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon
 
                                 ))}
                                 <MenuItem onClick={handleLogout} sx={{ maxHeight: "2%" }}  >
-                                    <ListItemButton 
-                                      sx={{
-                                        maxHeight: 20,
-                                    }}>
+                                    <ListItemButton
+                                        sx={{
+                                            maxHeight: 20,
+                                        }}>
 
                                         <ListItemIcon sx={{
                                             color: theme.palette.primary.light,

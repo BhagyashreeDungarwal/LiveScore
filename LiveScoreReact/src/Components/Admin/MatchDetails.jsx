@@ -50,46 +50,56 @@ const MatchDetails = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-   getMatch()
+    getMatch()
   }, [])
-  
+
   const columns = useMemo(() => [
     { field: "matchGroup", headerName: "GroupId", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournament", headerName: "Tournament", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-   { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "numberOfRound", headerName: "Rounds", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "athleteRed", headerName: "Athlete Red", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "athleteBlue", headerName: "Athlete Blue", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "athleteBlue", headerName: "Athlete Blue", width: 120, headerClassName: "header", headerAlign: "center", align: "center", valueGetter: (params) => params.row.athleteBlue ? params.row.athleteBlue : '------', },
+    {
+      field: "matchCoordinator", headerName: "Coordinator", width: 120, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.matchCoordinator ? params.row.matchCoordinator : '------',
+    },
+    {
+      field: "referee1", headerName: "Referee1", width: 120, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee1 ? params.row.referee1 : '------',
+    },
+    { field: "referee2", headerName: "Referee2", width: 120, headerClassName: "header", headerAlign: "center", align: "center", valueGetter: (params) => params.row.referee2 ? params.row.referee2 : '------', },
+    { field: "referee3", headerName: "Referee3", width: 120, headerClassName: "header", headerAlign: "center", align: "center", valueGetter: (params) => params.row.referee3 ? params.row.referee3 : '------', },
   ], [])
 
   const getMatch = async () => {
     setLoading(true)
     try {
-     const {data} = await GetMatch()
-     data && setMatch(data)
+      const { data } = await GetMatch()
+      data && setMatch(data)
     }
-    catch(e){
-      console.log("Something Went Wrong.",e);
-    }finally{
+    catch (e) {
+      console.log("Something Went Wrong.", e);
+    } finally {
       setLoading(false)
     }
   }
   return (
     <Box>
-    <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
-      <HeaderFormat title="Match Management" />
-    </Box>
-    {
-      loading ? <CircularProgress /> :
-        <Stack style={{
-          marginTop: "1%",
-          display: "grid",
-          height: "78vh",
-        }}>
-          { match && match.length > 0 ? (
+      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+        <HeaderFormat title="Match Management" />
+      </Box>
+      {
+        loading ? <CircularProgress /> :
+          <Stack style={{
+            marginTop: "1%",
+            display: "grid",
+            height: "78vh",
+          }}>
+            {match && match.length > 0 ? (
               <DataGrid
                 rows={match}
                 columns={columns}
@@ -118,11 +128,11 @@ const MatchDetails = () => {
                 rowsPerPageOptions={[5]}
               />
             )
-          }
-        </Stack>
-    }
-  </Box>
+            }
+          </Stack>
+      }
+    </Box>
   )
 }
 
-export default ProtectedRoute(MatchDetails,'admin')
+export default ProtectedRoute(MatchDetails, 'admin')

@@ -3,12 +3,12 @@ import Header from './Header'
 import Footer from './Footer'
 import Score from './Score'
 import MatchCard from './MatchCard'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography, Button } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography, Button, Divider } from '@mui/material'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ArrowDownward } from '@mui/icons-material'
-import { GetMatch } from './Apis'
+import { GetAssignMatch } from './Apis'
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;
@@ -129,22 +129,24 @@ const dummyMatches = [
 const RDashboard = () => {
   const id = localStorage.getItem("ID")
 
-  const settings = {
+  const getSliderSettings = (matchesLength) => ({
     dots: false,
-    infinite: true,
+    infinite: matchesLength > 1,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: matchesLength < 4 ? matchesLength : 4,
     slidesToScroll: 1,
+    initialSlide: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          infinite: true,
+          slidesToShow: matchesLength < 2 ? matchesLength : 2,
+          slidesToScroll: 1,
+          infinite: matchesLength > 1,
           dots: true,
+          initialSlide: 1,
           prevArrow: <CustomPrevArrow />,
           nextArrow: <CustomNextArrow />,
         },
@@ -152,7 +154,7 @@ const RDashboard = () => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: matchesLength < 2 ? matchesLength : 2,
           slidesToScroll: 1,
           prevArrow: <CustomPrevArrow />,
           nextArrow: <CustomNextArrow />,
@@ -169,7 +171,8 @@ const RDashboard = () => {
         },
       },
     ],
-  };
+  });
+
   const settingsAccordion = {
     dots: false,
     infinite: true,
@@ -216,7 +219,7 @@ const RDashboard = () => {
   const [todayMatch, setTodayMatch] = useState([])
   const TodaysMatches = async () => {
     try {
-      const data = await GetMatch();
+      const data = await GetAssignMatch();
       setTodayMatch(data)
       console.log("Fetched data:", data);
     } catch (error) {
@@ -232,9 +235,10 @@ const RDashboard = () => {
 
   return (
     <Box>
-      <Box sx={{ display: "block" }}>
+      <Box sx={{ display: "block", boxShadow: 3, marginBottom: 3 }}>
         <Header />
-        <hr style={{ color: "grey" }} />
+        {/* <hr style={{ color: "grey" }} /> */}
+        {/* <Divider sx={{ color: "grey" }} /> */}
       </Box>
       <Box sx={{ display: "block", padding: "0% 0% 0% 2% " }}>
         <Grid container spacing={1} >
@@ -268,7 +272,7 @@ const RDashboard = () => {
             </Box>
             <Box sx={{ mb: 4, mt: 1 }}>
               <Typography variant="h5" sx={{ color: "whitesmoke", mb: 1 }}>Today's Matches</Typography>
-              <Slider {...settings}>
+              <Slider {...getSliderSettings(todayMatch.length)}>
                 {todayMatch?.map((data) => (
                   <MatchCard matchDate={data.matchDate} athleteRedName={data.athleteRed} athleteBlueName={data.athleteBlue} athleteRedImg={data.athleteRedImg} athleteBlueImg={data.athleteBlueImg} />
                 ))

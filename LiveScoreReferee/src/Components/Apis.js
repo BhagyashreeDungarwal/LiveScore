@@ -13,7 +13,7 @@ const formatDate = (date) => {
   return [year, month, day].join('-');
 };
 
-export const GetMatch = async () => {
+export const GetAssignMatch = async () => {
   try {
     const response = await axios.get(`${url}/Matchs/GetMatchs`, {
       headers: {

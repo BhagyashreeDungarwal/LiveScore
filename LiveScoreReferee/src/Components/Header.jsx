@@ -1,12 +1,12 @@
 
-import logo from '../assets/image/Logo.png'
+import logo from '../assets/image/Logof.png'
 
 const Index = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark" >
       <div className="container-fluid ">
-        <img src={logo} alt="Live Score" style={{ height: "4vh", marginRight: "5px" }} />
-        <a className="navbar-brand" href="#">Live Score</a>
+        <img src={logo} alt="Live Score" style={{ width: "12vw", height: "12vh", marginRight: "5px" }} />
+        {/* <a className="navbar-brand" href="#">Live Score</a> */}
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -17,9 +17,10 @@ const Index = () => {
         </li> */}
           </ul>
           <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp"
-            className="rounded-circle img-fluid" style={{ height: "6vh", margin: "0" }} />
+            className="rounded-circle img-fluid" style={{ height: "8vh", margin: "0%" }} />
         </div>
       </div>
+
     </nav>
   )
 }
