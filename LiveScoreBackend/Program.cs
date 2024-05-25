@@ -60,7 +60,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IImageUploader, UploadImage>();
 
-
+//for In Memory cache
+builder.Services.AddMemoryCache();
 var app = builder.Build();          
 
 // Configure the HTTP request pipeline.

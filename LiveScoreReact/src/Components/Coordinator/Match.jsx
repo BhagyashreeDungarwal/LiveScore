@@ -11,11 +11,9 @@ import { DriveFileRenameOutlineRounded, HowToReg } from "@mui/icons-material";
 import { useState } from "react";
 import { GetMatch } from "../Apis/Coordinator";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
-<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
-=======
->>>>>>> 7b749fcf184ab084186a1a4c2405a27e52d500ce
+
 function CustomToolbar() {
   return (
     <GridToolbarContainer>
