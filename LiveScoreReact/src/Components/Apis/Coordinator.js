@@ -102,7 +102,6 @@ export const GetMatchById = async (id) => {
   } catch (error) {
     return error
   }
-<<<<<<< HEAD
 }
 
 
@@ -120,18 +119,18 @@ export const GetCoordinatorProfile = async (id) => {
 
 }
 
-export const OtpGenerateApi = async () => {
-  try {
-    const data = await axios.get(`${url}/Matchs/GenerateOtp`, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    return data
-  } catch (error) {
-    return error
+  export const OtpGenerateApi = async ({ matchGroup }) => {
+    try {
+      const {data} = await axios.get(`${url}/Matchs/GenerateOtp/${matchGroup}`, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      return data
+    } catch (error) {
+      return error
+    }
   }
-}
 
 export const StoreOtpApi = async () => {
   try {
@@ -146,12 +145,44 @@ export const StoreOtpApi = async () => {
   }
 }
 
-=======
+const formatDate = (date) => {
+  const d = new Date(date);
+  let month = '' + (d.getMonth() + 1);
+  let day = '' + d.getDate();
+  const year = d.getFullYear();
+
+  if (month.length < 2) month = '0' + month;
+  if (day.length < 2) day = '0' + day;
+
+  return [year, month, day].join('-');
+};
+
+export const GetTodayMatch = async () => {
+  try {
+    const response = await axios.get(`${url}/Matchs/GetMatchs`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data = response.data;
+    const today = formatDate(new Date());
+
+    // Filter matches for today's date and upcoming status
+    const filteredMatches = data.filter(match =>
+      formatDate(match.matchDate) === today && match.matchStatus === "Upcoming" || match.matchStatus === "Live"
+    );
+
+    return filteredMatches;
+  } catch (error) {
+    return error;
+  }
 }
 
-export const GetCoordinatorProfile = async (id) => {
+// this api is used to get match if coordinator and referee are assigned in match
+export const GetAssignMatch = async (id) => {
   try {
-    const data = await axios.get(`${url}/ACR/${id}`, {
+    const { data } = await axios.get(`${url}/Matchs/GetAssignMatch/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -162,4 +193,3 @@ export const GetCoordinatorProfile = async (id) => {
   }
 
 }
->>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2

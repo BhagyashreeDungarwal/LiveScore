@@ -1,4 +1,5 @@
 ﻿using LiveScore.Data;
+using LiveScore.Model;
 using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,7 @@ namespace LiveScore.Controllers
     public class MatchsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<ACR> _logger;
         private readonly IMemoryCache _cache;
         private static readonly TimeSpan _otpValidity = TimeSpan.FromMinutes(15); // OTP valid for 15 minutes
         private static readonly ConcurrentDictionary<string, bool> _otpKeys = new ConcurrentDictionary<string, bool>();
@@ -52,7 +54,7 @@ namespace LiveScore.Controllers
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
                     athleteRedImg = a.AthleteRedObj.ImageUrl,
-                    athleteBlueImg = a.AthleteRedObj.ImageUrl,
+                    athleteBlueImg = a.AthleteBlueObj.ImageUrl,
                     nextMatchId =  a.NextMatchId,
                     gender = a.Gender,
                     flag = a.Flag,                   
@@ -152,6 +154,72 @@ namespace LiveScore.Controllers
                 return StatusCode(500, new { msg = "An error occurred while processing the request.", error = ex.Message });
             }
         }
+
+        [HttpGet("GetAssignMatch/{id}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetAssignMatch(int id)
+        {
+
+            //var matches = await _context.Matchss
+            //    .Where(m => (m.MatchCoordinator == id || m.Referee1 == id || m.Referee2 == id || m.Referee3 == id) &&
+            //                (m.MatchStatus == "Live" || m.MatchStatus == "Upcoming") &&
+            //                m.MatchDate.HasValue &&
+            //                m.MatchDate.Value.Date == DateTime.UtcNow.Date)
+            //    .ToListAsync();
+
+            // Fetch the ACR by ID
+            var acr = await _context.Admin.FindAsync(id);
+            if (acr == null)
+            {
+                _logger.LogWarning($"ACR with ID {id} not found");
+                return NotFound("ACR not found");
+            }
+
+            // Fetch and include related entities and select specific properties
+            var matches = await _context.Matchss
+                .Include(c => c.Category)
+                .Include(o => o.AthleteBlueObj)
+                .Include(o => o.AthleteRedObj)
+                .Include(t => t.Tournament)
+                .Include(c => c.Coordinator)
+                .Include(r => r.RefereeF)
+                .Include(r => r.RefereeS)
+                .Include(r => r.RefereeT)
+                .Where(m => (m.MatchCoordinator == id || m.Referee1 == id || m.Referee2 == id || m.Referee3 == id) &&
+                            (m.MatchStatus == "Live" || m.MatchStatus == "Upcoming") &&
+                            m.MatchDate.HasValue &&
+                            m.MatchDate.Value.Date == DateTime.UtcNow.Date)
+                .Select(a => new
+                {
+                    mid = a.MId,
+                    matchGroup = a.MatchGroup,
+                    matchStatus = a.MatchStatus,
+                    matchType = a.MatchType,
+                    numberOfRound = a.NumberOfRound,
+                    matchDate = a.MatchDate,
+                    athleteRed = a.AthleteRedObj.AthleteName,
+                    athleteBlue = a.AthleteBlueObj.AthleteName,
+                    athleteRedImg = a.AthleteRedObj.ImageUrl,
+                    athleteBlueImg = a.AthleteBlueObj.ImageUrl,
+                    nextMatchId = a.NextMatchId,
+                    gender = a.Gender,
+                    flag = a.Flag,
+                    category = a.Category.CategoryName,
+                    matchCoordinator = a.Coordinator.Name,
+                    referee1 = a.RefereeF.Name,
+                    referee2 = a.RefereeS.Name,
+                    referee3 = a.RefereeT.Name,
+                    tournament = a.Tournament.TournamentName
+                }).ToListAsync();
+
+            if (!matches.Any())
+            {
+                _logger.LogWarning($"No matches found for coordinator with ID {id} and status 'Live' or 'Upcoming'");
+                return NotFound("No matching matches found");
+            }
+
+            return Ok(matches);
+        }
+
 
         // PUT: api/Matches/AssignMatch/5
         [HttpPut("AssignMatch/{id}")]

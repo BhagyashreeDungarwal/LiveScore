@@ -10,15 +10,9 @@ import NoData from "./../Images/NoData.jpg"
 import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { GetTournament } from '../Apis/Admin';
-<<<<<<< HEAD
 import { clearMessageAdmin } from '../../Redux/AdminRedux';
 import { Link } from 'react-router-dom';
 import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
-=======
-import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { clearMessageAdmin } from '../../Redux/AdminRedux';
->>>>>>> 8bc1c717fda3cd154b08b8536046d2c0e5d167c2
 
 function CustomToolbar() {
   return (

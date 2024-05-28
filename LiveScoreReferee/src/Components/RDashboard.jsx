@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Score from './Score'
 import MatchCard from './MatchCard'
-import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography, Button, Divider } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Typography} from '@mui/material'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ArrowDownward } from '@mui/icons-material'
-import { GetAssignMatch } from './Apis'
+import { GetTodayMatch } from './Apis'
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;
@@ -127,7 +127,7 @@ const dummyMatches = [
 ];
 
 const RDashboard = () => {
-  const id = localStorage.getItem("ID")
+  // const id = localStorage.getItem("ID")
 
   const getSliderSettings = (matchesLength) => ({
     dots: false,
@@ -219,7 +219,7 @@ const RDashboard = () => {
   const [todayMatch, setTodayMatch] = useState([])
   const TodaysMatches = async () => {
     try {
-      const data = await GetAssignMatch();
+      const data = await GetTodayMatch();
       setTodayMatch(data)
       console.log("Fetched data:", data);
     } catch (error) {
@@ -271,7 +271,7 @@ const RDashboard = () => {
               </Accordion>
             </Box>
             <Box sx={{ mb: 4, mt: 1 }}>
-              <Typography variant="h5" sx={{ color: "whitesmoke", mb: 1 }}>Today's Matches</Typography>
+              <Typography variant="h5" sx={{ color: "whitesmoke", mb: 1 }}>Today&apos;s Matches</Typography>
               <Slider {...getSliderSettings(todayMatch.length)}>
                 {todayMatch?.map((data) => (
                   <MatchCard matchDate={data.matchDate} athleteRedName={data.athleteRed} athleteBlueName={data.athleteBlue} athleteRedImg={data.athleteRedImg} athleteBlueImg={data.athleteBlueImg} />

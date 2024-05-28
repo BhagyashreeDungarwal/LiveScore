@@ -1511,3 +1511,8 @@ D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 D:\Live Scoring\LiveScore\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll

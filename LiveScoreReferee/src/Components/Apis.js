@@ -13,20 +13,20 @@ const formatDate = (date) => {
   return [year, month, day].join('-');
 };
 
-export const GetAssignMatch = async () => {
+export const GetTodayMatch = async () => {
   try {
     const response = await axios.get(`${url}/Matchs/GetMatchs`, {
       headers: {
         "Content-Type": "application/json"
       }
     });
-    
+
     const data = response.data;
     const today = formatDate(new Date());
 
     // Filter matches for today's date and upcoming status
-    const filteredMatches = data.filter(match => 
-      formatDate(match.matchDate) === today && match.matchStatus === "Upcoming"
+    const filteredMatches = data.filter(match =>
+      formatDate(match.matchDate) === today && match.matchStatus === "Upcoming" || match.matchStatus === "Live"
     );
 
     return filteredMatches;
