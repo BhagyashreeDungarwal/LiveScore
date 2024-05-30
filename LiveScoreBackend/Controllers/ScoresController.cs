@@ -44,7 +44,7 @@ namespace LiveScore.Controllers
                     panelty = s.Panelty,
                     scoreTime = s.ScoreTime,
                     paneltyTime = s.PaneltyTime,
-                    rounds = s.Round.NumberOfRounds,
+                    rounds = s.Round.Rounds,
                     athleteRed = s.AthleteRedObj.AthleteName,
                     athleteBlue = s.AthleteBlueObj.AthleteName
                 }).ToListAsync();
@@ -72,7 +72,7 @@ namespace LiveScore.Controllers
                     panelty = s.Panelty,
                     scoreTime = s.ScoreTime,
                     paneltyTime = s.PaneltyTime,
-                    rounds = s.Round.NumberOfRounds,
+                    rounds = s.Round.Rounds,
                     athleteRed =s.AthleteRedObj.AthleteName,
                     athleteBlue = s.AthleteBlueObj.AthleteName
                 })

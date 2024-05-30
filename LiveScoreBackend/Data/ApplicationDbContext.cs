@@ -209,15 +209,21 @@ namespace LiveScore.Data
                 {
                     entity.HasKey(r => r.Id); 
 
-                    entity.Property(r => r.Rounds).IsRequired().HasMaxLength(101); 
-                    entity.Property(r => r.NumberOfRounds).IsRequired().HasMaxLength(101); 
-                    entity.Property(r => r.ScoreList).IsRequired().HasMaxLength(101);
+                    entity.Property(r => r.Rounds).IsRequired().HasMaxLength(11); 
                     entity.Property(r => r.RoundTime).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP"); 
+                    entity.Property(r => r.RedTotalScore).IsRequired(false); 
+                    entity.Property(r => r.BlueTotalScore).IsRequired(false); 
+                    entity.Property(r => r.RoundWinner).IsRequired(false); 
                     entity.Property(r => r.MatchId).IsRequired(false); 
 
                     entity.HasOne(r => r.Match)
                         .WithMany()
                         .HasForeignKey(r => r.MatchId)
+                        .OnDelete(DeleteBehavior.Restrict); 
+                    
+                    entity.HasOne(r => r.Athlete)
+                        .WithMany()
+                        .HasForeignKey(r => r.RoundWinner)
                         .OnDelete(DeleteBehavior.Restrict); 
                 });
 
@@ -232,7 +238,13 @@ namespace LiveScore.Data
                     entity.Property(s => s.PaneltyTime).HasDefaultValueSql("CURRENT_TIMESTAMP"); 
                     entity.Property(s => s.Rounds).IsRequired(false); 
                     entity.Property(s => s.AthleteRed).IsRequired(false); 
-                    entity.Property(s => s.AthleteBlue).IsRequired(false); 
+                    entity.Property(s => s.AthleteBlue).IsRequired(false);
+                    entity.Property(r => r.MatchId).IsRequired(false);
+
+                    entity.HasOne(r => r.Match)
+                        .WithMany()
+                        .HasForeignKey(r => r.MatchId)
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     entity.HasOne(s => s.Round)
                         .WithMany()

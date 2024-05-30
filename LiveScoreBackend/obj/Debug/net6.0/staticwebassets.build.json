@@ -1,6 +1,10 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "Hash": "Pc/g7cq378eHZMzKa6t8F07hd7e3/0GyDxJtY4rFikg=",
+=======
+  "Hash": "vzG9toXGcmgaCzZmReVv1cBGM/gp7GyBT/Ig+T2yH3s=",
+>>>>>>> 9d26db3e3979cdb6df29c4d900fdd0c42951685f
   "Source": "LiveScore",
   "BasePath": "_content/LiveScore",
   "Mode": "Default",
@@ -17,7 +21,28 @@
   ],
   "Assets": [
     {
+<<<<<<< HEAD
       "Identity": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png",
+=======
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png",
+      "SourceId": "LiveScore",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\",
+      "BasePath": "_content/LiveScore",
+      "RelativePath": "ACR/056a04e0-0696-4b32-b8dc-3efdd479cad1.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png"
+    },
+    {
+      "Identity": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\2a0301a2-f345-44c3-85df-0a88f7c9ce7d.jpg",
+>>>>>>> 9d26db3e3979cdb6df29c4d900fdd0c42951685f
       "SourceId": "LiveScore",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Live Scoring\\LiveScore\\LiveScoreBackend\\wwwroot\\",

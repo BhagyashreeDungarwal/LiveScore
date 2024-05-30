@@ -22,9 +22,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
         builder => builder
-            .AllowAnyOrigin()
+        .WithOrigins("http://localhost:5173")
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
 });
 
 
@@ -48,8 +49,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     }
     );
 
-
-
 //For Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
@@ -59,6 +58,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IImageUploader, UploadImage>();
+
+//SignalR
+builder.Services.AddSignalR();
 
 //for In Memory cache
 builder.Services.AddMemoryCache();
@@ -73,6 +75,9 @@ if (app.Environment.IsDevelopment())
 
 //Fetch image
 app.UseStaticFiles();
+
+//signalR
+app.MapHub<ScoreHub>("/scoreHub");
 
 app.UseCors("CorsPolicy");
 
