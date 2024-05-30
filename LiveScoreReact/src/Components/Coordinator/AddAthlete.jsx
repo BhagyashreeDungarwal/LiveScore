@@ -118,10 +118,12 @@ const AddAthlete = () => {
                     Add Athlete
                 </Button>
                 <BootstrapDialog
-                    onClose={handleClose}
-                    aria-labelledby="customized-dialog-title"
-                    open={open}
-                >
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{}}
+      >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                         Add Athlete
                     </DialogTitle>

@@ -125,11 +125,7 @@ const AssignMatch = () => {
                                         value={values.matchCoordinator}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        input={<OutlinedInput
-                                            startAdornment={<InputAdornment position="start">
-                                                <EmojiEventsRounded />
-                                            </InputAdornment>}
-                                        />}
+
                                     >
                                         {coordinator.map((data) => (
                                             <MenuItem key={data.id} value={data.name}>{data.name}</MenuItem>
@@ -149,11 +145,6 @@ const AssignMatch = () => {
                                         value={values.referee1}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        input={<OutlinedInput
-                                            startAdornment={<InputAdornment position="start">
-                                                <Category />
-                                            </InputAdornment>}
-                                        />}
                                     >
                                         {referee.map((data) => (
                                             <MenuItem key={data.id} value={data.name} >{data.name}</MenuItem>
@@ -194,11 +185,6 @@ const AssignMatch = () => {
                                         value={values.referee3}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        input={<OutlinedInput
-                                            startAdornment={<InputAdornment position="start">
-                                                <Category />
-                                            </InputAdornment>}
-                                        />}
                                     >
                                         {referee.map((data) => (
                                             <MenuItem key={data.id} value={data.name} >{data.name}</MenuItem>

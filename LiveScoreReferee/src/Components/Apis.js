@@ -34,3 +34,18 @@ export const GetTodayMatch = async () => {
     return error;
   }
 }
+
+export const GetAssignMatch = async (id) => {
+  try {
+    const { data } = await axios.get(`${url}/Matchs/GetAssignMatch/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+

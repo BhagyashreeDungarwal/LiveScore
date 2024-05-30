@@ -81,7 +81,7 @@ const Match = () => {
     { field: "matchGroup", headerName: "Id", width: 30, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "tournament", headerName: "Tournament", width: 145, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    // { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "numberOfRound", headerName: "Rounds", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
