@@ -46,7 +46,6 @@ const AddCategory = () => {
                 dispatch(CategoryPostApi(values))
                 setSubmitting(false)
                 resetForm({ values: "" });
-                // dispatch(getCategoryApi())
             } catch (error) {
                 <CircularProgress />
             }

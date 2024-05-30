@@ -10,6 +10,7 @@ import { useState } from "react";
 import { GetReferee } from "../Apis/Coordinator";
 import { toast } from "react-toastify";
 import { BlockRefereeApi, clearMessage } from "../../Redux/CoordinatorRedux";
+import dayjs from "dayjs";
 
 
 function CustomToolbar() {
@@ -74,7 +75,7 @@ const {data, error} = useSelector(state => state.coordinator)
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "age", headerName: "Age", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "lastLogin", headerName: "LastLogin", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "lastLogin", headerName: "LastLogin", width: 150, headerClassName: "header", headerAlign: "center", align: "center",valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY  HH:mm') : '------' },
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },

@@ -1,52 +1,34 @@
-import { Dashboard } from "@mui/icons-material"
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import Header from "./Components/Header"
-import Login from "./Components/Login"
-import Profile from "./Components/Profile"
 import { ToastContainer } from "react-toastify"
 
 import RDashboard from './Components/RDashboard'
+import Scoring from "./Components/Scoring"
 
 function App() {
 
-  const sidebar = {
-     referee: {
-      icon: [
-        Dashboard
-      ],
-      sidebarRoute: [
-        "rdashboard"
-      ],
-      name: [
-        "Referee Dashboard"
-      ]
-    }
-  }
-
-   const { referee } = sidebar
-
-   const router = createBrowserRouter([
-{
-  path:"/dashboard",
-  element:(<RDashboard/>),
-    children:[
-      {
-          index:true,
-          element:<RDashboard />,
+  const router = createBrowserRouter([
+    {
+      path: "/dashboard",
+      element: (<RDashboard />),
+      children: [
+        {
+          index: true,
+          element: <RDashboard />,
         },
-    ]
-},
-{
-  path:"/",
-  element:(<Login/>)
-}
-    ])
+      ]
+    },
+    {
+      path: "/",
+      // element: (<Login />)
+      element: (<Scoring />)
+    }
+  ])
 
   return (
-    <> 
-    {/* <Header/>  */}
-   <RouterProvider router={router} />
-    {/* <Profile /> */}
+    <>
+      {/* <Header/>  */}
+      <RouterProvider router={router} />
+      {/* <Profile /> */}
 
       {/* for react tostify */}
       <ToastContainer

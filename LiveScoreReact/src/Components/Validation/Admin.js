@@ -21,7 +21,7 @@ export const tournament = yup.object({
         }),
     TournamentCoordinator: yup.string().required('Coordinator is required'),
 });
-export const uptournament = yup.object({
+export const upTournament = yup.object({
     tournamentName: yup.string().required('Name is Required'),
     venue: yup.string().required('Venue  is Required'),
     tournamentDate: yup.date().required('Date is required').min(new Date(), 'Date must be in the future')

@@ -59,8 +59,6 @@ const EditAtheleteProfile = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
-      // console.log(formData.get("ImageFile"))
-      // console.log(id)
       dispatch(AthletePutPicApi({ values: formData, id }))
       navigate("/coordinator/athlete")
       dispatch(clearMessage())

@@ -24,7 +24,7 @@ const EditCoach = () => {
     const navigate = useNavigate()
     const { id } = useParams()
 
-    const {  data, error } = useSelector(state => state.coordinator)
+    const { data, error } = useSelector(state => state.coordinator)
     const initial = {
         coachName: "",
         coachEmail: "",
@@ -47,17 +47,22 @@ const EditCoach = () => {
         initialValues: initial,
         validationSchema: UpCoach,
         onSubmit: async (values) => {
-            console.log(values)
-            dispatch(CoachPutApi({values, id}))
-            if (data && data.msg) {
-                navigate("/coordinator/coach")
-                dispatch(clearMessage())
-            }
-            if (error) {
-                toast.error(error.msg)
-            }
+            dispatch(CoachPutApi({ values, id }))
+
         }
     })
+
+    useEffect(() => {
+        if (data && data.msg) {
+            toast.success(data.msg)
+            dispatch(clearMessage())
+            navigate("/coordinator/coach")
+        }
+        if (error) {
+            toast.error(error.msg)
+            dispatch(clearMessage())
+        }
+    }, [data, error, navigate, dispatch])
 
     const handleClose = () => {
         navigate("/coordinator/coach")

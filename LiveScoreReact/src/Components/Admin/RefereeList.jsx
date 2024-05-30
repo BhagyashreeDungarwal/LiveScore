@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack } from '@mui/material'
+import { Box, Chip, CircularProgress, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useEffect, useMemo, useState } from 'react';
@@ -6,6 +6,7 @@ import ProtectedRoute from '../../ProtectedRoute';
 import NoData from "./../Images/NoData.jpg"
 import { GetReferee } from '../Apis/Admin';
 import dayjs from 'dayjs';
+import { Circle } from '@mui/icons-material';
 
 function CustomToolbar() {
   return (
@@ -60,12 +61,14 @@ const RefereeList = () => {
     { field: "email", headerName: "Email", width: 200, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "dateOfBirth", headerName: "DateOFBirth", width: 110, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-    { field: "gender", headerName: "Gender", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "gender", headerName: "Gender", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "age", headerName: "Age", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "lastLogin", headerName: "LastLogin", width: 140, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY  HH:mm') : '------' },
     { field: "city", headerName: "City", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "status", headerName: "Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" ,renderCell: params => {
+        return <Chip icon={<Circle fontSize='small' color='success' />} label={params.row.status} color='success' variant='outlined' size='small' />
+      } },
   ], [])
 
   const getReferee = async () => {

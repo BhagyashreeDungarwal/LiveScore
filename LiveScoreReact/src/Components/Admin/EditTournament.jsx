@@ -1,7 +1,7 @@
 import { Close, DateRangeRounded, LocationOn, Person2Rounded} from '@mui/icons-material';
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, Grid, IconButton, InputAdornment,  InputLabel,  MenuItem,  Select,  TextField, Typography, styled, useTheme } from '@mui/material';
 import React, { useState } from 'react'
-import {  uptournament } from '../Validation/Admin';
+import {  upTournament } from '../Validation/Admin';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetCoordinator, GetTournamentById } from '../Apis/Admin';
@@ -46,28 +46,32 @@ const EditTournament = () => {
         data && setValues(data)
     }
     
-   
-
      useEffect(() => {
         getTournamentByid()
         getCoordinator()
     }, [])
+
+
     
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
-        validationSchema: uptournament,
+        validationSchema: upTournament,
         onSubmit: async (values) => {
             dispatch(TournamentPutApi({values, id}))
-            if (data && data.msg) {
-                navigate("/admin/mtournament")
-                 dispatch(clearMessageAdmin())
-            }
-            if (error) {
-                toast.error(error.msg)
-                dispatch(clearMessageAdmin())
-            }
         }
     })
+
+    useEffect(() => {
+        if (data) {
+            toast.success(data.msg);
+            navigate("/admin/mtournament");
+            dispatch(clearMessageAdmin());
+        }
+        if (error) {
+            toast.error(error.msg);
+            dispatch(clearMessageAdmin());
+        }
+    }, [data, error, navigate, dispatch]);
 
     const handleClose = () => {
         navigate("/admin/mtournament")

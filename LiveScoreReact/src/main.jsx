@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { stores } from './Redux/store.js'
 import { ThemeProvider } from '@mui/material/styles'
 import { theme } from './Components/Custom/Custom.js'
+import './index.css'
 // import { theme } from '/Custom/Custom.js'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -63,17 +63,22 @@ const EditAthelete = () => {
         initialValues: initial,
         validationSchema: upAthlete,
         onSubmit: async (values) => {
-            dispatch(AthletePutApi({values, id}))
-            if (data && data.msg) {
-                dispatch(clearMessage())
-                navigate("/coordinator/athlete")
-            }
-            if (error) {
-                toast.error(error.msg)
-                dispatch(clearMessage())
-            }
+            dispatch(AthletePutApi({ values, id }))
         }
     })
+
+    useEffect(() => {
+        if (data && data.msg) {
+            toast.success(data.msg)
+            dispatch(clearMessage())
+            navigate("/coordinator/athlete")
+        }
+        if (error) {
+            toast.error(error.msg)
+            dispatch(clearMessage())
+        }
+    }, [data, error, navigate, dispatch])
+
 
     const handleClose = () => {
         navigate("/coordinator/athlete")
