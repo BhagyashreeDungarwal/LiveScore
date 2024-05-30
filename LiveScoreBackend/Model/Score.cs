@@ -23,6 +23,10 @@ namespace LiveScoring.Model
         public int? Rounds { get; set; }
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }
+        public int? MatchId { get; set; }
+
+        [JsonIgnore]
+        public virtual Matchs? Match { get; set; }
 
         [JsonIgnore]
         public virtual Round? Round { get; set; }

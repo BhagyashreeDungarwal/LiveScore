@@ -9,12 +9,16 @@ namespace LiveScoring.Model
     public class Round
     {
         public int Id { get; set; }
-        public string? Rounds { get; set; }
-        public string? NumberOfRounds { get; set; }
-        public string? ScoreList { get; set; }
+        public int? Rounds { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? RoundTime { get; set; }
+        public int? RedTotalScore { get; set; }
+        public int? BlueTotalScore { get; set; }
+        public int? RoundWinner { get; set; }
+
+        [JsonIgnore]
+        public virtual Athlete? Athlete { get; set; }
         public int? MatchId { get; set; }
 
         [JsonIgnore]
