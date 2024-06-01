@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 
 import RDashboard from './Components/RDashboard'
-import Scoring from "./Components/Scoring"
+import Login from "./Components/Login"
 
 function App() {
 
@@ -19,8 +19,8 @@ function App() {
     },
     {
       path: "/",
-      // element: (<Login />)
-      element: (<Scoring />)
+      element: (<Login />)
+      // element: (<Scoring />)
     }
   ])
 

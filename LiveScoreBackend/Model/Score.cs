@@ -10,16 +10,11 @@ namespace LiveScoring.Model
         public int ScoreId { get; set; }
         public int? RedPoints { get; set; }
         public int? BluePoints { get; set; }
-        public string? ScoreType { get; set; }
-        public string PaneltyPlayer { get; set; }
-        public string Panelty { get; set; }
-
+        public int? RedPanelty { get; set; }
+        public int? BluePanelty { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? ScoreTime { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime PaneltyTime { get; set; }
         public int? Rounds { get; set; }
         public int? AthleteRed { get; set; }
         public int? AthleteBlue { get; set; }

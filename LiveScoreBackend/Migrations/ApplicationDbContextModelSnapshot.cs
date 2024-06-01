@@ -460,6 +460,9 @@ namespace LiveScore.Migrations
                     b.Property<int?>("AthleteRed")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BluePanelty")
+                        .HasColumnType("int");
+
                     b.Property<int?>("BluePoints")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -468,19 +471,8 @@ namespace LiveScore.Migrations
                     b.Property<int?>("MatchId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Panelty")
-                        .IsRequired()
-                        .HasMaxLength(101)
-                        .HasColumnType("nvarchar(101)");
-
-                    b.Property<string>("PaneltyPlayer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PaneltyTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    b.Property<int?>("RedPanelty")
+                        .HasColumnType("int");
 
                     b.Property<int?>("RedPoints")
                         .IsRequired()
@@ -495,11 +487,6 @@ namespace LiveScore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("ScoreType")
-                        .IsRequired()
-                        .HasMaxLength(101)
-                        .HasColumnType("nvarchar(101)");
 
                     b.HasKey("ScoreId");
 

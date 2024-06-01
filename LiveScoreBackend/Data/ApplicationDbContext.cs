@@ -232,10 +232,10 @@ namespace LiveScore.Data
                     entity.HasKey(s => s.ScoreId); 
                     entity.Property(s => s.RedPoints).IsRequired().HasMaxLength(10); 
                     entity.Property(s => s.BluePoints).IsRequired().HasMaxLength(10); 
-                    entity.Property(s => s.ScoreType).IsRequired().HasMaxLength(101); 
-                    entity.Property(s => s.Panelty).HasMaxLength(101); 
+                    //entity.Property(s => s.ScoreType).IsRequired().HasMaxLength(101); 
+                    //entity.Property(s => s.Panelty).HasMaxLength(101); 
                     entity.Property(s => s.ScoreTime).IsRequired().HasDefaultValueSql("CURRENT_TIMESTAMP"); 
-                    entity.Property(s => s.PaneltyTime).HasDefaultValueSql("CURRENT_TIMESTAMP"); 
+                    //entity.Property(s => s.PaneltyTime).HasDefaultValueSql("CURRENT_TIMESTAMP"); 
                     entity.Property(s => s.Rounds).IsRequired(false); 
                     entity.Property(s => s.AthleteRed).IsRequired(false); 
                     entity.Property(s => s.AthleteBlue).IsRequired(false);

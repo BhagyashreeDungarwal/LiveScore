@@ -3,28 +3,28 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace LiveScore.Services
 {
-    public class ScoreHub : Hub<IScoreHub>
+    public class ScoreHub : Hub
     {
-        public async Task JoinGroup(string groupName)
+        public async Task SendScoreUpdate(int matchId, int redPoints, int bluePoints)
         {
+            await Clients.Group(matchId.ToString()).SendAsync("ReceiveScoreUpdate", redPoints, bluePoints);
+        }
+
+        public async Task JoinMatchGroup(int matchId, string role)
+        {
+            var groupName = GetGroupName(matchId, role);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
 
-        public async Task LeaveGroup(string groupName)
+        public async Task LeaveMatchGroup(int matchId, string role)
         {
+            var groupName = GetGroupName(matchId, role);
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
         }
 
-        public async Task UpdateScore(Score score)
+        private string GetGroupName(int matchId, string role)
         {
-            string groupName = GetGroupNameForMatch(score);
-            await Clients.Group(groupName).UpdateScore(score);
-        }
-
-        private string GetGroupNameForMatch(Score score)
-        {
-            // Implement your logic to determine the group name based on the match or score details.
-            return $"Match_{score.AthleteRed}_{score.AthleteBlue}";
+            return $"{matchId}_{role}";
         }
 
     }
