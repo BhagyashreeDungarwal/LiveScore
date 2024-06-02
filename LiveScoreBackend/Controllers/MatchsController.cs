@@ -1,9 +1,11 @@
 ﻿using LiveScore.Data;
 using LiveScore.Model;
 using LiveScore.Model.ViewModel;
+using LiveScore.Services;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -19,13 +21,15 @@ namespace LiveScore.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ACR> _logger;
         private readonly IMemoryCache _cache;
+        private readonly IHubContext<ScoreHub> _hubContext;
         private static readonly TimeSpan _otpValidity = TimeSpan.FromMinutes(15); // OTP valid for 15 minutes
         private static readonly ConcurrentDictionary<string, bool> _otpKeys = new ConcurrentDictionary<string, bool>();
 
-        public MatchsController(ApplicationDbContext context, IMemoryCache cache)
+        public MatchsController(ApplicationDbContext context, IMemoryCache cache, IHubContext<ScoreHub> hubContext)
         {
             _context = context;
             _cache = cache;
+            _hubContext = hubContext;
         }
 
         [HttpGet("GetMatchs")]
@@ -158,13 +162,6 @@ namespace LiveScore.Controllers
         [HttpGet("GetAssignMatch/{id}")]
         public async Task<ActionResult<IEnumerable<dynamic>>> GetAssignMatch(int id)
         {
-
-            //var matches = await _context.Matchss
-            //    .Where(m => (m.MatchCoordinator == id || m.Referee1 == id || m.Referee2 == id || m.Referee3 == id) &&
-            //                (m.MatchStatus == "Live" || m.MatchStatus == "Upcoming") &&
-            //                m.MatchDate.HasValue &&
-            //                m.MatchDate.Value.Date == DateTime.UtcNow.Date)
-            //    .ToListAsync();
 
             // Fetch the ACR by ID
             var acr = await _context.Admin.FindAsync(id);
@@ -373,14 +370,13 @@ namespace LiveScore.Controllers
             _otpKeys.TryAdd(otp, true);
 
             // Optionally, start a background task to clean up expired OTPs
-            Task.Run(CleanUpExpiredOtps);
+           await Task.Run(CleanUpExpiredOtps);
 
-            return Ok(new {AccessKey=otp,MatchGroup= matchGroup });
+           return Ok(new { AccessKey = otp, MatchGroup = matchGroup });
         }
-       
-        // POST: api/Matches/ValidateOtp
+
         [HttpPost("ValidateOtp")]
-        public IActionResult ValidateOtp([FromBody] ValidateOtpRequest request)
+        public async Task<IActionResult> ValidateOtp([FromBody] ValidateOtpRequest request)
         {
             if (_cache.TryGetValue(request.Otp, out (int MatchGroup, DateTime Expiration, int AccessCount) otpInfo))
             {
@@ -388,7 +384,7 @@ namespace LiveScore.Controllers
                 {
                     _cache.Remove(request.Otp);
                     _otpKeys.TryRemove(request.Otp, out _);
-                    return BadRequest(new { msg = "OTP expired" });
+                    return BadRequest(new { msg = "Access Code expired" });
                 }
 
                 if (otpInfo.MatchGroup != request.MatchGroup)
@@ -396,19 +392,36 @@ namespace LiveScore.Controllers
                     return BadRequest(new { msg = "Match group does not match" });
                 }
 
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == otpInfo.MatchGroup);
+                if (match == null)
+                {
+                    return NotFound(new { msg = "Match not found" });
+                }
+
+                bool isAuthorized = match.MatchCoordinator == request.RequestId ||
+                                    match.Referee1 == request.RequestId ||
+                                    match.Referee2 == request.RequestId ||
+                                    match.Referee3 == request.RequestId;
+
+                if (!isAuthorized)
+                {
+                    return Unauthorized(new { msg = "User is not authorized" });
+                }
+
                 if (otpInfo.AccessCount < 3)
                 {
                     _cache.Set(request.Otp, (otpInfo.MatchGroup, otpInfo.Expiration, otpInfo.AccessCount + 1), otpInfo.Expiration);
-                    return Ok(new { msg = "OTP validated successfully" });
+
+                    return Ok(new { msg = "Access code validated successfully", id = request.RequestId });
                 }
                 else
                 {
-                    return BadRequest(new { msg = "OTP has already been accessed 3 times" });
+                    return BadRequest(new { msg = "Access code has already been accessed 3 times" });
                 }
             }
             else
             {
-                return NotFound(new { msg = "OTP not found" });
+                return NotFound(new { msg = "Access code not found" });
             }
         }
 
@@ -460,6 +473,8 @@ namespace LiveScore.Controllers
         {
             public string Otp { get; set; }
             public int MatchGroup { get; set; }
+
+            public int RequestId { get; set; }
         }
     }
 }

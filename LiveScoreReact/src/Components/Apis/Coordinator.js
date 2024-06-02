@@ -119,18 +119,18 @@ export const GetCoordinatorProfile = async (id) => {
 
 }
 
-  export const OtpGenerateApi = async ({ matchGroup }) => {
-    try {
-      const {data} = await axios.get(`${url}/Matchs/GenerateOtp/${matchGroup}`, {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      return data
-    } catch (error) {
-      return error
-    }
+export const OtpGenerateApi = async ({ matchGroup }) => {
+  try {
+    const { data } = await axios.get(`${url}/Matchs/GenerateOtp/${matchGroup}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
   }
+}
 
 export const StoreOtpApi = async () => {
   try {

@@ -8,7 +8,7 @@ const img_url = "http://localhost:5032/images/";
 const AssignMatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup }) => {
     const formattedDate = dayjs(matchDate).format('MMM D, YYYY');
     return (
-        <Card sx={{ maxWidth: 300, maxHeight: 220, borderRadius: "7px", mx: 1, color: "F5F5DC", backgroundColor: "#141c33" }}>
+        <Card sx={{ maxWidth: 300, maxHeight: 220, borderRadius: "7px", mx: 1, color: "#F5F5DC", backgroundColor: "#141c33" }}>
             <CardContent sx={{ alignItems: "center" }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="h5" component="div" color="white">

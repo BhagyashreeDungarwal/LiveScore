@@ -25,6 +25,7 @@ import EditCoachPic from './Components/Coordinator/EditCoachPic';
 import Athlete from './Components/Coordinator/Athlete';
 import EditTournament from './Components/Admin/EditTournament';
 import AssignMatch from './Components/Coordinator/AssignMatch';
+import Scoring from './Components/Coordinator/Scoring';
 
 
 function App() {
@@ -202,6 +203,9 @@ function App() {
         }, {
           path: "assignMatch/:id",
           element: <AssignMatch />
+        }, {
+          path: "scoring/:matchGroup",
+          element: <Scoring />
         }
       ]
     },

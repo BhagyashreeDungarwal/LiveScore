@@ -2,6 +2,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
 
 import RDashboard from './Components/RDashboard'
+<<<<<<< Updated upstream
+=======
+import Scoring from "./Components/Scoring"
+>>>>>>> Stashed changes
 import Login from "./Components/Login"
 
 function App() {
@@ -19,8 +23,17 @@ function App() {
     },
     {
       path: "/",
+<<<<<<< Updated upstream
       element: (<Login />)
       // element: (<Scoring />)
+=======
+       element: (<Login />)
+      //element: (<Scoring />)
+    },
+    {
+      path: "/scoring",
+      element: (<Scoring />)
+>>>>>>> Stashed changes
     }
   ])
 

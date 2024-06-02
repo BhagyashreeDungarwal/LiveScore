@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import { OtpGenerateApi, StoreOtpApi } from '../Apis/Coordinator';
+import { useNavigate } from 'react-router-dom';
 
 // OtpBlock Component
 const OtpBlock = ({ digit }) => {
@@ -24,7 +25,7 @@ const OtpBlock = ({ digit }) => {
         lineHeight: '40px',
         border: '2px solid green',
         bgcolor: 'green',
-        color:'white',
+        color: 'white',
         borderRadius: '4px',
         fontSize: '25px',
       }}
@@ -44,21 +45,27 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const GenerateOtp = ({matchGroup}) => {
- const [open, setOpen] = useState(false);
+const GenerateOtp = ({ matchGroup }) => {
+  const [open, setOpen] = useState(false);
   const [otp, setOtp] = useState('');
+  const navigate = useNavigate()
 
   const handleClickOpen = async () => {
     try {
-      const response = await OtpGenerateApi({ matchGroup });
+      const response = await OtpGenerateApi({ matchGroup});
       setOtp(response.accessKey);  // Assuming the response contains the OTP in a field named 'otp'
-     console.log(otp)
+      console.log(otp)
       setOpen(true);
       await StoreOtpApi({ otp: response.otp }); // Store the OTP
     } catch (error) {
       console.error("Error generating OTP:", error);
     }
   };
+
+  const handleNext = () => {
+    navigate(`/coordinator/scoring/${matchGroup}`)
+  }
+
 
   const handleClose = () => {
     setOpen(false);
@@ -105,7 +112,7 @@ const GenerateOtp = ({matchGroup}) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={handleNext}>
             Next
           </Button>
         </DialogActions>

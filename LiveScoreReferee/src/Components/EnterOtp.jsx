@@ -35,6 +35,7 @@ const EnterOtp = ({ matchGroup }) => {
   const dispatch = useDispatch();
   const { data, error } = useSelector(state => state.referee);
   const navigate = useNavigate();
+  const rid = localStorage.getItem("ID");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,6 +54,7 @@ const EnterOtp = ({ matchGroup }) => {
     const formData = new FormData();
     formData.append('Otp', value);
     formData.append('MatchGroup', matchGroup);
+    formData.append('RequestId', rid);
     dispatch(validateOtpApi(formData));
     setOtp('');
   };
@@ -61,7 +63,7 @@ const EnterOtp = ({ matchGroup }) => {
     if (data) {
       if (data.msg) {
         toast.success(data.msg);
-        navigate("/");
+        navigate("/scoring");
       }
     }
     if (error) {
