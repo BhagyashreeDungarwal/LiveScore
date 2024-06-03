@@ -128,6 +128,7 @@ const CDashboard = () => {
                   athleteRedImg={data.athleteRedImg}
                   athleteBlueImg={data.athleteBlueImg}
                   matchGroup={data.matchGroup}
+                  mid={data.mid}
                 />
               ))}
             </Slider>):(<Typography variant="h4" color="initial" sx={{textAlign:"center",color:"grey"}}>No Match&apos;s Assigned </Typography>)

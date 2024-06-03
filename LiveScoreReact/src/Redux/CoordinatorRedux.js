@@ -19,7 +19,6 @@ export const AthletePostApi = createAsyncThunk(
     }
 );
 
-
 export const AthletePutApi = createAsyncThunk(
     'coordinator/athletePut',
     async ({ values, id }, { rejectWithValue }) => {
@@ -104,7 +103,7 @@ export const CoordinatorUpdateProfileApi = createAsyncThunk(
 
 export const CoordinatorUpdateProfilePicApi = createAsyncThunk(
     'coordinator/updateProfilePic',
-    async ({ values,id }, { rejectWithValue }) => {
+    async ({ values, id }, { rejectWithValue }) => {
         try {
             const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
                 headers: {
@@ -238,6 +237,22 @@ export const AssignMatchApi = createAsyncThunk(
     async ({ values, id }, { rejectWithValue }) => {
         try {
             const { data } = await axios.put(`${url}/Matchs/AssignMatch/${id}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const RoundPostApi = createAsyncThunk(
+    'coordinator/roundPost',
+    async ({ values, mid }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${url}/Rounds/insertRound/${mid}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -447,6 +462,18 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(AssignMatchApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            })
+            .addCase(RoundPostApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(RoundPostApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(RoundPostApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })
