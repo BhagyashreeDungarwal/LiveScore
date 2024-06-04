@@ -46,6 +46,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<TempDbContext>(options =>
+       options.UseInMemoryDatabase("TemporaryScores"));
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IImageUploader, UploadImage>();
 
@@ -55,8 +58,8 @@ builder.Services.AddSignalR(options =>
     options.EnableDetailedErrors = true;
 });
 
-builder.Services.AddSingleton<TimerServices>();
-builder.Services.AddHostedService<TimerServices>();
+builder.Services.AddSingleton< ITimerService ,TimerServices>();
+//builder.Services.AddHostedService<TimerServices>();
 
 var app = builder.Build();
 

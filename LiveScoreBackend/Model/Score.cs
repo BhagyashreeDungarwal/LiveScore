@@ -23,8 +23,8 @@ namespace LiveScoring.Model
         [JsonIgnore]
         public virtual Matchs? Match { get; set; }
 
-        [JsonIgnore]
-        public virtual Round? Round { get; set; }
+        //[JsonIgnore]
+        //public virtual Round? Round { get; set; }
 
 
         [JsonIgnore]

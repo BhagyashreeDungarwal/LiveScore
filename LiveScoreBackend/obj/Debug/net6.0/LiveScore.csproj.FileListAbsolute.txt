@@ -1516,3 +1516,4 @@ D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microso
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
 D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+D:\Bhagyashree\LiveScoring\LiveScoring\LiveScoreBackend\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll

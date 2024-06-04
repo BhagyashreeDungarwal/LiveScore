@@ -2,8 +2,10 @@
 
 namespace LiveScore.Model.ViewModel
 {
-    public class ScoreVm
+    public class TemporaryScore
     {
+        [Key]
+        public int TempScoreId { get; set; }
         public int? RedPoints { get; set; }
         public int? BluePoints { get; set; }
         public int? RedPanelty { get; set; }

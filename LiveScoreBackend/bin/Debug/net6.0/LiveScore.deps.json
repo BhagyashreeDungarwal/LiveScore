@@ -15,6 +15,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.29",
           "Microsoft.AspNetCore.Cors": "2.1.1",
           "Microsoft.EntityFrameworkCore": "6.0.29",
+          "Microsoft.EntityFrameworkCore.InMemory": "6.0.29",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.29",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.29",
           "Microsoft.Extensions.Caching.Memory": "8.0.0",
@@ -1265,6 +1266,17 @@
         },
         "runtime": {
           "lib/net6.0/Microsoft.EntityFrameworkCore.Design.dll": {
+            "assemblyVersion": "6.0.29.0",
+            "fileVersion": "6.0.2924.16417"
+          }
+        }
+      },
+      "Microsoft.EntityFrameworkCore.InMemory/6.0.29": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.29"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.InMemory.dll": {
             "assemblyVersion": "6.0.29.0",
             "fileVersion": "6.0.2924.16417"
           }
@@ -3326,6 +3338,13 @@
       "sha512": "sha512-1fLtZkfZPkjCKEMMgk4aDZpnP34nTjBxYKLRTB0Ji7pdbT3cOuA+tQKwN25yroQ7NTq1WOx1hZzqZ7weHIRNpg==",
       "path": "microsoft.entityframeworkcore.design/6.0.29",
       "hashPath": "microsoft.entityframeworkcore.design.6.0.29.nupkg.sha512"
+    },
+    "Microsoft.EntityFrameworkCore.InMemory/6.0.29": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LmOylk0AQpNsOgi1OSekcV0xMMWigDSTpq4gIdb6JirrxiouUO5d/39Qibv/9jNCrzGgj0gVbxzmxd7lpXrZMQ==",
+      "path": "microsoft.entityframeworkcore.inmemory/6.0.29",
+      "hashPath": "microsoft.entityframeworkcore.inmemory.6.0.29.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Relational/6.0.29": {
       "type": "package",

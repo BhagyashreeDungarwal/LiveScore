@@ -20,16 +20,16 @@ namespace LiveScore.Controllers
             _context = context;
         }
 
-        private bool IsCoordinator(int matchGroup, int userId)
+        private bool IsCoordinator(int matchGroup, int acrId)
         {
             var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-            return match != null && match.MatchCoordinator == userId;
+            return match != null && match.MatchCoordinator == acrId;
         }
 
-        private bool IsReferee1(int matchGroup, int userId)
+        private bool IsReferee1(int matchGroup, int acrId)
         {
             var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-            return match != null && match.Referee1 == userId;
+            return match != null && match.Referee1 == acrId;
         }
 
         private bool MatchExists(int matchGroup)
@@ -38,14 +38,14 @@ namespace LiveScore.Controllers
         }
 
         [HttpPost("join")]
-        public async Task<IActionResult> JoinGroup(int matchGroup, int userId, string connectionId)
+        public async Task<IActionResult> JoinGroup(int matchGroup, int acrId, string connectionId)
         {
             try
             {
                 var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
                 if (match == null) return NotFound("Match not found");
 
-                if (!IsCoordinator(matchGroup, userId) && !IsReferee1(matchGroup, userId))
+                if (!IsCoordinator(matchGroup, acrId) && !IsReferee1(matchGroup, acrId))
                     return Forbid("Only MatchCoordinator and Referee1 can join the group");
 
                 await _hubContext.Groups.AddToGroupAsync(connectionId, matchGroup.ToString());
@@ -53,7 +53,7 @@ namespace LiveScore.Controllers
                 var joinDetails = new
                 {
                     MatchId = match.MId,
-                    UserId = userId,
+                    acrId = acrId,
                     Group = match.MatchGroup
                 };
 
@@ -66,7 +66,7 @@ namespace LiveScore.Controllers
         }
 
         [HttpPost("leave")]
-        public async Task<IActionResult> LeaveGroup(int matchGroup, int userId, string connectionId)
+        public async Task<IActionResult> LeaveGroup(int matchGroup, int acrId, string connectionId)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace LiveScore.Controllers
             }
         }
 
-        [HttpPost("start/{matchGroup}/{userId}/{duration}")]
-        public async Task<IActionResult> StartCountdown(int matchGroup, int userId, int duration)
+        [HttpPost("start/{matchGroup}/{acrId}/{duration}")]
+        public async Task<IActionResult> StartCountdown(int matchGroup, int acrId, int duration)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace LiveScore.Controllers
                 var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
                 if (match == null) return NotFound(new { msg = "Match not found" });
 
-                if (!IsCoordinator(matchGroup, userId))
+                if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can start the countdown" });
 
                 _timerService.StartTimer(matchGroup, duration);
@@ -104,15 +104,15 @@ namespace LiveScore.Controllers
             }
         }
 
-        [HttpPost("stop/{matchGroup}/{userId}")]
-        public async Task<IActionResult> StopCountdown(int matchGroup, int userId)
+        [HttpPost("stop/{matchGroup}/{acrId}")]
+        public async Task<IActionResult> StopCountdown(int matchGroup, int acrId)
         {
             try
             {
                 var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
                 if (match == null) return NotFound(new { msg = "Match not found" });
 
-                if (!IsCoordinator(matchGroup, userId))
+                if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can stop the countdown" });
 
                 _timerService.StopTimer(matchGroup);
@@ -125,15 +125,15 @@ namespace LiveScore.Controllers
             }
         }
 
-        [HttpPost("resume/{matchGroup}/{userId}")]
-        public async Task<IActionResult> ResumeCountdown(int matchGroup, int userId)
+        [HttpPost("resume/{matchGroup}/{acrId}")]
+        public async Task<IActionResult> ResumeCountdown(int matchGroup, int acrId)
         {
             try
             {
                 var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
                 if (match == null) return NotFound(new { msg = "Match not found" });
 
-                if (!IsCoordinator(matchGroup, userId))
+                if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can resume the countdown" });
 
                 _timerService.ResumeTimer(matchGroup);
