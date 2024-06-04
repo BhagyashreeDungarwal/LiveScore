@@ -125,10 +125,10 @@ namespace LiveScore.Controllers
         //    return ok(new { message = "rounds inserted and updated.", roundwinners = roundwinners });
         //}
 
-        [HttpPost("insertRound")]
+        [HttpPost("insertRound/{matchId}")]
         public async Task<IActionResult> InsertRound([FromBody] RoundVm roundDto, int matchId)
         {
-            if (roundDto.MatchId == null)
+            if (matchId == null)
             {
                 return BadRequest("MatchId is required.");
             }
@@ -151,7 +151,7 @@ namespace LiveScore.Controllers
             _context.Rounds.Add(initialRound);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Initial round inserted.", round = initialRound });
+            return Ok(new { msg = "Round inserted.", round = initialRound });
         }
 
         [HttpPost("updateRound")]

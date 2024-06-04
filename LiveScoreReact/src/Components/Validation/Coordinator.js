@@ -128,3 +128,6 @@ export const AssignMatch = yup.object().shape({
     referee2: yup.string().required('Please Select Referee2'),
     referee3: yup.string().required('Please Select Referee3'),
 });
+export const RoundValidate = yup.object().shape({
+    rounds: yup.string().required('Please Select Rounds'),
+});

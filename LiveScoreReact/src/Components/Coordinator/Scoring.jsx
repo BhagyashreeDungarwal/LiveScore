@@ -1,5 +1,5 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -21,7 +21,7 @@ const Scoring = () => {
                 return connect.invoke('JoinGroup', matchGroup.toString());
             })
             .then(() => {
-                console.log(`Joined group ${matchGroup}`);
+                console.log(`Joined Matchgroup ${matchGroup}`);
             })
             .catch(err => console.error('JoinGroup invocation failed: ', err));
 

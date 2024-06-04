@@ -4,7 +4,7 @@ import GenerateOtp from './GenerateOtp';
 
 const img_url = "http://localhost:5032/images/";
 
-const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup }) => {
+const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup,mid }) => {
   const formattedDate = dayjs(matchDate).format('MMM D, YYYY');
   return (
     <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
@@ -49,7 +49,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
             View
           </Button>
           <Box>
-            <GenerateOtp matchGroup={matchGroup} />
+            <GenerateOtp matchGroup={matchGroup} mid={mid} />
           </Box>
         </Box>
       </CardContent>
