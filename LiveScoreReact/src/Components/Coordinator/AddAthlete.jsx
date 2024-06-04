@@ -81,7 +81,7 @@ const AddAthlete = () => {
                 formdata.append('CoordinatorId', cid)
                 formdata.append('ImageFile', values.image)
 
-                 dispatch(AthletePostApi(formdata))
+                dispatch(AthletePostApi(formdata))
                 setSubmitting(false)
                 resetForm({ values: "" });
                 await GetAthlete()
@@ -118,12 +118,12 @@ const AddAthlete = () => {
                     Add Athlete
                 </Button>
                 <BootstrapDialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        sx={{}}
-      >
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    sx={{}}
+                >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                         Add Athlete
                     </DialogTitle>
