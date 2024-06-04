@@ -26,6 +26,8 @@ import Athlete from './Components/Coordinator/Athlete';
 import EditTournament from './Components/Admin/EditTournament';
 import AssignMatch from './Components/Coordinator/AssignMatch';
 import Scoring from './Components/Coordinator/Scoring';
+import FindEmail from './Components/Common/FindEmail';
+import ForgetPassword from './Components/Common/ForgetPassword';
 
 
 function App() {
@@ -213,8 +215,14 @@ function App() {
       path: "/",
       element: (<Login />)
     }, {
-      path: "cregister",
+      path: "cRegister",
       element: (<RegisterCoordinator />)
+    }, {
+      path: "findEmail",
+      element: (<FindEmail />)
+    },{
+      path: "forgetPassword/:email",
+      element: (<ForgetPassword />)
     }
   ])
 

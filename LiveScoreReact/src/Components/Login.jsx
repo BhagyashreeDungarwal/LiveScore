@@ -192,11 +192,11 @@ const Login = () => {
             </form>
             <Box sx={{ display: "flex", justifyContent: "space-between", mt: "2vh" }}>
 
-              <Link to="#" style={{ textDecoration: "none" }} variant="body2">
-                Forgot password?
+              <Link to="findEmail" style={{ textDecoration: "none" }} variant="body2">
+                Forget password?
               </Link>
 
-              <Link to="cregister" style={{ textDecoration: "none" }} variant="body2">
+              <Link to="cRegister" style={{ textDecoration: "none" }} variant="body2">
                 Register Coordinator
               </Link>
 

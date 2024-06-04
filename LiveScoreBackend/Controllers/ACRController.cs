@@ -132,20 +132,6 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Successfully Updated Super Admin" });
         }
 
-        [HttpDelete("DeleteACR/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (id < 1)
-                return BadRequest(new { msg = "Please Enter Proper Id" });
-            var product = await _dbcontext.Admin.FindAsync(id);
-            if (product == null)
-                return NotFound();
-            _dbcontext.Admin.Remove(product);
-            await _dbcontext.SaveChangesAsync();
-            return Ok(new { msg = "Successfully Deleted" });
-
-        }
-
         //Admin Section
 
         //Adding Admin
@@ -241,7 +227,7 @@ namespace LiveScore.Controllers
             await _dbcontext.SaveChangesAsync();
 
 
-            return Ok(new { msg = "Successfully Updated Admin" }); ;
+            return Ok(new { msg = "Successfully Updated Admin" }); 
         }
 
         //Coordinator Section
@@ -268,26 +254,26 @@ namespace LiveScore.Controllers
             var coordinator = await _dbcontext.Admin.FindAsync(id);
             if (coordinator == null) { return NotFound(new { msg = "Coordinator not found" }); }
 
-            if(coordinator.Status == "Not Verified")
+            if (coordinator.Status == "Not Verified")
             {
                 coordinator.Status = "Verified";
                 await _dbcontext.SaveChangesAsync();
                 return Ok(new { msg = "Successfully Verify Coordinator" });
             }
-            if(coordinator.Status == "Verified")
+            if (coordinator.Status == "Verified")
             {
                 coordinator.Status = "Block";
                 await _dbcontext.SaveChangesAsync();
                 return Ok(new { msg = "Successfully Block Coordinator" });
             }
-            if(coordinator.Status == "Block")
+            if (coordinator.Status == "Block")
             {
                 coordinator.Status = "Verified";
                 await _dbcontext.SaveChangesAsync();
                 return Ok(new { msg = "Successfully Unblock Coordinator" });
-            }   
+            }
             return Ok("Successful");
-        } 
+        }
 
         //Adding Coordinator
         [HttpPost("AddCoordinator")]
@@ -618,22 +604,62 @@ namespace LiveScore.Controllers
             return Ok("Successful");
         }
 
-        //private async Task<string> UploadImage(IFormFile file)
-        //{
-        //    if (file == null || file.Length == 0)
-        //    {
-        //        return null;
-        //    }
+        [HttpGet("FindEmail/{email}")]
+        public async Task<ActionResult<ACR>> FindEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest(new { msg = "Email parameter is required." });
+            }
 
-        //    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-        //    var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "ACR");
-        //    var filePath = Path.Combine(uploadsFolder, fileName);
+            var acr = await _dbcontext.Admin.FirstOrDefaultAsync(a => a.Email == email);
+            if (acr == null)
+            {
+                return NotFound(new { msg = "Email Not Found" });
+            }
 
-        //    using (var stream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await file.CopyToAsync(stream);
-        //    }
-        //    return $"{Request.Scheme}://{Request.Host}/ACR/{fileName}";
-        //}
+            // for message body
+            string messageBody = "<!DOCTYPE html>" +
+                                 "<html>" +
+                                 "<head>" +
+                                 "<title>Forget Password</title>" +
+                                 "</head>" +
+                                 "<body>" +
+                                 $"<h2>Respected {acr.Name},</h2>" +
+                                 "<p>We received a request to reset your password for your Live Score account associated with this email address.</p>" +
+                                 "<p>Please click the link below to reset your password:</p>" +
+                                 $"<p><a href='http://localhost:5173/forgetPassword/{acr.Email}'>Reset Password</a></p>" +
+                                 "<p>If you did not request a password reset, please ignore this email. Your password will remain unchanged.</p>" +
+                                 "<p>For further assistance, our support team is here to help.</p>" +
+                                 "<p>Best regards,<br />" +
+                                 "Live Score Team</p>" +
+                                 "</body>" +
+                                 "</html>";
+
+
+            _emailSender.SendEmail(acr.Email, "Forget Password", messageBody);
+
+            return Ok(new { msg = "Forget password link send your email"});
+
+        }
+
+        [HttpPut("ForgetPassword")]
+        public async Task<ActionResult<Login>> ForgetPassword(Login login)
+        {
+            var acr = await _dbcontext.Admin.FirstOrDefaultAsync(a => a.Email == login.Email);
+
+            if (acr == null)
+            {
+                return NotFound(new { msg = "Email Not Found" });
+            }
+
+            login.Password = _pservice.HashPassword(login.Password);
+            acr.Password = login.Password;
+
+            await _dbcontext.SaveChangesAsync();
+
+
+            return Ok(new { msg = "Successfully forget password" }); ;
+        }
     }
 }
