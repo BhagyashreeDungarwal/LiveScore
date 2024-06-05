@@ -217,6 +217,43 @@ namespace LiveScore.Controllers
             return Ok(matches);
         }
 
+        [HttpGet("today")]
+        public async Task<IActionResult> GetTodayMatches()
+        {
+            try
+            {
+                var today = DateTime.UtcNow.Date;
+
+                var matches = await _context.Matchss
+                    .Include(c => c.Category)
+                    .Include(o => o.AthleteBlueObj)
+                    .Include(o => o.AthleteRedObj)
+                    .Where(m => (m.MatchStatus == "Live" || m.MatchStatus == "Upcoming") &&
+                                m.MatchDate.HasValue &&
+                                m.MatchDate.Value.Date == today)
+                    .Select(a => new
+                    {
+                        mid = a.MId,
+                        matchDate = a.MatchDate,
+                        athleteRed = a.AthleteRedObj.AthleteName,
+                        athleteBlue = a.AthleteBlueObj.AthleteName,
+                        athleteRedImg = a.AthleteRedObj.ImageUrl,
+                        athleteBlueImg = a.AthleteBlueObj.ImageUrl
+                    })
+                    .ToListAsync();
+
+                if (!matches.Any())
+                {
+                    return NotFound("No matching matches found");
+                }
+
+                return Ok(matches);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
         // PUT: api/Matches/AssignMatch/5
         [HttpPut("AssignMatch/{id}")]
@@ -260,26 +297,26 @@ namespace LiveScore.Controllers
         }
 
         // PUT: api/Athletes/UpdateMatch/5
-        [HttpPut("UpdateMatch/{id}")]
-        public async Task<IActionResult> UpdateMatch(int id, MatchUp matchDTO)
+        [HttpPut("UpdateMatch/{Mid}/{categoryId}/{gender}")]
+        public async Task<IActionResult> UpdateMatch(int Mid, int categoryId, string gender, MatchUp matchDTO)
         {
-            //if (id != matchDTO.MId)
-            //{
-            //    return BadRequest(new { msg = "Match Not Found" });
-            //}
-
-            var match = await _context.Matchss.FindAsync(id);
+            // Find the match by ID
+            var match = await _context.Matchss.FindAsync(Mid);
 
             if (match == null)
             {
                 return NotFound();
             }
 
-            // Map only the properties that you want to update
-            // Assuming you are using AutoMapper, if not, you can manually map the properties
+            // Check if MatchStatus is 'disable'
+            if (match.MatchStatus.ToLower() == "Disable")
+            {
+                return BadRequest(new { msg = "Match is disabled and cannot be updated" });
+            }
+
+            // Update the match properties
             match.MatchStatus = matchDTO.MatchStatus;
             match.MatchType = matchDTO.MatchType;
-            match.NumberOfRound = matchDTO.NumberOfRound;
             match.AthleteRed = matchDTO.AthleteRed;
             match.AthleteBlue = matchDTO.AthleteBlue;
             match.MatchDate = matchDTO.MatchDate;
@@ -290,7 +327,7 @@ namespace LiveScore.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MatchExists(id))
+                if (!MatchExists(Mid))
                 {
                     return NotFound();
                 }
@@ -299,8 +336,7 @@ namespace LiveScore.Controllers
                     throw;
                 }
             }
-
-            return Ok(new {msg = "Successfully Updated Match"});
+            return Ok(new { msg = "Successfully Updated Match" });
         }
 
         [HttpPut("UpdateNextMatchId/{id}")]
