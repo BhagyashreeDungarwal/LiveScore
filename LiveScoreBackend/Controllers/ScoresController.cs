@@ -63,42 +63,6 @@
                     }).ToListAsync();
             }
 
-        //// GET: api/Scores/5
-        //[HttpGet("GetScoreById/{id}")]
-        //public async Task<ActionResult<dynamic>> GetScoreById(int id)
-        //{
-        //  if (_context.Scores == null)
-        //  {
-        //      return NotFound();
-        //  }
-        //    var score = await _context.Scores.Include((a) => a.Round)
-        //        .Include((r) => r.AthleteRedObj)
-        //        .Include((b) => b.AthleteBlueObj)
-        //        .Include((m) => m.Match)
-        //        .Where(s => s.ScoreId == id)
-        //        .Select(s => new
-        //        {
-        //            scoreId = s.ScoreId,
-        //            redPoints = s.RedPoints,
-        //            bluePoints = s.BluePoints,
-        //            redPanelty = s.RedPanelty,
-        //            bluePanelty = s.BluePanelty,
-        //            scoreTime = s.ScoreTime,
-        //            rounds = s.Round.Rounds,
-        //            athleteRed = s.AthleteRedObj.AthleteName,
-        //            athleteBlue = s.AthleteBlueObj.AthleteName,
-        //            matchId = s.Match.MatchType
-        //        })
-        //        .FirstOrDefaultAsync();
-
-        //    if (score == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return score;
-        //}
-
         // Add this code to the ScoresController class
         [HttpGet("GetTemporaryScores")]
         public async Task<ActionResult<IEnumerable<TemporaryScore>>> GetTemporaryScores()
@@ -123,10 +87,29 @@
             });
         }
 
-        [HttpPost("insert")]
-            public async Task<IActionResult> InsertTemporaryScore([FromBody] TemporaryScore tempScore)
+        [HttpPost("insert/{rounds}/{athleteRed}/{athleteBlue}/{matchId}")]
+            public async Task<IActionResult> InsertTemporaryScore([FromBody] TempScoreVm tempScorevm,int rounds,int athleteRed, int athleteBlue, int matchId)
             {
-                _tempContext.TemporaryScores.Add(tempScore);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var tempScore = new TemporaryScore
+                {
+                    RedPoints =tempScorevm.RedPoints,
+                    BluePoints =tempScorevm.BluePoints,
+                    RedPanelty =tempScorevm.RedPanelty,
+                    BluePanelty =tempScorevm.BluePanelty,
+                    ScoreTime = DateTime.Now,
+                    Rounds =rounds,
+                    AthleteRed =athleteRed,
+                    AthleteBlue =athleteBlue,
+                    MatchId =matchId,
+
+                };
+
+            _tempContext.TemporaryScores.Add(tempScore);
                 await _tempContext.SaveChangesAsync();
 
                 var totalRedPoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
@@ -168,7 +151,7 @@
                     BluePoints = tempScore.BluePoints ?? 0,
                     RedPanelty = tempScore.RedPanelty ?? 0,
                     BluePanelty = tempScore.BluePanelty ?? 0,
-                    ScoreTime = DateTime.Now,
+                    ScoreTime = tempScore.ScoreTime,
                     Rounds = tempScore.Rounds,
                     AthleteRed = tempScore.AthleteRed,
                     AthleteBlue = tempScore.AthleteBlue,
@@ -176,34 +159,12 @@
                 };
                 _context.Scores.Add(score);
             }
+                _tempContext.TemporaryScores.RemoveRange(tempScores);
+                await _context.SaveChangesAsync();
+                await _tempContext.SaveChangesAsync();
 
-            _tempContext.TemporaryScores.RemoveRange(tempScores);
-            await _context.SaveChangesAsync();
-            await _tempContext.SaveChangesAsync();
-
-            return Ok(new { msg = "Scores transferred from temporary to real table" });
-        }
-
-        //[HttpPost("start/{matchGroup}/{acrId}/{duration}")]
-        //    public async Task<IActionResult> StartCountdown(int matchGroup, int acrId, int duration)
-        //    {
-        //        try
-        //        {
-        //            var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-        //            if (match == null) return NotFound(new { msg = "Match not found" });
-
-        //            if (!IsCoordinator(matchGroup, acrId))
-        //                return BadRequest(new { msg = "Only MatchCoordinator can start the countdown" });
-
-        //            _timerService.StartTimer(matchGroup, duration);
-        //            await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("StartCountdown", duration);
-        //            return Ok(new { msg = $"Timer is started for {duration} seconds" });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return BadRequest(new { msg = $"An error occurred while starting the countdown: {ex.Message}" });
-        //        }
-        //    }
+                return Ok(new { msg = "Scores transferred from temporary to real table" });
+            }
 
             // DELETE: api/Scores/5
             [HttpDelete("{id}")]
@@ -223,16 +184,6 @@
                 await _context.SaveChangesAsync();
 
                 return NoContent();
-            }
-
-            private bool ScoreExists(int id)
-            {
-                return (_context.Scores?.Any(e => e.ScoreId == id)).GetValueOrDefault();
-            }
-            private bool IsCoordinator(int matchGroup, int acrId)
-            {
-                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-                return match != null && match.MatchCoordinator == acrId;
             }
         }
     }
