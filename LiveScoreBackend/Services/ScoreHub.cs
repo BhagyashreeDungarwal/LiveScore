@@ -1,6 +1,8 @@
 ﻿using LiveScore.Data;
+using LiveScore.Model.ViewModel;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LiveScore.Services
 {
@@ -8,10 +10,12 @@ namespace LiveScore.Services
     {
         private readonly TimerServices _timerService;
         private readonly ApplicationDbContext _context;
-        public ScoreHub(TimerServices timerService, ApplicationDbContext context)
+        private readonly TempDbContext _tempDbContext;
+        public ScoreHub(TimerServices timerService, ApplicationDbContext context, TempDbContext tempDbContext)
         {
             _timerService = timerService;
             _context = context;
+            _tempDbContext = tempDbContext;
         }
 
         private bool IsCoordinator(int matchGroup, int userId)
@@ -52,6 +56,37 @@ namespace LiveScore.Services
         {
             _timerService.ResumeTimer(matchGroup);
             await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
+        }
+        public async Task RefSendScore(int matchGroup, int redPoints, int bluePoints, int redPenalty, int bluePenalty)
+        {
+            var userId = int.Parse(Context.UserIdentifier); // Assuming UserIdentifier is set to the user's ID
+            if (IsReferee1(matchGroup, userId))
+            {
+                var score = new RefScore
+                {
+                    RedPoints = redPoints,
+                    BluePoints = bluePoints,
+                    RedPenalty = redPenalty,
+                    BluePenalty = bluePenalty,
+                    RefereeId = userId
+                };
+
+                _tempDbContext.RefScores.Add(score);
+                await _tempDbContext.SaveChangesAsync();
+
+                await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveScore", score);
+            }
+        }
+        public async Task GetTotalScore(int matchGroup)
+        {
+            var totalRedPoints = await _tempDbContext.RefScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePenalty ?? 0));
+            var totalBluePoints = await _tempDbContext.RefScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPenalty ?? 0));
+
+            await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveTotalScore", new
+            {
+                totalRedPoints,
+                totalBluePoints
+            });
         }
     }
 }

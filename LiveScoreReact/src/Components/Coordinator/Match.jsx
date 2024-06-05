@@ -87,10 +87,18 @@ const Match = () => {
     // { field: "numberOfRound", headerName: "Rounds", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "athleteRed", headerName: "Athlete Red", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "matchCoordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "referee1", headerName: "Referee 1", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "referee2", headerName: "Referee 2", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "referee3", headerName: "Referee 3", width: 100, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "matchCoordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.matchCoordinator ? params.row.matchCoordinator : '------', 
+    },
+    { field: "referee1", headerName: "Referee 1", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee1 ? params.row.referee1 : '------',
+    },
+    { field: "referee2", headerName: "Referee 2", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee2 ? params.row.referee2 : '------',
+    },
+    { field: "referee3", headerName: "Referee 3", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee3 ? params.row.referee3 : '------',
+     },
     {
       headerName: "Action", width: 200, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
         return (

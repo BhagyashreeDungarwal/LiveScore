@@ -1,11 +1,11 @@
 import AddReferee from "./AddReferee"
-import { Avatar, Box, CircularProgress, Fab, Stack } from '@mui/material'
+import { Avatar, Box, Chip, CircularProgress, Fab, Stack } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 import NoData from "./../Images/NoData.jpg"
-import { Block, VerifiedUser } from "@mui/icons-material";
+import { Block, Circle, VerifiedUser } from "@mui/icons-material";
 import { useState } from "react";
 import { GetReferee } from "../Apis/Coordinator";
 import { toast } from "react-toastify";
@@ -77,28 +77,48 @@ const {data, error} = useSelector(state => state.coordinator)
     { field: "age", headerName: "Age", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "lastLogin", headerName: "LastLogin", width: 150, headerClassName: "header", headerAlign: "center", align: "center",valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY  HH:mm') : '------' },
     { field: "city", headerName: "City", width: 80, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "state", headerName: "state", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "state", headerName: "State", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "status", headerName: "Status", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
-    {headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
-      width: 152,
-      renderCell: params => {
-        if (params.row.status === "UnBlock") {   
-        return (
-          <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
-            <VerifiedUser size="small" sx={{ mr: 1 }} />
-            Block
-          </Fab>
-          )
+     {
+      field: "status", headerName: "Status", width: 130, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
+        if (params.row.status === "Not Verified") {
+          return <Chip icon={<Circle fontSize='small' color='error' />} label={params.row.status} color='error' variant='outlined' size='small' />
         }
-       else if (params.row.status === "Block") {   
-        return (
-          <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
-            <Block size="small" sx={{ mr: 1 }} />
-            Unblock
-          </Fab>)
+        else if (params.row.status === "Verified") {
+          return <Chip icon={<Circle fontSize='small' color='success' />} label={params.row.status} color='success' variant='outlined' size='small' />
+        }
+        else if (params.row.status === "Block") {
+          return <Chip icon={<Circle fontSize='small' color='warning' />} label={params.row.status} color='warning' variant='outlined' size='small' />
         }
       }
-    }
+    },
+    //  {
+    //   headerName: "Actions", headerClassName: "header", headerAlign: "center", align: "center",
+    //   width: 122,
+    //   renderCell: params => {
+    //     if (params.row.status === "Not Verified") {
+    //       return (
+    //         <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+    //           <VerifiedUser size="small" sx={{ mr: 1 }} />
+    //           Accept
+    //         </Fab>)
+    //     }
+    //     else if (params.row.status === "Verified") {
+    //       return (
+    //         <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+    //           <Block size="small" sx={{ mr: 1 }} />
+    //           Block
+    //         </Fab>)
+    //     }
+    //     else if (params.row.status === "Block") {
+    //       return (
+    //         <Fab variant="extended" size="small" color="success" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+    //           <Block size="small" sx={{ mr: 1 }} />
+    //           Unblock
+    //         </Fab>)
+    //     }
+    //   }
+    // }
   ], [])
 
   const getRef = async () => {

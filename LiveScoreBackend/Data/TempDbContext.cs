@@ -8,5 +8,6 @@ namespace LiveScore.Data
         public TempDbContext(DbContextOptions<TempDbContext> options) : base(options) { }
 
         public DbSet<TemporaryScore> TemporaryScores { get; set; }
+        public DbSet<RefScore> RefScores { get; set; }
     }
 }
