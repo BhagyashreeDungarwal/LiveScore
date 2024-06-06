@@ -39,6 +39,21 @@ export const FindEmailApi = createAsyncThunk(
         }
     }
 )
+export const ForgetPasswordApi = createAsyncThunk(
+    'Login/forgetPassword',
+    async (formData, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${url}/ACR/ForgetPassword`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            return data
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
 
 const LoginSlice = createSlice({
     name: "Login",
@@ -76,8 +91,20 @@ const LoginSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            .addCase(ForgetPasswordApi.pending, (state) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(ForgetPasswordApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(ForgetPasswordApi.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
     }
 })
 
-export const {clearMessageLogin}  = LoginSlice.actions;
+export const { clearMessageLogin } = LoginSlice.actions;
 export default LoginSlice.reducer;

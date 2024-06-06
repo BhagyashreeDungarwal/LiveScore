@@ -604,7 +604,7 @@ namespace LiveScore.Controllers
             return Ok("Successful");
         }
 
-        [HttpGet("FindEmail/{email}")]
+        [HttpPost("FindEmail/{email}")]
         public async Task<ActionResult<ACR>> FindEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
@@ -643,8 +643,8 @@ namespace LiveScore.Controllers
 
         }
 
-        [HttpPut("ForgetPassword")]
-        public async Task<ActionResult<Login>> ForgetPassword(Login login)
+        [HttpPost("ForgetPassword")]
+        public async Task<ActionResult<Login>> ForgetPassword([FromForm] Login login)
         {
             var acr = await _dbcontext.Admin.FirstOrDefaultAsync(a => a.Email == login.Email);
 
