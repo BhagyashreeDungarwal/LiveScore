@@ -46,12 +46,12 @@ const CDashboard = () => {
     const fetchMatches = async () => {
       try {
         const todayMatchData = await GetTodayMatch();
-        console.log("Fetched today matches:", todayMatchData);
+        // console.log("Fetched today matches:", todayMatchData);
         setTodayMatch(Array.isArray(todayMatchData) ? todayMatchData : []);
 
         const assignMatchData = await GetAssignMatch(cid);
         setAssignMatch(Array.isArray(assignMatchData) ? assignMatchData : []);
-        console.log("Fetched assign matches:", assignMatch);
+        // console.log("Fetched assign matches:", assignMatch);
       } catch (error) {
         console.error("Something went wrong", error);
         setTodayMatch([]);

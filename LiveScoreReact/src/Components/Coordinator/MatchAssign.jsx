@@ -1,6 +1,9 @@
-import { Card, CardContent, CardMedia, Typography, Box, Button } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Box, Button, Tooltip, Fab } from '@mui/material';
 import dayjs from 'dayjs';
 import GenerateOtp from './GenerateOtp';
+import ViewPage from './ViewPage';
+import { Link } from 'react-router-dom';
+import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
 
 const img_url = "http://localhost:5032/images/";
 
@@ -37,7 +40,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
               component="img"
               image={`${img_url}${athleteBlueImg}`}
               alt="Athlete Blue"
-              sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
+              sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 2 }}
             />
             <Typography variant="body2" color="black">
               {athleteBlueName}
@@ -45,9 +48,13 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
           </Box>
         </Box>
         <Box display="flex" justifyContent="space-around" alignItems="center" mb={1}>
-          <Button variant="contained" size="small">
-            View
-          </Button>
+          <Tooltip title="View Details">
+              <Link to={`/coordinator/viewpage/${mid}`} >
+                <Button variant="contained"  size="small" color="primary" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                  View
+                </Button>
+              </Link>
+            </Tooltip>
           <Box>
             <GenerateOtp matchGroup={matchGroup} mid={mid} />
           </Box>

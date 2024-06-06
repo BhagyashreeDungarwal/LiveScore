@@ -93,6 +93,12 @@ namespace LiveScore.Controllers
                                                   matchDate = m.MatchDate,
                                                   athleteRed = m.AthleteRedObj.AthleteName,
                                                   athleteBlue = m.AthleteBlueObj.AthleteName,
+                                                  athleteRedImg = m.AthleteRedObj.ImageUrl,
+                                                  athleteBlueImg = m.AthleteBlueObj.ImageUrl,
+                                                  coachRed = m.AthleteRedObj.Coach.CoachName,
+                                                  coachBlue = m.AthleteBlueObj.Coach.CoachName,
+                                                  redState = m.AthleteRedObj.State,
+                                                  bluestate = m.AthleteBlueObj.State,
                                                   nextMatchId = m.NextMatchId,
                                                   flag = m.Flag,
                                                   categoryId = m.Category.CategoryName,
@@ -100,7 +106,7 @@ namespace LiveScore.Controllers
                                                   referee1 = m.RefereeF.Name,
                                                   referee2 = m.RefereeS.Name,
                                                   referee3 = m.RefereeT.Name,
-                                                  tournamentId = m.Tournament.TournamentName
+                                                  tournamentId = m.Tournament.TournamentName,
                                               })
                                               .FirstOrDefaultAsync();
             if (match == null)

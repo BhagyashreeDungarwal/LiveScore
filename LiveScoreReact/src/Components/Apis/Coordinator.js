@@ -93,12 +93,12 @@ export const GetMatch = async () => {
 
 export const GetMatchById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
+    const response = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
     })
-    return data
+    return response.data;
   } catch (error) {
     return error
   }
