@@ -28,6 +28,7 @@ import AssignMatch from './Components/Coordinator/AssignMatch';
 import Scoring from './Components/Coordinator/Scoring';
 import FindEmail from './Components/Common/FindEmail';
 import ForgetPassword from './Components/Common/ForgetPassword';
+import ViewPage from './Components/Coordinator/ViewPage';
 
 
 function App() {
@@ -208,6 +209,9 @@ function App() {
         }, {
           path: "scoring/:matchGroup",
           element: <Scoring />
+        }, {
+          path: "viewpage/:mid",
+          element: <ViewPage />
         }
       ]
     },

@@ -8,10 +8,10 @@ namespace LiveScore.Services
 {
     public class ScoreHub : Hub
     {
-        private readonly TimerServices _timerService;
+        private readonly ITimerService _timerService;
         private readonly ApplicationDbContext _context;
         private readonly TempDbContext _tempDbContext;
-        public ScoreHub(TimerServices timerService, ApplicationDbContext context, TempDbContext tempDbContext)
+        public ScoreHub(ITimerService timerService,  ApplicationDbContext context, TempDbContext tempDbContext)
         {
             _timerService = timerService;
             _context = context;

@@ -165,9 +165,129 @@
 
                 return Ok(new { msg = "Scores transferred from temporary to real table" });
             }
+        private bool IsCoordinator(int matchGroup, int acrId)
+        {
+            var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+            return match != null && match.MatchCoordinator == acrId;
+        }
+        private bool IsReferee1(int matchGroup, int acrId)
+        {
+            var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+            return match != null && match.Referee1 == acrId;
+        }
 
-            // DELETE: api/Scores/5
-            [HttpDelete("{id}")]
+        [HttpPost("join")]
+        public async Task<IActionResult> JoinGroup(int matchGroup, int acrId, string connectionId)
+        {
+            try
+            {
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+                if (match == null) return NotFound("Match not found");
+
+                if (!IsCoordinator(matchGroup, acrId) && !IsReferee1(matchGroup, acrId))
+                    return Forbid("Only MatchCoordinator and Referee1 can join the group");
+
+                await _hubContext.Groups.AddToGroupAsync(connectionId, matchGroup.ToString());
+
+                var joinDetails = new
+                {
+                    MatchId = match.MId,
+                    acrId = acrId,
+                    Group = match.MatchGroup
+                };
+
+                return Ok(joinDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while adding the user to the group: {ex.Message}");
+            }
+        }
+
+        [HttpPost("leave")]
+        public async Task<IActionResult> LeaveGroup(int matchGroup, int acrId, string connectionId)
+        {
+            try
+            {
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+                if (match == null) return NotFound(new { msg = "Match not found" });
+
+                await _hubContext.Groups.RemoveFromGroupAsync(connectionId, matchGroup.ToString());
+                return Ok(new { msg = "Leave the Group" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while removing the user from the group: {ex.Message}");
+            }
+        }
+
+        [HttpPost("start/{matchGroup}/{acrId}/{duration}")]
+        public async Task<IActionResult> StartCountdown(int matchGroup, int acrId, int duration)
+        {
+            try
+            {
+                Console.WriteLine(matchGroup);
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+                if (match == null) return NotFound(new { msg = "Match not found" });
+
+                if (!IsCoordinator(matchGroup, acrId))
+                    return BadRequest(new { msg = "Only MatchCoordinator can start the countdown" });
+
+                _timerService.StartTimer(matchGroup, duration);
+                await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("StartCountdown", duration);
+                return Ok(new { msg = $"Timer is Start {duration}" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { msg = $"An error occurred while starting the countdown: {ex.Message}" });
+            }
+        }
+
+        [HttpPost("stop/{matchGroup}/{acrId}")]
+        public async Task<IActionResult> StopCountdown(int matchGroup, int acrId)
+        {
+            try
+            {
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+                if (match == null) return NotFound(new { msg = "Match not found" });
+
+                if (!IsCoordinator(matchGroup, acrId))
+                    return BadRequest(new { msg = "Only MatchCoordinator can stop the countdown" });
+
+                _timerService.StopTimer(matchGroup);
+                await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("StopCountdown");
+                return Ok(new { msg = "Timer is Stop" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { msg = $"An error occurred while stopping the countdown: {ex.Message}" });
+            }
+        }
+
+        [HttpPost("resume/{matchGroup}/{acrId}")]
+        public async Task<IActionResult> ResumeCountdown(int matchGroup, int acrId)
+        {
+            try
+            {
+                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
+                if (match == null) return NotFound(new { msg = "Match not found" });
+
+                if (!IsCoordinator(matchGroup, acrId))
+                    return BadRequest(new { msg = "Only MatchCoordinator can resume the countdown" });
+
+                _timerService.ResumeTimer(matchGroup);
+                await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
+                return Ok(new { msg = "Timer is Resume" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while resuming the countdown: {ex.Message}");
+            }
+        }
+
+
+        // DELETE: api/Scores/5
+        [HttpDelete("{id}")]
             public async Task<IActionResult> DeleteScore(int id)
             {
                 if (_context.Scores == null)

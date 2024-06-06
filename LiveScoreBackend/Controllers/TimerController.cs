@@ -18,6 +18,7 @@ namespace LiveScore.Controllers
             _hubContext = hubContext;
             _timerService = timerService;
             _context = context;
+
         }
 
         private bool IsCoordinator(int matchGroup, int acrId)
