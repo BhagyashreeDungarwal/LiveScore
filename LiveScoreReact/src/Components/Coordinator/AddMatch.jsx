@@ -227,7 +227,6 @@ const AddMatch = () => {
 
   const initial = {
     MatchType: "",
-    NumberOfRound: "",
     MatchDate: "",
     AthleteBlue: "",
     AthleteRed: "",
@@ -474,46 +473,35 @@ const AddMatch = () => {
                         />
                         {errors.MatchDate && touched.MatchDate ? (<Typography variant="subtitle1" color="error">{errors.MatchDate}</Typography>) : null}
                       </Grid>
+                      
+                      <Grid item xl={12} md={12} sm={12} xs={12}>
+                                <FormControl fullWidth variant="standard">
+                                    <InputLabel id="matchType-label">Match Type</InputLabel>
+                                    <Select
+                                        id="MatchType"
+                                        name="MatchType"
+                                        label="Match Type"
+                                        fullWidth
+                                        variant="standard"
+                                        value={values.MatchType}
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        startAdornment={
+                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }}>
+                                                <ModeStandbyRounded />
+                                            </InputAdornment>
+                                        }
+                                    >
+                                        <MenuItem value="Preliminary">Preliminary</MenuItem>
+                                        <MenuItem value="Quarter-Final">Quarter-Final</MenuItem>
+                                        <MenuItem value="Semi-Final">Semi-Final</MenuItem>
+                                        <MenuItem value="Final">Final</MenuItem>
+                                    </Select>
+                                    {errors.MatchType && touched.MatchType ? (<Typography variant="subtitle1" color="error">{errors.MatchType}</Typography>) : null}
+                                </FormControl>
+                            </Grid>
                       <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <TextField
-                          id="MatchType"
-                          name="MatchType"
-                          label="Match Type"
-                          fullWidth
-                          variant="standard"
-                          value={values.MatchType}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                <ModeStandbyRounded />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        {errors.MatchType && touched.MatchType ? (<Typography variant="subtitle1" color="error">{errors.MatchType}</Typography>) : null}
-                      </Grid>
-                      <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <TextField
-                          id="NumberOfRound"
-                          name="NumberOfRound"
-                          label="Number Of Round"
-                          type="number"
-                          variant="standard"
-                          fullWidth
-                          value={values.NumberOfRound}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }} >
-                                <RestartAltRounded />
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        {errors.NumberOfRound && touched.NumberOfRound ? (<Typography variant="subtitle1" color="error">{errors.NumberOfRound}</Typography>) : null}
+
                         <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
                           <Button disabled={activeStep === 0} onClick={handleBack}>
                             Back

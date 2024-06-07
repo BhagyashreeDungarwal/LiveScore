@@ -167,7 +167,6 @@ export const CoachPostApi = createAsyncThunk(
     }
 );
 
-
 export const CoachPutApi = createAsyncThunk(
     'coordinator/coachPut',
     async ({ values, id }, { rejectWithValue }) => {
@@ -264,6 +263,21 @@ export const RoundPostApi = createAsyncThunk(
     }
 );
 
+export const MatchPutApi = createAsyncThunk(
+    'coordinator/matchPut',
+    async ({ values, mid }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/Matchs/UpdateMatch/${mid}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 const initialState = {
     data: [],
@@ -474,6 +488,17 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(RoundPostApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            }).addCase(MatchPutApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(MatchPutApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(MatchPutApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

@@ -142,7 +142,6 @@ namespace LiveScore.Data
 
                 entity.Property(m => m.MatchStatus).IsRequired(false).HasMaxLength(101); 
                 entity.Property(m => m.MatchType).HasMaxLength(101);
-                entity.Property(m => m.NumberOfRound).IsRequired(false).HasMaxLength(101);
                 entity.Property(r => r.MatchDate).IsRequired();
                 entity.Property(m => m.AthleteRed).IsRequired(false); 
                 entity.Property(m => m.AthleteBlue).IsRequired(false); 

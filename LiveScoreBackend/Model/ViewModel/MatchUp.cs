@@ -9,7 +9,5 @@ namespace LiveScore.Model.ViewModel
 
         [DataType(DataType.Date)]
         public DateTime? MatchDate { get; set; }
-        public int? AthleteRed { get; set; }
-        public int? AthleteBlue { get; set; }
     }
 }

@@ -53,7 +53,6 @@ namespace LiveScore.Controllers
                     matchGroup = a.MatchGroup,
                     matchStatus = a.MatchStatus,
                     matchType = a.MatchType,
-                    numberOfRound = a.NumberOfRound,
                     matchDate = a.MatchDate,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
@@ -61,7 +60,8 @@ namespace LiveScore.Controllers
                     athleteBlueImg = a.AthleteBlueObj.ImageUrl,
                     nextMatchId =  a.NextMatchId,
                     gender = a.Gender,
-                    flag = a.Flag,                   
+                    flag = a.Flag,
+                    categoryId = a.CategoryId,
                     category = a.Category.CategoryName,
                     matchCoordinator = a.Coordinator.Name,
                     referee1 = a.RefereeF.Name,
@@ -89,7 +89,6 @@ namespace LiveScore.Controllers
                                                   mid = m.MId,
                                                   matchStatus = m.MatchStatus,
                                                   matchType = m.MatchType,
-                                                  numberOfRound = m.NumberOfRound,
                                                   matchDate = m.MatchDate,
                                                   athleteRed = m.AthleteRedObj.AthleteName,
                                                   athleteBlue = m.AthleteBlueObj.AthleteName,
@@ -143,12 +142,11 @@ namespace LiveScore.Controllers
             {
                 // Call the stored procedure
                 await _context.Database.ExecuteSqlRawAsync(
-                    "EXEC InsertMatchs @MatchStatus, @MatchType, @NumberOfRound, @MatchDate,@Gender , @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
+                    "EXEC InsertMatchs @MatchStatus, @MatchType, @MatchDate,@Gender , @AthleteRed, @AthleteBlue, @CategoryId, @TournamentId",
                     parameters: new[]
                     {
                         new SqlParameter("@MatchStatus", "Upcoming"),
                         new SqlParameter("@MatchType", matchs.MatchType),
-                        new SqlParameter("@NumberOfRound", matchs.NumberOfRound),
                         new SqlParameter("@MatchDate", matchs.MatchDate),
                         new SqlParameter("@Gender", matchs.Gender),
                         new SqlParameter("@AthleteRed", matchs.AthleteRed),
@@ -197,7 +195,6 @@ namespace LiveScore.Controllers
                     matchGroup = a.MatchGroup,
                     matchStatus = a.MatchStatus,
                     matchType = a.MatchType,
-                    numberOfRound = a.NumberOfRound,
                     matchDate = a.MatchDate,
                     athleteRed = a.AthleteRedObj.AthleteName,
                     athleteBlue = a.AthleteBlueObj.AthleteName,
@@ -216,7 +213,6 @@ namespace LiveScore.Controllers
 
             if (!matches.Any())
             {
-                _logger.LogWarning($"No matches found for coordinator with ID {id} and status 'Live' or 'Upcoming'");
                 return NotFound("No matching matches found");
             }
 
@@ -224,7 +220,7 @@ namespace LiveScore.Controllers
         }
 
         [HttpGet("today")]
-        public async Task<IActionResult> GetTodayMatches()
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetTodayMatches()
         {
             try
             {
@@ -250,7 +246,7 @@ namespace LiveScore.Controllers
 
                 if (!matches.Any())
                 {
-                    return NotFound("No matching matches found");
+                    return NotFound(new { msg = "No matching matches found" });
                 }
 
                 return Ok(matches);
@@ -303,8 +299,8 @@ namespace LiveScore.Controllers
         }
 
         // PUT: api/Athletes/UpdateMatch/5
-        [HttpPut("UpdateMatch/{Mid}/{categoryId}/{gender}")]
-        public async Task<IActionResult> UpdateMatch(int Mid, int categoryId, string gender, MatchUp matchDTO)
+        [HttpPut("UpdateMatch/{Mid}")]
+        public async Task<IActionResult> UpdateMatch(int Mid, MatchUp matchDTO)
         {
             // Find the match by ID
             var match = await _context.Matchss.FindAsync(Mid);
@@ -315,7 +311,7 @@ namespace LiveScore.Controllers
             }
 
             // Check if MatchStatus is 'disable'
-            if (match.MatchStatus.ToLower() == "Disable")
+            if (match.MatchStatus == "Disable")
             {
                 return BadRequest(new { msg = "Match is disabled and cannot be updated" });
             }
@@ -323,8 +319,6 @@ namespace LiveScore.Controllers
             // Update the match properties
             match.MatchStatus = matchDTO.MatchStatus;
             match.MatchType = matchDTO.MatchType;
-            match.AthleteRed = matchDTO.AthleteRed;
-            match.AthleteBlue = matchDTO.AthleteBlue;
             match.MatchDate = matchDTO.MatchDate;
 
             try
@@ -356,12 +350,11 @@ namespace LiveScore.Controllers
             try
             {
                 // Call the stored procedure directly through DbContext.Database.ExecuteSqlRawAsync
-                await _context.Database.ExecuteSqlRawAsync("EXEC UpdateNextMatchId @Umid, @Flag, @MatchStatus, @MatchType, @NumberOfRound",
+                await _context.Database.ExecuteSqlRawAsync("EXEC UpdateNextMatchId @Umid, @Flag, @MatchStatus, @MatchType",
                     new SqlParameter("@Umid",id),
                     new SqlParameter("@Flag", match.Flag),
                     new SqlParameter("@MatchStatus", match.MatchStatus),
-                    new SqlParameter("@MatchType", match.MatchType),
-                    new SqlParameter("@NumberOfRound", match.NumberOfRound));
+                    new SqlParameter("@MatchType", match.MatchType));
                                
                 // Exclude 'MId' column from the INSERT statement
                 var modifiedMatch = new Matchs
