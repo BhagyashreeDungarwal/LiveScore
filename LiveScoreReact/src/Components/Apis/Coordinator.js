@@ -78,9 +78,23 @@ export const GetCoachById = async (id) => {
     return error
   }
 }
+
 export const GetMatch = async () => {
   try {
     const data = await axios.get(`${url}/Matchs/GetMatchs`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+export const GetMatchHistory = async () => {
+  try {
+    const data = await axios.get(`${url}/Matchs/GetMatchHistory`, {
       headers: {
         "Content-Type": "application/json"
       }

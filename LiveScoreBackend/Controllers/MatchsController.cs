@@ -48,6 +48,7 @@ namespace LiveScore.Controllers
                 .Include((r) => r.RefereeF)
                 .Include((r) => r.RefereeS)
                 .Include((r) => r.RefereeT)
+                .Where(a => a.MatchStatus != "disable")
                 .Select((a) => new {
                    mid = a.MId,
                     matchGroup = a.MatchGroup,
@@ -61,6 +62,48 @@ namespace LiveScore.Controllers
                     nextMatchId =  a.NextMatchId,
                     gender = a.Gender,
                     flag = a.Flag,
+                    categoryId = a.CategoryId,
+                    category = a.Category.CategoryName,
+                    matchCoordinator = a.Coordinator.Name,
+                    referee1 = a.RefereeF.Name,
+                    referee2 = a.RefereeS.Name,
+                    referee3 = a.RefereeT.Name,
+                    tournament = a.Tournament.TournamentName,
+
+                }).ToListAsync();
+        }
+        
+        [HttpGet("GetMatchHistory")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetMatchHistory()
+        {
+            if (_context.Matchss == null)
+            {
+                return NotFound(new { msg = "Matchs Not Found" });
+            }
+
+            return await _context.Matchss.Include((c) => c.Category)
+                .Include((o) => o.AthleteBlueObj)
+                .Include((o) => o.AthleteRedObj)
+                .Include((o) => o.Athleteflag)
+                .Include((t) => t.Tournament)
+                .Include((c)=> c.Coordinator)
+                .Include((r) => r.RefereeF)
+                .Include((r) => r.RefereeS)
+                .Include((r) => r.RefereeT)
+                .Where(a => a.MatchStatus == "disable")
+                .Select((a) => new {
+                   mid = a.MId,
+                    matchGroup = a.MatchGroup,
+                    matchStatus = a.MatchStatus,
+                    matchType = a.MatchType,
+                    matchDate = a.MatchDate,
+                    athleteRed = a.AthleteRedObj.AthleteName,
+                    athleteBlue = a.AthleteBlueObj.AthleteName,
+                    athleteRedImg = a.AthleteRedObj.ImageUrl,
+                    athleteBlueImg = a.AthleteBlueObj.ImageUrl,
+                    nextMatchId =  a.NextMatchId,
+                    gender = a.Gender,
+                    flag = a.Athleteflag.AthleteName,
                     categoryId = a.CategoryId,
                     category = a.Category.CategoryName,
                     matchCoordinator = a.Coordinator.Name,
