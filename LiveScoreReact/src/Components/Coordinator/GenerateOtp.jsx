@@ -214,7 +214,7 @@ const GenerateOtp = ({ matchGroup ,mid}) => {
             Next
           </Button> */}
           
-      <ChildModal matchGroup={matchGroup} mid={mid} />
+      <ChildModal  mid={mid} matchGroup={matchGroup} />
         </DialogActions>
       </BootstrapDialog>
     </div>

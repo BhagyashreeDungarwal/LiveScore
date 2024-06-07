@@ -221,21 +221,19 @@
             }
         }
 
+
         [HttpPost("start/{matchGroup}/{acrId}/{duration}")]
         public async Task<IActionResult> StartCountdown(int matchGroup, int acrId, int duration)
         {
             try
             {
-                Console.WriteLine(matchGroup);
-                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-                if (match == null) return NotFound(new { msg = "Match not found" });
-
+                // Add your authorization logic here
                 if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can start the countdown" });
 
                 _timerService.StartTimer(matchGroup, duration);
                 await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("StartCountdown", duration);
-                return Ok(new { msg = $"Timer is Start {duration}" });
+                return Ok(new { msg = $"Timer started with duration {duration} seconds" });
             }
             catch (Exception ex)
             {
@@ -248,19 +246,36 @@
         {
             try
             {
-                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-                if (match == null) return NotFound(new { msg = "Match not found" });
-
+                // Add your authorization logic here
                 if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can stop the countdown" });
 
                 _timerService.StopTimer(matchGroup);
                 await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("StopCountdown");
-                return Ok(new { msg = "Timer is Stop" });
+                return Ok(new { msg = "Timer stopped" });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { msg = $"An error occurred while stopping the countdown: {ex.Message}" });
+            }
+        }
+
+        [HttpPost("pause/{matchGroup}/{acrId}")]
+        public async Task<IActionResult> PauseCountdown(int matchGroup, int acrId)
+        {
+            try
+            {
+                // Add your authorization logic here
+                if (!IsCoordinator(matchGroup, acrId))
+                    return BadRequest(new { msg = "Only MatchCoordinator can pause the countdown" });
+
+                _timerService.PauseTimer(matchGroup);
+                await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("PauseCountdown");
+                return Ok(new { msg = "Timer paused" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { msg = $"An error occurred while pausing the countdown: {ex.Message}" });
             }
         }
 
@@ -269,19 +284,17 @@
         {
             try
             {
-                var match = _context.Matchss.FirstOrDefault(m => m.MatchGroup == matchGroup);
-                if (match == null) return NotFound(new { msg = "Match not found" });
-
+                // Add your authorization logic here
                 if (!IsCoordinator(matchGroup, acrId))
                     return BadRequest(new { msg = "Only MatchCoordinator can resume the countdown" });
 
                 _timerService.ResumeTimer(matchGroup);
                 await _hubContext.Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
-                return Ok(new { msg = "Timer is Resume" });
+                return Ok(new { msg = "Timer resumed" });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while resuming the countdown: {ex.Message}");
+                return BadRequest(new { msg = $"An error occurred while resuming the countdown: {ex.Message}" });
             }
         }
 

@@ -63,7 +63,7 @@ const EnterOtp = ({ matchGroup }) => {
     if (data) {
       if (data.msg) {
         toast.success(data.msg);
-        navigate("/scoring");
+        navigate(`/scoring/${matchGroup}`);
       }
     }
     if (error) {

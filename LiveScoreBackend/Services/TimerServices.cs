@@ -1,7 +1,9 @@
-﻿using LiveScore.Model.ViewModel;
-using Microsoft.AspNetCore.SignalR;
-using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Generic;
 using System.Timers;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace LiveScore.Services
 {
@@ -9,7 +11,7 @@ namespace LiveScore.Services
     {
         private readonly IHubContext<ScoreHub> _hubContext;
         private readonly ILogger<TimerServices> _logger;
-        private readonly ConcurrentDictionary<int, TimerInfo> _timers = new();
+        private readonly Dictionary<int, TimerInfo> _timers = new Dictionary<int, TimerInfo>();
 
         public event EventHandler<int> TimerElapsed;
 
@@ -17,32 +19,6 @@ namespace LiveScore.Services
         {
             _hubContext = hubContext;
             _logger = logger;
-        }
-
-        public void StartTimer(int matchGroup, int duration)
-        {
-            var timerInfo = _timers.GetOrAdd(matchGroup, new TimerInfo
-            {
-                MatchGroup = matchGroup,
-                TimeLeft = duration,
-                IsRunning = true
-            });
-
-            timerInfo.TimeLeft = duration;
-            timerInfo.IsRunning = true;
-
-            if (timerInfo.Timer != null)
-            {
-                timerInfo.Timer.Stop();
-                timerInfo.Timer.Dispose();
-            }
-
-            timerInfo.Timer = new System.Timers.Timer(1000); // Timer interval set to 1 second
-            timerInfo.Timer.Elapsed += (sender, e) => OnTimerElapsed(sender, e, matchGroup);
-            timerInfo.Timer.AutoReset = true; // Ensure it triggers repeatedly every second
-            timerInfo.Timer.Start();
-
-            _logger.LogInformation($"Timer started for matchGroup: {matchGroup} with duration: {duration}");
         }
 
         private async void OnTimerElapsed(object sender, ElapsedEventArgs e, int matchGroup)
@@ -59,7 +35,7 @@ namespace LiveScore.Services
                     timerInfo.IsRunning = false;
                     timerInfo.Timer.Stop();
                     timerInfo.Timer.Dispose();
-                    _timers.TryRemove(matchGroup, out _);
+                    _timers.Remove(matchGroup);
 
                     await _hubContext.Clients.Group(timerInfo.MatchGroup.ToString()).SendAsync("TimerEnded");
                     TimerElapsed?.Invoke(this, matchGroup);
@@ -68,26 +44,72 @@ namespace LiveScore.Services
             }
         }
 
+        public void StartTimer(int matchGroup, int duration)
+        {
+            if (_timers.ContainsKey(matchGroup))
+            {
+                _timers[matchGroup].Timer.Stop();
+                _timers.Remove(matchGroup);
+            }
+
+            var timer = new System.Timers.Timer(1000);
+            var timerInfo = new TimerInfo
+            {
+                MatchGroup = matchGroup,
+                TimeLeft = duration,
+                IsRunning = true,
+                Timer = timer
+            };
+
+            timer.Elapsed += (sender, e) => OnTimerElapsed(sender, e, matchGroup);
+            timer.Start();
+
+            _timers[matchGroup] = timerInfo;
+        }
+
         public void StopTimer(int matchGroup)
         {
             if (_timers.TryGetValue(matchGroup, out var timerInfo))
             {
-                timerInfo.IsRunning = false;
                 timerInfo.Timer.Stop();
-                timerInfo.Timer.Dispose();
-                _timers.TryRemove(matchGroup, out _);
-                _logger.LogInformation($"Timer stopped for matchGroup: {matchGroup}");
+                timerInfo.IsRunning = false;
+            }
+        }
+
+        public void PauseTimer(int matchGroup)
+        {
+            if (_timers.TryGetValue(matchGroup, out var timerInfo) && timerInfo.IsRunning)
+            {
+                timerInfo.Timer.Stop();
+                timerInfo.IsRunning = false;
+                timerInfo.PausedTime = DateTime.UtcNow;
+                timerInfo.TimeLeftWhenPaused = timerInfo.TimeLeft;
             }
         }
 
         public void ResumeTimer(int matchGroup)
         {
-            if (_timers.TryGetValue(matchGroup, out var timerInfo) && !timerInfo.IsRunning)
+            if (_timers.TryGetValue(matchGroup, out var timerInfo) && !timerInfo.IsRunning && timerInfo.PausedTime.HasValue)
             {
-                timerInfo.IsRunning = true;
-                timerInfo.Timer.Start();
-                _logger.LogInformation($"Timer resumed for matchGroup: {matchGroup}");
+                var elapsedPauseTime = (DateTime.UtcNow - timerInfo.PausedTime.Value).TotalSeconds;
+                timerInfo.TimeLeft = timerInfo.TimeLeftWhenPaused - (int)elapsedPauseTime;
+
+                if (timerInfo.TimeLeft > 0)
+                {
+                    timerInfo.Timer.Start();
+                    timerInfo.IsRunning = true;
+                }
+                else
+                {
+                    StopTimer(matchGroup);
+                }
             }
+        }
+
+        public TimerInfo GetTimerInfo(int matchGroup)
+        {
+            _timers.TryGetValue(matchGroup, out var timerInfo);
+            return timerInfo;
         }
     }
 
@@ -97,6 +119,9 @@ namespace LiveScore.Services
         event EventHandler<int> TimerElapsed;
         void StopTimer(int matchGroup);
         void ResumeTimer(int matchGroup);
+        void PauseTimer(int matchGroup);
+
+        TimerInfo GetTimerInfo(int matchGroup);
     }
 
     public class TimerInfo
@@ -105,5 +130,7 @@ namespace LiveScore.Services
         public int TimeLeft { get; set; }
         public bool IsRunning { get; set; }
         public System.Timers.Timer Timer { get; set; }
+        public DateTime? PausedTime { get; set; } // New property to track pause time
+        public int TimeLeftWhenPaused { get; set; }
     }
 }

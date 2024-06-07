@@ -1,68 +1,78 @@
-import { Box, Grid, Typography, Button } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-
+import { Box, Grid, Typography, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 const Scoring = () => {
-
-  const [penalityRed, setPenalityRed] = useState(0)
-  const [penalityBlue, setPenalityBLue] = useState(0)
-  const [scoreRed, setScoreRed] = useState(0)
-  const [scoreBlue, setScoreBlue] = useState(0)
-  const [time, setTime] = useState(120); // 2 minutes in seconds
-  const [isRunning, setIsRunning] = useState(false);
+  const [penalityRed, setPenalityRed] = useState(0);
+  const [penalityBlue, setPenalityBlue] = useState(0);
+  const [scoreRed, setScoreRed] = useState(0);
+  const [scoreBlue, setScoreBlue] = useState(0);
+  const [connection, setConnection] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const { matchGroup } = useParams();
 
   useEffect(() => {
-    let interval;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTime(prevTime => {
-          if (prevTime > 0) {
-            return prevTime - 1;
-          } else {
-            clearInterval(interval);
-            setIsRunning(false);
-            return 0;
-          }
-        });
-      }, 1000);
-    }
-    return () => clearInterval(interval);
-  }, [isRunning]);
+    const connect = new HubConnectionBuilder()
+      .withUrl('http://localhost:5032/scoreHub')
+      .configureLogging(LogLevel.Information)
+      .build();
 
+    connect.start()
+      .then(() => {
+        console.log('Connected to SignalR');
+        return connect.invoke('JoinGroup', matchGroup.toString());
+      })
+      .then(() => {
+        console.log(`Joined Matchgroup ${matchGroup}`);
+      })
+      .catch(err => console.error('JoinGroup invocation failed: ', err));
 
-  const handleStart = () => {
-    if (!isRunning && time > 0) {
-      setIsRunning(true);
-    }
-  };
+    connect.on('TimerUpdate', (timeLeft) => {
+      setTimeLeft(timeLeft);
+    });
 
-  const handleReset = () => {
-    setIsRunning(false);
-    setTime(120);
-  };
+    connect.on('TimerEnded', () => {
+      setTimeLeft(0);
+    });
 
-  const handleStop = () => {
-    setIsRunning(false);
-  };
+    connect.on('ScoreUpdate', (redScore, blueScore) => {
+      setScoreRed(redScore);
+      setScoreBlue(blueScore);
+    });
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  };
+    connect.on('PenalityUpdate', (redPenality, bluePenality) => {
+      setPenalityRed(redPenality);
+      setPenalityBLue(bluePenality);
+    });
+
+    setConnection(connect);
+
+    return () => {
+      if (connection) {
+        connection.invoke('LeaveGroup', matchGroup.toString())
+          .then(() => connection.stop())
+          .catch(err => console.error('LeaveGroup invocation failed: ', err));
+      }
+    };
+  }, [matchGroup]);
 
   const handleRedScore = (increment) => {
     setScoreRed((prevValue) => prevValue + increment);
+    connection.invoke('UpdateScore', scoreRed + increment, scoreBlue);
   };
+
   const handleBlueScore = (increment) => {
     setScoreBlue((prevValue) => prevValue + increment);
+    connection.invoke('UpdateScore', scoreRed, scoreBlue + increment);
   };
 
   const handleRedPenality = () => {
     if (penalityRed < 5) {
       setPenalityRed(prev => {
         const newCount = prev + 1;
-        handleBlueScore(1)
+        handleBlueScore(1);
+        connection.invoke('UpdatePenality', newCount, penalityBlue);
         if (newCount === 5) {
           alert('Athlete Red Disqualified!');
         }
@@ -75,7 +85,8 @@ const Scoring = () => {
     if (penalityBlue < 5) {
       setPenalityBLue(prev => {
         const newCount = prev + 1;
-        handleRedScore(1)
+        handleRedScore(1);
+        connection.invoke('UpdatePenality', penalityRed, newCount);
         if (newCount === 5) {
           alert('Athlete Blue Disqualified!');
         }
@@ -87,25 +98,6 @@ const Scoring = () => {
   return (
     <Box>
       <Grid container spacing={2} sx={{ padding: "2%", color: "white" }}>
-        <Grid item xs={12} md={12} lg={12} sm={12}>
-          <Grid container spacing={2}>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
-              <Button variant="contained" size='large' onClick={handleStart} sx={{borderRadius:"20px",backgroundColor:"#5c6bc0", margin:'1%','&:hover': { backgroundColor: "#3949ab" }}} fullWidth>
-                Start
-              </Button>
-            </Grid>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
-              <Button variant="contained" size='large' onClick={handleReset}  sx={{borderRadius:"20px",backgroundColor:"#5c6bc0", margin:'1%'}} fullWidth>
-                Reset
-              </Button>
-            </Grid>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
-              <Button variant="contained" size='large' onClick={handleStop}  sx={{borderRadius:"20px",backgroundColor:"#5c6bc0", margin:'1%'}} fullWidth>
-                Stop
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
         <Grid item xs={12} md={12} lg={12} sm={12}>
           <Grid container spacing={2}>
             <Grid item xs={4} md={4} lg={4} sm={4}>
@@ -123,7 +115,7 @@ const Scoring = () => {
                 alignItems: 'center'
               }}>
                 <Typography variant="h1" sx={{ color: "#bdbdbd", textAlign: 'center', fontSize: "20vh" }}>
-                  {formatTime(time)}
+                  {timeLeft}
                 </Typography>
               </Box>
             </Grid>
@@ -196,20 +188,14 @@ const Scoring = () => {
         </Grid>
         <Grid item xs={4} md={4} lg={4} sm={4}>
           <Grid container spacing={2}>
-
-            <Grid item xs={6} md={6} lg={6} sm={6}>
-              <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
-                +1
-              </Button>
-            </Grid>
             <Grid item xs={6} md={6} lg={6} sm={6}>
               <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
                 +2
               </Button>
             </Grid>
             <Grid item xs={6} md={6} lg={6} sm={6}>
-              <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
-                penality
+              <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
+                +1
               </Button>
             </Grid>
             <Grid item xs={6} md={6} lg={6} sm={6}>
@@ -217,11 +203,16 @@ const Scoring = () => {
                 +3
               </Button>
             </Grid>
+            <Grid item xs={6} md={6} lg={6} sm={6}>
+              <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
+                penality
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-export default Scoring
+export default Scoring;

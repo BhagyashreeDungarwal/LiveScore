@@ -10,9 +10,9 @@ const Scoring = () => {
     const [timeLeft, setTimeLeft] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const { matchGroup } = useParams();
-    const cid = localStorage.getItem("ID")
+    const cid = localStorage.getItem("ID");
     const [penalityRed, setPenalityRed] = useState(0)
-    const [penalityBlue, setPenalityBLue] = useState(0)
+    const [penalityBlue, setPenalityBlue] = useState(0)
     const [scoreRed, setScoreRed] = useState(0)
     const [scoreBlue, setScoreBlue] = useState(0)
 
@@ -55,6 +55,11 @@ const Scoring = () => {
             setTimeLeft(0);
         });
 
+        connect.on('PauseCountdown', () => {
+            console.log('PauseCountdown received');
+            setIsRunning(false);
+        });
+
         connect.on('ResumeCountdown', () => {
             console.log('ResumeCountdown received');
             setIsRunning(true);
@@ -71,22 +76,9 @@ const Scoring = () => {
         };
     }, [matchGroup]);
 
-    useEffect(() => {
-        if (isRunning && timeLeft > 0) {
-            const timerId = setInterval(() => {
-                setTimeLeft(prevTime => prevTime - 1);
-            }, 1000);
-
-            return () => clearInterval(timerId);
-        } else if (timeLeft === 0) {
-            setIsRunning(false);
-        }
-    }, [isRunning, timeLeft]);
-
     const handleStart = () => {
         if (connection) {
-            console.log(parseInt(matchGroup))
-            axios.post(`http://localhost:5032/api/Timer/start/${parseInt(matchGroup)}/${cid}/${120}`, {
+            axios.post(`http://localhost:5032/api/Scores/start/${parseInt(matchGroup)}/${cid}/${120}`, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -97,7 +89,7 @@ const Scoring = () => {
 
     const handleStop = () => {
         if (connection) {
-            axios.post(`http://localhost:5032/api/Timer/stop/${parseInt(matchGroup)}/${cid}`, {
+            axios.post(`http://localhost:5032/api/Scores/stop/${parseInt(matchGroup)}/${cid}`, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -106,9 +98,20 @@ const Scoring = () => {
         }
     };
 
+    const handlePause = () => {
+        if (connection) {
+            axios.post(`http://localhost:5032/api/Scores/pause/${parseInt(matchGroup)}/${cid}`, {}, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .catch(err => console.error('PauseCountdown request failed: ', err));
+        }
+    };
+
     const handleResume = () => {
         if (connection) {
-            axios.post(`http://localhost:5032/api/Timer/resume/${parseInt(matchGroup)}/${cid}`, {
+            axios.post(`http://localhost:5032/api/Scores/resume/${parseInt(matchGroup)}/${cid}`, {}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -116,8 +119,6 @@ const Scoring = () => {
                 .catch(err => console.error('ResumeCountdown request failed: ', err));
         }
     };
-
-
 
     const handleRedScore = (increment) => {
         setScoreRed((prevValue) => prevValue + increment);
@@ -163,7 +164,7 @@ const Scoring = () => {
                                 <IconButton variant='contained' color='success' onClick={handleStart} disabled={isRunning}  ><PlayCircleFilledRounded sx={{ height: "8vh", width: "8vw" }} /></IconButton>
                             </Tooltip>
                             <Tooltip title="Pause">
-                                <IconButton variant='contained' color='error' onClick={handleStop} disabled={!isRunning}><PauseCircleFilledRounded sx={{ height: "8vh", width: "8vw" }} /></IconButton>
+                                <IconButton variant='contained' color='error' onClick={handlePause} disabled={!isRunning}><PauseCircleFilledRounded sx={{ height: "8vh", width: "8vw" }} /></IconButton>
                             </Tooltip>
                             <Tooltip title="Resume">
                                 <IconButton variant='contained' color='warning' onClick={handleResume} disabled={isRunning || timeLeft === 0}><PlayCircleFilledRounded sx={{ height: "8vh", width: "8vw" }} /></IconButton>
