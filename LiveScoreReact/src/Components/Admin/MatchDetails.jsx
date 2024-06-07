@@ -60,7 +60,6 @@ const MatchDetails = () => {
     { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "numberOfRound", headerName: "Rounds", width: 90, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "athleteRed", headerName: "Athlete Red", width: 120, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "athleteBlue", headerName: "Athlete Blue", width: 120, headerClassName: "header", headerAlign: "center", align: "center", valueGetter: (params) => params.row.athleteBlue ? params.row.athleteBlue : '------', },
     {

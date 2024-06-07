@@ -29,6 +29,7 @@ import Scoring from './Components/Coordinator/Scoring';
 import FindEmail from './Components/Common/FindEmail';
 import ForgetPassword from './Components/Common/ForgetPassword';
 import ViewPage from './Components/Coordinator/ViewPage';
+import EditMatch from './Components/Coordinator/EditMatch';
 
 
 function App() {
@@ -212,6 +213,9 @@ function App() {
         }, {
           path: "viewpage/:mid",
           element: <ViewPage />
+        }, {
+          path: "editMatch/:mid",
+          element: <EditMatch />
         }
       ]
     },

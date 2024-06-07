@@ -99,11 +99,6 @@ export const UpCoach = yup.object({
 
 export const MatchValidate = yup.object().shape({
     MatchType: yup.string().required('Match Type is required'),
-    NumberOfRound: yup.number()
-        .required('No. Of Round is required')
-        .positive('No. Of Round must be a positive number')
-        .integer('No. Of Round must be an integer')
-        .min(3, 'No. Of Round must be at least 3'),
     MatchDate: yup.date()
         .required('Date is required')
         .min(new Date(), 'Date must be in the future')
@@ -121,6 +116,20 @@ export const MatchValidate = yup.object().shape({
     TournamentId: yup.string().required('Please Select Tournament'),
     Gender: yup.string().required('Gender is required'),
 });
+export const UpMatchValidate = yup.object().shape({
+    matchStatus: yup.string().required('Match Status is required'),
+    matchType: yup.string().required('Match Type is required'),
+    matchDate: yup.date()
+        .required('Date is required')
+        .test('is-today-or-future', 'Date must be today or in the future', value => {
+            if (!value) return false;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Set today's date to the start of the day
+            const selectedDate = new Date(value);
+            selectedDate.setHours(0, 0, 0, 0); // Set the selected date to the start of the day
+            return selectedDate >= today; // Check if the selected date is today or greater
+        })
+});
 
 export const AssignMatch = yup.object().shape({
     matchCoordinator: yup.string().required('Please Select Coodinator'),
@@ -128,6 +137,7 @@ export const AssignMatch = yup.object().shape({
     referee2: yup.string().required('Please Select Referee2'),
     referee3: yup.string().required('Please Select Referee3'),
 });
+
 export const RoundValidate = yup.object().shape({
     rounds: yup.string().required('Please Select Rounds'),
 });

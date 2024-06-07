@@ -11,7 +11,7 @@ namespace LiveScoring.Model
         public int MId { get; set; }
         public string? MatchStatus { get; set; }
         public string? MatchType { get; set; }
-        public int? NumberOfRound { get; set; }
+        //public int? NumberOfRound { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime? MatchDate { get; set; }
