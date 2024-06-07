@@ -280,7 +280,7 @@
         }
 
         [HttpPost("resume/{matchGroup}/{acrId}")]
-        public async Task<IActionResult> ResumeCountdown(int matchGroup, int acrId)
+        public async Task<IActionResult> ResumeTimer(int matchGroup, int acrId)
         {
             try
             {
@@ -297,7 +297,6 @@
                 return BadRequest(new { msg = $"An error occurred while resuming the countdown: {ex.Message}" });
             }
         }
-
 
         // DELETE: api/Scores/5
         [HttpDelete("{id}")]
