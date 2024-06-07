@@ -52,11 +52,30 @@ namespace LiveScore.Services
             await Clients.Group(matchGroup.ToString()).SendAsync("StopCountdown");
         }
 
+        public async Task PauseCountdown(int matchGroup)
+        {
+            _timerService.PauseTimer(matchGroup);
+            await Clients.Group(matchGroup.ToString()).SendAsync("PauseCountdown");
+        }
+
+        // New method to resume the timer
         public async Task ResumeCountdown(int matchGroup)
         {
             _timerService.ResumeTimer(matchGroup);
             await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
         }
+        //public async Task ResumeCountdown(int matchGroup)
+        //{
+        //    _timerService.ResumeTimer(matchGroup);
+        //    await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
+        //}
+
+        //public Task ResumeTimer(int matchGroup)
+        //{
+        //    _timerService.ResumeTimer(matchGroup);
+        //    return Task.CompletedTask;
+        //}
+
         public async Task RefSendScore(int matchGroup, int redPoints, int bluePoints, int redPenalty, int bluePenalty)
         {
             var userId = int.Parse(Context.UserIdentifier); // Assuming UserIdentifier is set to the user's ID

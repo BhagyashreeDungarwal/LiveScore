@@ -24,7 +24,7 @@ function App() {
       // element: (<Scoring />)
     },
     {
-      path: "/scoring",
+      path: "/scoring/:matchGroup",
       element: (<Scoring />)
     }
   ])
