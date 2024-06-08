@@ -97,10 +97,10 @@
 
                 var tempScore = new TemporaryScore
                 {
-                    RedPoints =tempScorevm.RedPoints,
-                    BluePoints =tempScorevm.BluePoints,
-                    RedPanelty =tempScorevm.RedPanelty,
-                    BluePanelty =tempScorevm.BluePanelty,
+                    RedPoints =tempScorevm.RedPoints ?? 0,
+                    BluePoints =tempScorevm.BluePoints ?? 0,
+                    RedPanelty =tempScorevm.RedPanelty ?? 0,
+                    BluePanelty =tempScorevm.BluePanelty ?? 0,
                     ScoreTime = DateTime.Now,
                     Rounds =rounds,
                     AthleteRed =athleteRed,

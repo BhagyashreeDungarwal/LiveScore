@@ -9,9 +9,10 @@ import dayjs from "dayjs";
 import AddMatch from "./AddMatch";
 import { DriveFileRenameOutlineRounded, HowToReg, Visibility } from "@mui/icons-material";
 import { useState } from "react";
-import { GetMatch, GetMatchHistory } from "../Apis/Coordinator";
+import { GetMatch } from "../Apis/Coordinator";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
 import { Link } from "react-router-dom";
+import { GetMatchHistory } from "../Apis/Common";
 
 
 function CustomToolbar() {
@@ -188,9 +189,11 @@ const Match = () => {
         return (
           <Box>
             <Tooltip title="RoundsDetails">
-                <IconButton onClick={"sd"}>
+              <Link to={`/coordinator/roundscore/${params.row.mid}`} >
+                <IconButton>
                   <Visibility color="primary" />
                 </IconButton>
+                </Link>
             </Tooltip>            
           </Box>
         )
@@ -215,7 +218,6 @@ const Match = () => {
      { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "tournament", headerName: "Tournament", width: 145, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 130, headerClassName: "header", headerAlign: "center", align: "center" },
-    // { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" }, 
@@ -255,88 +257,87 @@ const Match = () => {
                             </Select>
                         </FormControl>
                     </Box>
-      </Box>
-      {
-        loading ? <CircularProgress /> :
-        status === 1 &&
-          <Stack style={{
-            marginTop: "1%",
-            display: "grid",
-            height: "78vh",
-          }}>
-            {match && match.length > 0 ? (
-              <DataGrid
-                rows={match}
-                columns={columns}
-                getRowId={(row) => row.mid}
-                rowHeight={54}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />) : (
-              <DataGrid
-                autoHeight
-                rows={[]}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowHeight={42}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />
-            )
-            }
-          </Stack>
-      }
-      {
-        loading ? <CircularProgress /> :
-        status === 2 &&
-          <Stack style={{
-            marginTop: "1%",
-            display: "grid",
-            height: "78vh",
-          }}>
-            {matchHistory && matchHistory.length > 0 ? (
-              <DataGrid
-                rows={matchHistory}
-                columns={columnsHistory}
-                getRowId={(row) => row.mid}
-                rowHeight={54}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />) : (
-              <DataGrid
-                autoHeight
-                rows={[]}
-                columns={columns}
-                getRowId={(row) => row.id}
-                rowHeight={42}
-                rowSelection="true"
-                rowSpacingType='margin'
-                slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
-                scrollbarSize={1}
-                columnHeaderHeight={37}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-              />
-            )
-            }
-          </Stack>
-      }
-    </Box>
+          </Box>
+          {
+            loading ? <CircularProgress /> :
+            status === 1 &&
+              <Stack style={{
+                marginTop: "1%",
+                display: "grid",
+                height: "78vh",
+              }}>
+                {match && match.length > 0 ? (
+                  <DataGrid
+                    rows={match}
+                    columns={columns}
+                    getRowId={(row) => row.mid}
+                    rowHeight={54}
+                    rowSelection="true"
+                    rowSpacingType='margin'
+                    slots={{ toolbar: CustomToolbar }}
+                    scrollbarSize={1}
+                    columnHeaderHeight={37}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                  />) : (
+                  <DataGrid
+                    autoHeight
+                    rows={[]}
+                    columns={columns}
+                    getRowId={(row) => row.id}
+                    rowHeight={42}
+                    rowSelection="true"
+                    rowSpacingType='margin'
+                    slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                    scrollbarSize={1}
+                    columnHeaderHeight={37}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                  />
+                )
+                }
+              </Stack>
+          }
+          {
+            status === 2 &&
+              <Stack style={{
+                marginTop: "1%",
+                display: "grid",
+                height: "78vh",
+              }}>
+                {matchHistory && matchHistory.length > 0 ? (
+                  <DataGrid
+                    rows={matchHistory}
+                    columns={columnsHistory}
+                    getRowId={(row) => row.mid}
+                    rowHeight={54}
+                    rowSelection="true"
+                    rowSpacingType='margin'
+                    slots={{ toolbar: CustomToolbar }}
+                    scrollbarSize={1}
+                    columnHeaderHeight={37}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                  />) : (
+                  <DataGrid
+                    autoHeight
+                    rows={[]}
+                    columns={columns}
+                    getRowId={(row) => row.id}
+                    rowHeight={42}
+                    rowSelection="true"
+                    rowSpacingType='margin'
+                    slots={{ toolbar: CustomToolbar, noRowsOverlay: CustomNoRowsOverlay }}
+                    scrollbarSize={1}
+                    columnHeaderHeight={37}
+                    pageSize={5}
+                    rowsPerPageOptions={[5]}
+                  />
+                )
+                }
+              </Stack>
+          }
+        </Box>
   )
 }
 

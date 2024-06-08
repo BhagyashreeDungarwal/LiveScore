@@ -29,6 +29,80 @@ namespace LiveScore.Controllers
             return await _context.Rounds.ToListAsync();
         }
 
+        [HttpGet("GetRoundsByMatchId/{mid}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetRoundsByMatchId(int mid)
+        {
+            try
+            {
+                var rounds = await _context.Rounds
+                    .Where(r => r.MatchId == mid)
+                    .Select(r => new
+                    {
+                        //RoundId = r.Id,
+                        Rounds = r.Rounds,
+                    })
+                    .ToListAsync();
+
+                if (rounds == null || !rounds.Any())
+                {
+                    return NotFound();
+                }
+
+                return rounds;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use any logging library)
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, "Internal server error, please try again later.");
+            }
+        }
+
+
+        [HttpGet("GetScoresandRounds/{mid}/{round}")]
+        public async Task<ActionResult<IEnumerable<dynamic>>> GetScoresandRounds(int mid, int round)
+        {
+            try
+            {
+                var query = from score in _context.Scores
+                            join roundData in _context.Rounds on score.MatchId equals roundData.MatchId
+                            where score.MatchId == mid && roundData.Rounds == round
+                            select new
+                            {
+                                sid = score.ScoreId,
+                                RedPoints = score.RedPoints,
+                                BluePoints = score.BluePoints,
+                                RedPanelty = score.RedPanelty,
+                                BluePanelty = score.BluePanelty,
+                                ScoreTime = score.ScoreTime,
+                                Rounds = score.Rounds,
+                                AthleteRed = score.AthleteRedObj.AthleteName,
+                                AthleteBlue = score.AthleteBlueObj.AthleteName,
+                                MatchId = score.Match.MatchType,
+                                RoundTime = roundData.RoundTime,
+                                RedTotalScore = roundData.RedTotalScore,
+                                BlueTotalScore = roundData.BlueTotalScore,
+                                RoundWinner = roundData.RoundWinner
+                            };
+
+                var scores = await query.ToListAsync();
+
+                if (scores == null || !scores.Any())
+                {
+                    return NotFound();
+                }
+
+                return scores;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can use any logging library)
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, "Internal server error, please try again later.");
+            }
+        }
+
+
         //[httppost("managerounds")]
         //public async task<iactionresult> managerounds([frombody] roundvm rounddto, int matchid)
         //{
@@ -234,19 +308,20 @@ namespace LiveScore.Controllers
         }
 
 
-        [HttpGet("GetRoundByMId/{MId}")]
-        public async Task<ActionResult<IEnumerable<Round>>> GetRoundByMId(int MId)
-        {
-            // Find rounds by MatchId
-            var rounds = await _context.Rounds.Where(r => r.MatchId == MId).ToListAsync();
+        //[HttpGet("GetRoundByMId/{MId}")]
+        //public async Task<ActionResult<IEnumerable<Round>>> GetRoundByMId(int MId)
+        //{
+        //    // Find rounds by MatchId
+        //    var rounds = await _context.Rounds.Where(r => r.MatchId == MId).ToListAsync();
 
-            if (rounds == null || rounds.Count == 0)
-            {
-                return NotFound(new { error = "Rounds Not Found for given MId" });
-            }
+        //    if (rounds == null || rounds.Count == 0)
+        //    {
+        //        return NotFound(new { error = "Rounds Not Found for given MId" });
+        //    }
 
-            return rounds;
-        }
+        //    return rounds;
+        //}
+
 
 
         private bool RoundExists(int id)

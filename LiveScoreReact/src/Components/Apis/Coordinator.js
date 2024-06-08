@@ -92,18 +92,6 @@ export const GetMatch = async () => {
   }
 }
 
-export const GetMatchHistory = async () => {
-  try {
-    const data = await axios.get(`${url}/Matchs/GetMatchHistory`, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    return data
-  } catch (error) {
-    return error
-  }
-}
 
 export const GetMatchById = async (id) => {
   try {

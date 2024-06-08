@@ -102,6 +102,7 @@ const ManageTournament = () => {
     getTournament()
     if (data) {
       toast.success(data.msg)
+      getTournament()
       dispatch(clearMessageAdmin())
     }
     if (error) {

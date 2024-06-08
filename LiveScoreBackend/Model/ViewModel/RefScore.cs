@@ -1,7 +1,10 @@
-﻿namespace LiveScore.Model.ViewModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LiveScore.Model.ViewModel
 {
     public class RefScore
     {
+        [Key]
         public int Id { get; set; }
         public int? RedPoints { get; set; }
         public int? BluePoints { get; set; }

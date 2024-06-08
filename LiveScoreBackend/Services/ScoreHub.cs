@@ -64,37 +64,53 @@ namespace LiveScore.Services
             _timerService.ResumeTimer(matchGroup);
             await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
         }
-        //public async Task ResumeCountdown(int matchGroup)
+
+        //public async Task RefSendScore(int matchGroup, int redPoints, int bluePoints, int redPenalty, int bluePenalty)
         //{
-        //    _timerService.ResumeTimer(matchGroup);
-        //    await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
+        //    var userId = int.Parse(Context.UserIdentifier); // Assuming UserIdentifier is set to the user's ID
+        //    if (IsReferee1(matchGroup, userId))
+        //    {
+        //        var score = new RefScore
+        //        {
+        //            RedPoints = redPoints,
+        //            BluePoints = bluePoints,
+        //            RedPenalty = redPenalty,
+        //            BluePenalty = bluePenalty,
+        //            RefereeId = userId
+        //        };
+
+        //        _tempDbContext.RefScores.Add(score);
+        //        await _tempDbContext.SaveChangesAsync();
+
+        //        await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveScore", score);
+        //    }
         //}
 
-        //public Task ResumeTimer(int matchGroup)
-        //{
-        //    _timerService.ResumeTimer(matchGroup);
-        //    return Task.CompletedTask;
-        //}
-
-        public async Task RefSendScore(int matchGroup, int redPoints, int bluePoints, int redPenalty, int bluePenalty)
+        // New method to get the last RefScore for the most recent entry
+        public async Task GetLastRefScore(string groupName)
         {
-            var userId = int.Parse(Context.UserIdentifier); // Assuming UserIdentifier is set to the user's ID
-            if (IsReferee1(matchGroup, userId))
+            var lastRefScore = await _tempDbContext.RefScores
+                .OrderByDescending(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            if (lastRefScore == null)
             {
-                var score = new RefScore
-                {
-                    RedPoints = redPoints,
-                    BluePoints = bluePoints,
-                    RedPenalty = redPenalty,
-                    BluePenalty = bluePenalty,
-                    RefereeId = userId
-                };
-
-                _tempDbContext.RefScores.Add(score);
-                await _tempDbContext.SaveChangesAsync();
-
-                await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveScore", score);
+                await Clients.Group(groupName).SendAsync("ReceiveLastRefScore", null);
+                return;
             }
+
+            var referee = await _context.Admin.FindAsync(lastRefScore.RefereeId);
+            var result = new
+            {
+                lastRefScore.Id,
+                lastRefScore.RedPoints,
+                lastRefScore.BluePoints,
+                lastRefScore.RedPenalty,
+                lastRefScore.BluePenalty,
+                RefereeName = referee?.Name
+            };
+
+            await Clients.Group(groupName).SendAsync("ReceiveLastRefScore", result);
         }
         public async Task GetTotalScore(int matchGroup)
         {
