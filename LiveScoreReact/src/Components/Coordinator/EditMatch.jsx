@@ -26,7 +26,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const EditMatch = () => {
     const theme = useTheme()
     const navigate = useNavigate()
-    const [athlete, setAthlete] = useState()
     const dispatch = useDispatch()
     const { mid } = useParams()
 

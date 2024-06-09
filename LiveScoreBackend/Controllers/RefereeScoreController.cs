@@ -11,25 +11,80 @@ namespace LiveScore.Controllers
     [ApiController]
     public class RefereeScoreController : ControllerBase
     {
-        private readonly TempDbContext _context;
+        private readonly TempDbContext _tempDbContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
-        public RefereeScoreController(TempDbContext context)
+        public RefereeScoreController(TempDbContext tempDbContext, ApplicationDbContext applicationDbContext)
         {
-            _context = context;
+            _tempDbContext = tempDbContext;
+            _applicationDbContext = applicationDbContext;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddScore([FromBody] RefScore score)
+        [HttpPost("{refid}")]
+        public async Task<IActionResult> CreateRefScore([FromBody] RefScore refScore, int refid)
         {
-            _context.RefScores.Add(score);
-            await _context.SaveChangesAsync();
-            return Ok();
+            if (refScore == null)
+            {
+                return BadRequest();
+            }
+
+            refScore.RefereeId = refid;  // Set RefereeId to the provided refid
+
+            _tempDbContext.RefScores.Add(refScore);
+            await _tempDbContext.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetLastRefScore), new { id = refScore.Id }, refScore);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RefScore>> GetScores()
+        public async Task<IActionResult> GetAllRefScores()
         {
-            return await _context.RefScores.ToListAsync ();
+            var refScores = await _tempDbContext.RefScores
+                .ToListAsync();
+
+            var results = new List<object>();
+
+            foreach (var refScore in refScores)
+            {
+                var referee = await _applicationDbContext.Admin.FindAsync(refScore.RefereeId);
+                var result = new
+                {
+                    refScore.Id,
+                    refScore.RedPoints,
+                    refScore.BluePoints,
+                    refScore.RedPenalty,
+                    refScore.BluePenalty,
+                    RefereeName = referee?.Name
+                };
+                results.Add(result);
+            }
+
+            return Ok(results);
+        }
+        [HttpGet("last")]
+        public async Task<IActionResult> GetLastRefScore()
+        {
+            var lastRefScore = await _tempDbContext.RefScores
+                .OrderByDescending(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            if (lastRefScore == null)
+            {
+                return NotFound();
+            }
+
+            var referee = await _applicationDbContext.Admin.FindAsync(lastRefScore.RefereeId);
+            var result = new
+            {
+                lastRefScore.Id,
+                lastRefScore.RedPoints,
+                lastRefScore.BluePoints,
+                lastRefScore.RedPenalty,
+                lastRefScore.BluePenalty,
+                RefereeName = referee?.Name
+            };
+
+            return Ok(result);
         }
     }
 }

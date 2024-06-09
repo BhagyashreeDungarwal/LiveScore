@@ -1,6 +1,6 @@
 import { Avatar, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Slide, TextField } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AddPhotoAlternateRounded, Close } from '@mui/icons-material'
 import { toast } from 'react-toastify'
@@ -19,7 +19,8 @@ const EditCoachPic = () => {
   const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
-
+const { data, error } = useSelector(state => state.coordinator)
+    
    const img_url = "http://localhost:5032/coach/";
 
    const getCoach = async () => {
@@ -33,6 +34,17 @@ const EditCoachPic = () => {
   const handleClose = () => {
     navigate("/coordinator/coach")
   };
+useEffect(() => {
+        if (data && data.msg) {
+            toast.success(data.msg)
+            dispatch(clearMessage())
+            navigate("/coordinator/coach")
+        }
+        if (error) {
+            toast.error(error.msg)
+            dispatch(clearMessage())
+        }
+    }, [data, error, navigate, dispatch])
 
   
 
@@ -54,7 +66,7 @@ const EditCoachPic = () => {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile)
       dispatch(CoachPutPicApi({id, values: formData}))
-      dispatch(clearMessage())
+    
 
     } else {
       toast.error("Please First Select Image...")

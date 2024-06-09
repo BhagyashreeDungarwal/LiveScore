@@ -99,10 +99,11 @@ const CategoryManage = () => {
     if (data) {
       toast.success(data.msg)
       dispatch(clearMessageAdmin())
+      getCategory()
     }
     if (error) {
       toast.error(error.msg)
-      dispatch(ClearMessageAdmin())
+      dispatch(clearMessageAdmin())
     }
   }, [dispatch, data, error])
 

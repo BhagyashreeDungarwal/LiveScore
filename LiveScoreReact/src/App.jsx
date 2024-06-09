@@ -30,6 +30,7 @@ import FindEmail from './Components/Common/FindEmail';
 import ForgetPassword from './Components/Common/ForgetPassword';
 import ViewPage from './Components/Coordinator/ViewPage';
 import EditMatch from './Components/Coordinator/EditMatch';
+import RoundScore from './Components/Common/RoundScore';
 
 
 function App() {
@@ -216,6 +217,9 @@ function App() {
         }, {
           path: "editMatch/:mid",
           element: <EditMatch />
+        },{
+          path: "roundscore/:mid/",
+          element: (<RoundScore />)
         }
       ]
     },
@@ -231,7 +235,7 @@ function App() {
     }, {
       path: "forgetPassword/:email",
       element: (<ForgetPassword />)
-    }
+    },
   ])
 
   return (

@@ -38,7 +38,6 @@ const RegisterCoordinator = () => {
         email: "",
         password: "",
         contact: "",
-        age: "",
         dateOfBirth: "",
         image: null,
         gender: "",
@@ -48,14 +47,14 @@ const RegisterCoordinator = () => {
 
     const navigate = useNavigate()
     useEffect(() => {
-        if (data) {
+        if (data.msg) {
             toast.success(data.msg)
             navigate("/")
         }
         if (error) {
             toast.error(error.msg)
         }
-    }, [data, error])
+    }, [data, error,navigate,toast])
 
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
@@ -69,20 +68,11 @@ const RegisterCoordinator = () => {
             formData.append('Name', values.name);
             formData.append('Password', values.password);
             formData.append('Contact', values.contact);
-            formData.append('Age', values.age);
             formData.append('DateOfBirth', values.dateOfBirth);
             formData.append('Gender', values.gender);
             formData.append('City', values.city);
             formData.append('State', values.state);
             dispatch(CoordinatorPostApi(formData))
-            if (data) {
-                toast.success(data.msg)
-                navigate("/")
-            }
-
-            if (error) {
-                toast.error(error.msg)
-            }
         }
     })
 
@@ -226,32 +216,8 @@ const RegisterCoordinator = () => {
                                 />
                                 {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
                             </Grid>
-                            <Grid item xl={6} sm={12} xs={12} lg={12} >
-                                <TextField
-                                    label="Age"
-                                    variant="standard"
-                                    fullWidth
-                                    color='secondary'
-                                    type='number'
-                                    name='age'
-                                    size='small'
-                                    value={values.age}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    InputLabelProps={{ shrink: true }}
-                                    placeholder='Enter Age'
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-
-                                                <AccessibilityNewRounded />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                {errors.age && touched.age ? (<Typography variant="subtitle1" color="error">{errors.age}</Typography>) : null}
-                            </Grid>
-                            <Grid item xl={6} sm={12} xs={12} lg={12} >
+                           
+                            <Grid item xl={12} sm={12} xs={12} lg={12} >
                                 <TextField
                                     label="Date fo birth"
                                     variant="standard"

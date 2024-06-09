@@ -32,7 +32,7 @@ const AssignMatch = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
-    const { data, error } = useSelector((state) => state.admin);
+    const { data, error } = useSelector((state) => state.coordinator);
 
     const initial = {
         matchCoordinator: "",
@@ -67,20 +67,25 @@ const AssignMatch = () => {
         getReferee();
         getCoordinator();
     }, []);
+    
+     useEffect(() => {
+        if (data && data.msg) {
+            toast.success(data.msg)
+            dispatch(clearMessage())
+            navigate("/coordinator/match")
+        }
+        if (error) {
+            toast.error(error.msg)
+            dispatch(clearMessage())
+        }
+    }, [data, error, navigate, dispatch])
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
         validationSchema: AssignMatchSchema,
         onSubmit: async (values) => {
             dispatch(AssignMatchApi({ values, id }));
-            if (data && data.msg) {
-                navigate("/coordinator/match");
-                dispatch(clearMessage());
-            }
-            if (error) {
-                toast.error(error.msg);
-                dispatch(clearMessage());
-            }
+          
         },
     });
 

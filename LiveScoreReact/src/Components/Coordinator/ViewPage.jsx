@@ -15,7 +15,7 @@ const ViewPage = () => {
   useEffect(() => {
     const fetchMatchDetails = async () => {
       try {
-        const data = await GetMatchById(mid);
+        const {data} = await GetMatchById(mid);
         setMatchDetails(data);
       } catch (error) {
         console.error('Error fetching match details:', error);
