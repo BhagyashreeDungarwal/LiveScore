@@ -115,11 +115,11 @@ const RDashboard = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: matchesLength < 2 ? matchesLength : 2,
+          slidesToShow: matchesLength < 4 ? matchesLength : 4,
           slidesToScroll: 1,
           infinite: false,
           dots: true,
-          initialSlide: 1,
+          initialSlide: 4,
           prevArrow: <CustomPrevArrowAccordion />,
           nextArrow: <CustomNextArrowAccordion />,
         },

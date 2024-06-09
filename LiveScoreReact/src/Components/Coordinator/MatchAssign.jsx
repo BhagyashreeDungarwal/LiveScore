@@ -1,9 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, Box, Button, Tooltip, Fab } from '@mui/material';
 import dayjs from 'dayjs';
 import GenerateOtp from './GenerateOtp';
-import ViewPage from './ViewPage';
 import { Link } from 'react-router-dom';
-import { DriveFileRenameOutlineRounded } from '@mui/icons-material';
 
 const img_url = "http://localhost:5032/images/";
 

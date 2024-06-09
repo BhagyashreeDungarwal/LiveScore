@@ -117,6 +117,18 @@ export const GetMatchById = async (id) => {
     return error
   }
 }
+export const GetMatchByMatchGroup = async (matchGroup) => {
+  try {
+    const data = await axios.get(`${url}/Matchs/GetMatchByMatchGroup/${matchGroup}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data;
+  } catch (error) {
+    return error
+  }
+}
 
 
 export const GetCoordinatorProfile = async (id) => {

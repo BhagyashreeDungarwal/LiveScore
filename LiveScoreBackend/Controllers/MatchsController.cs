@@ -157,6 +157,44 @@ namespace LiveScore.Controllers
             }
             return match;
         }
+// GET: api/Athletes/GetMatchById/5
+        [HttpGet("GetMatchByMatchGroup/{MatchGroup}")]
+        public async Task<ActionResult<dynamic>> GetMatchByMatchGroup(int MatchGroup)
+        {
+            var match = await _context.Matchss.Include((c) => c.Category)
+                                              .Include((o) => o.AthleteRedObj)
+                                              .Include((p)=> p.AthleteBlueObj)
+                                              .Include((t) => t.Tournament)
+                                              .Include((c) => c.Coordinator)
+                                              .Include((r) => r.RefereeF)
+                                              .Include((r) => r.RefereeS)
+                                              .Include((r) => r.RefereeT)
+                                              .Where(m => m.MatchGroup == MatchGroup)
+                                              .Select(m => new {
+                                                  mid = m.MId,
+                                                  athleteRedId = m.AthleteRed,
+                                                  athleteBlueId = m.AthleteBlue,
+                                                  matchGroup = m.MatchGroup,
+                                                  matchStatus = m.MatchStatus,
+                                                  matchType = m.MatchType,
+                                                  matchDate = m.MatchDate,
+                                                  athleteRed = m.AthleteRedObj.AthleteName,
+                                                  athleteBlue = m.AthleteBlueObj.AthleteName,
+                                                  athleteRedImg = m.AthleteRedObj.ImageUrl,
+                                                  athleteBlueImg = m.AthleteBlueObj.ImageUrl,
+                                                  flag = m.Flag,
+                                                  matchCoordinator = m.Coordinator.Name,
+                                                  referee1 = m.RefereeF.Name,
+                                                  referee2 = m.RefereeS.Name,
+                                                  referee3 = m.RefereeT.Name,
+                                                  })
+                                              .FirstOrDefaultAsync();
+            if (match == null)
+            {
+                return NotFound(new { error = "Match Not Found" });
+            }
+            return match;
+        }
 
         [HttpPost("PostMatch")]
         public async Task<ActionResult<Matchs>> PostMatch(MatchVm matchs)

@@ -70,7 +70,7 @@ function ChildModal({mid,matchGroup}) {
         if (data && data.msg) {
             toast.success(data.msg)
             dispatch(clearMessage())
-            navigate(`/coordinator/scoring/${matchGroup}`)
+            navigate(`/coordinator/scoring/${matchGroup}/${values.rounds}`)
         }
         if (error) {
             toast.error(error.msg)
@@ -89,7 +89,7 @@ function ChildModal({mid,matchGroup}) {
               // console.log(mid)
                 dispatch(RoundPostApi({values, mid}))
                 setSubmitting(false)
-                resetForm({ values: "" });
+                // resetForm({ values: "" });
                
             } catch (error) {
                 <CircularProgress />

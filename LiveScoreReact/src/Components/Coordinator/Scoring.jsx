@@ -4,18 +4,41 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Paper, Grid, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, IconButton, Tooltip } from '@mui/material';
 import { PauseCircleFilledRounded, PlayCircleFilledRounded } from '@mui/icons-material';
+import { GetMatchByMatchGroup } from '../Apis/Coordinator';
+const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
     const [connection, setConnection] = useState(null);
     const [timeLeft, setTimeLeft] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-    const { matchGroup } = useParams();
+    const { matchGroup, rounds } = useParams();
     const cid = localStorage.getItem("ID");
     const [penalityRed, setPenalityRed] = useState(0)
     const [penalityBlue, setPenalityBlue] = useState(0)
     const [scoreRed, setScoreRed] = useState(0)
     const [scoreBlue, setScoreBlue] = useState(0)
+    const [matchData, setMatchData] = useState(null);
 
+    const athleteRed = matchData ? matchData.athleteRedId : "";
+    const athleteBlue = matchData ? matchData.athleteBlueId : "";
+    const mid = matchData ? matchData.mid : "";
+
+    const [values, setValues] = useState({
+        RedPoints: 0,
+        BluePoints: 0,
+        RedPanelty: 0,
+        BluePanelty: 0
+    })
+
+    useEffect(() => {
+        const fetchMatchData = async () => {
+            const { data } = await GetMatchByMatchGroup(matchGroup);
+            setMatchData(data);
+            console.log(matchData)
+        };
+        fetchMatchData();
+
+    }, [matchGroup]);
 
     useEffect(() => {
         const connect = new HubConnectionBuilder()
@@ -87,16 +110,7 @@ const Scoring = () => {
         }
     };
 
-    const handleStop = () => {
-        if (connection) {
-            axios.post(`http://localhost:5032/api/Scores/stop/${parseInt(matchGroup)}/${cid}`, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-                .catch(err => console.error('StopCountdown request failed: ', err));
-        }
-    };
+
 
     const handlePause = () => {
         if (connection) {
@@ -122,16 +136,38 @@ const Scoring = () => {
 
     const handleRedScore = (increment) => {
         setScoreRed((prevValue) => prevValue + increment);
+        setValues({ RedPoints: increment });
+        // axios.post(`http://localhost:5032/api/Scores/insert/${rounds}/${athleteRed}/${athleteBlue}/${mid}`, values, {
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     }
+        // })
+        //     .catch(err => console.error('Sending score is failed : ', err));
     };
+
+    useEffect(() => {
+        console.log(values);
+        axios.post(`http://localhost:5032/api/Scores/insert/${rounds}/${athleteRed}/${athleteBlue}/${mid}`, values, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .catch(err => console.error('Sending score is failed : ', err));
+
+    }, [values,axios]);
+
     const handleBlueScore = (increment) => {
         setScoreBlue((prevValue) => prevValue + increment);
+        setValues({ BluePoints: increment });
+
     };
 
     const handleRedPenality = () => {
         if (penalityRed < 5) {
             setPenalityRed(prev => {
                 const newCount = prev + 1;
-                handleBlueScore(1)
+                setValues({RedPanelty:  1,BluePoints:1 });
+                // handleBlueScore(1)
                 if (newCount === 5) {
                     alert('Athlete Red Disqualified!');
                 }
@@ -142,9 +178,10 @@ const Scoring = () => {
 
     const handleBluePenality = () => {
         if (penalityBlue < 5) {
-            setPenalityBLue(prev => {
+            setPenalityBlue(prev => {
                 const newCount = prev + 1;
-                handleRedScore(1)
+                setValues({BluePanelty: 1,RedPoints:1})
+                // handleRedScore(1)
                 if (newCount === 5) {
                     alert('Athlete Blue Disqualified!');
                 }
@@ -214,34 +251,41 @@ const Scoring = () => {
                     </Paper>
                 </Grid>
                 <Grid item sm={4} xl={4} md={4} lg={4} sx={4}>
-                    <Box fullWidth >
-                        <Typography variant="h1" style={{ color: "#e53935", textAlign: "center", fontSize: "15vh" }}>{scoreRed}</Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
+
+                        <img src={matchData ? `${img_url}${matchData.athleteRedImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw",borderRadius:"10px" }} />
+                        <Typography variant="h1" style={{ color: "#e53935", fontSize: "15vh" }}>{scoreRed}</Typography>
                     </Box>
+                    <Typography variant="h4" style={{ color: "#e53935", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteRed : ""}</Typography>
                 </Grid>
                 <Grid item sm={4} xl={4} md={4} lg={4} sx={4}></Grid>
                 <Grid item sm={4} xl={4} md={4} lg={4} sx={4}>
-                    <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "15vh" }}>{scoreBlue}</Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
+                        <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "15vh" }}>{scoreBlue}</Typography>
+                        <img src={matchData ? `${img_url}${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw",borderRadius:"10px" }} />
+                    </Box>
+                    <Typography variant="h4" style={{ color: "#1e88e5", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteBlue : ""}</Typography>
                 </Grid>
                 <Grid item xs={4} md={4} lg={4} sm={4}>
                     <Grid container spacing={2}>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} >
                                 +2
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} >
                                 +1
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} >
                                 +3
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "16vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "3vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} >
                                 penality
                             </Button>
                         </Grid>
@@ -256,8 +300,8 @@ const Scoring = () => {
                                         <Box
                                             key={index}
                                             sx={{
-                                                width: 35,
-                                                height: 35,
+                                                width: 30,
+                                                height: 30,
                                                 borderRadius: '50%',
                                                 backgroundColor: index < penalityRed ? '#e53935' : 'grey',
                                             }}
@@ -273,8 +317,8 @@ const Scoring = () => {
                                         <Box
                                             key={index}
                                             sx={{
-                                                width: 35,
-                                                height: 35,
+                                                width: 30,
+                                                height: 30,
                                                 borderRadius: '50%',
                                                 backgroundColor: index < penalityBlue ? '#1e88e5' : 'grey',
                                             }}
@@ -289,22 +333,22 @@ const Scoring = () => {
                     <Grid container spacing={2}>
 
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} >
                                 +1
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} >
                                 +2
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "16vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "3vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} >
                                 penality
                             </Button>
                         </Grid>
                         <Grid item xs={6} md={6} lg={6} sm={6}>
-                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "16vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
+                            <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} >
                                 +3
                             </Button>
                         </Grid>

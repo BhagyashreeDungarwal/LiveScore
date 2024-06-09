@@ -2,6 +2,10 @@ import { Box, Grid, Typography, Button } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { GetMatchByMatchGroup } from './Apis';
+
+
+const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
   const [penalityRed, setPenalityRed] = useState(0);
@@ -11,6 +15,26 @@ const Scoring = () => {
   const [connection, setConnection] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
   const { matchGroup } = useParams();
+  const rid = localStorage.getItem("ID");
+  const [matchData, setMatchData] = useState(null);
+
+  const values = {
+    redPoints: 0,
+    bluePoints: 0,
+    redPenalty: 0,
+    bluePenalty: 0,
+    refereeId: rid
+  }
+
+  useEffect(() => {
+    const fetchMatchData = async () => {
+      const { data } = await GetMatchByMatchGroup(matchGroup);
+      setMatchData(data);
+      console.log(matchData)
+    };
+    fetchMatchData();
+
+  }, [matchGroup]);
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
@@ -83,7 +107,7 @@ const Scoring = () => {
 
   const handleBluePenality = () => {
     if (penalityBlue < 5) {
-      setPenalityBLue(prev => {
+      setPenalityBlue(prev => {
         const newCount = prev + 1;
         handleRedScore(1);
         connection.invoke('UpdatePenality', penalityRed, newCount);
@@ -101,9 +125,12 @@ const Scoring = () => {
         <Grid item xs={12} md={12} lg={12} sm={12}>
           <Grid container spacing={2}>
             <Grid item xs={4} md={4} lg={4} sm={4}>
-              <Box fullWidth >
-                <Typography variant="h1" style={{ color: "#e53935", textAlign: "center", fontSize: "25vh" }}>{scoreRed}</Typography>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
+
+                <img src={matchData ? `${img_url}${matchData.athleteRedImg}` : "https://via.placeholder.com/150"} style={{ height: "15vh", width: "7vw", borderRadius: "10px" }} />
+                <Typography variant="h1" style={{ color: "#e53935", fontSize: "20vh" }}>{scoreRed}</Typography>
               </Box>
+
             </Grid>
             <Grid item xs={4} md={4} lg={4} sm={4}>
               <Box sx={{
@@ -120,9 +147,22 @@ const Scoring = () => {
               </Box>
             </Grid>
             <Grid item xs={4} md={4} lg={4} sm={4}>
-              <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "25vh" }}>{scoreBlue}</Typography>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
+
+                <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "20vh" }}>{scoreBlue}</Typography>
+                <img src={matchData ? `${img_url}${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"} style={{ height: "15vh", width: "7vw", borderRadius: "10px" }} />
+              </Box>
+
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} sm={4}>
+          <Typography variant="h4" style={{ color: "#e53935", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteRed : ""}</Typography>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} sm={4}>
+        </Grid>
+        <Grid item xs={4} md={4} lg={4} sm={4}>
+          <Typography variant="h4" style={{ color: "#1e88e5", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteBlue : ""}</Typography>
         </Grid>
         <Grid item xs={4} md={4} lg={4} sm={4}>
           <Grid container spacing={2}>
@@ -151,7 +191,7 @@ const Scoring = () => {
         <Grid item xs={4} md={4} lg={4} sm={4}>
           <Grid container spacing={2}>
             <Grid item xs={6} md={6} lg={6} sm={6}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, margin: "0% 0% 0% 12%" }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ display: 'flex', flexDirection: "column", gap: 2 }}>
                   {[...Array(5)].map((_, index) => (
                     <Box
@@ -168,7 +208,7 @@ const Scoring = () => {
               </Box>
             </Grid>
             <Grid item xs={6} md={6} lg={6} sm={6}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, margin: "0% 0% 0% 12%" }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <Box sx={{ display: 'flex', flexDirection: "column", gap: 2 }}>
                   {[...Array(5)].map((_, index) => (
                     <Box

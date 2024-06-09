@@ -208,7 +208,7 @@ function App() {
           path: "assignMatch/:id",
           element: <AssignMatch />
         }, {
-          path: "scoring/:matchGroup",
+          path: "scoring/:matchGroup/:rounds",
           element: <Scoring />
         }, {
           path: "viewpage/:mid",
@@ -228,7 +228,7 @@ function App() {
     }, {
       path: "findEmail",
       element: (<FindEmail />)
-    },{
+    }, {
       path: "forgetPassword/:email",
       element: (<ForgetPassword />)
     }
