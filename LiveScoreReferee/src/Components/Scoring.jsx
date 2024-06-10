@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { GetMatchByMatchGroup } from './Apis';
+import axios from 'axios';
 
 
 const img_url = "http://localhost:5032/images/";
@@ -18,13 +19,24 @@ const Scoring = () => {
   const rid = localStorage.getItem("ID");
   const [matchData, setMatchData] = useState(null);
 
-  const values = {
-    redPoints: 0,
-    bluePoints: 0,
-    redPenalty: 0,
-    bluePenalty: 0,
-    refereeId: rid
-  }
+  const [values, setValues] = useState({
+    RedPoints: 0,
+    BluePoints: 0,
+    RedPenalty: 0,
+    BluePenalty: 0,
+  })
+
+
+  useEffect(() => {
+    console.log(values);
+    axios.post(`http://localhost:5032/api/RefereeScore/CreateRefScore/${rid}/${matchGroup}`, values, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .catch(err => console.error('Sending score is failed : ', err));
+
+  }, [values, axios]);
 
   useEffect(() => {
     const fetchMatchData = async () => {
@@ -59,17 +71,6 @@ const Scoring = () => {
     connect.on('TimerEnded', () => {
       setTimeLeft(0);
     });
-
-    connect.on('ScoreUpdate', (redScore, blueScore) => {
-      setScoreRed(redScore);
-      setScoreBlue(blueScore);
-    });
-
-    connect.on('PenalityUpdate', (redPenality, bluePenality) => {
-      setPenalityRed(redPenality);
-      setPenalityBLue(bluePenality);
-    });
-
     setConnection(connect);
 
     return () => {
@@ -83,20 +84,19 @@ const Scoring = () => {
 
   const handleRedScore = (increment) => {
     setScoreRed((prevValue) => prevValue + increment);
-    connection.invoke('UpdateScore', scoreRed + increment, scoreBlue);
+    setValues({ RedPoints: increment, BluePoints: 0, RedPenalty: 0, BluePenalty: 0 });
   };
 
   const handleBlueScore = (increment) => {
     setScoreBlue((prevValue) => prevValue + increment);
-    connection.invoke('UpdateScore', scoreRed, scoreBlue + increment);
+    setValues({ BluePoints: increment, RedPoints: 0, BluePenalty: 0, RedPenalty: 0 });
   };
 
   const handleRedPenality = () => {
     if (penalityRed < 5) {
       setPenalityRed(prev => {
         const newCount = prev + 1;
-        handleBlueScore(1);
-        connection.invoke('UpdatePenality', newCount, penalityBlue);
+        setValues({ RedPenalty: 1, BluePoints: 0, RedPoints: 0, BluePenalty: 0 });
         if (newCount === 5) {
           alert('Athlete Red Disqualified!');
         }
@@ -109,8 +109,7 @@ const Scoring = () => {
     if (penalityBlue < 5) {
       setPenalityBlue(prev => {
         const newCount = prev + 1;
-        handleRedScore(1);
-        connection.invoke('UpdatePenality', penalityRed, newCount);
+        setValues({ BluePenalty: 1, RedPenalty: 0, BluePoints: 0, RedPoints: 0 })
         if (newCount === 5) {
           alert('Athlete Blue Disqualified!');
         }

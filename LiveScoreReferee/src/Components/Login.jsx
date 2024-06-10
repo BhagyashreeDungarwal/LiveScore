@@ -20,7 +20,7 @@ const Login = () => {
     password: ""
   }
   useEffect(() => {
-    if (data.msg) {
+    if (data && data.msg) {
       toast.success(data.msg)
       localStorage.setItem("ID",data.id)
       dispatch(clearMessageLogin())

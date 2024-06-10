@@ -228,14 +228,14 @@ namespace LiveScore.Controllers
             return Ok(new { msg = "Round inserted.", round = initialRound });
         }
 
-        [HttpPost("updateRound")]
-        public async Task<IActionResult> UpdateRound([FromBody] Round roundDto, int matchId , int round)
+        [HttpPost("updateRound/{matchId}/{round}")]
+        public async Task<IActionResult> UpdateRound(Round roundDto, int matchId, int round)
         {
             // Validate the matchId exists
             var matchExists = await _context.Matchss.AnyAsync(m => m.MId == matchId);
             if (!matchExists)
             {
-                return NotFound("Match not found.");
+                return NotFound(new { msg = "Match not found." });
             }
 
             // Find the specific round to update
@@ -243,7 +243,7 @@ namespace LiveScore.Controllers
 
             if (roundToUpdate == null)
             {
-                return NotFound("Round not found.");
+                return NotFound(new { msg = "Round not found." });
             }
 
             // Update the specified fields
@@ -257,20 +257,20 @@ namespace LiveScore.Controllers
             {
                 if (roundToUpdate.RoundWinner != match.AthleteRed && roundToUpdate.RoundWinner != match.AthleteBlue)
                 {
-                    return BadRequest("RoundWinner must be one of the athletes in the match.");
+                    return BadRequest(new { msg = "RoundWinner must be one of the athletes in the match." });
                 }
             }
 
             _context.Rounds.Update(roundToUpdate);
             await _context.SaveChangesAsync();
             // Check if round is 2 and fetch round 1 details
-            if (round == 2 )
+            if (round == 2)
             {
                 var round1 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
                 if (round1 != null && round1.RoundWinner == roundDto.RoundWinner)
                 {
                     var rounds = await _context.Rounds.Where(r => r.MatchId == matchId).ToListAsync();
-                    return Ok(new { message = "Round winner for round 2 or 3 is same as round 1", rounds });
+                    return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", rounds , });
                 }
             }
             if (round == 3)
@@ -297,14 +297,14 @@ namespace LiveScore.Controllers
 
                     return Ok(new
                     {
-                        message = "Round 3 validation",
+                        msg = "Round 3 validation",
                         rounds,
                         mostFrequentWinner = matchWinner
                     });
                 }
             }
 
-            return Ok(new { message = "Round updated successfully.", round = roundToUpdate });
+            return Ok(new { msg = "Round updated successfully.", round = roundToUpdate, roundRes = roundToUpdate.Rounds });
         }
 
 

@@ -22,6 +22,12 @@ const Scoring = () => {
     const athleteRed = matchData ? matchData.athleteRedId : "";
     const athleteBlue = matchData ? matchData.athleteBlueId : "";
     const mid = matchData ? matchData.mid : "";
+    const [refScore, setRefScore] = useState({
+        RedPoints: 0,
+        BluePoints: 0,
+        RedPanelty: 0,
+        BluePanelty: 0
+    })
 
     const [values, setValues] = useState({
         RedPoints: 0,
@@ -88,7 +94,17 @@ const Scoring = () => {
             setIsRunning(true);
         });
 
-        setConnection(connect);
+        connect.on('ReceiveLastRefScore', (refScoreA) => {
+            if (refScoreA) {
+                setRefScore({
+                    RedPoints: refScoreA ? refScoreA.redPoints : 0,
+                    BluePoints: refScoreA ? refScoreA.bluePoints : 0,
+                    RedPanelty: refScoreA ? refScoreA.redPenalty : 0,
+                    BluePanelty: refScoreA ? refScoreA.bluePenalty : 0,
+                });
+            }
+        });
+        setConnection(connect)
 
         return () => {
             if (connection) {
@@ -137,12 +153,6 @@ const Scoring = () => {
     const handleRedScore = (increment) => {
         setScoreRed((prevValue) => prevValue + increment);
         setValues({ RedPoints: increment });
-        // axios.post(`http://localhost:5032/api/Scores/insert/${rounds}/${athleteRed}/${athleteBlue}/${mid}`, values, {
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // })
-        //     .catch(err => console.error('Sending score is failed : ', err));
     };
 
     useEffect(() => {
@@ -154,11 +164,11 @@ const Scoring = () => {
         })
             .catch(err => console.error('Sending score is failed : ', err));
 
-    }, [values,axios]);
+    }, [values, axios]);
 
     const handleBlueScore = (increment) => {
         setScoreBlue((prevValue) => prevValue + increment);
-        setValues({ BluePoints: increment });
+        setValues({ BluePoints: increment, RedPoints: 0, RedPanelty: 0, BluePanelty: 0 });
 
     };
 
@@ -166,7 +176,7 @@ const Scoring = () => {
         if (penalityRed < 5) {
             setPenalityRed(prev => {
                 const newCount = prev + 1;
-                setValues({RedPanelty:  1,BluePoints:1 });
+                setValues({ RedPanelty: 1, BluePanelty: 0, RedPoints: 0, BluePoints: 0 });
                 // handleBlueScore(1)
                 if (newCount === 5) {
                     alert('Athlete Red Disqualified!');
@@ -180,7 +190,7 @@ const Scoring = () => {
         if (penalityBlue < 5) {
             setPenalityBlue(prev => {
                 const newCount = prev + 1;
-                setValues({BluePanelty: 1,RedPoints:1})
+                setValues({ BluePanelty: 1, RedPanelty: 0, BluePoints: 0, RedPoints: 0 })
                 // handleRedScore(1)
                 if (newCount === 5) {
                     alert('Athlete Blue Disqualified!');
@@ -225,26 +235,11 @@ const Scoring = () => {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell align='center'>referee1</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
+                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>{refScore.RedPoints}</TableCell>
+                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>{refScore.BluePoints}</TableCell>
+                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>{refScore.RedPanelty}</TableCell>
+                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>{refScore.BluePanelty}</TableCell>
                                     </TableRow>
-                                    <TableRow>
-                                        <TableCell align='center'>referee1</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell align='center'>referee1</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                        <TableCell align='center' sx={{ fontWeight: "bold" }}>0</TableCell>
-                                    </TableRow>
-
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -253,7 +248,7 @@ const Scoring = () => {
                 <Grid item sm={4} xl={4} md={4} lg={4} sx={4}>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
-                        <img src={matchData ? `${img_url}${matchData.athleteRedImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw",borderRadius:"10px" }} />
+                        <img src={matchData ? `${img_url}${matchData.athleteRedImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw", borderRadius: "10px" }} />
                         <Typography variant="h1" style={{ color: "#e53935", fontSize: "15vh" }}>{scoreRed}</Typography>
                     </Box>
                     <Typography variant="h4" style={{ color: "#e53935", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteRed : ""}</Typography>
@@ -263,7 +258,7 @@ const Scoring = () => {
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
                         <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "15vh" }}>{scoreBlue}</Typography>
-                        <img src={matchData ? `${img_url}${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw",borderRadius:"10px" }} />
+                        <img src={matchData ? `${img_url}${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"} style={{ height: "13vh", width: "7vw", borderRadius: "10px" }} />
                     </Box>
                     <Typography variant="h4" style={{ color: "#1e88e5", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteBlue : ""}</Typography>
                 </Grid>
