@@ -159,18 +159,6 @@ export const StoreOtpApi = async () => {
   }
 }
 
-export const GetTodayMatch = async () => {
-  try {
-    const { data } = await axios.get(`${url}/Matchs/today`, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    return data
-  } catch (error) {
-    return error;
-  }
-}
 
 // this api is used to get match if coordinator and referee are assigned in match
 export const GetAssignMatch = async (id) => {

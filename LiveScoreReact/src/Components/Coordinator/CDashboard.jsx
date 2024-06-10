@@ -6,9 +6,10 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { GetAssignMatch, GetTodayMatch } from "../Apis/Coordinator";
-import MatchCard from "./MatchCard";
+import { GetAssignMatch } from "../Apis/Coordinator";
+import MatchCard from "../Common/MatchCard";
 import MatchAssign from "./MatchAssign";
+import { GetTodayMatch } from "../Apis/Common";
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;

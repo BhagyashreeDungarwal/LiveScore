@@ -31,6 +31,7 @@ import ForgetPassword from './Components/Common/ForgetPassword';
 import ViewPage from './Components/Coordinator/ViewPage';
 import EditMatch from './Components/Coordinator/EditMatch';
 import RoundScore from './Components/Common/RoundScore';
+import RoundScores from './Components/Admin/RoundScores';
 
 
 function App() {
@@ -161,6 +162,9 @@ function App() {
         }, {
           path: "edittournament/:id",
           element: <EditTournament />
+        },{
+          path: "roundscores/:mid/",
+          element: (<RoundScores />)
         }
 
       ]

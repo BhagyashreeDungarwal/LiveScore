@@ -35,11 +35,15 @@ namespace LiveScore.Controllers
             try
             {
                 var rounds = await _context.Rounds
+                    .Include((a) => a.Athlete)
                     .Where(r => r.MatchId == mid)
                     .Select(r => new
                     {
                         //RoundId = r.Id,
                         Rounds = r.Rounds,
+                        RoundWinner = r.Athlete.AthleteName,
+                        RedTotalScore = r.RedTotalScore,
+                        BlueTotalScore = r.BlueTotalScore,
                     })
                     .ToListAsync();
 
@@ -65,7 +69,7 @@ namespace LiveScore.Controllers
             try
             {
                 var query = from score in _context.Scores
-                            join roundData in _context.Rounds on score.MatchId equals roundData.MatchId
+                            join roundData in _context.Rounds on score.MatchId equals roundData.Rounds
                             where score.MatchId == mid && roundData.Rounds == round
                             select new
                             {
@@ -89,7 +93,16 @@ namespace LiveScore.Controllers
 
                 if (scores == null || !scores.Any())
                 {
-                    return NotFound();
+                    // Check if there are no matches pending for the given round
+                    var isRoundCompleted = await _context.Scores.AnyAsync(s => s.MatchId == mid && s.Rounds == round);
+                    if (!isRoundCompleted)
+                    {
+                        return NotFound($"Match is pending for round {round}.");
+                    }
+                    else
+                    {
+                        return NotFound($"No scores found for match {mid} and round {round}.");
+                    }
                 }
 
                 return scores;
@@ -101,6 +114,7 @@ namespace LiveScore.Controllers
                 return StatusCode(500, "Internal server error, please try again later.");
             }
         }
+
 
 
         //[httppost("managerounds")]

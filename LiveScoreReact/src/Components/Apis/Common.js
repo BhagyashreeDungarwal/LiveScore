@@ -14,9 +14,35 @@ export const GetMatchHistory = async () => {
     }
 }
 
-export const GetScoresandRounds = async (id) => {
+export const GetTodayMatch = async () => {
     try {
-        const data = await axios.get(`${url}/Rounds/GetScoresandRounds/${id}`, {
+        const { data } = await axios.get(`${url}/Matchs/today`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return data
+    } catch (error) {
+        return error;
+    }
+}
+
+export const GetRoundsByMatchId = async (id) => {
+    try {
+        const data = await axios.get(`${url}/Rounds/GetRoundsByMatchId/${id}`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        return data
+    } catch (error) {
+        return error
+    }
+}
+
+export const GetScoresandRounds = async (id, rounds) => {
+    try {
+        const data = await axios.get(`${url}/Rounds/GetScoresandRounds/${id}/${rounds}`, {
             headers: {
                 "Content-Type": "application/json"
             }

@@ -43,7 +43,6 @@ const AddReferee = () => {
         email: "",
         password: "",
         contact: "",
-        // age: "",
         dateOfBirth: "",
         image: null,
         gender: "",
