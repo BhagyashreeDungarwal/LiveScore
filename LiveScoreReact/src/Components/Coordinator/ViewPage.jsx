@@ -1,15 +1,16 @@
 import { Box, Typography, Grid, Card, CardContent, CardMedia, TableContainer, Table,  TableRow, TableCell, TableBody, Paper, Chip,  IconButton } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { GetMatchById } from '../Apis/Coordinator';
 import vs from '../Images/vs.png'
-import { ArrowBack, Groups3, LocationCity, SportsGymnasticsRounded } from '@mui/icons-material';
+import { ArrowBack, Category, DateRangeRounded, EmojiEventsRounded, Groups2, Groups3, LocationCity, ModeStandbyRounded, SportsGymnasticsRounded } from '@mui/icons-material';
 
 const ViewPage = () => {
 
   const { mid } = useParams();
   const [matchDetails, setMatchDetails] = useState(null);
+  const navigate = useNavigate()
   const img_url = "http://localhost:5032/images/";
 
   useEffect(() => {
@@ -28,9 +29,14 @@ const ViewPage = () => {
     return <Typography>Loading...</Typography>;
   }
 
+  const HandleonClick = () => {
+     navigate("/coordinator/cDashboard")
+  }
+  
+
   return (
     <Box sx={{ flexGrow: 1, padding: 2 }}>
-      <IconButton color='default'  onClick={"fbdsjf"}>
+      <IconButton color='default'  onClick={() => HandleonClick()}>
         <ArrowBack/> Match Details
       </IconButton>
       <Grid container spacing={2}>
@@ -91,37 +97,37 @@ const ViewPage = () => {
                       <TableContainer component={Paper} elevation={3}>
                         <Table>
                           <TableBody>
-                            <TableRow>
-                              <TableCell>Tournament</TableCell>
-                              <TableCell>{matchDetails.tournamentId}</TableCell>
+                            <TableRow >
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo' ,}}><EmojiEventsRounded /> &nbsp; Tournament</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.tournamentId}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Category</TableCell>
-                              <TableCell>{matchDetails.categoryId}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}> <Category /> &nbsp; Category</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.categoryId}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Match Type</TableCell>
-                              <TableCell>{matchDetails.matchType}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><ModeStandbyRounded /> &nbsp; Match Type</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.matchType}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Match Date</TableCell>
-                              <TableCell>{new Date(matchDetails.matchDate).toLocaleDateString()}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><DateRangeRounded /> &nbsp; Match Date</TableCell>
+                              <TableCell sx={{ color:'black'}}>{new Date(matchDetails.matchDate).toLocaleDateString()}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Coordinators</TableCell>
-                              <TableCell>{matchDetails.matchCoordinator}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><Groups3 /> &nbsp; Coordinators</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.matchCoordinator}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Referee 1</TableCell>
-                              <TableCell>{matchDetails.referee1}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><Groups2 /> &nbsp; Referee 1</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.referee1}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Referee 2</TableCell>
-                              <TableCell>{matchDetails.referee2}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><Groups2 /> &nbsp; Referee 2</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.referee2}</TableCell>
                             </TableRow>
                             <TableRow>
-                              <TableCell>Referee 3</TableCell>
-                              <TableCell>{matchDetails.referee3}</TableCell>
+                              <TableCell sx={{fontWeight:'bold', display:'flex', alignItems:'center' , color:'indigo'}}><Groups2 /> &nbsp; Referee 3</TableCell>
+                              <TableCell sx={{ color:'black'}}>{matchDetails.referee3}</TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>

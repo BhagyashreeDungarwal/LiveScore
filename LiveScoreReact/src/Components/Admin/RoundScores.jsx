@@ -34,7 +34,7 @@ function CustomNoRowsOverlay() {
   );
 }
 
-const RoundScore = () => {
+const RoundScores = () => {
   const navigate = useNavigate();
   const [expandedIndex, setExpandedIndex] = useState(null); // Track the index of the currently expanded accordion
   const [loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ const RoundScore = () => {
   };
 
   const handleClose = () => {
-    navigate("/coordinator/match");
+    navigate("/admin/matchdetails");
   };
 
   const columns = useMemo(() => [
@@ -172,4 +172,5 @@ const RoundScore = () => {
   );
 };
 
-export default RoundScore;
+
+export default RoundScores

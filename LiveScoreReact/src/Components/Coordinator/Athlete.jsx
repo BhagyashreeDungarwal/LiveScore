@@ -63,15 +63,15 @@ const Athlete = () => {
 
   const columns = useMemo(() => [
     {
-      field: "imageUrl", headerName: "Avatar", width: 70, headerClassName: "header", headerAlign: "center", align: "center",
+      field: "imageUrl", headerName: "Avatar", width: 64, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
         <Link to={`/coordinator/editAthletePic/${params.row.id}`}><Avatar src={`${img_url}${params.value}`} alt="Avatar" /></Link>
       ),
     },
 
-    { field: "athleteName", headerName: "Name", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "athleteName", headerName: "Name", width: 106, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 190, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "contact", headerName: "Contact", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "contact", headerName: "Contact", width: 101, headerClassName: "header", headerAlign: "center", align: "center" },
     // { field: "dateOfBirth", headerName: "DateOFBirth", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "age", headerName: "Age", width: 50, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },

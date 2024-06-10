@@ -139,27 +139,8 @@ const Match = () => {
 
 
   const columns = useMemo(() => [
+    
     { field: "matchGroup", headerName: "GId", width: 30, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "tournament", headerName: "Tournament", width: 145, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchType", headerName: "Match Type", width: 130, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
-    { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "athleteRed", headerName: "Athlete Red", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
-    { field: "matchCoordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
-      valueGetter: (params) => params.row.matchCoordinator ? params.row.matchCoordinator : '------', 
-    },
-    { field: "referee1", headerName: "Referee 1", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
-      valueGetter: (params) => params.row.referee1 ? params.row.referee1 : '------',
-    },
-    { field: "referee2", headerName: "Referee 2", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
-      valueGetter: (params) => params.row.referee2 ? params.row.referee2 : '------',
-    },
-    { field: "referee3", headerName: "Referee 3", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
-      valueGetter: (params) => params.row.referee3 ? params.row.referee3 : '------',
-     },
     {
       headerName: "Action", width: 200, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
         return (
@@ -181,7 +162,28 @@ const Match = () => {
           </Box>
         )
       }
-    }
+    },
+    { field: "tournament", headerName: "Tournament", width: 145, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchType", headerName: "Match Type", width: 130, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchStatus", headerName: "Match Status", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" },
+    { field: "athleteRed", headerName: "Athlete Red", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
+    { field: "matchCoordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.matchCoordinator ? params.row.matchCoordinator : '------', 
+    },
+    { field: "referee1", headerName: "Referee 1", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee1 ? params.row.referee1 : '------',
+    },
+    { field: "referee2", headerName: "Referee 2", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee2 ? params.row.referee2 : '------',
+    },
+    { field: "referee3", headerName: "Referee 3", width: 100, headerClassName: "header", headerAlign: "center", align: "center",
+      valueGetter: (params) => params.row.referee3 ? params.row.referee3 : '------',
+     },
+    
   ], [])
   const columnsHistory = useMemo(() => [
     {
@@ -218,7 +220,7 @@ const Match = () => {
      { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "tournament", headerName: "Tournament", width: 145, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "matchType", headerName: "Match Type", width: 130, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "matchDate", headerName: "Match Date", width: 100, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
+    { field: "matchDate", headerName: "Match Date", width: 101, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY') : "------" },
     { field: "category", headerName: "Category", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "gender", headerName: "Gender", width: 70, headerClassName: "header", headerAlign: "center", align: "center" }, 
   
@@ -241,22 +243,22 @@ const Match = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
         <HeaderFormat title="Match Management" />
-        <Box display='flex' justifyContent='flex-end' alignItems='center' >
-                        <FormControl sx={{ m: 1, minWidth: 150, }} size="small">
-                            <InputLabel id="demo-select-small-label"></InputLabel>
-                            <Select
-                                size='small'
-                                sx={{ borderRadius: "15px" }}
-                                color='secondary'
-                                variant='outlined'
-                                defaultValue={1}
-                                onChange={(e) => { handleChange(e.target.value) }}
-                            >
-                                <MenuItem value={1}>Match</MenuItem>
-                                <MenuItem value={2}>History</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
+          <Box display='flex' justifyContent='flex-end' alignItems='center' >
+            <FormControl sx={{ m: 1, minWidth: 150, }} size="small">
+                <InputLabel id="demo-select-small-label"></InputLabel>
+                <Select
+                    size='small'
+                    sx={{ borderRadius: "15px" }}
+                    color='secondary'
+                    variant='outlined'
+                    defaultValue={1}
+                    onChange={(e) => { handleChange(e.target.value) }}
+                >
+                    <MenuItem value={1}>Match</MenuItem>
+                    <MenuItem value={2}>History</MenuItem>
+                </Select>
+            </FormControl>
+            </Box>
           </Box>
           {
             loading ? <CircularProgress /> :
