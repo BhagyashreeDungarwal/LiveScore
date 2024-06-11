@@ -1,10 +1,14 @@
 import { Box, Button, Dialog, DialogContent, DialogTitle, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles';
-import { GetMatchById, GetTotalScore } from '../Apis/Coordinator';
+import { GetTotalScore, ScoreTransfer } from '../Apis/Coordinator';
 import { useFormik } from 'formik';
 import { endMatch } from '../Validation/Coordinator';
 import { Close, SportsGymnasticsRounded, SportsMartialArtsRounded } from '@mui/icons-material';
+import { clearMessage, updateRound } from '../../Redux/CoordinatorRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -15,40 +19,53 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const EndRoundModel = ({ mid, rounds, redScore, blueScore, athleteBlue, athleteRed, athleteBlueId, athleteRedId }) => {
+const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athleteBlueId, athleteRedId }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false);
-    const [score, setScore] = useState(null)
+    const dispatch = useDispatch()
+    const { data, error } = useSelector(state => state.coordinator)
 
     const initial = {
-        RedTotalScore: redScore,
-        BlueTotalScore: blueScore,
-        RoundWinner: ""
+        redTotalScore: "",
+        blueTotalScore: "",
+        RoundWinner: 0
     }
-
+    const navigate = useNavigate()
     useEffect(() => {
-        const getTotalScore = async () => {
-            const data = await GetTotalScore();
-            data && setScore(data)
-            console.log(score)
+        if (data && data.msg  ) {
+            toast.success(data.msg)
+            dispatch((clearMessage()))
+            if (data.roundRes === 1 || data.roundRes === 2) {
+                navigate(`/coordinator/GenerateOtp/${mid}/${matchGroup}`)
+            }
         }
+        if (error) {
+            toast.error(error.msg)
+            dispatch((clearMessage()))
+        }
+    }, [data, error,navigate,dispatch])
 
-        getTotalScore()
-    }, [])
 
-
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
         validationSchema: endMatch,
-        onSubmit: (values) => {
-            console.log(values)
+        onSubmit: async (values) => {
+            dispatch(updateRound({ values, mid, rounds }))
+            await ScoreTransfer(mid)
         }
 
     })
+    const getTotalScore = async () => {
+        const data = await GetTotalScore();
+        data && setValues(data)
+        console.log(data)
+    }
+
 
     const handleClickOpen = () => {
         // console.log("open")
         setOpen(true);
+        getTotalScore()
     };
     const handleClose = () => {
         setOpen(false);
@@ -89,12 +106,12 @@ const EndRoundModel = ({ mid, rounds, redScore, blueScore, athleteBlue, athleteR
                                 <TextField
                                     fullWidth
                                     variant='standard'
-                                    id="RedTotalScore"
-                                    name="RedTotalScore"
+                                    id="redTotalScore"
+                                    name="redTotalScore"
                                     label="Red Total Score"
-                                    value={values.RedTotalScore}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                    value={values.redTotalScore}
+                                    // onChange={handleChange}
+                                    // onBlur={handleBlur}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
@@ -103,18 +120,18 @@ const EndRoundModel = ({ mid, rounds, redScore, blueScore, athleteBlue, athleteR
                                         ),
                                     }}
                                 />
-                                {errors.RedTotalScore && touched.RedTotalScore ? (<Typography variant="subtitle1" color="error">{errors.RedTotalScore}</Typography>) : null}
+                                {errors.redTotalScore && touched.redTotalScore ? (<Typography variant="subtitle1" color="error">{errors.redTotalScore}</Typography>) : null}
                             </Grid>
                             <Grid item xl={6} md={6} sm={6} xs={6}>
                                 <TextField
                                     fullWidth
                                     variant='standard'
-                                    id="BlueTotalScore"
-                                    name="BlueTotalScore"
+                                    id="blueTotalScore"
+                                    name="blueTotalScore"
                                     label="Red Total Score"
-                                    value={values.BlueTotalScore}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                                    value={values.blueTotalScore}
+                                    // onChange={handleChange}
+                                    // onBlur={handleBlur}
                                     InputProps={{
                                         startAdornment: (
                                             <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
@@ -123,7 +140,7 @@ const EndRoundModel = ({ mid, rounds, redScore, blueScore, athleteBlue, athleteR
                                         ),
                                     }}
                                 />
-                                {errors.BlueTotalScore && touched.BlueTotalScore ? (<Typography variant="subtitle1" color="error">{errors.BlueTotalScore}</Typography>) : null}
+                                {errors.blueTotalScore && touched.blueTotalScore ? (<Typography variant="subtitle1" color="error">{errors.blueTotalScore}</Typography>) : null}
                             </Grid>
                             <Grid item xl={12} md={12} sm={12} xs={12}>
                                 <FormLabel component="legend">Round Winner</FormLabel>
@@ -141,6 +158,11 @@ const EndRoundModel = ({ mid, rounds, redScore, blueScore, athleteBlue, athleteR
                                     <FormControlLabel value={athleteBlueId} control={<Radio />} label={athleteBlue} />
                                 </RadioGroup>
                                 {errors.RoundWinner && touched.RoundWinner ? (<Typography variant="subtitle1" color="error">{errors.RoundWinner}</Typography>) : null}
+                            </Grid>
+                            <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                                <Button variant="contained" color="primary" type='submit'>
+                                    End Round
+                                </Button>
                             </Grid>
                         </Grid>
                     </form>

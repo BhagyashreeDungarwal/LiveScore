@@ -6,6 +6,7 @@ import { Box, Paper, Grid, Typography, TableContainer, Table, TableHead, TableRo
 import { PauseCircleFilledRounded, PlayCircleFilledRounded } from '@mui/icons-material';
 import { GetMatchByMatchGroup } from '../Apis/Coordinator';
 import EndRoundModel from './EndRoundModel';
+import { toast } from 'react-toastify';
 const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
@@ -186,7 +187,9 @@ const Scoring = () => {
                 setValues({ RedPanelty: 1, BluePanelty: 0, RedPoints: 0, BluePoints: 0 });
                 setScoreBlue((prevValue) => prevValue + 1);
                 if (newCount === 5) {
-                    alert('Athlete Red Disqualified!');
+                    toast.error("Athlete Red Disqualified!")
+                    // alert('Athlete Red Disqualified!');
+                    setIsDisable(true)
                 }
                 return newCount;
             });
@@ -200,7 +203,9 @@ const Scoring = () => {
                 setValues({ BluePanelty: 1, RedPanelty: 0, BluePoints: 0, RedPoints: 0 })
                 setScoreRed((prevValue) => prevValue + 1);
                 if (newCount === 5) {
-                    alert('Athlete Blue Disqualified!');
+                    toast.error("Athlete Blue Disqualified!")
+                    // alert('Athlete Blue Disqualified!');
+                    setIsDisable(true)
                 }
                 return newCount;
             });
@@ -360,7 +365,7 @@ const Scoring = () => {
                 </>
                 }
                 <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
-                    <EndRoundModel mid={mid} athleteRed={matchData ? matchData.athleteRed : ""} athleteBlue={matchData ? matchData.athleteBlue : ""} athleteRedId={athleteRed} athleteBlueId={athleteBlue} redScore={scoreRed} blueScore={scoreBlue} rounds={rounds} />
+                    <EndRoundModel mid={mid} athleteRed={matchData ? matchData.athleteRed : ""} athleteBlue={matchData ? matchData.athleteBlue : ""} athleteRedId={athleteRed} athleteBlueId={athleteBlue} matchGroup={matchGroup}  rounds={rounds} />
                 </Grid>
             </Grid>
         </Box>

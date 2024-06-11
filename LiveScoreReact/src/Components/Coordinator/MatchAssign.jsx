@@ -1,12 +1,17 @@
 import { Card, CardContent, CardMedia, Typography, Box, Button, Tooltip, Fab } from '@mui/material';
 import dayjs from 'dayjs';
 import GenerateOtp from './GenerateOtp';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const img_url = "http://localhost:5032/images/";
 
-const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup,mid }) => {
+const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup, mid }) => {
   const formattedDate = dayjs(matchDate).format('MMM D, YYYY');
+  const navigate = useNavigate()
+  const handleNavigate = () => {
+    navigate(`/coordinator/GenerateOtp/${mid}/${matchGroup}`)
+  }
+
   return (
     <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
       <CardContent sx={{ alignItems: "center" }}>
@@ -47,14 +52,24 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
         </Box>
         <Box display="flex" justifyContent="space-around" alignItems="center" mb={1}>
           <Tooltip title="View Details">
-              <Link to={`/coordinator/viewpage/${mid}`} >
-                <Button variant="contained"  size="small" color="primary" sx={{ fontSize: '0.75rem', mr: 1 }}>
-                  View
-                </Button>
-              </Link>
-            </Tooltip>
+            <Link to={`/coordinator/viewpage/${mid}`} >
+              <Button variant="contained" size="small" color="primary" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                View
+              </Button>
+            </Link>
+          </Tooltip>
           <Box>
-            <GenerateOtp matchGroup={matchGroup} mid={mid} />
+            <Button
+              aria-label=""
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={handleNavigate}
+            >
+              OTP
+              {/* OTP <Pin style={{ fontSize: 40 }} /> */}
+            </Button>
+            {/* <GenerateOtp matchGroup={matchGroup} mid={mid} /> */}
           </Box>
         </Box>
       </CardContent>

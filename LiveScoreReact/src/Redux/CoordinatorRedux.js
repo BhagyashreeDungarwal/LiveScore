@@ -278,6 +278,21 @@ export const MatchPutApi = createAsyncThunk(
         }
     }
 );
+export const updateRound = createAsyncThunk(
+    'coordinator/updateRound',
+    async ({ values, mid , rounds }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${url}/Rounds/updateRound/${mid}/${rounds}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 const initialState = {
     data: [],
@@ -499,6 +514,17 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(MatchPutApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            }).addCase(updateRound.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateRound.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(updateRound.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

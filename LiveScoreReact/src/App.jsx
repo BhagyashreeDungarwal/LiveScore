@@ -32,6 +32,7 @@ import ViewPage from './Components/Coordinator/ViewPage';
 import EditMatch from './Components/Coordinator/EditMatch';
 import RoundScore from './Components/Common/RoundScore';
 import RoundScores from './Components/Admin/RoundScores';
+import GenerateOtp from './Components/Coordinator/GenerateOtp';
 
 
 function App() {
@@ -162,7 +163,7 @@ function App() {
         }, {
           path: "edittournament/:id",
           element: <EditTournament />
-        },{
+        }, {
           path: "roundscores/:mid/",
           element: (<RoundScores />)
         }
@@ -221,9 +222,12 @@ function App() {
         }, {
           path: "editMatch/:mid",
           element: <EditMatch />
-        },{
+        }, {
           path: "roundscore/:mid/",
           element: (<RoundScore />)
+        }, {
+          path: "GenerateOtp/:mid/:matchGroup",
+          element: (<GenerateOtp />)
         }
       ]
     },

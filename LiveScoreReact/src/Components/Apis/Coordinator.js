@@ -186,5 +186,18 @@ export const GetTotalScore = async () => {
   } catch (error) {
     return error
   }
-
 }
+export const ScoreTransfer = async (mid) => {
+  try {
+    const { data } = await axios.post(`${url}/Scores/transfer/${mid}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
+
+

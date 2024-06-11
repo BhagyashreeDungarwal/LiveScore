@@ -77,13 +77,13 @@ namespace LiveScore.Controllers
         [HttpGet("getTotalScore")]
         public async Task<ActionResult<dynamic>> GetTotalScore()
         {
-            var totalRedPoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
-            var totalBluePoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
+            var RedTotalScore = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
+            var BlueTotalScore = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
 
             return Ok(new
             {
-                totalRedPoints,
-                totalBluePoints
+                RedTotalScore,
+                BlueTotalScore
             });
         }
 
