@@ -174,3 +174,17 @@ export const GetAssignMatch = async (id) => {
   }
 
 }
+
+export const GetTotalScore = async () => {
+  try {
+    const { data } = await axios.get(`${url}/Scores/getTotalScore`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+
+}
