@@ -52,3 +52,28 @@ export const GetScoresandRounds = async (id, rounds) => {
         return error
     }
 }
+
+export const GetTotal = async () => {
+    try {
+        const { data } = await axios.get(`${url}/Common/totalcount`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return data
+    } catch (error) {
+        return error;
+    }
+}
+export const GetCategoryViseAthlete = async () => {
+    try {
+        const { data } = await axios.get(`${url}/Common/categoryViseAthlete`, {
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return data
+    } catch (error) {
+        return error;
+    }
+}

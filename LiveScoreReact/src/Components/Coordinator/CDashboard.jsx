@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Grid, Paper, Typography } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -10,6 +10,8 @@ import { GetAssignMatch } from "../Apis/Coordinator";
 import MatchCard from "../Common/MatchCard";
 import MatchAssign from "./MatchAssign";
 import { GetTodayMatch } from "../Apis/Common";
+import PieChartComponent from "../Common/PieChartComponent";
+import MatchesPerWeekChart from "../Common/MatchesPerWeekChart";
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;
@@ -38,7 +40,8 @@ const CDashboard = () => {
   const [todayMatch, setTodayMatch] = useState([]);
   const [assignMatch, setAssignMatch] = useState([]);
   const cid = localStorage.getItem("ID");
-
+ const month = 6
+  const year = 2024
   useEffect(() => {
     dispatch(clearMessage());
   }, [dispatch]);
@@ -153,6 +156,18 @@ const CDashboard = () => {
           ))}
         </Slider>
       </Box>
+       <Grid container sx={{display:'flex', justifyContent:'space-between'}} spacing={2}>
+          <Grid item xl={5} md={5} lg={5} sm={12} sx={{height:"100%"}}>
+            <Paper elevation={4}>
+          <PieChartComponent />
+            </Paper>
+          </Grid>
+          <Grid item xl={7} md={7} lg={7} sm={12} >
+            <Paper elevation={4} sx={{height:"100%"}}>
+          <MatchesPerWeekChart  month={month} year={year} />
+            </Paper>
+          </Grid>
+        </Grid>
     </div>
   );
 };
