@@ -257,7 +257,7 @@ const Scoring = () => {
                         </TableContainer>
                     </Paper>
                 </Grid>
-                {isDisable ? <></> : <>
+               
                     <Grid item sm={4} xl={4} md={4} lg={4} sx={4}>
                         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
@@ -275,6 +275,7 @@ const Scoring = () => {
                         </Box>
                         <Typography variant="h4" style={{ color: "#1e88e5", fontSize: "5vh", textAlign: "center" }}>{matchData ? matchData.athleteBlue : ""}</Typography>
                     </Grid>
+        {isDisable ? <></> : <>
                     <Grid item xs={4} md={4} lg={4} sm={4}>
                         <Grid container spacing={2}>
                             <Grid item xs={6} md={6} lg={6} sm={6}>

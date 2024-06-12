@@ -229,14 +229,14 @@ namespace LiveScore.Controllers
             }
 
             // Update the match status
-            match.MatchStatus = "Live"; 
+            match.MatchStatus = "Live";
             _context.Matchss.Update(match);
 
             // Insert initial round with user-specified values
             var initialRound = new Round
             {
                 MatchId = matchId,
-                Rounds = roundDto.Rounds, 
+                Rounds = roundDto.Rounds,
                 RoundTime = roundDto.RoundTime
             };
 
@@ -283,36 +283,56 @@ namespace LiveScore.Controllers
             _context.Rounds.Update(roundToUpdate);
             await _context.SaveChangesAsync();
 
-            // Check if round is 1 and fetch the updated round winner
             if (round == 1)
             {
-                var updatedRound1 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
-                return Ok(new { msg = "Round 1 updated successfully.", roundWinner = updatedRound1.RoundWinner });
-            }
+                var updatedRound1 = await _context.Rounds
+                    .Include(r => r.Athlete) // Include the Athlete navigation property
+                    .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
 
+                var roundWinnerName = updatedRound1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+
+                return Ok(new { msg = "Round 1 updated successfully.", roundWinner =  roundWinnerName });
+            }
             // Check if round is 2 and fetch round 1 details
             if (round == 2)
             {
-                var round1 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
+                var round1 = await _context.Rounds
+                    .Include(r => r.Athlete)
+                    .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
+
                 if (round1 != null && round1.RoundWinner == roundDto.RoundWinner)
                 {
-                    var rounds = await _context.Rounds.Where(r => r.MatchId == matchId).ToListAsync();
-                    return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", rounds , });
+                    var rounds = await _context.Rounds
+                        .Include(r => r.Athlete) // Include the Athlete navigation property for rounds
+                        .Where(r => r.MatchId == matchId)
+                        .Select(r => new { r.Rounds, RoundWinnerName = r.Athlete.AthleteName })
+                        .ToListAsync();
+                    var roundwinnerName = round1.Athlete?.AthleteName;
+
+                    return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", rounds , roundWinner = roundwinnerName });
                 }
             }
+
             if (round == 3)
             {
-                var round1 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
-                var round2 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 2);
+                var round1 = await _context.Rounds
+                    .Include(r => r.Athlete)
+                    .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
+
+                var round2 = await _context.Rounds
+                    .Include(r => r.Athlete)
+                    .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 2);
 
                 if (round1 != null && round2 != null)
                 {
                     var rounds = new List<object>
-                     {
-                        new { Round = 1, RoundWinner = round1.RoundWinner },
-                        new { Round = 2, RoundWinner = round2.RoundWinner },
-                        new { Round = 3, RoundWinner = roundDto.RoundWinner }
-                    };
+            {
+                new { Round = 1, RoundWinner = round1.Athlete?.AthleteName },
+                new { Round = 2, RoundWinner = round2.Athlete?.AthleteName },
+                new { Round = 3, RoundWinner = (roundDto.RoundWinner == match.AthleteRed ? match.AthleteRedObj.AthleteName : match.AthleteBlueObj.AthleteName) }
+            };
+
+
                     // Calculate total time each athlete has spent as RoundWinner
                     var roundWinners = new List<int?> { round1.RoundWinner, round2.RoundWinner, roundDto.RoundWinner };
                     var athleteRoundTime = roundWinners
@@ -320,13 +340,16 @@ namespace LiveScore.Controllers
                         .ToDictionary(g => g.Key, g => g.Count());
 
                     // Determine the winner of the match
-                    int? matchWinner = athleteRoundTime.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+                    int? matchWinnerId = athleteRoundTime.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+                    var matchWinnerName = matchWinnerId.HasValue
+                        ? (matchWinnerId == match.AthleteRed ? match.AthleteRedObj.AthleteName : match.AthleteBlueObj.AthleteName)
+                        : null;
 
                     return Ok(new
                     {
                         msg = "Round 3 validation",
                         rounds,
-                        mostFrequentWinner = matchWinner
+                        roundWinner = matchWinnerName
                     });
                 }
             }

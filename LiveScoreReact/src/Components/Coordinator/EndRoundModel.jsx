@@ -22,7 +22,11 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athleteBlueId, athleteRedId }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [redPenality, setRedPenality] = useState(0)
+    const [bluePenality, setBluePenality] = useState(0)
+    const [isDisable, setIsDisable] = useState(true)
+    const [roundWinner, setRoundWinner] = useState(null)
     const { data, error } = useSelector(state => state.coordinator)
 
     const initial = {
@@ -35,9 +39,10 @@ const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athlet
         if (data && data.msg  ) {
             toast.success(data.msg)
             dispatch((clearMessage()))
-            if (data.roundRes === 1 || data.roundRes === 2) {
-                navigate(`/coordinator/GenerateOtp/${mid}/${matchGroup}`)
-            }
+           if(data.roundWinner){
+            setRoundWinner(data.roundWinner)
+            setIsDisable(true)
+           }
         }
         if (error) {
             toast.error(error.msg)
@@ -58,18 +63,23 @@ const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athlet
     const getTotalScore = async () => {
         const data = await GetTotalScore();
         data && setValues(data)
-        console.log(data)
+        data && setRedPenality(data.redPanelty)
+        data && setBluePenality(data.bluePanelty)
     }
 
 
     const handleClickOpen = () => {
-        // console.log("open")
         setOpen(true);
         getTotalScore()
     };
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleNextRound = () => {
+      navigate(`/coordinator/AddRound/${mid}/${matchGroup}`)
+    }
+    
 
 
 
@@ -100,8 +110,48 @@ const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athlet
                     <Close />
                 </IconButton>
                 <DialogContent dividers>
-                    <form onSubmit={handleSubmit}>
+                    
+                    {
+                        isDisable ? (
+<form onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
+                            <Grid item xl={6} md={6} sm={6} xs={6}>
+                                <TextField
+                                    fullWidth
+                                    variant='standard'
+                                    id="redPenality"
+                                    name="redPenality"
+                                    label="Red Total Penality"
+                                    value={redPenality}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                                                <SportsGymnasticsRounded color="error" />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                {errors.redTotalScore && touched.redTotalScore ? (<Typography variant="subtitle1" color="error">{errors.redTotalScore}</Typography>) : null}
+                            </Grid>
+                        
+                            <Grid item xl={6} md={6} sm={6} xs={6}>
+                                <TextField
+                                    fullWidth
+                                    variant='standard'
+                                    id="bluePenality"
+                                    name="bluePenality"
+                                    label="Blue Total Penality"
+                                    value={bluePenality}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                                                <SportsMartialArtsRounded color="primary" />
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                {errors.redTotalScore && touched.redTotalScore ? (<Typography variant="subtitle1" color="error">{errors.redTotalScore}</Typography>) : null}
+                            </Grid>
                             <Grid item xl={6} md={6} sm={6} xs={6}>
                                 <TextField
                                     fullWidth
@@ -166,6 +216,25 @@ const EndRoundModel = ({ mid, rounds,matchGroup, athleteBlue, athleteRed, athlet
                             </Grid>
                         </Grid>
                     </form>
+                        ):(       
+                            <Grid container spacing={2}>
+                                <Grid item sm={12} xl={12} md={12} lg={12} xs={12}>
+                                  <Typography variant="body1" color="initial">Round Winner is {roundWinner}</Typography>
+                                </Grid>
+                                <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                                    <Button variant="contained" color="primary" onClick={handleNextRound} fullWidth>
+                                        Next Round
+                                    </Button>
+                                </Grid>
+                                <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                                    <Button variant="contained" color="primary" fullWidth>
+                                        End Match 
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                    )
+                    }
+                    
                 </DialogContent>
             </BootstrapDialog>
         </Box>
