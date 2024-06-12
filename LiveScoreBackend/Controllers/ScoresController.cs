@@ -79,11 +79,15 @@ namespace LiveScore.Controllers
         {
             var RedTotalScore = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
             var BlueTotalScore = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
+            var RedPanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.RedPanelty ?? 0);
+            var BluePanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.BluePanelty ?? 0);
 
             return Ok(new
             {
                 RedTotalScore,
-                BlueTotalScore
+                BlueTotalScore,
+                RedPanelty,
+                BluePanelty
             });
         }
 
@@ -113,19 +117,25 @@ namespace LiveScore.Controllers
             await _tempContext.SaveChangesAsync();
 
             var totalRedPoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
-            var totalBluePoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
+            var totalBluePoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0)); 
+            var RedPanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.RedPanelty ?? 0);
+            var BluePanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.BluePanelty ?? 0);
 
             await _hubContext.Clients.Group(matchId.ToString()).SendAsync("ReceiveTotalScore", new
             {
                 totalRedPoints,
-                totalBluePoints
+                totalBluePoints,
+                RedPanelty,
+                BluePanelty
             });
 
             return Ok(new
             {
                 msg = "Score inserted into temporary table",
                 totalRedPoints,
-                totalBluePoints
+                totalBluePoints,
+                RedPanelty,
+                BluePanelty
             });
         }
 

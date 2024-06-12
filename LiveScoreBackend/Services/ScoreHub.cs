@@ -114,13 +114,17 @@ namespace LiveScore.Services
         }
         public async Task GetTotalScore(int matchGroup)
         {
-            var totalRedPoints = await _tempDbContext.RefScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePenalty ?? 0));
-            var totalBluePoints = await _tempDbContext.RefScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPenalty ?? 0));
+            var totalRedPoints = await _tempDbContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
+            var totalBluePoints = await _tempDbContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
+            var RedPanelty = await _tempDbContext.TemporaryScores.SumAsync(ts => ts.RedPanelty ?? 0);
+            var BluePanelty = await _tempDbContext.TemporaryScores.SumAsync(ts => ts.BluePanelty ?? 0);
 
             await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveTotalScore", new
             {
                 totalRedPoints,
-                totalBluePoints
+                totalBluePoints,
+                RedPanelty,
+                BluePanelty
             });
         }
     }
