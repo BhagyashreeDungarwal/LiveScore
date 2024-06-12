@@ -10,7 +10,6 @@ import { TextField, MenuItem, Button, Grid, Typography, RadioGroup, FormControlL
 import { AthleteValidate } from '../Validation/Coordinator';
 import { AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, Height, LocationCityRounded, MonitorWeight, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-// import { AtheletePostApi } from '../../Redux/Action/CoordinatorAction';
 import { GetAthlete, GetCoach } from '../Apis/Coordinator';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -122,7 +121,6 @@ const AddAthlete = () => {
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
-                    sx={{}}
                 >
                     <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                         Add Athlete

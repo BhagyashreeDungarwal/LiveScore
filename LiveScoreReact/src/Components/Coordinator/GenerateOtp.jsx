@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { Box, CircularProgress, FormControl, InputLabel, MenuItem, Modal, Select } from '@mui/material';
 import { OtpGenerateApi, StoreOtpApi } from '../Apis/Coordinator';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RoundValidate } from '../Validation/Coordinator';
 import { RoundPostApi, clearMessage } from '../../Redux/CoordinatorRedux';
@@ -53,10 +53,10 @@ const style = {
   pb: 3,
 };
 
-function ChildModal({mid,matchGroup}) {
-   const { data, error } = useSelector(state => state.coordinator)
+function ChildModal({ mid, matchGroup }) {
+  const { data, error } = useSelector(state => state.coordinator)
   const [open, setOpen] = useState(false);
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleOpen = () => {
@@ -66,37 +66,37 @@ function ChildModal({mid,matchGroup}) {
     setOpen(false);
   };
 
-   useEffect(() => {
-        if (data && data.msg) {
-            toast.success(data.msg)
-            dispatch(clearMessage())
-            navigate(`/coordinator/scoring/${matchGroup}/${values.rounds}`)
-        }
-        if (error) {
-            toast.error(error.msg)
-            dispatch(clearMessage())
-        }
-    }, [data, error, navigate, dispatch])
-   const initial = {
-       rounds:""
+  useEffect(() => {
+    if (data && data.msg) {
+      toast.success(data.msg)
+      dispatch(clearMessage())
+      navigate(`/coordinator/scoring/${matchGroup}/${values.rounds}`)
     }
+    if (error) {
+      toast.error(error.msg)
+      dispatch(clearMessage())
+    }
+  }, [data, error, navigate, dispatch])
+  const initial = {
+    rounds: ""
+  }
 
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } = useFormik({
-        initialValues: initial,
-        validationSchema: RoundValidate,
-        onSubmit: async (values, { resetForm, setSubmitting }) => {
-            try {
-              // console.log(mid)
-                dispatch(RoundPostApi({values, mid}))
-                setSubmitting(false)
-                // resetForm({ values: "" });
-               
-            } catch (error) {
-                <CircularProgress />
-            }
-        },
-    })
- 
+    initialValues: initial,
+    validationSchema: RoundValidate,
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      try {
+        // console.log(mid)
+        dispatch(RoundPostApi({ values, mid }))
+        setSubmitting(false)
+        // resetForm({ values: "" });
+
+      } catch (error) {
+        <CircularProgress />
+      }
+    },
+  })
+
   return (
     <React.Fragment>
       <Button onClick={handleOpen}>Next</Button>
@@ -107,30 +107,30 @@ function ChildModal({mid,matchGroup}) {
         aria-describedby="child-modal-description"
       >
         <form onSubmit={handleSubmit}>
-        <Box sx={{ ...style}}>
-          <Typography variant="h5" color="initial">Select Round</Typography>
-          <FormControl sx={{mt:"5"}} fullWidth>
-          <InputLabel id="demo-simple-select-label">Select Rounds</InputLabel>
-          <Select
-            id="rounds"
-            name="rounds"
-            label="Round"
-            color="secondary"
-            variant="filled"
-            value={values.rounds}
-            onChange={handleChange}
-            onBlur={handleBlur}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-          </Select>
-        </FormControl>
-        {errors.rounds && touched.rounds ? (<Typography variant="subtitle1" color="error">{errors.rounds}</Typography>) : null}        
-        <Box sx={{marginTop:"3%", display:"flex", justifyContent:'end', alignContent:"center"}}>
-          <Button type='submit'>Start Round</Button>
-        </Box>
-        </Box>
+          <Box sx={{ ...style }}>
+            <Typography variant="h5" color="initial">Select Round</Typography>
+            <FormControl sx={{ mt: "5" }} fullWidth>
+              <InputLabel id="demo-simple-select-label">Select Rounds</InputLabel>
+              <Select
+                id="rounds"
+                name="rounds"
+                label="Round"
+                color="secondary"
+                variant="filled"
+                value={values.rounds}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              >
+                <MenuItem value={1}>1</MenuItem>
+                <MenuItem value={2}>2</MenuItem>
+                <MenuItem value={3}>3</MenuItem>
+              </Select>
+            </FormControl>
+            {errors.rounds && touched.rounds ? (<Typography variant="subtitle1" color="error">{errors.rounds}</Typography>) : null}
+            <Box sx={{ marginTop: "3%", display: "flex", justifyContent: 'end', alignContent: "center" }}>
+              <Button type='submit'>Start Round</Button>
+            </Box>
+          </Box>
         </form>
       </Modal>
     </React.Fragment>
@@ -148,21 +148,26 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-const GenerateOtp = ({ matchGroup ,mid}) => {
-  const [open, setOpen] = useState(false);
+const GenerateOtp = () => {
   const [otp, setOtp] = useState('');
+  const { matchGroup, mid } = useParams()
 
   const handleClickOpen = async () => {
     try {
-      const response = await OtpGenerateApi({ matchGroup});
+      const response = await OtpGenerateApi({ matchGroup });
       setOtp(response.accessKey);  // Assuming the response contains the OTP in a field named 'otp'
       console.log(otp)
-      setOpen(true);
       await StoreOtpApi({ otp: response.otp }); // Store the OTP
     } catch (error) {
       console.error("Error generating OTP:", error);
     }
   };
+
+  useEffect(() => {
+    handleClickOpen()
+  }, [])
+  
+
 
 
   const handleClose = () => {
@@ -171,20 +176,11 @@ const GenerateOtp = ({ matchGroup ,mid}) => {
 
   return (
     <div>
-      <Button
-        aria-label=""
-        variant="contained"
-        color="success"
-        size="small"
-        onClick={handleClickOpen}
-      >
-        OTP
-        {/* OTP <Pin style={{ fontSize: 40 }} /> */}
-      </Button>
+  
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={true}
       >
         <DialogTitle sx={{ m: 0, p: 2, fontSize: '19px' }} id="customized-dialog-title">
           OTP Generated Successfully!!
@@ -213,8 +209,8 @@ const GenerateOtp = ({ matchGroup ,mid}) => {
           {/* <Button autoFocus onClick={handleNext}>
             Next
           </Button> */}
-          
-      <ChildModal  mid={mid} matchGroup={matchGroup} />
+
+          <ChildModal mid={mid} matchGroup={matchGroup} />
         </DialogActions>
       </BootstrapDialog>
     </div>

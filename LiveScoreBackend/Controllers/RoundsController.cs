@@ -222,25 +222,30 @@ namespace LiveScore.Controllers
             }
 
             // Validate the matchId exists
-            var matchExists = await _context.Matchss.AnyAsync(m => m.MId == matchId);
-            if (!matchExists)
+            var match = await _context.Matchss.FirstOrDefaultAsync(m => m.MId == matchId);
+            if (match == null)
             {
                 return NotFound("Match not found.");
             }
+
+            // Update the match status
+            match.MatchStatus = "Live"; 
+            _context.Matchss.Update(match);
 
             // Insert initial round with user-specified values
             var initialRound = new Round
             {
                 MatchId = matchId,
-                Rounds = roundDto.Rounds ?? 1, // default to 1 if not provided
+                Rounds = roundDto.Rounds, 
                 RoundTime = roundDto.RoundTime
             };
 
             _context.Rounds.Add(initialRound);
             await _context.SaveChangesAsync();
 
-            return Ok(new { msg = "Round inserted.", round = initialRound });
+            return Ok(new { msg = "Round inserted and match status updated.", round = initialRound });
         }
+
 
         [HttpPost("updateRound/{matchId}/{round}")]
         public async Task<IActionResult> UpdateRound(Round roundDto, int matchId, int round)
@@ -277,6 +282,14 @@ namespace LiveScore.Controllers
 
             _context.Rounds.Update(roundToUpdate);
             await _context.SaveChangesAsync();
+
+            // Check if round is 1 and fetch the updated round winner
+            if (round == 1)
+            {
+                var updatedRound1 = await _context.Rounds.FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
+                return Ok(new { msg = "Round 1 updated successfully.", roundWinner = updatedRound1.RoundWinner });
+            }
+
             // Check if round is 2 and fetch round 1 details
             if (round == 2)
             {
