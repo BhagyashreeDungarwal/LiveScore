@@ -34,6 +34,7 @@ import RoundScore from './Components/Common/RoundScore';
 import RoundScores from './Components/Admin/RoundScores';
 import GenerateOtp from './Components/Coordinator/GenerateOtp';
 import AddRound from './Components/Coordinator/AddRound';
+import EndMatch from './Components/Coordinator/EndMatch';
 
 
 function App() {
@@ -232,6 +233,9 @@ function App() {
         },{
           path: "AddRound/:mid/:matchGroup",
           element: (<AddRound />)
+        },{
+          path: "EndMatch/:mid/:matchGroup",
+          element: (<EndMatch />)
         }
       ]
     },

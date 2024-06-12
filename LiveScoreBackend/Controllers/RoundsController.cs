@@ -283,15 +283,18 @@ namespace LiveScore.Controllers
             _context.Rounds.Update(roundToUpdate);
             await _context.SaveChangesAsync();
 
+            var roundswinner = new List<object>();
+
             if (round == 1)
             {
-                var updatedRound1 = await _context.Rounds
+                var round1 = await _context.Rounds
                     .Include(r => r.Athlete) // Include the Athlete navigation property
                     .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
 
-                var roundWinnerName = updatedRound1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                var round1WinnerName = round1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                roundswinner.Add(new { round = 1, roundWinnerName = round1WinnerName, roundWinnerId = round1.RoundWinner });
 
-                return Ok(new { msg = "Round 1 updated successfully.", roundWinner =  roundWinnerName });
+                return Ok(new { msg = "Round 1 updated successfully.", roundWinner = round1WinnerName, roundswinner });
             }
             // Check if round is 2 and fetch round 1 details
             if (round == 2)
@@ -307,9 +310,18 @@ namespace LiveScore.Controllers
                         .Where(r => r.MatchId == matchId)
                         .Select(r => new { r.Rounds, RoundWinnerName = r.Athlete.AthleteName })
                         .ToListAsync();
-                    var roundwinnerName = round1.Athlete?.AthleteName;
+                    ;
 
-                    return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", rounds , roundWinner = roundwinnerName });
+                    var round2 = await _context.Rounds
+                   .Include(r => r.Athlete) // Include the Athlete navigation property
+                   .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 2);
+
+                    var round1WinnerName = round1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                    var round2WinnerName = round2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                    roundswinner.Add(new { round = 1, roundWinnerName = round1WinnerName, roundWinnerId = round1.RoundWinner });
+                    roundswinner.Add(new { round = 2, roundWinnerName = round2WinnerName, roundWinnerId = round2.RoundWinner });
+
+                    return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", roundswinner });
                 }
             }
 
@@ -325,12 +337,12 @@ namespace LiveScore.Controllers
 
                 if (round1 != null && round2 != null)
                 {
-                    var rounds = new List<object>
-            {
-                new { Round = 1, RoundWinner = round1.Athlete?.AthleteName },
-                new { Round = 2, RoundWinner = round2.Athlete?.AthleteName },
-                new { Round = 3, RoundWinner = (roundDto.RoundWinner == match.AthleteRed ? match.AthleteRedObj.AthleteName : match.AthleteBlueObj.AthleteName) }
-            };
+                    var round1WinnerName = round1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                    var round2WinnerName = round2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+                    roundswinner.Add(new { round = 1, roundWinnerName = round1WinnerName, roundWinnerId = round1.RoundWinner });
+                    roundswinner.Add(new { round = 2, roundWinnerName = round2WinnerName, roundWinnerId = round2.RoundWinner });
+                    roundswinner.Add(new { round = 3, roundWinnerName = (roundDto.RoundWinner == match.AthleteRed ? match.AthleteRedObj.AthleteName : match.AthleteBlueObj.AthleteName), roundWinnerId = roundDto.RoundWinner });
+
 
 
                     // Calculate total time each athlete has spent as RoundWinner
@@ -348,13 +360,26 @@ namespace LiveScore.Controllers
                     return Ok(new
                     {
                         msg = "Round 3 validation",
-                        rounds,
+                        roundswinner,
                         roundWinner = matchWinnerName
                     });
                 }
             }
 
-            return Ok(new { msg = "Round updated successfully.", round = roundToUpdate, roundRes = roundToUpdate.Rounds });
+            var rounds1 = await _context.Rounds
+                    .Include(r => r.Athlete)
+                    .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 1);
+
+            var rounds2 = await _context.Rounds
+                .Include(r => r.Athlete)
+                .FirstOrDefaultAsync(r => r.MatchId == matchId && r.Rounds == 2);
+
+            var rounds1WinnerName = rounds1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+            var rounds2WinnerName = rounds2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
+            roundswinner.Add(new { round = 1, roundWinnerName = rounds1WinnerName, roundWinnerId = rounds1.RoundWinner });
+            roundswinner.Add(new { round = 2, roundWinnerName = rounds2WinnerName, roundWinnerId = rounds2.RoundWinner });
+
+            return Ok(new { msg = "Round updated successfully.", roundswinner, roundRes = roundToUpdate.Rounds });
         }
 
 

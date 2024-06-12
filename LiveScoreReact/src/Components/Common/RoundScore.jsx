@@ -1,5 +1,5 @@
-import  { useState, useEffect, useMemo } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Box,  CircularProgress, Dialog, DialogContent, DialogTitle, Fab, IconButton, Typography, styled } from '@mui/material';
+import { useState, useEffect, useMemo } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Box, CircularProgress, Dialog, DialogContent, DialogTitle, Fab, IconButton, Typography, styled } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -91,8 +91,8 @@ const RoundScore = () => {
     { field: "bluePoints", headerName: "BluePoints", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     { field: "redPanelty", headerName: "RedPanelty", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "bluePanelty", headerName: "BluePenalty", width: 110, headerClassName: "header", headerAlign: "center", align: "center" },
-    { field: "scoreTime", headerName: "ScoreTime", width: 200, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY  HH:mm:ss') : '------'  },
-  
+    { field: "scoreTime", headerName: "ScoreTime", width: 200, headerClassName: "header", headerAlign: "center", align: "center", valueFormatter: (params) => params.value ? dayjs(params.value).format('DD/MM/YYYY  HH:mm:ss') : '------' },
+
   ], []);
 
   return (
@@ -121,43 +121,43 @@ const RoundScore = () => {
                 >
                   <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls={`round-${index}-content`} id={`round-${index}-header`}>
                     <Typography>{`Round ${index + 1}`}</Typography>
-                    
+
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Box sx={{display:'flex', justifyContent:'space-between' ,mb:'1%' }} >
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: '1%' }} >
                       <Fab variant="extended" size='small' color='warning'>
-                      <EmojiEvents /> &nbsp; Round Winner : {round.roundWinner} &nbsp;
-                    </Fab>
+                        <EmojiEvents /> &nbsp; Round Winner : {round.roundWinner} &nbsp;
+                      </Fab>
                       <Fab variant="extended" size='small' color='error'>
-                      <SportsGymnasticsRounded /> &nbsp; Red Total Score : {round.redTotalScore} &nbsp;
-                    </Fab>
+                        <SportsGymnasticsRounded /> &nbsp; Red Total Score : {round.redTotalScore} &nbsp;
+                      </Fab>
                       <Fab variant="extended" size='small' color='primary'>
-                     <SportsGymnasticsRounded  /> &nbsp; Blue Total Score : {round.blueTotalScore} &nbsp;
-                    </Fab>
-                     </Box>
+                        <SportsGymnasticsRounded /> &nbsp; Blue Total Score : {round.blueTotalScore} &nbsp;
+                      </Fab>
+                    </Box>
                     {loading ? (
                       <CircularProgress />
                     ) : (
                       <>
                         {scoreData && scoreData.length > 0 ? (
                           <Box>
-                          <Typography variant="h1" color="error">{scoreData.roundWinner}</Typography>
-                          
-                          <DataGrid
-                            rows={scoreData}
-                            columns={columns}
-                            getRowId={(row) => row.sid}
-                            rowHeight={54}
-                            rowSelection="true"
-                            rowSpacingType='margin'
-                            scrollbarSize={1}
-                            columnHeaderHeight={37}
-                            pageSize={5}
-                            rowsPerPageOptions={[5]}
-                          />
+                            <Typography variant="h1" color="error">{scoreData.roundWinner}</Typography>
+
+                            <DataGrid
+                              rows={scoreData}
+                              columns={columns}
+                              getRowId={(row) => row.sid}
+                              rowHeight={54}
+                              rowSelection="true"
+                              rowSpacingType='margin'
+                              scrollbarSize={1}
+                              columnHeaderHeight={37}
+                              pageSize={5}
+                              rowsPerPageOptions={[5]}
+                            />
                           </Box>
                         ) : (
-                          <CustomNoRowsOverlay /> 
+                          <CustomNoRowsOverlay />
                         )}
                       </>
                     )}

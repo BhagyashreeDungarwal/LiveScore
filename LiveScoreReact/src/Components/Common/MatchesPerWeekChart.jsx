@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Chart as ChartJS,
@@ -23,14 +23,14 @@ ChartJS.register(
   Legend
 );
 
-const MatchesPerWeekChart = ({ month , year }) => {
+const MatchesPerWeekChart = ({ month, year }) => {
   const [linedata, setLineData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const {data} = await axios.get(`http://localhost:5032/api/Common/matchesPerWeek/${month}/${year}`);
+        const { data } = await axios.get(`http://localhost:5032/api/Common/matchesPerWeek/${month}/${year}`);
         setLineData(data);
         console.log(linedata)
       } catch (error) {
@@ -78,7 +78,7 @@ const MatchesPerWeekChart = ({ month , year }) => {
           <Typography variant="h5" component="h2" gutterBottom>
             Matches Per Week in {month}/{year}
           </Typography>
-          <Line data={chartData} options={options}   />
+          <Line data={chartData} options={options} />
         </>
       )}
     </Box>
