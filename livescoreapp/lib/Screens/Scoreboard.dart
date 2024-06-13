@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:signalr_netcore/hub_connection.dart';
+import 'package:signalr_netcore/hub_connection_builder.dart';
 
 class Scoreboard extends StatefulWidget {
-  const Scoreboard({Key? key}) : super(key: key);
-
   @override
   _ScoreboardState createState() => _ScoreboardState();
 }
@@ -12,31 +13,81 @@ class Scoreboard extends StatefulWidget {
 class _ScoreboardState extends State<Scoreboard> {
   bool isLoading = true;
   bool hasError = false;
-  Map<String, dynamic>? matchData;
+  Map<String, dynamic>? matchDetails;
+
+  late HubConnection hubConnection;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _fetchMatchData();
+    // Initialize SignalR connection and fetch initial data
+    _initSignalR();
+    _fetchMatchDetails();
+    _startLiveScoreUpdates();
   }
 
-  Future<void> _fetchMatchData() async {
-    final url = 'http://192.168.231.181:5032/api/Matchs/GetMatchs';
+  Future<void> _initSignalR() async {
+    try {
+      hubConnection = HubConnectionBuilder()
+          .withUrl('http://192.168.71.181:5032/ScoreHub')
+          .build();
+
+      hubConnection.on('ReceiveScoreUpdate', _handleScoreUpdate);
+
+      await hubConnection.start();
+    } catch (e) {
+      print('Error initializing SignalR: $e');
+      setState(() {
+        isLoading = false;
+        hasError = true;
+      });
+    }
+  }
+
+  void _handleScoreUpdate(List<dynamic>? message) {
+    if (message != null && message.isNotEmpty) {
+      final data = message[0] as Map<String, dynamic>;
+      setState(() {
+        matchDetails = {
+          'totalRedPoints': data['totalRedPoints'],
+          'totalBluePoints': data['totalBluePoints'],
+          'playerRedName': data['athleteRed'],
+          'playerBlueName': data['athleteBlue'],
+          'playerRedScore': data['redPoints'] - data['redPanelty'],
+          'playerBlueScore': data['bluePoints'] - data['bluePanelty'],
+          'playerRedImage': matchDetails?['playerRedImage'],
+          'playerBlueImage': matchDetails?['playerBlueImage'],
+        };
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _fetchMatchDetails() async {
+    setState(() {
+      isLoading = true;
+      hasError = false;
+    });
+
+    final url = 'http://192.168.71.181:5032/api/Matchs/GetMatchs';
+
     try {
       final response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        if (data.isNotEmpty) {
-          setState(() {
-            matchData = data;
-            isLoading = false;
-          });
-        } else {
-          setState(() {
-            isLoading = false;
-            hasError = true;
-          });
-        }
+        setState(() {
+          matchDetails = {
+            'totalRedPoints': data['totalRedPoints'],
+            'totalBluePoints': data['totalBluePoints'],
+            'playerRedName': data['athleteRed'],
+            'playerBlueName': data['athleteBlue'],
+            'playerRedImage': data['redImage'],
+            'playerBlueImage': data['blueImage'],
+          };
+          isLoading = false;
+        });
       } else {
         setState(() {
           isLoading = false;
@@ -51,126 +102,199 @@ class _ScoreboardState extends State<Scoreboard> {
     }
   }
 
+  void _startLiveScoreUpdates() {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      await _fetchLiveScores();
+    });
+  }
+
+  Future<void> _fetchLiveScores() async {
+    final url = 'http://192.168.71.181:5032/api/Scores/getTotalScore';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          matchDetails = {
+            ...matchDetails!,
+            'totalRedPoints': data['totalRedPoints'],
+            'totalBluePoints': data['totalBluePoints'],
+            'playerRedScore': data['redPoints'] - data['redPanelty'],
+            'playerBlueScore': data['bluePoints'] - data['bluePanelty'],
+          };
+        });
+      } else {
+        setState(() {
+          hasError = true;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        hasError = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    } else if (hasError || matchData == null) {
-      return Container(
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              spreadRadius: 5,
-            ),
-          ],
-        ),
-        child: const Center(
-          child: Text(
-            'No match today',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Scoreboard'),
+      ),
+      body: RefreshIndicator(
+        onRefresh: _fetchMatchDetails,
+        child: isLoading
+            ? Center(
+          child: CircularProgressIndicator(),
+        )
+            : hasError || matchDetails == null
+            ? Container(
+          margin: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 10,
+                spreadRadius: 5,
+              ),
+            ],
           ),
-        ),
-      );
-    } else {
-      return Container(
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 10,
-              spreadRadius: 5,
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            const Text(
-              'Live Match',
+          child: Center(
+            child: Text(
+              'No match details available',
               style: TextStyle(
-                fontSize: 28,
+                color: Colors.white,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(matchData!['playerRedImage'] ?? 'assets/redA.png'), // Use actual data or fallback to dummy
+          ),
+        )
+            : ListView(
+          children: [
+            Card(
+              margin: const EdgeInsets.all(16.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Live Match',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              matchDetails!['playerRedImage']),
+                        ),
+                        const Text(
+                          'vs',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              matchDetails!['playerBlueImage']),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          matchDetails!['playerRedName'] ??
+                              'Player Red',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                        Text(
+                          matchDetails!['playerBlueName'] ??
+                              'Player Blue',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Score: ${matchDetails!['playerRedScore'] ?? 0}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          'Score: ${matchDetails!['playerBlueScore'] ?? 0}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Red Score: ${matchDetails!['totalRedPoints'] ?? 0}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          'Blue Score: ${matchDetails!['totalBluePoints'] ?? 0}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                const Text(
-                  'vs',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(matchData!['playerBlueImage'] ?? 'assets/blueA.png'), // Use actual data or fallback to dummy
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  matchData!['playerRedName'] ?? 'Player Red',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
-                  ),
-                ),
-                Text(
-                  matchData!['playerBlueName'] ?? 'Player Blue',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'Score: ${matchData!['playerRedScore'] ?? 0}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-                Text(
-                  'Score: ${matchData!['playerBlueScore'] ?? 0}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
-      );
-    }
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    hubConnection.stop();
+    super.dispose();
   }
 }

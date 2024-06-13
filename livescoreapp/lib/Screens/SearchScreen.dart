@@ -23,7 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> _fetchAthletes() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.231.181:5032/api/Athletes/getAthelete'));
+      final response = await http.get(Uri.parse('http://192.168.71.181:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
@@ -84,6 +84,9 @@ class _SearchScreenState extends State<SearchScreen> {
               itemCount: _filteredAthletes!.length,
               itemBuilder: (context, index) {
                 final athlete = _filteredAthletes![index];
+                final imageUrl = athlete['imageUrl'] != null
+                    ? 'http://192.168.71.181:5032/images/${athlete['imageUrl']}'
+                    : null;
                 return Card(
                   elevation: 4,
                   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -91,9 +94,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: CircleAvatar(
                       radius: 30,
-                      child: athlete['imageUrl'] != null
-                          ? Image.network(athlete['imageUrl'])
-                          : Icon(Icons.person),
+                      backgroundImage: imageUrl != null
+                          ? NetworkImage(imageUrl)
+                          : null,
+                      child: imageUrl == null
+                          ? Icon(Icons.person)
+                          : null,
                     ),
                     title: Text(
                       athlete['athleteName'] ?? 'Name not available',

@@ -19,8 +19,13 @@ class AthleteDetails extends StatelessWidget {
             Center(
               child: CircleAvatar(
                 radius: 60,
-                child: athlete['http://192.168.231.181:5032/api/Athletes/getAthelete/imageUrl'] != null
-                    ? Image.network(athlete['http://192.168.231.181:5032/api/Athletes/getAthelete/imageUrl'])
+                child: athlete['imageUrl'] != null
+                    ? ClipOval(
+                  child: Image.network(
+                    'http://192.168.0.106:5032/images/${athlete['imageUrl']}',
+                    fit: BoxFit.cover,
+                  ),
+                )
                     : Icon(Icons.person), // Placeholder icon
               ),
             ),
