@@ -32,7 +32,6 @@ const MatchesPerWeekChart = ({ month, year }) => {
       try {
         const { data } = await axios.get(`http://localhost:5032/api/Common/matchesPerWeek/${month}/${year}`);
         setLineData(data);
-        console.log(linedata)
       } catch (error) {
         console.error('Error fetching match data:', error);
       } finally {

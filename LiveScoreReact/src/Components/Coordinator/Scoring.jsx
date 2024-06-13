@@ -1,6 +1,6 @@
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Paper, Grid, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, IconButton, Tooltip } from '@mui/material';
 import { PauseCircleFilledRounded, PlayCircleFilledRounded } from '@mui/icons-material';
@@ -24,6 +24,7 @@ const Scoring = () => {
     const athleteRed = matchData ? matchData.athleteRedId : "";
     const athleteBlue = matchData ? matchData.athleteBlueId : "";
     const mid = matchData ? matchData.mid : "";
+    const navigate = useNavigate()
     const [refScore, setRefScore] = useState({
         RedPoints: 0,
         BluePoints: 0,
@@ -37,6 +38,11 @@ const Scoring = () => {
         RedPanelty: 0,
         BluePanelty: 0
     })
+
+    const handleEndRound = () => {
+      navigate(`/coordinator/EndRoundModel/${mid}/${matchGroup}/${rounds}`)
+    }
+    
 
     useEffect(() => {
         const fetchMatchData = async () => {
@@ -366,7 +372,10 @@ const Scoring = () => {
                 </>
                 }
                 <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
-                    <EndRoundModel mid={mid} athleteRed={matchData ? matchData.athleteRed : ""} athleteBlue={matchData ? matchData.athleteBlue : ""} athleteRedId={athleteRed} athleteBlueId={athleteBlue} matchGroup={matchGroup}  rounds={rounds} />
+                    <Button variant="contained" color="primary" onClick={handleEndRound} >
+                      End Round
+                    </Button>
+                    {/* <EndRoundModel mid={mid} athleteRed={matchData ? matchData.athleteRed : ""} athleteBlue={matchData ? matchData.athleteBlue : ""} athleteRedId={athleteRed} athleteBlueId={athleteBlue} matchGroup={matchGroup}  rounds={rounds} /> */}
                 </Grid>
             </Grid>
         </Box>

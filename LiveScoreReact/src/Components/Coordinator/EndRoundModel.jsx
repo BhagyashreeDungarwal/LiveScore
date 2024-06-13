@@ -1,14 +1,14 @@
 import { Box, Button, Dialog, DialogContent, DialogTitle, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { styled, useTheme } from '@mui/material/styles';
-import { GetTotalScore, ScoreTransfer } from '../Apis/Coordinator';
+import { GetMatchById, GetTotalScore, ScoreTransfer } from '../Apis/Coordinator';
 import { useFormik } from 'formik';
-import { endMatch } from '../Validation/Coordinator';
+import { endMatch, endRound } from '../Validation/Coordinator';
 import { Close, SportsGymnasticsRounded, SportsMartialArtsRounded } from '@mui/icons-material';
 import { clearMessage, updateRound } from '../../Redux/CoordinatorRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -19,15 +19,20 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const EndRoundModel = ({ mid, rounds, matchGroup, athleteBlue, athleteRed, athleteBlueId, athleteRedId }) => {
+const EndRoundModel = () => {
     const theme = useTheme()
-    const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
+    const {mid, rounds, matchGroup} = useParams()
     const [redPenality, setRedPenality] = useState(0)
     const [bluePenality, setBluePenality] = useState(0)
+    const [matchData, setMatchData] = useState(null)
     const [isDisable, setIsDisable] = useState(true)
     const [roundsWinner, setRoundsWinner] = useState([])
     const { data, error } = useSelector(state => state.coordinator)
+const athleteBlue = matchData? matchData.athleteBlue :""
+const  athleteRed = matchData?matchData.athleteRed :""
+const  athleteBlueId =  matchData ? matchData.athleteBlueId:null
+const  athleteRedId = matchData ? matchData.athleteRedId :null
 
     const initial = {
         redTotalScore: "",
@@ -35,6 +40,10 @@ const EndRoundModel = ({ mid, rounds, matchGroup, athleteBlue, athleteRed, athle
         RoundWinner: 0
     }
     const navigate = useNavigate()
+
+
+     
+
     useEffect(() => {
         if (data && data.msg) {
             toast.success(data.msg)
@@ -53,34 +62,44 @@ const EndRoundModel = ({ mid, rounds, matchGroup, athleteBlue, athleteRed, athle
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
-        validationSchema: endMatch,
+        validationSchema: endRound,
         onSubmit: async (values) => {
             dispatch(updateRound({ values, mid, rounds }))
             await ScoreTransfer(mid)
         }
 
     })
-    const getTotalScore = async () => {
+
+    useEffect(() => {
+     const getTotalScore = async () => {
         const data = await GetTotalScore();
         data && setValues(data)
         data && setRedPenality(data.redPanelty)
         data && setBluePenality(data.bluePanelty)
     }
 
-
-    const handleClickOpen = () => {
-        setOpen(true);
+    const getMatchById = async () => {
+    const { data } = await GetMatchById(mid)
+    data && setMatchData(data)
+    console.log(matchData)
+    }
         getTotalScore()
-    };
+        getMatchById()
+    }, [mid])
+    
+    
+
+
+   
     const handleClose = () => {
-        setOpen(false);
+         navigate(`/coordinator/scoring/${matchGroup}/${rounds}`)
     };
 
     const handleNextRound = () => {
         navigate(`/coordinator/AddRound/${mid}/${matchGroup}`)
     }
     const handleNextMatch = () => {
-        navigate(`/coordinator/EndMatch/${mid}/${matchGroup}`)
+        navigate(`/coordinator/EndMatch/${mid}/${matchGroup}/${rounds}`)
     }
 
 
@@ -90,11 +109,8 @@ const EndRoundModel = ({ mid, rounds, matchGroup, athleteBlue, athleteRed, athle
 
     return (
         <Box>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                End Round
-            </Button>
             <BootstrapDialog
-                open={open}
+                open={true}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
@@ -225,16 +241,16 @@ const EndRoundModel = ({ mid, rounds, matchGroup, athleteBlue, athleteRed, athle
                             <Grid container spacing={2}>
                                 <Grid item sm={12} xl={12} md={12} lg={12} xs={12}>
                                     {roundsWinner?.map((data) => (
-                                        <Typography variant="body1" color="initial">Round {data.round} Winner is {data.roundWinnerName}</Typography>
+                                        <Typography variant="body1" color="initial" key={data.round}>Round {data.round} Winner is {data.roundWinnerName}</Typography>
                                     ))
                                     }
                                 </Grid>
-                                <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                                <Grid item sm={12} xl={6} md={6} lg={6} xs={12}>
                                     <Button variant="contained" color="primary" onClick={handleNextRound} fullWidth>
                                         Next Round
                                     </Button>
                                 </Grid>
-                                <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                                <Grid item sm={12} xl={6} md={6} lg={6} xs={12}>
                                     <Button variant="contained" color="primary" onClick={handleNextMatch} fullWidth>
                                         End Match
                                     </Button>

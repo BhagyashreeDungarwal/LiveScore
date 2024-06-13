@@ -1,10 +1,14 @@
-import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
-import React, { useEffect } from 'react'
-import { styled, useTheme } from '@mui/material/styles';
+import { Box, Dialog, DialogContent, DialogTitle, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Typography, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles';
 import { Close } from '@mui/icons-material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GetMatchById } from '../Apis/Coordinator';
 import { useFormik } from 'formik';
+import { endMatch } from '../Validation/Coordinator';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearMessage, updateNextMatchIdApi } from '../../Redux/CoordinatorRedux';
+import { toast } from 'react-toastify';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -15,24 +19,61 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 const EndMatch = () => {
-    const theme = useTheme()
-    const { matchGroup, mid } = useParams()
-
+    const { matchGroup, mid , rounds } = useParams()
+    const [matchData, setMatchData] = useState(null)
+    const athleteRedId = matchData ? matchData.athleteRedId :null
+    const athleteBlueId = matchData ? matchData.athleteBlueId:null
+    const dispatch = useDispatch()
+    const { data, error } = useSelector(state => state.coordinator)
+    const navigate = useNavigate()
+    
     const handleClose = () => {
-        console.log("close")
+         navigate(`/coordinator/AddRound/${mid}/${matchGroup}`)
     }
 
-    const getMatchById = async () => {
-        const { data } = await GetMatchById(mid)
-        console.log(data)
-        data && setValues(data)
+
+    const initial = {
+        mId:mid,
+        matchStatus:'',
+        matchType:"",
+        flag:"",
+
     }
 
     useEffect(() => {
+        if (data && data.msg) {
+            toast.success(data.msg)
+            dispatch((clearMessage()))
+            navigate("/coordinator/cDashboard")
+        }
+        if (error) {
+            toast.error(error.msg)
+            dispatch((clearMessage()))
+        }
+    }, [data, error, navigate, dispatch])
+
+    useEffect(() => {
+        const getMatchById = async () => {
+        const { data } = await GetMatchById(mid)
+        console.log(data)
+        data && setMatchData(data)
+        }
         getMatchById()
     }, [])
 
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({})
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues:initial,
+        validationSchema:endMatch,
+        onSubmit : (values) => {
+            console.log(values)
+            const formData = new FormData()
+            formData.append("MId",values.mId)
+            formData.append("Flag", values.flag)
+            dispatch(updateNextMatchIdApi({mid,values}))
+        }
+        
+
+    })
 
 
 
@@ -41,13 +82,13 @@ const EndMatch = () => {
     return (
         <Box>
             <BootstrapDialog
-                open={open}
+                open={true}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    End Round
+                    End Match
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -62,6 +103,32 @@ const EndMatch = () => {
                     <Close />
                 </IconButton>
                 <DialogContent dividers>
+                    <form onSubmit={handleSubmit}>
+                        <Grid container spacing={2}>
+                            <Grid item xl={12} md={12} sm={12} xs={12}>
+                                  <FormLabel component="legend">Select Winner</FormLabel>
+                                        <RadioGroup
+                                            row
+                                            aria-label="flag"
+                                            id="flag"
+                                            name="flag"
+                                            size='small'
+                                            value={values.flag}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        >
+                                            <FormControlLabel value={athleteRedId} control={<Radio />} label={matchData?matchData.athleteRed :""} />
+                                            <FormControlLabel value={athleteBlueId} control={<Radio />} label={matchData? matchData.athleteBlue :""} />
+                                        </RadioGroup>
+                                        {errors.flag && touched.flag ? (<Typography variant="subtitle1" color="error">{errors.flag}</Typography>) : null}
+                            </Grid>
+                            <Grid item xl={12} md={12} sm={12} xs={12}>
+                                <Button variant="contained" type='submit' color="primary" fullWidth>
+                                  End Match
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </form>
                 </DialogContent>
             </BootstrapDialog>
         </Box>

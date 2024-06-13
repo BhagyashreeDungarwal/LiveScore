@@ -1,10 +1,13 @@
+import { Box, Typography } from "@mui/material"
+import { useParams } from "react-router-dom"
 
 
 const LiveMatch = () => {
+  const {mid,matchGroup} = useParams()
   return (
-    <div>
-
-    </div>
+    <Box>
+      <Typography variant="h4" color="initial">{matchGroup}</Typography>
+    </Box>
   )
 }
 

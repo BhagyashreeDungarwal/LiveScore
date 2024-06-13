@@ -9,10 +9,8 @@ const PieChartComponent = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await GetCategoryViseAthlete();
-                console.log("Fetched data:", data); // Log fetched data
+                const data = await GetCategoryViseAthlete(); // Log fetched data
                 setCategoryData(data);
-                console.log(categoryData)
             } catch (error) {
                 console.error("Error fetching category data:", error);
             }
@@ -21,8 +19,7 @@ const PieChartComponent = () => {
         fetchData();
     }, []);
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#5a6bea', '#25abd8', '#913afb'];
-    console.log("categoryData:", categoryData);
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#5a6bea', '#25abd8', '#913afb'];   
 
     return (
         <Box style={{}}>

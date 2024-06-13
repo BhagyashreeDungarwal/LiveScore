@@ -35,6 +35,8 @@ import RoundScores from './Components/Admin/RoundScores';
 import GenerateOtp from './Components/Coordinator/GenerateOtp';
 import AddRound from './Components/Coordinator/AddRound';
 import EndMatch from './Components/Coordinator/EndMatch';
+import EndRoundModel from './Components/Coordinator/EndRoundModel';
+import LiveMatch from './Components/Common/LiveMatch';
 
 
 function App() {
@@ -234,8 +236,11 @@ function App() {
           path: "AddRound/:mid/:matchGroup",
           element: (<AddRound />)
         },{
-          path: "EndMatch/:mid/:matchGroup",
+          path: "EndMatch/:mid/:matchGroup/:rounds",
           element: (<EndMatch />)
+        },{
+          path: "EndRoundModel/:mid/:matchGroup/:rounds",
+          element: (<EndRoundModel />)
         }
       ]
     },
@@ -251,6 +256,9 @@ function App() {
     }, {
       path: "forgetPassword/:email",
       element: (<ForgetPassword />)
+    }, {
+      path: "LiveMatch/:mid/:matchGroup",
+      element: (<LiveMatch />)
     },
   ])
 

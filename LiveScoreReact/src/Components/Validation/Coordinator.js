@@ -143,8 +143,11 @@ export const RoundValidate = yup.object().shape({
 });
 
 
-export const endMatch = yup.object().shape({
+export const endRound = yup.object().shape({
     redTotalScore: yup.string().required('Red total score is required'),
     blueTotalScore: yup.string().required('Blue total score  is required'),
     RoundWinner: yup.string().required('Round Winner is required')
+})
+export const endMatch = yup.object().shape({
+    flag: yup.string().required('Please Select Winner')
 })

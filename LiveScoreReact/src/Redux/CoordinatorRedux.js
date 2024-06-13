@@ -294,6 +294,22 @@ export const updateRound = createAsyncThunk(
     }
 );
 
+export const updateNextMatchIdApi = createAsyncThunk(
+    'coordinator/updateNextMatchId',
+    async ({ mid, values }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/Matchs/UpdateNextMatchId/${mid}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const initialState = {
     data: [],
     loading: false,
@@ -525,6 +541,17 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(updateRound.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            }).addCase(updateNextMatchIdApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(updateNextMatchIdApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(updateNextMatchIdApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

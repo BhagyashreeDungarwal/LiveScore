@@ -133,7 +133,9 @@ namespace LiveScore.Controllers
                                                   matchStatus = m.MatchStatus,
                                                   matchType = m.MatchType,
                                                   matchDate = m.MatchDate,
+                                                  athleteRedId = m.AthleteRed,
                                                   athleteRed = m.AthleteRedObj.AthleteName,
+                                                  athleteBlueId = m.AthleteBlue,
                                                   athleteBlue = m.AthleteBlueObj.AthleteName,
                                                   athleteRedImg = m.AthleteRedObj.ImageUrl,
                                                   athleteBlueImg = m.AthleteBlueObj.ImageUrl,
@@ -317,11 +319,13 @@ namespace LiveScore.Controllers
                     .Select(a => new
                     {
                         mid = a.MId,
+                        matchGroup = a.MatchGroup,
                         matchDate = a.MatchDate,
                         athleteRed = a.AthleteRedObj.AthleteName,
                         athleteBlue = a.AthleteBlueObj.AthleteName,
                         athleteRedImg = a.AthleteRedObj.ImageUrl,
-                        athleteBlueImg = a.AthleteBlueObj.ImageUrl
+                        athleteBlueImg = a.AthleteBlueObj.ImageUrl,
+                        matchStatus = a.MatchStatus
                     })
                     .ToListAsync();
 
@@ -449,7 +453,7 @@ namespace LiveScore.Controllers
                     MatchDate = match.MatchDate,
                 };
 
-                return Ok();
+                return Ok(new { msg = "Successfully Ended Match"});
             }
             catch (DbUpdateConcurrencyException)
             {

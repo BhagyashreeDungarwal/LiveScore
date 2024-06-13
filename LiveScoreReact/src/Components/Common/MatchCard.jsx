@@ -1,11 +1,14 @@
-import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import { FiberManualRecord } from '@mui/icons-material';
+import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 const img_url = "http://localhost:5032/images/";
 
-const MatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName }) => {
+const MatchCard = ({matchGroup,mid, matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName ,matchStatus }) => {
   const formattedDate = dayjs(matchDate).format(' MMM D, YYYY');
   return (
+    <Link to={`/LiveMatch/${mid}/${matchGroup}`} style={{textDecoration:"none"}}>
     <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
       <CardContent sx={{ alignItems: "center" }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -13,7 +16,7 @@ const MatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, a
             LiveScore
           </Typography>
           <Typography variant="body2" component="div" color="black">
-            {formattedDate}
+           {matchStatus == "Live" ? (<Chip label={matchStatus} color="success" size='small' icon={<FiberManualRecord/>}  variant="filled" />) : formattedDate}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -45,6 +48,7 @@ const MatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, a
         </Box>
       </CardContent>
     </Card>
+    </Link>
   );
 }
 

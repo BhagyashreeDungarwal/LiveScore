@@ -147,11 +147,14 @@ const CDashboard = () => {
           {todayMatch.map((data) => (
             <MatchCard
               key={data.mid}
+              mid={data.mid}
+              matchGroup={data.matchGroup}
               matchDate={data.matchDate}
               athleteRedName={data.athleteRed}
               athleteBlueName={data.athleteBlue}
               athleteRedImg={data.athleteRedImg}
               athleteBlueImg={data.athleteBlueImg}
+              matchStatus={data.matchStatus}
             />
           ))}
         </Slider>
