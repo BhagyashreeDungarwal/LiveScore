@@ -40,7 +40,7 @@ const CDashboard = () => {
   const [todayMatch, setTodayMatch] = useState([]);
   const [assignMatch, setAssignMatch] = useState([]);
   const cid = localStorage.getItem("ID");
- const month = 6
+  const month = 6
   const year = 2024
   useEffect(() => {
     dispatch(clearMessage());
@@ -122,22 +122,22 @@ const CDashboard = () => {
           <Box sx={{ mb: 4, mt: 1 }}>
             {
               assignMatch && assignMatch.length > 0 ?
-              (<Slider {...getSliderSettings(assignMatch.length)}>
-              {assignMatch?.map((data) => (
-                <MatchAssign
-                  key={data.mid}
-                  matchDate={data.matchDate}
-                  athleteRedName={data.athleteRed}
-                  athleteBlueName={data.athleteBlue}
-                  athleteRedImg={data.athleteRedImg}
-                  athleteBlueImg={data.athleteBlueImg}
-                  matchGroup={data.matchGroup}
-                  mid={data.mid}
-                />
-              ))}
-            </Slider>):(<Typography variant="h4" color="initial" sx={{textAlign:"center",color:"grey"}}>No Match&apos;s Assigned </Typography>)
+                (<Slider {...getSliderSettings(assignMatch.length)}>
+                  {assignMatch?.map((data) => (
+                    <MatchAssign
+                      key={data.mid}
+                      matchDate={data.matchDate}
+                      athleteRedName={data.athleteRed}
+                      athleteBlueName={data.athleteBlue}
+                      athleteRedImg={data.athleteRedImg}
+                      athleteBlueImg={data.athleteBlueImg}
+                      matchGroup={data.matchGroup}
+                      mid={data.mid}
+                    />
+                  ))}
+                </Slider>) : (<Typography variant="h4" color="initial" sx={{ textAlign: "center", color: "grey" }}>No Match&apos;s Assigned </Typography>)
             }
-            
+
           </Box>
         </AccordionDetails>
       </Accordion>
@@ -156,18 +156,18 @@ const CDashboard = () => {
           ))}
         </Slider>
       </Box>
-       <Grid container sx={{display:'flex', justifyContent:'space-between'}} spacing={2}>
-          <Grid item xl={5} md={5} lg={5} sm={12} sx={{height:"100%"}}>
-            <Paper elevation={4}>
-          <PieChartComponent />
-            </Paper>
-          </Grid>
-          <Grid item xl={7} md={7} lg={7} sm={12} >
-            <Paper elevation={4} sx={{height:"100%"}}>
-          <MatchesPerWeekChart  month={month} year={year} />
-            </Paper>
-          </Grid>
+      <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }} spacing={2}>
+        <Grid item xl={5} md={5} lg={5} sm={12} sx={{ height: "100%" }}>
+          <Paper elevation={4}>
+            <PieChartComponent />
+          </Paper>
         </Grid>
+        <Grid item xl={7} md={7} lg={7} sm={12} >
+          <Paper elevation={4} sx={{ height: "100%" }}>
+            <MatchesPerWeekChart month={month} year={year} />
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 };

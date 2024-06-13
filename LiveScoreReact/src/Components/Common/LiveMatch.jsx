@@ -3,7 +3,7 @@
 const LiveMatch = () => {
   return (
     <div>
-      
+
     </div>
   )
 }
