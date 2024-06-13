@@ -84,22 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _getBody(int index) {
     switch (index) {
       case 0:
-        return Column(
-          children: const [
-            Scoreboard(), // Add the Scoreboard widget here
-            Expanded(
-              child: Center(
-                child: Text("Home Screen"),
-              ),
-            ),
-          ],
-        );
+        return MListScreen();
       case 1:
         return SearchScreen(); // Add your Search screen here
       case 2:
         return AthleteScreen(); // Add your Athlete screen here
       case 3:
-        return MListScreen(); // Display scores in MListScreen if available
+        return Scoreboard(); // Display scores in MListScreen if available
       default:
         return Container();
     }

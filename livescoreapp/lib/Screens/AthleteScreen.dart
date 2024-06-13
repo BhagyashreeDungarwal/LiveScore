@@ -25,7 +25,7 @@ class _AthletesState extends State<AthleteScreen> {
       _isLoading = true;
     });
     try {
-      final response = await http.get(Uri.parse('http://192.168.231.181:5032/api/Athletes/getAthelete'));
+      final response = await http.get(Uri.parse('http://192.168.71.181:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
@@ -70,6 +70,9 @@ class _AthletesState extends State<AthleteScreen> {
           itemCount: _athletes!.length,
           itemBuilder: (context, index) {
             final athlete = _athletes![index];
+            final imageUrl = athlete['imageUrl'] != null
+                ? 'http://192.168.71.181:5032/images/${athlete['imageUrl']}'
+                : null;
             return Card(
               elevation: 4,
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -77,9 +80,15 @@ class _AthletesState extends State<AthleteScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 leading: CircleAvatar(
                   radius: 30,
-                  child: athlete['http://192.168.231.181:5032/images/'] != null
-                      ? Image.network(athlete['imageUrl'])
-                      : Icon(Icons.person), // Placeholder icon
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(30),
+                    child: imageUrl != null
+                        ? Image.network(
+                      imageUrl,
+                      fit: BoxFit.cover, // Ensure the image covers the entire space
+                    )
+                        : Icon(Icons.person), // Placeholder icon
+                  ),
                 ),
                 title: Text(
                   athlete['athleteName'] ?? 'Name not available',
@@ -104,7 +113,7 @@ class _AthletesState extends State<AthleteScreen> {
           },
         )
             : Center(
-          child: Text('Failed to fetch athletes'),
+          child: CircularProgressIndicator(), // Show CircularProgressIndicator when _isLoading is true
         ),
       ),
     );
