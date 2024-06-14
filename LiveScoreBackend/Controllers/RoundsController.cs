@@ -1,8 +1,10 @@
 ﻿using LiveScore.Data;
 using LiveScore.Model.ViewModel;
+using LiveScore.Services;
 using LiveScoring.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LiveScore.Controllers
@@ -12,10 +14,11 @@ namespace LiveScore.Controllers
     public class RoundsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public RoundsController(ApplicationDbContext context)
+        private readonly IHubContext<ScoreHub> _hubContext;
+        public RoundsController(ApplicationDbContext context, IHubContext<ScoreHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
 
@@ -242,6 +245,8 @@ namespace LiveScore.Controllers
 
             _context.Rounds.Add(initialRound);
             await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.Group(matchId.ToString()).SendAsync("GetRounds", initialRound.Rounds);
 
             return Ok(new { msg = "Round inserted and match status updated.", round = initialRound });
         }

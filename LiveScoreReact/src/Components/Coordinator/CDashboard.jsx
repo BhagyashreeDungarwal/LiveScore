@@ -132,7 +132,7 @@ const CDashboard = () => {
                       athleteRedImg={data.athleteRedImg}
                       athleteBlueImg={data.athleteBlueImg}
                       matchGroup={data.matchGroup}
-                      mid={data.mid}
+                    mid={data.mid}
                     />
                   ))}
                 </Slider>) : (<Typography variant="h4" color="initial" sx={{ textAlign: "center", color: "grey" }}>No Match&apos;s Assigned </Typography>)
@@ -143,21 +143,33 @@ const CDashboard = () => {
       </Accordion>
       <Box sx={{ mb: 4, mt: 1 }}>
         <Typography variant="h5" sx={{ color: "Black", mb: 1 }}>Today&apos;s Matches</Typography>
-        <Slider {...getSliderSettings(todayMatch.length)}>
-          {todayMatch.map((data) => (
-            <MatchCard
-              key={data.mid}
-              mid={data.mid}
-              matchGroup={data.matchGroup}
-              matchDate={data.matchDate}
-              athleteRedName={data.athleteRed}
-              athleteBlueName={data.athleteBlue}
-              athleteRedImg={data.athleteRedImg}
-              athleteBlueImg={data.athleteBlueImg}
-              matchStatus={data.matchStatus}
-            />
-          ))}
-        </Slider>
+        <Box>
+          {
+            todayMatch && todayMatch.length > 0 ? (
+              <Slider {...getSliderSettings(todayMatch.length)}>
+                {todayMatch.map((data) => (
+                  <MatchCard
+                    key={data.mid}
+                    matchDate={data.matchDate}
+                    athleteRedName={data.athleteRed}
+                    athleteBlueName={data.athleteBlue}
+                    athleteRedImg={data.athleteRedImg}
+                    athleteBlueImg={data.athleteBlueImg}
+                    matchGroup={data.matchGroup}
+                    mid={data.mid}
+                    matchStatus={data.matchStatus}
+                  />
+
+                ))}
+              </Slider>
+            ) : (
+              <Box sx={{ width: "100%", height: "20vh" }}>
+                <Typography variant="h4" color="initial" sx={{ textAlign: "center", color: "grey" }}>No Match&apos;s Today </Typography>
+              </Box>
+            )
+          }
+        </Box>
+
       </Box>
       <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }} spacing={2}>
         <Grid item xl={5} md={5} lg={5} sm={12} sx={{ height: "100%" }}>
