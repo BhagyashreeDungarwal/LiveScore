@@ -127,5 +127,12 @@ namespace LiveScore.Services
                 BluePanelty
             });
         }
+
+        public async Task GetRounds(int matchGroup,int round)
+        {
+            await Clients.Group(matchGroup.ToString()).SendAsync("GetRounds", round);
+        }
+
+
     }
 }
