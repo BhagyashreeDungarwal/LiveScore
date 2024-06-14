@@ -27,7 +27,8 @@ const LiveMatch = () => {
   const [round, setRound] = useState(0)
   const [connection, setConnection] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
-  
+  const [roundWinners, setRoundWinners] = useState([]);
+
   const navigate = useNavigate()
   const handleClose = () => {
     navigate(`/coordinator/`)
@@ -65,6 +66,10 @@ const LiveMatch = () => {
 
     connect.on('TimerEnded', () => {
       setTimeLeft(0);
+    });
+
+    connect.on('ReceiveRoundWinner', (roundWinners) => {
+      setRoundWinners(roundWinners);
     });
 
     connect.start()
@@ -132,11 +137,20 @@ const LiveMatch = () => {
               <Typography variant="h2" color="blue">{totalBluePoints}</Typography>
               <Typography variant="h5" color="blue" sx={{ marginTop: "12%" }}>({BluePanelty})</Typography>
             </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={6} xl={6} sx={{ textAlign: "center" }}>
+            <Grid item xs={5} sm={5} md={5} lg={5} xl={5} sx={{ textAlign: "center" }}>
               <Typography variant="h5" color="crimson" sx={{ fontWeight: "bold" }}><SportsGymnasticsRounded /> {matchData ? matchData.athleteRed : ""}</Typography>
             </Grid>
-            <Grid item xs={6} sm={6} md={6} lg={6} xl={6} sx={{ textAlign: "center" }}>
+            <Grid item xs={2} sm={2} md={2} lg={2} xl={2} sx={{ textAlign: "center" }}></Grid>
+            <Grid item xs={5} sm={5} md={5} lg={5} xl={5} sx={{ textAlign: "center" }}>
               <Typography variant="h5" color="blue" sx={{ fontWeight: "bold" }}><SportsMartialArtsRounded /> {matchData ? matchData.athleteBlue : ""}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h6" color="primary">Round Winners:</Typography>
+              {roundWinners.map((winner, index) => (
+                <Typography key={index} variant="body1" color="textSecondary">
+                  Round {winner.round}: {winner.roundWinnerName}
+                </Typography>
+              ))}
             </Grid>
           </Grid>
         </DialogContent>

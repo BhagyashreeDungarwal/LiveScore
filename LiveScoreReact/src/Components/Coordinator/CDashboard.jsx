@@ -119,7 +119,7 @@ const CDashboard = () => {
           <Typography variant="h5">Match Assign</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box sx={{ mb: 4, mt: 1 }}>
+          <Box sx={{ mb: 1, mt: 1 }}>
             {
               assignMatch && assignMatch.length > 0 ?
                 (<Slider {...getSliderSettings(assignMatch.length)}>

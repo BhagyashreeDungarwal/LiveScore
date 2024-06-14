@@ -299,6 +299,8 @@ namespace LiveScore.Controllers
                 var round1WinnerName = round1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
                 roundswinner.Add(new { round = 1, roundWinnerName = round1WinnerName, roundWinnerId = round1.RoundWinner });
 
+                await _hubContext.Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
+
                 return Ok(new { msg = "Round 1 updated successfully.", roundWinner = round1WinnerName, roundswinner });
             }
             // Check if round is 2 and fetch round 1 details
@@ -325,6 +327,8 @@ namespace LiveScore.Controllers
                     var round2WinnerName = round2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
                     roundswinner.Add(new { round = 1, roundWinnerName = round1WinnerName, roundWinnerId = round1.RoundWinner });
                     roundswinner.Add(new { round = 2, roundWinnerName = round2WinnerName, roundWinnerId = round2.RoundWinner });
+
+                    await _hubContext.Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
 
                     return Ok(new { msg = "Round winner for round 2 or 3 is same as round 1", roundswinner });
                 }
@@ -362,6 +366,8 @@ namespace LiveScore.Controllers
                         ? (matchWinnerId == match.AthleteRed ? match.AthleteRedObj.AthleteName : match.AthleteBlueObj.AthleteName)
                         : null;
 
+                    await _hubContext.Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
+
                     return Ok(new
                     {
                         msg = "Round 3 validation",
@@ -383,6 +389,7 @@ namespace LiveScore.Controllers
             var rounds2WinnerName = rounds2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
             roundswinner.Add(new { round = 1, roundWinnerName = rounds1WinnerName, roundWinnerId = rounds1.RoundWinner });
             roundswinner.Add(new { round = 2, roundWinnerName = rounds2WinnerName, roundWinnerId = rounds2.RoundWinner });
+            await _hubContext.Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
 
             return Ok(new { msg = "Round updated successfully.", roundswinner, roundRes = roundToUpdate.Rounds });
         }

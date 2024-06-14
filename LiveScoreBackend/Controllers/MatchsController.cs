@@ -189,7 +189,9 @@ namespace LiveScore.Controllers
                                                   referee1 = m.RefereeF.Name,
                                                   referee2 = m.RefereeS.Name,
                                                   referee3 = m.RefereeT.Name,
-                                                  })
+                                                  tournamentId = m.Tournament.TournamentName,
+                                                  categoryId = m.Category.CategoryName,
+                                              })
                                               .FirstOrDefaultAsync();
             if (match == null)
             {

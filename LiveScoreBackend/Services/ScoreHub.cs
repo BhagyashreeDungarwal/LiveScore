@@ -65,52 +65,10 @@ namespace LiveScore.Services
             await Clients.Group(matchGroup.ToString()).SendAsync("ResumeCountdown");
         }
 
-        //public async Task RefSendScore(int matchGroup, int redPoints, int bluePoints, int redPenalty, int bluePenalty)
-        //{
-        //    var userId = int.Parse(Context.UserIdentifier); // Assuming UserIdentifier is set to the user's ID
-        //    if (IsReferee1(matchGroup, userId))
-        //    {
-        //        var score = new RefScore
-        //        {
-        //            RedPoints = redPoints,
-        //            BluePoints = bluePoints,
-        //            RedPenalty = redPenalty,
-        //            BluePenalty = bluePenalty,
-        //            RefereeId = userId
-        //        };
-
-        //        _tempDbContext.RefScores.Add(score);
-        //        await _tempDbContext.SaveChangesAsync();
-
-        //        await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveScore", score);
-        //    }
-        //}
-
         // New method to get the last RefScore for the most recent entry
-        public async Task GetLastRefScore(string groupName)
+        public async Task GetLastRefScore(int matchGroup, object result)
         {
-            var lastRefScore = await _tempDbContext.RefScores
-                .OrderByDescending(r => r.Id)
-                .FirstOrDefaultAsync();
-
-            if (lastRefScore == null)
-            {
-                await Clients.Group(groupName).SendAsync("ReceiveLastRefScore", null);
-                return;
-            }
-
-            var referee = await _context.Admin.FindAsync(lastRefScore.RefereeId);
-            var result = new
-            {
-                lastRefScore.Id,
-                lastRefScore.RedPoints,
-                lastRefScore.BluePoints,
-                lastRefScore.RedPenalty,
-                lastRefScore.BluePenalty,
-                RefereeName = referee?.Name
-            };
-
-            await Clients.Group(groupName).SendAsync("ReceiveLastRefScore", result);
+            await Clients.Group(matchGroup.ToString()).SendAsync("ReceiveLastRefScore", result);
         }
         public async Task GetTotalScore(int matchGroup)
         {
@@ -133,6 +91,10 @@ namespace LiveScore.Services
             await Clients.Group(matchGroup.ToString()).SendAsync("GetRounds", round);
         }
 
+        public async Task SendRoundWinner(object roundswinner)
+        {
+            await Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
+        }
 
     }
 }
