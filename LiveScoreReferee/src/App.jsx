@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
-
+import FindEmail from './Components/FindEmail';
+import ForgetPassword from './Components/ForgetPassword';
 import RDashboard from './Components/RDashboard'
 import Scoring from "./Components/Scoring"
 import Login from "./Components/Login"
@@ -26,6 +27,12 @@ function App() {
     {
       path: "/scoring/:matchGroup",
       element: (<Scoring />)
+    }, {
+      path: "findEmail",
+      element: (<FindEmail />)
+    }, {
+      path: "forgetPassword/:email",
+      element: (<ForgetPassword />)
     }
   ])
 

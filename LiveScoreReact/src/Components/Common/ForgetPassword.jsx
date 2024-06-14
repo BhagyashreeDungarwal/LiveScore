@@ -1,4 +1,4 @@
-import { AlternateEmailRounded, VpnKeyRounded } from '@mui/icons-material'
+import {  VpnKeyRounded } from '@mui/icons-material'
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, Slide, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik';
 import { useTheme } from '@mui/material/styles';
@@ -92,7 +92,7 @@ const ForgetPassword = () => {
             }
           </DialogContent>
           <DialogActions>
-            <Button type="submit">Forget Password</Button>
+            <Button type="submit">Reset Password</Button>
           </DialogActions>
         </form>
       </Dialog>

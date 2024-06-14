@@ -11798,16 +11798,11 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
     "C:\\Users\\kewal dungarwal\\.nuget\\packages\\": {}
-=======
-    "C:\\Users\\mistr\\.nuget\\packages\\": {}
->>>>>>> 2dcef082fbf7d692784cc7e4ee46bd7cbb8a8b62
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
       "projectName": "LiveScore",
       "projectPath": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\LiveScore.csproj",
@@ -11816,16 +11811,6 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kewal dungarwal\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-      "projectUniqueName": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
-      "projectName": "LiveScore",
-      "projectPath": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
-      "packagesPath": "C:\\Users\\mistr\\.nuget\\packages\\",
-      "outputPath": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\obj\\",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "C:\\Users\\mistr\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> 2dcef082fbf7d692784cc7e4ee46bd7cbb8a8b62
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

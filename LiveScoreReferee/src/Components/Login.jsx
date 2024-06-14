@@ -5,7 +5,7 @@ import { login } from './Validation/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginApi, clearMessageLogin } from '../Redux/LoginRedux';
 import { useEffect } from 'react';
 
@@ -56,7 +56,7 @@ const Login = () => {
     <div className="background">
       <div className="shape"></div>
 
-      <form method="post" onSubmit={handleSubmit}>
+      <form method="post" className='form' onSubmit={handleSubmit}>
         <h3>Login Here</h3>
 
         <label htmlFor="username">Email</label>
@@ -86,12 +86,11 @@ const Login = () => {
         <button type="submit">Log In</button>
 
         <div className="go" style={{ marginTop: "14px" }}>
-          <i className="" ></i> Forget Password
+         <Link to="findEmail" style={{ textDecoration: "none" }} variant="body2">
+                Forget Password?
+              </Link> 
+              
         </div>
-        {/* <div className="fb">
-            <i className="fab fa-facebook"></i> Facebook
-          </div> */}
-
       </form>
       <div className="shape"></div>
     </div>
