@@ -80,6 +80,34 @@ namespace LiveScore.Controllers
 
             return Ok(weeklyMatches);
         }
+
+        [HttpGet("todays-winners")]
+        public async Task<ActionResult> GetTodaysMatchWinners()
+        {
+            var today = DateTime.Today;
+            var todaysMatches = await _context.Matchss
+                .Where(m => m.MatchDate.HasValue && m.MatchDate.Value.Date == today)
+                .Include(m => m.Tournament)
+                .Include(m => m.Category)
+                .Include(m => m.AthleteRedObj)
+                .Include(m => m.AthleteBlueObj)
+                .ToListAsync();
+
+            var winners = todaysMatches
+                .Where(m => m.Flag.HasValue)
+                .Select(m => new
+                {
+                    WinnerName = m.Flag == m.AthleteRed ? m.AthleteRedObj.AthleteName : m.AthleteBlueObj.AthleteName,
+                    AthleteRed = m.AthleteRedObj.AthleteName,
+                    AthleteBlue = m.AthleteBlueObj.AthleteName,
+                    CategoryName = m.Category?.CategoryName,
+                    TournamentName = m.Tournament?.TournamentName,
+                    Gender = m.Gender
+                })
+                .ToList();
+
+            return Ok(winners);
+        }
     }
 }
 

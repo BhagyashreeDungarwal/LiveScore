@@ -199,7 +199,7 @@ const AdminDashboard = () => {
           }
         </Box>
 
-        <Grid container sx={{ display: 'flex', justifyContent: 'space-between' }} spacing={2}>
+        <Grid container sx={{ display: 'flex', justifyContent: 'space-between', marginTop:"2%" }}  spacing={2}>
           <Grid item xl={5} md={5} lg={5} sm={12} sx={{ height: "100%" }}>
             <Paper elevation={4}>
               <PieChartComponent />
