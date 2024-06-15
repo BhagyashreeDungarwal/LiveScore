@@ -14,11 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LiveScore")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-=======
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cbbfd416d8f973a31ec0a937bdb2d638bd9cd4b8")]
->>>>>>> 738434ca4d02bb6f4be8921a37b51af8299f9787
 [assembly: System.Reflection.AssemblyProductAttribute("LiveScore")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LiveScore")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

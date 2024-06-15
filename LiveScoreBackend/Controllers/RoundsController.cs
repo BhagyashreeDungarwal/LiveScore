@@ -387,7 +387,7 @@ namespace LiveScore.Controllers
 
             var rounds1WinnerName = rounds1?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
             var rounds2WinnerName = rounds2?.Athlete?.AthleteName; // Assuming the Athlete class has a Name property
-            roundswinner.Add(new { round = 1, roundWinnerName = rounds1WinnerName, roundWinnerId = rounds1.RoundWinner });
+             roundswinner.Add(new { round = 1, roundWinnerName = rounds1WinnerName, roundWinnerId = rounds1.RoundWinner });
             roundswinner.Add(new { round = 2, roundWinnerName = rounds2WinnerName, roundWinnerId = rounds2.RoundWinner });
             await _hubContext.Clients.All.SendAsync("ReceiveRoundWinner", roundswinner);
 

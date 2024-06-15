@@ -46,7 +46,7 @@ namespace LiveScore.Services
             await Clients.Group(matchGroup.ToString()).SendAsync("StartCountdown", duration);
         }
 
-        public async Task StopCountdown(int matchGroup)
+        public async Task StopCountdwn(int matchGroup)
         {
             _timerService.StopTimer(matchGroup);
             await Clients.Group(matchGroup.ToString()).SendAsync("StopCountdown");

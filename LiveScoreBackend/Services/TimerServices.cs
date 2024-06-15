@@ -95,24 +95,6 @@ namespace LiveScore.Services
                 timerInfo.IsRunning = true;
             }
         }
-        //public void ResumeTimer(int matchGroup)
-        //{
-        //    if (_timers.TryGetValue(matchGroup, out var timerInfo) && !timerInfo.IsRunning && timerInfo.PausedTime.HasValue)
-        //    {
-        //        var elapsedPauseTime = (DateTime.UtcNow - timerInfo.PausedTime.Value).TotalSeconds;
-        //        timerInfo.TimeLeft = timerInfo.TimeLeftWhenPaused - (int)elapsedPauseTime;
-
-        //        if (timerInfo.TimeLeft > 0)
-        //        {
-        //            timerInfo.Timer.Start();
-        //            timerInfo.IsRunning = true;
-        //        }
-        //        else
-        //        {
-        //            StopTimer(matchGroup);
-        //        }
-        //    }
-        //}
 
         public TimerInfo GetTimerInfo(int matchGroup)
         {

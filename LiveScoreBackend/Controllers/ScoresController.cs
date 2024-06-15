@@ -31,7 +31,7 @@ namespace LiveScore.Controllers
             _hubContext = hubContext;
 
             // Subscribe to the TimerElapsed event
-            _timerService.TimerElapsed += async (sender, matchGroup) => await TransferScores(matchGroup);
+            //_timerService.TimerElapsed += async (sender, matchGroup) => await TransferScores(matchGroup);
 
         }
 
@@ -175,7 +175,7 @@ namespace LiveScore.Controllers
                 };
                 _context.Scores.Add(score);
             }
-            _tempContext.TemporaryScores.RemoveRange(tempScores);
+            //_tempContext.TemporaryScores.RemoveRange(tempScores);
             await _context.SaveChangesAsync();
             await _tempContext.SaveChangesAsync();
 
