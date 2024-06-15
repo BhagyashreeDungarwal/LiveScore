@@ -17,7 +17,7 @@ const CustomPrevArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", left: "-25px", zIndex: 1 }}
+      style={{ ...style,  left: "-15px", zIndex: 1 }}
       onClick={onClick}
     />
   );
@@ -28,7 +28,7 @@ const CustomNextArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", right: "-25px", zIndex: 1 }}
+      style={{ ...style, display: "block", right: "10px", zIndex: 1 }}
       onClick={onClick}
     />
   );
@@ -39,7 +39,7 @@ const CustomPrevArrowAccordion = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", left: "-15px", zIndex: 1 }}
+      style={{ ...style, display: "block", left: "-20px", zIndex: 1 }}
       onClick={onClick}
     />
   );
@@ -50,7 +50,7 @@ const CustomNextArrowAccordion = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", right: "-15px", zIndex: 1 }}
+      style={{ ...style, display: "block", right: "15px", zIndex: 1 }}
       onClick={onClick}
     />
   );
@@ -65,7 +65,6 @@ const RDashboard = () => {
     speed: 500,
     slidesToShow: matchesLength < 4 ? matchesLength : 4,
     slidesToScroll: 1,
-    initialSlide: 1,
     prevArrow: <CustomPrevArrow />,
     nextArrow: <CustomNextArrow />,
     responsive: [
@@ -93,6 +92,7 @@ const RDashboard = () => {
       {
         breakpoint: 450,
         settings: {
+        slidesToShow: matchesLength < 1 ? matchesLength : 1,
           slidesToShow: 1,
           slidesToScroll: 1,
           initialSlide: 1,
@@ -136,6 +136,7 @@ const RDashboard = () => {
       {
         breakpoint: 450,
         settings: {
+          slidesToShow: matchesLength < 1 ? matchesLength : 1,
           slidesToShow: 1,
           slidesToScroll: 1,
           initialSlide: 1,
@@ -186,9 +187,9 @@ const RDashboard = () => {
         <Header />
       </Box>
       <Box sx={{ display: "block", padding: "0% 0% 0% 2% " }}>
-        <Grid container spacing={1}>
-          <Grid item xs={12} md={9} sx={{ pr: "2%" }}>
-            <Box sx={{ mb: 4, mt: 1 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={12} sx={{ pr: "2%" }}>
+            <Box sx={{ mb: 1, mt: 1 }}>
               <Accordion sx={{ backgroundColor: "#060c1f", color: "grey" }} elevation={4}>
                 <AccordionSummary
                   expandIcon={<ArrowDownward sx={{ color: "whitesmoke" }} />}
@@ -198,7 +199,7 @@ const RDashboard = () => {
                   <Typography variant="h5" sx={{ color: "whitesmoke" }}>Assign Match</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Box sx={{ mb: 4, mt: 1 }}>
+                  <Box sx={{ mb: 1, mt: 1 ,ml:4 }}>
                     {assignMatch.length === 0 ? (
                       <Typography variant="h5" color="white" textAlign="center">No Match is Assigned</Typography>
                     ) : (
@@ -212,6 +213,7 @@ const RDashboard = () => {
                             athleteRedName={match.athleteRed}
                             athleteBlueName={match.athleteBlue}
                             matchGroup={match.matchGroup}
+                            
                           />
                         ))}
                       </Slider>
@@ -220,7 +222,7 @@ const RDashboard = () => {
                 </AccordionDetails>
               </Accordion>
             </Box>
-            <Box sx={{ mb: 4, mt: 1 }}>
+            <Box sx={{ mb: 4, mt: 1,ml:2 }}>
               <Typography variant="h5" sx={{ color: "whitesmoke", mb: 1 }}>Today's Matches</Typography>
               <Slider {...getSliderSettings(todayMatch.length)}>
                 {todayMatch.map((data, index) => (
@@ -231,14 +233,15 @@ const RDashboard = () => {
                     athleteBlueName={data.athleteBlue}
                     athleteRedImg={data.athleteRedImg}
                     athleteBlueImg={data.athleteBlueImg}
+                    matchGroup={data.matchGroup}
+                    mid={data.mid}
+                    matchStatus={data.matchStatus}
                   />
                 ))}
               </Slider>
             </Box>
           </Grid>
-          <Grid item xs={12} md={3}>
-            <Score />
-          </Grid>
+          
         </Grid>
       </Box>
       <Box sx={{ display: "block", mt: "1%" }}>

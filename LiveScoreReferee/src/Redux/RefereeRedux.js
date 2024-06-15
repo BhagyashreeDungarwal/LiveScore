@@ -26,13 +26,45 @@ export const validateOtpApi = createAsyncThunk('referee/validateOtp',
         }
     })
 
+export const UpdateProfileApi = createAsyncThunk(
+    'coordinator/updateProfile',
+    async ({ id, values }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/ACR/updateCoordinator/${id}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const UpdateProfilePicApi = createAsyncThunk(
+    'coordinator/updateProfilePic',
+    async ({ values, id }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const RefereeSlice = createSlice({
     name: "referee",
     initialState,
     reducers: {
         clearMessage: (state) => {
-            state.error = null,
-                state.data = null
+            state.error = null;
+            state.data = null
 
         },
     },

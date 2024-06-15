@@ -40,4 +40,30 @@ export const GetMatchByMatchGroup = async (matchGroup) => {
   }
 }
 
+export const GetMatchById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data;
+  } catch (error) {
+    return error
+  }
+}
+
+export const GetProfile = async (id) => {
+  try {
+    const data = await axios.get(`${url}/ACR/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+
+}
 

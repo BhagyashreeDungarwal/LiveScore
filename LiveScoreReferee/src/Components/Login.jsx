@@ -22,7 +22,8 @@ const Login = () => {
   useEffect(() => {
     if (data && data.msg) {
       toast.success(data.msg)
-      localStorage.setItem("ID",data.id)
+      localStorage.setItem("ID", data.id)
+      localStorage.setItem("Img", data.img)
       dispatch(clearMessageLogin())
       navigate("/dashboard")
     }
@@ -30,8 +31,8 @@ const Login = () => {
       toast.error(error.msg)
       dispatch(clearMessageLogin())
     }
-  }, [data,error,dispatch])
-  
+  }, [data, error, dispatch])
+
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
     initialValues: initial,
@@ -39,15 +40,6 @@ const Login = () => {
 
     onSubmit: async (values) => {
       dispatch(LoginApi(values))
-      // if (data) {
-      //   toast.success(data.msg)
-      //   dispatch(clearMessageLogin())
-      //   navigate("/dashboard")
-      // }
-      // if (error) {
-      //   toast.error(error.msg)
-      //   dispatch(clearMessageLogin())
-      // }
     }
 
   })
@@ -86,10 +78,10 @@ const Login = () => {
         <button type="submit">Log In</button>
 
         <div className="go" style={{ marginTop: "14px" }}>
-         <Link to="findEmail" style={{ textDecoration: "none" }} variant="body2">
-                Forget Password?
-              </Link> 
-              
+          <Link to="findEmail" style={{ textDecoration: "none" }} variant="body2">
+            Forget Password?
+          </Link>
+
         </div>
       </form>
       <div className="shape"></div>

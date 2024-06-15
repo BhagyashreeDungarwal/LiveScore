@@ -5,6 +5,8 @@ import ForgetPassword from './Components/ForgetPassword';
 import RDashboard from './Components/RDashboard'
 import Scoring from "./Components/Scoring"
 import Login from "./Components/Login"
+import LiveMatch from "./Components/LiveMatch";
+import Profile from "./Components/Profile";
 
 function App() {
 
@@ -33,7 +35,13 @@ function App() {
     }, {
       path: "forgetPassword/:email",
       element: (<ForgetPassword />)
-    }
+    }, {
+      path: "LiveMatch/:mid/:matchGroup",
+      element: (<LiveMatch />)
+    }, {
+      path: "Profile",
+      element: (<Profile />)
+    },
   ])
 
   return (

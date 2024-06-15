@@ -26,6 +26,7 @@ const Scoring = () => {
     const mid = matchData ? matchData.mid : "";
     const navigate = useNavigate()
     const [refScore, setRefScore] = useState({
+        RefereeId:"",
         RedPoints: 0,
         BluePoints: 0,
         RedPanelty: 0,
@@ -104,6 +105,7 @@ const Scoring = () => {
         connect.on('ReceiveLastRefScore', (refScoreA) => {
             if (refScoreA) {
                 setRefScore({
+                    RefereeId :refScoreA ? refScoreA.refereeId : null, 
                     RedPoints: refScoreA ? refScoreA.redPoints : 0,
                     BluePoints: refScoreA ? refScoreA.bluePoints : 0,
                     RedPanelty: refScoreA ? refScoreA.redPenalty : 0,

@@ -109,7 +109,7 @@ class _ScoreboardState extends State<Scoreboard> {
   }
 
   Future<void> _fetchLiveScores() async {
-    final url = 'http://192.168.71.181:5032/api/Scores/getTotalScore';
+    final url = 'http://192.168.0.106:5032/api/Scores/getTotalScore';
 
     try {
       final response = await http.get(Uri.parse(url));

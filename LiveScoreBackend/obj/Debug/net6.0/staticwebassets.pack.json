@@ -1,7 +1,11 @@
 {
   "Files": [
     {
+<<<<<<< HEAD
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png",
+=======
+      "Id": "D:\\LiveScore\\LiveScoreBackend\\wwwroot\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png",
+>>>>>>> 738434ca4d02bb6f4be8921a37b51af8299f9787
       "PackagePath": "staticwebassets\\ACR\\056a04e0-0696-4b32-b8dc-3efdd479cad1.png"
     },
     {
@@ -309,7 +313,11 @@
       "PackagePath": "staticwebassets\\images\\e407771c-627d-450b-ae34-41071fc2584d.jpg"
     },
     {
+<<<<<<< HEAD
       "Id": "D:\\Bhagyashree\\LiveScoring\\LiveScoring\\LiveScoreBackend\\wwwroot\\images\\ff8a08ff-753f-4df5-b025-f7b7ae999290.jpg",
+=======
+      "Id": "D:\\LiveScore\\LiveScoreBackend\\wwwroot\\images\\ff8a08ff-753f-4df5-b025-f7b7ae999290.jpg",
+>>>>>>> 738434ca4d02bb6f4be8921a37b51af8299f9787
       "PackagePath": "staticwebassets\\images\\ff8a08ff-753f-4df5-b025-f7b7ae999290.jpg"
     },
     {

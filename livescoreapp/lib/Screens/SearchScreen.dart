@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'AthletesDetails.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
@@ -23,14 +25,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> _fetchAthletes() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.71.181:5032/api/Athletes/getAthelete'));
+      final response = await http
+          .get(Uri.parse('http://192.168.0.106:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
-          _filteredAthletes = _athletes; // Initialize filtered list with all athletes
+          _filteredAthletes =
+              _athletes; // Initialize filtered list with all athletes
         });
       } else {
-        throw Exception('Failed to load athletes. Server responded with status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load athletes. Server responded with status code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching athletes: $error');
@@ -48,7 +53,9 @@ class _SearchScreenState extends State<SearchScreen> {
     _debounceTimer = Timer(const Duration(milliseconds: 300), () {
       setState(() {
         _filteredAthletes = _athletes!
-            .where((athlete) => athlete['athleteName'].toLowerCase().contains(query.toLowerCase()))
+            .where((athlete) => athlete['athleteName']
+                .toLowerCase()
+                .contains(query.toLowerCase()))
             .toList();
       });
     });
@@ -60,58 +67,86 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: TextField(
               onChanged: _filterAthletes,
-              textCapitalization: TextCapitalization.sentences, // Display capitalized letters
+              textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 labelText: 'Search by name',
+                labelStyle: TextStyle(fontSize: 18),
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.grey[150],
               ),
             ),
           ),
           Expanded(
             child: _filteredAthletes != null
                 ? _filteredAthletes!.isEmpty
-                ? Center(
-              child: Text(
-                'No athletes found',
-                style: TextStyle(fontSize: 20),
-              ),
-            )
-                : ListView.builder(
-              itemCount: _filteredAthletes!.length,
-              itemBuilder: (context, index) {
-                final athlete = _filteredAthletes![index];
-                final imageUrl = athlete['imageUrl'] != null
-                    ? 'http://192.168.71.181:5032/images/${athlete['imageUrl']}'
-                    : null;
-                return Card(
-                  elevation: 4,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    leading: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: imageUrl != null
-                          ? NetworkImage(imageUrl)
-                          : null,
-                      child: imageUrl == null
-                          ? Icon(Icons.person)
-                          : null,
-                    ),
-                    title: Text(
-                      athlete['athleteName'] ?? 'Name not available',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                );
-              },
-            )
+                    ? Center(
+                        child: Text(
+                          'No athletes found',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: _filteredAthletes!.length,
+                        itemBuilder: (context, index) {
+                          final athlete = _filteredAthletes![index];
+                          final imageUrl = athlete['imageUrl'] != null
+                              ? 'http://192.168.0.106:5032/images/${athlete['imageUrl']}'
+                              : null;
+                          return AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                            child: Card(
+                              elevation: 4,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ListTile(
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                leading: CircleAvatar(
+                                  radius: 30,
+                                  backgroundImage: imageUrl != null
+                                      ? NetworkImage(imageUrl)
+                                      : null,
+                                  child: imageUrl == null
+                                      ? Icon(Icons.person, size: 30)
+                                      : null,
+                                ),
+                                title: Text(
+                                  athlete['athleteName'] ??
+                                      'Name not available',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onTap: () {
+                                  // Navigate to AthleteDetails screen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          AthleteDetails(athlete: athlete),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      )
                 : Center(
-              child: CircularProgressIndicator(),
-            ),
+                    child: CircularProgressIndicator(),
+                  ),
           ),
         ],
       ),
