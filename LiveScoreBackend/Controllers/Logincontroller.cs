@@ -62,7 +62,7 @@ namespace LiveScore.Controllers
                  user.LastLogin = DateTime.Now;
                 await _dbcontext.SaveChangesAsync();
                 var token = GenerateToken(user);
-                return Ok(new { token = token , role = user.RoleId , id = user.Id, msg ="Welcome Back" });
+                return Ok(new { token = token , role = user.RoleId , id = user.Id, img=user.ImageURL, msg ="Welcome Back" });
             }
             else
             {
