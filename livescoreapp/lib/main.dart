@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:livescoreapp/Screens/AthleteScreen.dart';
 import 'package:livescoreapp/Screens/MListScreen.dart';
-import 'package:livescoreapp/Screens/Scoreboard.dart';
 import 'package:livescoreapp/Screens/SearchScreen.dart';
 import 'package:livescoreapp/Screens/SplashScreen.dart';
 
@@ -17,20 +16,17 @@ List<IconData> navIcons = [
   Icons.home,
   Icons.search,
   Icons.person,
-  Icons.list,
 ];
 
 List<String> navTitle = [
   "Home",
   "Search",
   "Players",
-  "Match List",
 ];
 
 int selectedIndex = 0;
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,8 +85,6 @@ class _MyHomePageState extends State<MyHomePage> {
         return SearchScreen(); // Add your Search screen here
       case 2:
         return AthleteScreen(); // Add your Athlete screen here
-      case 3:
-        return Scoreboard(); // Display scores in MListScreen if available
       default:
         return Container();
     }

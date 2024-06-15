@@ -7,10 +7,10 @@ class AthleteScreen extends StatefulWidget {
   const AthleteScreen({Key? key}) : super(key: key);
 
   @override
-  _AthletesState createState() => _AthletesState();
+  _AthleteScreenState createState() => _AthleteScreenState();
 }
 
-class _AthletesState extends State<AthleteScreen> {
+class _AthleteScreenState extends State<AthleteScreen> {
   List<dynamic>? _athletes;
   bool _isLoading = false;
 
@@ -25,13 +25,15 @@ class _AthletesState extends State<AthleteScreen> {
       _isLoading = true;
     });
     try {
-      final response = await http.get(Uri.parse('http://192.168.71.181:5032/api/Athletes/getAthelete'));
+      final response = await http
+          .get(Uri.parse('http://192.168.0.106:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
         });
       } else {
-        throw Exception('Failed to load athletes. Server responded with status code: ${response.statusCode}');
+        throw Exception(
+            'Failed to load athletes. Server responded with status code: ${response.statusCode}');
       }
     } catch (error) {
       print('Error fetching athletes: $error');
@@ -54,68 +56,105 @@ class _AthletesState extends State<AthleteScreen> {
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
-          : RefreshIndicator(
-        onRefresh: _refreshAthletes,
-        child: _athletes != null
-            ? _athletes!.isEmpty
-            ? Center(
-          child: Text(
-            'No athletes available',
-            style: TextStyle(fontSize: 20),
-          ),
-        )
-            : ListView.builder(
-          itemCount: _athletes!.length,
-          itemBuilder: (context, index) {
-            final athlete = _athletes![index];
-            final imageUrl = athlete['imageUrl'] != null
-                ? 'http://192.168.71.181:5032/images/${athlete['imageUrl']}'
-                : null;
-            return Card(
-              elevation: 4,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                leading: CircleAvatar(
-                  radius: 30,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30),
-                    child: imageUrl != null
-                        ? Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover, // Ensure the image covers the entire space
+              child: CircularProgressIndicator(),
+            )
+          : _athletes != null
+              ? _athletes!.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No athletes available',
+                        style: TextStyle(fontSize: 20),
+                      ),
                     )
-                        : Icon(Icons.person), // Placeholder icon
+                  : RefreshIndicator(
+                      onRefresh: _refreshAthletes,
+                      child: ListView.builder(
+                        itemCount: _athletes!.length,
+                        itemBuilder: (context, index) {
+                          final athlete = _athletes![index];
+                          final imageUrl = athlete['imageUrl'] != null
+                              ? 'http://192.168.0.106:5032/images/${athlete['imageUrl']}'
+                              : null;
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      AthleteDetails(athlete: athlete),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              elevation: 4,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey[200],
+                                      ),
+                                      child: ClipOval(
+                                        child: imageUrl != null
+                                            ? Image.network(
+                                                imageUrl,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Icon(Icons.person,
+                                                size: 30,
+                                                color: Colors.grey[600]),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            athlete['athleteName'] ??
+                                                'Name not available',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(height: 4),
+                                          Text(
+                                            'Age: ${athlete['age'] ?? 'Unknown'}',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey[600],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Icon(Icons.arrow_forward_ios),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+              : Center(
+                  child: Text(
+                    'Failed to load athletes',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
-                title: Text(
-                  athlete['athleteName'] ?? 'Name not available',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                subtitle: Text(
-                  'Age: ${athlete['age'] ?? 'Unknown'}',
-                  style: TextStyle(fontSize: 16),
-                ),
-                trailing: Icon(Icons.arrow_forward),
-                onTap: () {
-                  // Navigate to AthleteDetails screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AthleteDetails(athlete: athlete),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
-        )
-            : Center(
-          child: CircularProgressIndicator(), // Show CircularProgressIndicator when _isLoading is true
-        ),
-      ),
     );
   }
 }

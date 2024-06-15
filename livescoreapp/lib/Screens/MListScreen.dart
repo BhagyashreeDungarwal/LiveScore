@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'MatchScorePage.dart'; // Import MatchScorePage
+import 'MatchScorePage.dart';
 
 class MListScreen extends StatefulWidget {
   const MListScreen({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _MListScreenState extends State<MListScreen> {
       _isLoading = true;
     });
     try {
-      final response = await http.get(Uri.parse('http://192.168.71.181:5032/api/Matchs/GetMatchs'));
+      final response = await http.get(Uri.parse('http://192.168.0.106:5032/api/Matchs/GetMatchs'));
       if (response.statusCode == 200) {
         setState(() {
           _matches = jsonDecode(response.body);
@@ -56,7 +56,7 @@ class _MListScreenState extends State<MListScreen> {
           ? Center(
         child: Text(
           'No matches available',
-          style: TextStyle(fontSize: 20, color: Colors.grey, fontFamily: 'Roboto'),
+          style: TextStyle(fontSize: 20, color: Colors.grey),
         ),
       )
           : ListView.builder(
@@ -70,105 +70,59 @@ class _MListScreenState extends State<MListScreen> {
                 MaterialPageRoute(
                   builder: (context) => MatchScorePage(
                     matchId: match['mid'],
-                    matchGroup: match['matchGroup'] ?? 'defaultGroup',
+                    matchGroup:
+                    match['matchGroup'] ?? 'defaultGroup',
                   ),
                 ),
               );
             },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Players' Images and Names
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.blue,
-                                child: CircleAvatar(
-                                  radius: 48,
-                                  backgroundImage: NetworkImage(
-                                    'http://192.168.71.181:5032/images/${match['athleteRedImg']}',
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                '${match['athleteRed'] ?? 'Unknown'}',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            'vs',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.red, fontFamily: 'Roboto'),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.blue,
-                                child: CircleAvatar(
-                                  radius: 48,
-                                  backgroundImage: NetworkImage(
-                                    'http://192.168.71.181:5032/images/${match['athleteBlueImg']}',
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                '${match['athleteBlue'] ?? 'Unknown'}',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12),
-                      // Date
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Date:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: 'Roboto'),
-                          ),
-                          Text(
-                            '${_formatDate(match['matchDate'])}',
-                            style: TextStyle(fontSize: 16, fontFamily: 'Roboto'),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Tournament
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Tournament:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey, fontFamily: 'Roboto'),
-                          ),
-                          Text(
-                            '${match['tournament'] ?? 'Unknown'}',
-                            style: TextStyle(fontSize: 16, fontFamily: 'Roboto'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+            child: Card(
+              margin: EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildPlayerInfo(
+                          imageUrl:
+                          'http://192.168.0.106:5032/images/${match['athleteRedImg']}',
+                          playerName:
+                          match['athleteRed'] ?? 'Unknown',
+                        ),
+                        _buildMatchStatus(
+                          match['matchStatus'] ?? 'Unknown',
+                        ),
+                        _buildPlayerInfo(
+                          imageUrl:
+                          'http://192.168.0.106:5032/images/${match['athleteBlueImg']}',
+                          playerName:
+                          match['athleteBlue'] ?? 'Unknown',
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    _buildMatchInfoRow(
+                      'Date',
+                      _formatDate(match['matchDate']) +
+                          ' (${_formatTime(match['matchDate'])})',
+                    ),
+                    SizedBox(height: 8),
+                    _buildMatchInfoRow(
+                      'Tournament',
+                      match['tournament'] ?? 'Unknown',
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -178,18 +132,101 @@ class _MListScreenState extends State<MListScreen> {
           : Center(
         child: Text(
           'Failed to fetch matches',
-          style: TextStyle(fontFamily: 'Roboto'),
+          style: TextStyle(fontFamily: 'Roboto', fontSize: 20),
         ),
       ),
     );
   }
 
+  Widget _buildPlayerInfo({
+    required String imageUrl,
+    required String playerName,
+  }) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 40,
+          backgroundColor: Colors.blue,
+          backgroundImage: NetworkImage(imageUrl),
+        ),
+        SizedBox(height: 8),
+        Text(
+          playerName,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMatchInfoRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.grey,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(fontSize: 16),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMatchStatus(String status) {
+    Color statusColor = _getStatusColor(status);
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      decoration: BoxDecoration(
+        color: statusColor.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Text(
+        status.toUpperCase(),
+        style: TextStyle(
+          fontSize: 12,
+          color: statusColor,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'ongoing':
+        return Colors.green;
+      case 'finished':
+        return Colors.blue;
+      case 'cancelled':
+        return Colors.red;
+      default:
+        return Colors.black;
+    }
+  }
+
   String _formatDate(String? dateString) {
     try {
       final DateTime dateTime = DateTime.parse(dateString ?? '');
-      return DateFormat.yMd().format(dateTime);
+      return DateFormat.yMMMd().format(dateTime);
     } catch (e) {
       print('Error parsing date: $e');
+      return 'Unknown';
+    }
+  }
+
+  String _formatTime(String? dateString) {
+    try {
+      final DateTime dateTime = DateTime.parse(dateString ?? '');
+      return DateFormat.Hm().format(dateTime);
+    } catch (e) {
+      print('Error parsing time: $e');
       return 'Unknown';
     }
   }
