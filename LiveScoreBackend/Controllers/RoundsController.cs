@@ -15,10 +15,12 @@ namespace LiveScore.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHubContext<ScoreHub> _hubContext;
-        public RoundsController(ApplicationDbContext context, IHubContext<ScoreHub> hubContext)
+        private readonly TempDbContext _tempContext;
+        public RoundsController(ApplicationDbContext context, IHubContext<ScoreHub> hubContext, TempDbContext tempContext)
         {
             _context = context;
             _hubContext = hubContext;
+            _tempContext = tempContext;
         }
 
 
@@ -118,104 +120,6 @@ namespace LiveScore.Controllers
             }
         }
 
-
-
-        //[httppost("managerounds")]
-        //public async task<iactionresult> managerounds([frombody] roundvm rounddto, int matchid)
-        //{
-        //    if (rounddto.matchid == null)
-        //    {
-        //        return badrequest("matchid is required.");
-        //    }
-
-        //    // validate the matchid exists
-        //    var matchexists = await _context.matchss.anyasync(m => m.mid == matchid);
-        //    if (!matchexists)
-        //    {
-        //        return notfound("match not found.");
-        //    }
-        //    // get the match record
-        //    var match = await _context.matchss.findasync(matchid);
-
-        //    // initialize a list to store roundwinner values
-        //    list<int?> roundwinners = new list<int?>();
-
-        //    int r = 1;
-
-        //    // insert initial round without sensitive fields
-        //    var initialround = new round
-        //    {
-        //        matchid = matchid,
-        //        rounds = r,
-        //        roundtime = rounddto.roundtime
-        //    };
-
-        //    _context.rounds.add(initialround);
-        //    await _context.savechangesasync();
-
-        //    // loop to create and update rounds including the initial round
-        //    for (r = 1; r <= 3; r++)
-        //    {
-        //        round roundtoupdate;
-
-        //        if (r == 1)
-        //        {
-        //            roundtoupdate = initialround;
-        //        }
-        //        else
-        //        {
-        //            var newround = new round
-        //            {
-        //                matchid = matchid,
-        //                rounds = r,
-        //                roundtime = datetime.now // or set as needed
-        //            };
-        //            _context.rounds.add(newround);
-        //            await _context.savechangesasync();
-        //            roundtoupdate = newround;
-        //        }
-
-
-        //        // start the timer
-        //        //await task.delay(12000);
-
-        //        // simulate update logic
-        //        roundtoupdate.redtotalscore = 10;
-        //        roundtoupdate.bluetotalscore = 12;
-        //        roundtoupdate.roundwinner = 3;
-
-        //        // validate roundwinner
-        //        if (roundtoupdate.roundwinner.hasvalue)
-        //        {
-        //            // check if the roundwinner is one of the athletes in the match
-        //            if (roundtoupdate.roundwinner != match.athletered && roundtoupdate.roundwinner != match.athleteblue)
-        //            {
-        //                return badrequest("roundwinner must be one of the athletes in the match.");
-        //            }
-        //        }
-
-        //        _context.rounds.update(roundtoupdate);
-        //        await _context.savechangesasync();
-
-        //        // store the roundwinner value temporarily
-        //        roundwinners.add(roundtoupdate.roundwinner);
-
-        //        // check if this is round 2 and roundwinner for round 1 and round 2 are same
-        //        if (r == 2 && roundwinners[0] != roundwinners[1])
-        //        {
-        //            continue; // continue with round 3 if round 1 and round 2 winners are not the same
-        //        }
-
-        //        // check if this is round 2 and roundwinner for round 1 and round 2 are same
-        //        if (r == 2 && roundwinners[0] == roundwinners[1])
-        //        {
-        //            return ok(new { message = $"the winner is: {roundwinners[0]}", allroundwinners = roundwinners });// return the winner if round 1 and round 2 winners are the same
-        //        }
-        //    }
-
-        //    return ok(new { message = "rounds inserted and updated.", roundwinners = roundwinners });
-        //}
-
         [HttpPost("insertRound/{matchId}")]
         public async Task<IActionResult> InsertRound([FromBody] RoundVm roundDto, int matchId)
         {
@@ -287,6 +191,14 @@ namespace LiveScore.Controllers
 
             _context.Rounds.Update(roundToUpdate);
             await _context.SaveChangesAsync();
+
+            // Delete temporary scores related to the round
+            var tempScores = await _tempContext.TemporaryScores.Where(t => t.MatchId == matchId && t.Rounds == round).ToListAsync();
+            if (tempScores.Any())
+            {
+                _tempContext.TemporaryScores.RemoveRange(tempScores);
+                await _tempContext.SaveChangesAsync();
+            }
 
             var roundswinner = new List<object>();
 
@@ -393,23 +305,6 @@ namespace LiveScore.Controllers
 
             return Ok(new { msg = "Round updated successfully.", roundswinner, roundRes = roundToUpdate.Rounds });
         }
-
-
-        //[HttpGet("GetRoundByMId/{MId}")]
-        //public async Task<ActionResult<IEnumerable<Round>>> GetRoundByMId(int MId)
-        //{
-        //    // Find rounds by MatchId
-        //    var rounds = await _context.Rounds.Where(r => r.MatchId == MId).ToListAsync();
-
-        //    if (rounds == null || rounds.Count == 0)
-        //    {
-        //        return NotFound(new { error = "Rounds Not Found for given MId" });
-        //    }
-
-        //    return rounds;
-        //}
-
-
 
         private bool RoundExists(int id)
         {

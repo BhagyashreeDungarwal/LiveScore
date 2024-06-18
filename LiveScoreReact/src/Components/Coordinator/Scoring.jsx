@@ -41,7 +41,7 @@ const Scoring = () => {
     })
 
     const handleEndRound = () => {
-      navigate(`/coordinator/EndRoundModel/${mid}/${matchGroup}/${rounds}`)
+      navigate(`/coordinator/EndRoundodel/${mid}/${matchGroup}/${rounds}`)
     }
     
 
