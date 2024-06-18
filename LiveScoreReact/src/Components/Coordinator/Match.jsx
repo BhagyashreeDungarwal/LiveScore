@@ -267,7 +267,7 @@ const Match = () => {
               <Stack style={{
                 marginTop: "1%",
                 display: "grid",
-                height: "78vh",
+                height: "72vh",
               }}>
                 {match && match.length > 0 ? (
                   <DataGrid
@@ -306,7 +306,7 @@ const Match = () => {
               <Stack style={{
                 marginTop: "1%",
                 display: "grid",
-                height: "78vh",
+                height: "60vh",
               }}>
                 {matchHistory && matchHistory.length > 0 ? (
                   <DataGrid

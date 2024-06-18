@@ -107,8 +107,8 @@ const Login = () => {
       sx={{ minHeight: "100vh", width: "100vw" }}>
       <Grid item xs={false} sm={false} lg={6} sx={{ backgroundImage: `url(${loginImg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6} component={Paper} square  >
-        <Box alignItems="center" maxWidth="sm" sx={{ my: {lg:18,md:12,sm:18,xs:5}, mx:{lg:10,md:20,sm:10,xs:0}, p: 5, display: 'flex', flexDirection: 'column' }} >
+      <Grid item xs={12} sm={12} md={12} lg={6} component={Paper} square>
+        <Box alignItems="center" maxWidth="md" sx={{ my: {lg:18,md:12,sm:18,xs:5}, mx:{lg:10,md:20,sm:10,xs:0}, p: 5, display: 'flex', flexDirection: 'column' }} >
 
           <Typography component="h1" sx={{ fontFamily: "unset", color: "#212c9f", textAlign: "center" }} variant="h3">
             Sign in
@@ -170,10 +170,6 @@ const Login = () => {
               <Button variant="contained" type='submit' fullWidth disabled={isSubmitting} sx={{ color: "White", background: "#212c9f" }}>
                 Submit
               </Button>
-              {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             </form>
             <Box sx={{ display: "flex", justifyContent: "space-between", mt: "2vh" }}>
 

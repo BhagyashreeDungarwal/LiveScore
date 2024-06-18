@@ -148,7 +148,6 @@ const Coach = () => {
           <Stack style={{
             marginTop: "1%",
             display: "grid",
-            width: "90%",
             height: "70vh",
 
           }}>{

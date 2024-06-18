@@ -149,5 +149,6 @@ export const endRound = yup.object().shape({
     RoundWinner: yup.string().required('Round Winner is required')
 })
 export const endMatch = yup.object().shape({
-    flag: yup.string().required('Please Select Winner')
+    flag: yup.string().required('Please Select Winner'),
+    matchType: yup.string().required('Match Type is required')
 })

@@ -43,15 +43,10 @@ const Scoring = () => {
         BluePanelty: 0
     })
 
-<<<<<<< Updated upstream
-    const handleEndRound = () => {
-      navigate(`/coordinator/EndRoundodel/${mid}/${matchGroup}/${rounds}`)
-=======
     const handleEndRound = async () => {
         await ScoreTransfer(mid)
         // dispatch(updateRound({ values, mid, rounds }))
       navigate(`/coordinator/EndRoundModel/${mid}/${matchGroup}/${rounds}`)
->>>>>>> Stashed changes
     }
     
 
