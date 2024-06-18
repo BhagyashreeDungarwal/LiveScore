@@ -5,17 +5,14 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../assets/image/Logof.png';
 import { Link, useNavigate } from 'react-router-dom';
 
-const pages = ['Home', 'About', 'Contact'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 const Index = () => {
 
@@ -49,9 +46,10 @@ const Index = () => {
             src={logo}
             alt="Live Score"
             sx={{
-              // display: { xs: 'none', md: 'flex' },
-              width: '12vw',
-              height: '12vh',
+              display: { xs: 'flex', md: 'flex' },
+              width: {lg:'12vw',sm:"10vw",xs:"20vw",md:"20vw"},
+              width: {lg:'20vh',sm:"10vh",xs:"15vh",md:"20vh"},
+              // height: '12vh',
               marginRight: 2,
             }}
           />

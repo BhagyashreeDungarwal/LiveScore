@@ -9,6 +9,7 @@ import { endMatch } from '../Validation/Coordinator';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearMessage, updateNextMatchIdApi } from '../../Redux/CoordinatorRedux';
 import { toast } from 'react-toastify';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -135,4 +136,4 @@ const EndMatch = () => {
     )
 }
 
-export default EndMatch
+export default ProtectedRoute(EndMatch,"coordinator")

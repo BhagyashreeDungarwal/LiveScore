@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { Box,  } from '@mui/material';
 import { OtpGenerateApi, StoreOtpApi } from '../Apis/Coordinator';
 import { useNavigate,  useParams } from 'react-router-dom';
+import ProtectedRoute from '../../ProtectedRoute';
 
 // OtpBlock Component
 const OtpBlock = ({ digit }) => {
@@ -121,4 +122,4 @@ const GenerateOtp = () => {
   );
 };
 
-export default GenerateOtp;
+export default ProtectedRoute(GenerateOtp,"coordinator");

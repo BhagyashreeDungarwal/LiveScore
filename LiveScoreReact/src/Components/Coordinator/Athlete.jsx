@@ -1,15 +1,16 @@
-import { Avatar, Box, CircularProgress, Fab,  Stack, Tooltip } from '@mui/material'
+import { Avatar, Box, CircularProgress, Fab, Stack, Tooltip } from '@mui/material'
 import HeaderFormat from '../Common/HeaderFormat'
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { useDispatch, useSelector } from 'react-redux';
 import NoData from "./../Images/NoData.jpg"
-import {useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import {  Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
+import { Block, DriveFileRenameOutlineRounded, VerifiedUser } from '@mui/icons-material';
 import { GetAthlete } from '../Apis/Coordinator';
 import AddAthlete from './AddAthlete';
 import { BlockAthleteApi, clearMessage } from '../../Redux/CoordinatorRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 function CustomToolbar() {
   return (
@@ -54,12 +55,12 @@ const Athlete = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch()
   const { data, error } = useSelector(state => state.coordinator)
-   const handleRequest = async (id) => {
+  const handleRequest = async (id) => {
     dispatch(BlockAthleteApi(id))
     getAthlete()
   }
 
-   const img_url = "http://localhost:5032/images/";
+  const img_url = "http://localhost:5032/images/";
 
   const columns = useMemo(() => [
     {
@@ -82,21 +83,21 @@ const Athlete = () => {
     { field: "coordinator", headerName: "Coordinator", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     {
       headerName: "Action", width: 180, headerClassName: "header", headerAlign: "center", align: "center", renderCell: params => {
-          if (params.row.status === "UnBlock") {
+        if (params.row.status === "UnBlock") {
           return (
-           <Box>
-            <Tooltip title="Edit">
-              <Link to={`/coordinator/editAthlete/${params.row.id}`} >
-                <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
-                  <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
-                </Fab>
-              </Link>
-            </Tooltip>
-            <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
+            <Box>
+              <Tooltip title="Edit">
+                <Link to={`/coordinator/editAthlete/${params.row.id}`} >
+                  <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', mr: 1 }}>
+                    <DriveFileRenameOutlineRounded size="small" sx={{ mr: 1 }} /> Edit
+                  </Fab>
+                </Link>
+              </Tooltip>
+              <Fab variant="extended" size="small" color="error" sx={{ fontSize: '0.75rem' }} onClick={() => handleRequest(params.row.id)}>
                 <VerifiedUser size="small" sx={{ mr: 1 }} />
                 Block
               </Fab>
-          </Box>
+            </Box>
           )
         }
         else if (params.row.status === "Block") {
@@ -105,25 +106,25 @@ const Athlete = () => {
               <Block size="small" sx={{ mr: 1 }} />
               Unblock
             </Fab>)
-          
+
+        }
       }
     }
-  }
   ], [])
 
-  const getAthlete =  async () => {
+  const getAthlete = async () => {
     setLoading(true)
     try {
-    const {data} = await GetAthlete()
-    data && setAthlete(data)
+      const { data } = await GetAthlete()
+      data && setAthlete(data)
     } catch (error) {
       console.log("Something Went Wrong", error)
     } finally {
       setLoading(false)
     }
   }
-  
-  
+
+
   useEffect(() => {
     getAthlete()
     if (data) {
@@ -187,4 +188,4 @@ const Athlete = () => {
 }
 
 
-export default Athlete
+export default ProtectedRoute(Athlete, "coordinator")

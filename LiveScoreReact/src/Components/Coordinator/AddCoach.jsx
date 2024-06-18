@@ -11,6 +11,7 @@ import { CoachValidate } from '../Validation/Coordinator';
 import { AlternateEmailRounded, EmojiEvents, PermContactCalendarRounded, Person2Rounded, Stars } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { CoachPostApi } from '../../Redux/CoordinatorRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -252,4 +253,4 @@ const AddCoach = () => {
     )
 }
 
-export default AddCoach
+export default ProtectedRoute(AddCoach,"coordinator")

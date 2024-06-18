@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 import { category } from '../Validation/Admin';
 import { GetCategoryById } from '../Apis/Admin';
 import { CategoryPutApi, clearMessageAdmin } from '../../Redux/AdminRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -229,4 +230,4 @@ const EditCategory = () => {
     );
 };
 
-export default EditCategory;
+export default ProtectedRoute(EditCategory,"admin");

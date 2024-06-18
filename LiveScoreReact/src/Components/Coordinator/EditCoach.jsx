@@ -8,6 +8,7 @@ import { UpCoach } from '../Validation/Coordinator';
 import { GetCoachById } from '../Apis/Coordinator';
 import { CoachPutApi, clearMessage } from '../../Redux/CoordinatorRedux';
 import { toast } from 'react-toastify';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -240,4 +241,4 @@ const EditCoach = () => {
     )
 }
 
-export default EditCoach
+export default ProtectedRoute(EditCoach,"coordinator")

@@ -9,6 +9,7 @@ import { GetCoordinator, GetReferee } from '../Apis/Admin';
 import { GetMatchById } from '../Apis/Coordinator';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';  // Import Yup for validation schema
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -211,4 +212,4 @@ const AssignMatch = () => {
     );
 };
 
-export default AssignMatch;
+export default ProtectedRoute(AssignMatch,"coordinator");

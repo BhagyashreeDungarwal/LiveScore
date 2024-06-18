@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import dayjs from "dayjs";
 import { MatchPutApi, clearMessage } from "../../Redux/CoordinatorRedux";
 import { toast } from "react-toastify";
+import ProtectedRoute from "../../ProtectedRoute";
 
 
 
@@ -190,4 +191,4 @@ const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValu
   )
 }
 
-export default EditMatch
+export default ProtectedRoute(EditMatch,"coordinator")

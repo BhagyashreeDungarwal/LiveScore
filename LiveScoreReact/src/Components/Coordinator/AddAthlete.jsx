@@ -14,6 +14,7 @@ import { GetAthlete, GetCoach } from '../Apis/Coordinator';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { AthletePostApi } from '../../Redux/CoordinatorRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 
@@ -385,4 +386,4 @@ const AddAthlete = () => {
     )
 }
 
-export default AddAthlete
+export default ProtectedRoute(AddAthlete,"coordinator")

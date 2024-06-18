@@ -30,8 +30,14 @@ const LiveMatch = () => {
   const [roundWinners, setRoundWinners] = useState([]);
 
   const navigate = useNavigate()
+  const role = localStorage.getItem("role")
   const handleClose = () => {
-    navigate(`/coordinator/`)
+    if (role === "admin") {
+      navigate(`/admin/adashboard`)
+    }
+    if (role === "coordinator") {
+      navigate(`/coordinator/cdashboard/`)
+    }
   }
 
   useEffect(() => {

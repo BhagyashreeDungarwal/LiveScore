@@ -4,9 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Paper, Grid, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, IconButton, Tooltip } from '@mui/material';
 import { PauseCircleFilledRounded, PlayCircleFilledRounded } from '@mui/icons-material';
-import { GetMatchByMatchGroup } from '../Apis/Coordinator';
+import { GetMatchByMatchGroup, ScoreTransfer } from '../Apis/Coordinator';
 import EndRoundModel from './EndRoundModel';
 import { toast } from 'react-toastify';
+import ProtectedRoute from '../../ProtectedRoute';
+import { useDispatch } from 'react-redux';
 const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
@@ -25,6 +27,7 @@ const Scoring = () => {
     const athleteBlue = matchData ? matchData.athleteBlueId : "";
     const mid = matchData ? matchData.mid : "";
     const navigate = useNavigate()
+    const dispatch = useDispatch();
     const [refScore, setRefScore] = useState({
         RefereeId:"",
         RedPoints: 0,
@@ -40,8 +43,15 @@ const Scoring = () => {
         BluePanelty: 0
     })
 
+<<<<<<< Updated upstream
     const handleEndRound = () => {
       navigate(`/coordinator/EndRoundodel/${mid}/${matchGroup}/${rounds}`)
+=======
+    const handleEndRound = async () => {
+        await ScoreTransfer(mid)
+        // dispatch(updateRound({ values, mid, rounds }))
+      navigate(`/coordinator/EndRoundModel/${mid}/${matchGroup}/${rounds}`)
+>>>>>>> Stashed changes
     }
     
 
@@ -385,4 +395,4 @@ const Scoring = () => {
 
 }
 
-export default Scoring;
+export default ProtectedRoute(Scoring,"coordinator");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { GetCategoryViseAthlete } from '../Apis/Common';
 import { Box } from '@mui/material';
 
@@ -19,39 +19,36 @@ const PieChartComponent = () => {
         fetchData();
     }, []);
 
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#5a6bea', '#25abd8', '#913afb'];   
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#5a6bea', '#25abd8', '#913afb'];
 
     return (
-        <Box style={{}}>
+        <Box sx={{ width: { xs: 500, sm: 500, md: 350,lg:450,xl:500  }, height: { xs: 300, sm: 400, md: 300,lg:500,xl:500 }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {categoryData.length > 0 ? (
-                <PieChart width={500} height={470}>
-                    <Pie
-                        data={categoryData}
-                        cx={250} // Center x-coordinate in the larger PieChart
-                        cy={190} // Center y-coordinate in the larger PieChart
-                        labelLine={false}
-                        outerRadius={180} // Increased outer radius
-                        fill="#8884d8"
-                        dataKey="totalAthletes"
-                        nameKey="categoryName"
-                    >
-                        {
-                            categoryData.map((entry, index) => (
-                                <Cell key={`cell-${index}`}
-                                    // fill={`#${Math.floor(Math.random()*16777215).toString(16)}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                />
-                            ))
-                        }
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                </PieChart>
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                        <Pie
+                            data={categoryData}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            outerRadius="80%"
+                            fill="#8884d8"
+                            dataKey="totalAthletes"
+                            nameKey="categoryName"
+                        >
+                            {categoryData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                        <Legend />
+                    </PieChart>
+                </ResponsiveContainer>
             ) : (
                 <div>Loading...</div>
             )}
         </Box>
     );
-}
+};
 
-export default PieChartComponent
+export default PieChartComponent;

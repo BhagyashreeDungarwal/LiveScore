@@ -9,6 +9,7 @@ import { clearMessage, updateRound } from '../../Redux/CoordinatorRedux';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -65,7 +66,7 @@ const  athleteRedId = matchData ? matchData.athleteRedId :null
         validationSchema: endRound,
         onSubmit: async (values) => {
             dispatch(updateRound({ values, mid, rounds }))
-            await ScoreTransfer(mid)
+            // await ScoreTransfer(mid)
         }
 
     })
@@ -265,4 +266,4 @@ const  athleteRedId = matchData ? matchData.athleteRedId :null
     )
 }
 
-export default EndRoundModel
+export default ProtectedRoute(EndRoundModel,"coordinator")

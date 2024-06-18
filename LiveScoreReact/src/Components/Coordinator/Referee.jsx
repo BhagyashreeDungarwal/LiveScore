@@ -11,6 +11,7 @@ import { GetReferee } from "../Apis/Coordinator";
 import { toast } from "react-toastify";
 import { BlockRefereeApi, clearMessage } from "../../Redux/CoordinatorRedux";
 import dayjs from "dayjs";
+import ProtectedRoute from "../../ProtectedRoute";
 
 
 function CustomToolbar() {
@@ -199,4 +200,4 @@ const {data, error} = useSelector(state => state.coordinator)
   )
 }
 
-export default Referee
+export default ProtectedRoute(Referee,"coordinator")

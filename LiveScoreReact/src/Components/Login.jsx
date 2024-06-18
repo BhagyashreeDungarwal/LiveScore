@@ -45,34 +45,19 @@ const Login = () => {
     if (data) {
       toast.success(data.msg)
       localStorage.setItem('token', data.token);
-
-      // making logic for navigate according to role 
-      if (data.role === 1) {
-        localStorage.setItem('role', "superadmin");
-        localStorage.setItem('ID', data.id)
-        dispatch(clearMessageLogin())
-        navigate("/sadmin/sdashboard")
-      } else if (data.role === 2) {
-        // console.log("admin")
+      localStorage.setItem("Img", data.img)
+      if (data.role === 2) {
         localStorage.setItem('role', "admin");
         localStorage.setItem('ID', data.id)
         dispatch(clearMessageLogin())
         navigate("/admin/adashboard")
       }
-      else if (data.role === 3) {
-        // console.log("admin")
+
+      if (data.role === 3) {
         localStorage.setItem('role', "coordinator");
         localStorage.setItem('ID', data.id)
         dispatch(clearMessageLogin())
         navigate("/coordinator/cdashboard")
-      }
-      else if (data.role === 4) {
-        // console.log("admin")
-        localStorage.setItem('role', "referee");
-        localStorage.setItem('ID', data.id)
-        dispatch(clearMessageLogin())
-        navigate("/referee/rdashboard")
-
       }
     }
 
@@ -122,8 +107,8 @@ const Login = () => {
       sx={{ minHeight: "100vh", width: "100vw" }}>
       <Grid item xs={false} sm={false} lg={6} sx={{ backgroundImage: `url(${loginImg})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}>
       </Grid>
-      <Grid item xs={12} sm={12} lg={6} component={Paper} square  >
-        <Box alignItems="center" maxWidth="sm" sx={{ my: 18, mx: 10, p: 5, display: 'flex', flexDirection: 'column' }} >
+      <Grid item xs={12} sm={12} md={12} lg={6} component={Paper} square  >
+        <Box alignItems="center" maxWidth="sm" sx={{ my: {lg:18,md:12,sm:18,xs:5}, mx:{lg:10,md:20,sm:10,xs:0}, p: 5, display: 'flex', flexDirection: 'column' }} >
 
           <Typography component="h1" sx={{ fontFamily: "unset", color: "#212c9f", textAlign: "center" }} variant="h3">
             Sign in

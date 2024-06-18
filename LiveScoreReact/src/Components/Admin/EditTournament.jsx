@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { TournamentPutApi, clearMessageAdmin } from '../../Redux/AdminRedux';
 import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -200,4 +201,4 @@ const EditTournament = () => {
   )
 }
 
-export default EditTournament
+export default ProtectedRoute(EditTournament,"admin")

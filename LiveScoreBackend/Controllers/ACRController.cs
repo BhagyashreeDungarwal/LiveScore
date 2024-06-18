@@ -409,7 +409,7 @@ namespace LiveScore.Controllers
                 try
                 {
                     await _dbcontext.SaveChangesAsync();
-                    return Ok(new { msg = "Coordinator Profile Picture successfully updated" });
+                    return Ok(new { msg = "Coordinator Profile Picture successfully updated" , img = imageUrl });
                 }
                 catch (DbUpdateConcurrencyException)
                 {

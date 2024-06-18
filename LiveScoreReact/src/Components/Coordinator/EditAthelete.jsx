@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { GetAthleteById, GetCoach } from '../Apis/Coordinator';
 import { upAthlete } from '../Validation/Coordinator';
 import { AthletePutApi, clearMessage } from '../../Redux/CoordinatorRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -355,4 +356,4 @@ const EditAthelete = () => {
     )
 }
 
-export default EditAthelete
+export default ProtectedRoute(EditAthelete,"coordinator")

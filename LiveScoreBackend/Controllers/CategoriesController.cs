@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LiveScore.Data;
@@ -12,6 +8,7 @@ namespace LiveScore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -24,20 +21,20 @@ namespace LiveScore.Controllers
         [HttpGet("GetCategories")]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
             return await _context.Categories.ToListAsync();
         }
 
         [HttpGet("GetCategoriesById/{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
         {
-          if (_context.Categories == null)
-          {
-              return NotFound();
-          }
+            if (_context.Categories == null)
+            {
+                return NotFound();
+            }
             var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
@@ -74,23 +71,22 @@ namespace LiveScore.Controllers
                 }
             }
 
-            return Ok(new {msg ="Successfully Updated!!"});
+            return Ok(new { msg = "Successfully Updated!!" });
         }
-
+        [Authorize]
         [HttpPost("PostCategory")]
         public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-          if (category == null)
-          {
-              return BadRequest(new {msg = "the value is null." });
-          }
+            if (category == null)
+            {
+                return BadRequest(new { msg = "The value is null." });
+            }
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return Ok(new  {  msg = "Sucessfully Added Category"});
+            return Ok(new { msg = "Successfully Added Category" });
         }
 
-        // DELETE: api/Categories/5
         [HttpDelete("DeleteCategory/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
@@ -107,7 +103,7 @@ namespace LiveScore.Controllers
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
-            return Ok(new { msg = "Successfully Addedd!!" });
+            return Ok(new { msg = "Successfully Deleted!" });
         }
 
         private bool CategoryExists(int id)

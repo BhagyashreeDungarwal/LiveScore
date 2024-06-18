@@ -6,6 +6,7 @@ import { AddPhotoAlternateRounded, Close } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 import { GetCoachById } from '../Apis/Coordinator'
 import { CoachPutPicApi, clearMessage } from '../../Redux/CoordinatorRedux'
+import ProtectedRoute from '../../ProtectedRoute'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -124,4 +125,4 @@ useEffect(() => {
   )
 }
 
-export default EditCoachPic
+export default ProtectedRoute(EditCoachPic,"coordinator")

@@ -2,7 +2,6 @@ import './App.css'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Login from './Components/Login'
 import { ToastContainer } from "react-toastify";
-import SAdminDashboard from './Components/SuperAdmin/SAdminDashboard';
 import AdminDashboard from './Components/Admin/AdminDashboard';
 import { Category, Dashboard, Handshake, MilitaryTech, Person2, Person2Rounded, Sports, SportsMartialArts, Verified } from '@mui/icons-material';
 import Header from './Components/Common/Header';
@@ -42,17 +41,6 @@ import LiveMatch from './Components/Common/LiveMatch';
 function App() {
 
   const sidebar = {
-    sAdmin: {
-      icon: [
-        Dashboard
-      ],
-      sidebarRoute: [
-        "sadmindashboard"
-      ],
-      name: [
-        "Super Admin Dashboard"
-      ]
-    },
     admin: {
       icon: [
         Dashboard,
@@ -74,7 +62,7 @@ function App() {
         "Category",
         "Verify Coordinator",
         "Referee List",
-        "Manage Tounament",
+        "Manage Tournament",
         "Match Details"
       ]
     },
@@ -115,24 +103,9 @@ function App() {
     }
   }
 
-  const { admin, coordinator, sAdmin } = sidebar
+  const { admin, coordinator } = sidebar
 
   const router = createBrowserRouter([
-    {
-      path: "/sAdmin",
-      element: (<Header link="sAdmin" icons={sAdmin.icon} sidebarRoute={sAdmin.sidebarRoute} name={sAdmin.name} />
-      ),
-      children: [
-        {
-          index: true,
-          element: <SAdminDashboard />,
-        },
-        {
-          path: "sdashboard",
-          element: <SAdminDashboard />
-        }
-      ]
-    },
     {
       path: "/admin",
       element: (
@@ -232,13 +205,13 @@ function App() {
         }, {
           path: "GenerateOtp/:mid/:matchGroup",
           element: (<GenerateOtp />)
-        },{
+        }, {
           path: "AddRound/:mid/:matchGroup",
           element: (<AddRound />)
-        },{
+        }, {
           path: "EndMatch/:mid/:matchGroup/:rounds",
           element: (<EndMatch />)
-        },{
+        }, {
           path: "EndRoundModel/:mid/:matchGroup/:rounds",
           element: (<EndRoundModel />)
         }
@@ -265,7 +238,6 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      {/* for react tostify */}
       <ToastContainer
         position="top-right"
         autoClose={3000}

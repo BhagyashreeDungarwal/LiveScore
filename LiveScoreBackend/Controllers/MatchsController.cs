@@ -315,6 +315,7 @@ namespace LiveScore.Controllers
                     .Include(c => c.Category)
                     .Include(o => o.AthleteBlueObj)
                     .Include(o => o.AthleteRedObj)
+                    .Include(t => t.Tournament)
                     .Where(m => (m.MatchStatus == "Live" || m.MatchStatus == "Upcoming") &&
                                 m.MatchDate.HasValue &&
                                 m.MatchDate.Value.Date == today)
@@ -327,6 +328,7 @@ namespace LiveScore.Controllers
                         athleteBlue = a.AthleteBlueObj.AthleteName,
                         athleteRedImg = a.AthleteRedObj.ImageUrl,
                         athleteBlueImg = a.AthleteBlueObj.ImageUrl,
+                        Tournament = a.Tournament.TournamentName,
                         matchStatus = a.MatchStatus
                     })
                     .ToListAsync();

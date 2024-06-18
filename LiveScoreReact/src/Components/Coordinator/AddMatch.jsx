@@ -17,6 +17,7 @@ import { useState } from "react";
 import { GetCategory, GetTournament } from "../Apis/Admin";
 import { GetAthleteByCategoryAndGender } from "../Apis/Coordinator";
 import { AddMatchApi, clearMessage } from "../../Redux/CoordinatorRedux";
+import ProtectedRoute from "../../ProtectedRoute";
 
 
 
@@ -526,4 +527,4 @@ const AddMatch = () => {
   )
 }
 
-export default AddMatch
+export default ProtectedRoute(AddMatch,"coordinator")

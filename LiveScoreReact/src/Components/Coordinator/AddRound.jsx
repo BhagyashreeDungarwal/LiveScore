@@ -6,6 +6,7 @@ import { RoundPostApi, clearMessage } from '../../Redux/CoordinatorRedux';
 import { useFormik } from 'formik';
 import { RoundValidate } from '../Validation/Coordinator';
 import { toast } from 'react-toastify';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 const style = {
@@ -104,4 +105,4 @@ const AddRound = () => {
   )
 }
 
-export default AddRound
+export default ProtectedRoute(AddRound,"coordinator")

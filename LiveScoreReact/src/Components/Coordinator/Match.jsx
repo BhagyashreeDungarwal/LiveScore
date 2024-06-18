@@ -13,6 +13,7 @@ import { GetMatch } from "../Apis/Coordinator";
 import { clearMessage } from "../../Redux/CoordinatorRedux";
 import { Link } from "react-router-dom";
 import { GetMatchHistory } from "../Apis/Common";
+import ProtectedRoute from "../../ProtectedRoute";
 
 
 function CustomToolbar() {
@@ -343,4 +344,4 @@ const Match = () => {
   )
 }
 
-export default Match
+export default ProtectedRoute(Match,"coordinator")

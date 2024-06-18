@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { GetAthleteById } from '../Apis/Coordinator'
 import { AthletePutPicApi, clearMessage } from '../../Redux/CoordinatorRedux'
+import ProtectedRoute from '../../ProtectedRoute'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -119,4 +120,4 @@ const EditAtheleteProfile = () => {
   )
 }
 
-export default EditAtheleteProfile
+export default ProtectedRoute(EditAtheleteProfile,"coordinator")

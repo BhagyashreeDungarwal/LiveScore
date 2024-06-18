@@ -188,6 +188,9 @@ const AdminDashboard = () => {
                     athleteBlueName={data.athleteBlue}
                     athleteRedImg={data.athleteRedImg}
                     athleteBlueImg={data.athleteBlueImg}
+                    matchGroup={data.matchGroup}
+                    mid={data.mid}
+                    matchStatus={data.matchStatus}
                   />
                 ))}
               </Slider>

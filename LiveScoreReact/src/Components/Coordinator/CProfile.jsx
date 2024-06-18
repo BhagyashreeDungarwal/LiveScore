@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
 import { GetCoordinatorProfile } from '../Apis/Coordinator'
 import { CoordinatorUpdateProfileApi, CoordinatorUpdateProfilePicApi, clearMessage } from '../../Redux/CoordinatorRedux'
+import ProtectedRoute from '../../ProtectedRoute'
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,7 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const CProfile = () => {
   const theme = useTheme()
-  const { data, error ,loading } = useSelector((state) => state.coordinator);
+  const { data, error, loading } = useSelector((state) => state.coordinator);
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
@@ -55,8 +56,10 @@ const CProfile = () => {
 
 
   useEffect(() => {
-    if (data) {
+    if (data && data.msg) {
       toast.success(data.msg);
+
+      localStorage.setItem("Img", data.img);
       dispatch(clearMessage())
       getCoordinatorProfile()
     }
@@ -86,7 +89,7 @@ const CProfile = () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
-      dispatch(CoordinatorUpdateProfilePicApi({ values: formData, id:cid }))
+      dispatch(CoordinatorUpdateProfilePicApi({ values: formData, id: cid }))
       getCoordinatorProfile()
       dispatch(clearMessage())
       handleClose();
@@ -187,7 +190,7 @@ const CProfile = () => {
                   fullWidth
                   onClick={handleUpdateImage}
                   startIcon={<AddPhotoAlternateRounded />}>
-                 {loading ? 'Updating...' : 'Update '}
+                  {loading ? 'Updating...' : 'Update '}
                 </Button>
 
               </DialogContent>
@@ -366,4 +369,4 @@ const CProfile = () => {
   )
 }
 
-export default CProfile
+export default ProtectedRoute(CProfile, "coordinator")

@@ -7,6 +7,7 @@ import { acr } from '../Validation/Coordinator';
 import {  AddLocationAltRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff ,Close } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { RefereePostApi } from '../../Redux/CoordinatorRedux';
+import ProtectedRoute from '../../ProtectedRoute';
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -364,4 +365,4 @@ const AddReferee = () => {
 
 }
 
-export default AddReferee
+export default ProtectedRoute(AddReferee,"coordinator")

@@ -2,6 +2,7 @@ import { Card, CardContent, CardMedia, Typography, Box, Button, Tooltip, Fab } f
 import dayjs from 'dayjs';
 import GenerateOtp from './GenerateOtp';
 import { Link, useNavigate } from 'react-router-dom';
+import ProtectedRoute from '../../ProtectedRoute';
 
 const img_url = "http://localhost:5032/images/";
 
@@ -13,7 +14,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
   }
 
   return (
-    <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
+    <Card sx={{ maxWidth: 300, maxHeight: 230, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
       <CardContent sx={{ alignItems: "center" }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5" component="div" color="black">
@@ -67,9 +68,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
               onClick={handleNavigate}
             >
               OTP
-              {/* OTP <Pin style={{ fontSize: 40 }} /> */}
             </Button>
-            {/* <GenerateOtp matchGroup={matchGroup} mid={mid} /> */}
           </Box>
         </Box>
       </CardContent>
@@ -77,4 +76,4 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
   );
 };
 
-export default MatchAssign;
+export default ProtectedRoute(MatchAssign,"coordinator");
