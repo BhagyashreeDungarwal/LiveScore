@@ -1,54 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\LiveScore\\LiveScoreBackend\\",
+  "WorkspaceRootPath": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\matchscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\matchscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\roundscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\roundscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\scorescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\scorescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\acrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\acrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\athletescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\athletescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\coachescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\coachescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\controllers\\refereescorecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:controllers\\refereescorecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\livescore\\livescorebackend\\services\\scorehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:services\\scorehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|d:\\sem 2 project\\livescore\\livescorebackend\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A3E0AD08-B825-4DB1-8E78-22677277079E}|LiveScore.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,152 +14,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Logincontroller.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\Logincontroller.cs",
-              "RelativeDocumentMoniker": "Controllers\\Logincontroller.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\Logincontroller.cs",
-              "RelativeToolTip": "Controllers\\Logincontroller.cs",
-              "ViewState": "AQIAAD8AAAAAAAAAAAAYwFMAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T15:59:18.33Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ACRController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\ACRController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ACRController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\ACRController.cs",
-              "RelativeToolTip": "Controllers\\ACRController.cs",
-              "ViewState": "AQIAAIsBAAAAAAAAAAAiwJABAAAWAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T15:58:59.984Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAUAAAAAAAAAAAAAABwAAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T10:32:31.825Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAADAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-06-14T06:55:08.156Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "RoundsController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\RoundsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\RoundsController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\RoundsController.cs",
-              "RelativeToolTip": "Controllers\\RoundsController.cs",
-              "ViewState": "AQIAALoAAAAAAAAAAAAowCQBAAAbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T06:09:58.251Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ScoresController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\ScoresController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ScoresController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\ScoresController.cs",
-              "RelativeToolTip": "Controllers\\ScoresController.cs",
-              "ViewState": "AQIAAJwAAAAAAAAAAAAowI0AAAAbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-13T17:27:26.446Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "MatchsController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\MatchsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\MatchsController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\MatchsController.cs",
-              "RelativeToolTip": "Controllers\\MatchsController.cs",
-              "ViewState": "AQIAADMBAAAAAAAAAIA6wEoBAABAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T09:34:46.472Z",
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-06-19T17:58:38.885Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AthletesController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\AthletesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AthletesController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\AthletesController.cs",
-              "RelativeToolTip": "Controllers\\AthletesController.cs",
-              "ViewState": "AQIAAHkBAAAAAAAAAAAAwH8BAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:38:05.322Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CategoriesController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\CategoriesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CategoriesController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\CategoriesController.cs",
-              "RelativeToolTip": "Controllers\\CategoriesController.cs",
-              "ViewState": "AQIAAGIAAAAAAAAAAAAswFgAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:44:38.31Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CoachesController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\CoachesController.cs",
-              "RelativeDocumentMoniker": "Controllers\\CoachesController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\CoachesController.cs",
-              "RelativeToolTip": "Controllers\\CoachesController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-16T12:44:37.097Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RefereeScoreController.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\RefereeScoreController.cs",
-              "RelativeDocumentMoniker": "Controllers\\RefereeScoreController.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\RefereeScoreController.cs",
-              "RelativeToolTip": "Controllers\\RefereeScoreController.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAAwCQAAAAeAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T09:11:08.502Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ScoreHub.cs",
-              "DocumentMoniker": "D:\\LiveScore\\LiveScoreBackend\\Services\\ScoreHub.cs",
-              "RelativeDocumentMoniker": "Services\\ScoreHub.cs",
-              "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Services\\ScoreHub.cs",
-              "RelativeToolTip": "Services\\ScoreHub.cs",
-              "ViewState": "AQIAAEoAAAAAAAAAAAAqwFcAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T05:29:03.1Z"
             }
           ]
         }

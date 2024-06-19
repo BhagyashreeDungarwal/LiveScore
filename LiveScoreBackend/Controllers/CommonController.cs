@@ -91,6 +91,7 @@ namespace LiveScore.Controllers
                 .Include(m => m.Category)
                 .Include(m => m.AthleteRedObj)
                 .Include(m => m.AthleteBlueObj)
+
                 .ToListAsync();
 
             var winners = todaysMatches

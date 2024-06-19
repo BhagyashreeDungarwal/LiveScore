@@ -9,8 +9,14 @@ class AthleteDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Athlete Details'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.transparent,
+        elevation: 0, // Removes the shadow
+        title: Text(
+          "Athlete Details",
+          style: TextStyle(
+            color: Colors.black87, // Text color of the title
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -35,7 +41,7 @@ class AthleteDetails extends StatelessWidget {
                         radius: 55,
                         backgroundImage: athlete['imageUrl'] != null
                             ? NetworkImage(
-                                'http://192.168.0.106:5032/images/${athlete['imageUrl']}',
+                                'http://192.168.0.101:5032/images/${athlete['imageUrl']}',
                               )
                             : null,
                         child: athlete['imageUrl'] == null

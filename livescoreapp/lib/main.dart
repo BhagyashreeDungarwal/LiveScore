@@ -3,6 +3,7 @@ import 'package:livescoreapp/Screens/AthleteScreen.dart';
 import 'package:livescoreapp/Screens/MListScreen.dart';
 import 'package:livescoreapp/Screens/SearchScreen.dart';
 import 'package:livescoreapp/Screens/SplashScreen.dart';
+import 'package:livescoreapp/Screens/Winner.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -16,12 +17,14 @@ List<IconData> navIcons = [
   Icons.home,
   Icons.search,
   Icons.person,
+  Icons.star,
 ];
 
 List<String> navTitle = [
   "Home",
   "Search",
   "Players",
+  "Winner",
 ];
 
 int selectedIndex = 0;
@@ -82,9 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
       case 0:
         return MListScreen();
       case 1:
-        return SearchScreen(); // Add your Search screen here
+        return SearchScreen();
       case 2:
-        return AthleteScreen(); // Add your Athlete screen here
+        return AthleteScreen();
+      case 3:
+        return Winner();
       default:
         return Container();
     }

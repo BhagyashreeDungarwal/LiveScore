@@ -18,12 +18,7 @@ class MatchScorePage extends StatefulWidget {
 }
 
 class _MatchScorePageState extends State<MatchScorePage> {
-  late Future<Map<String, dynamic>> _matchDetails;
-  Map<String, dynamic>? _liveScore;
-  int _currentRound = 0; // Track the current round number
-  String? _roundWinner; // Track the winner of the round
-
-  late signalr.HubConnection _hubConnection;
+  late Future<Map<String, dynamic>?> _matchDetails; // Changed to nullable map
 
   @override
   void initState() {
@@ -32,9 +27,22 @@ class _MatchScorePageState extends State<MatchScorePage> {
     _initSignalRConnection();
   }
 
+  Map<String, dynamic>? _liveScore = {
+    'totalRedPoints': 0,
+    'totalBluePoints': 0,
+    'RedPenalty': 0,
+    'BluePenalty': 0,
+  };
+
+  int _currentRound = 1;
+  int _lastRound = 0;
+  String? _roundWinner;
+
+  late signalr.HubConnection _hubConnection;
+
   void _initSignalRConnection() async {
     _hubConnection = signalr.HubConnectionBuilder()
-        .withUrl('http://192.168.0.106:5032/scorehub')
+        .withUrl('http://192.168.0.101:5032/scorehub')
         .build();
 
     _hubConnection.on('ReceiveTotalScore',
@@ -44,26 +52,26 @@ class _MatchScorePageState extends State<MatchScorePage> {
       if (parameters != null && parameters.isNotEmpty) {
         int round = parameters[0] as int;
         setState(() {
-          _currentRound = round;
+          if (round != _currentRound) {
+            _currentRound = round;
+            _resetScoresForNewRound();
+          }
         });
         print('Received round: $round');
-        // Optionally update UI or other logic based on received round
       }
     });
-
 
     _hubConnection.on('ReceiveRoundWinner', (List<Object?>? parameters) {
       if (parameters != null && parameters.isNotEmpty) {
         dynamic roundWinner = parameters[0];
         setState(() {
-          _roundWinner = roundWinner.toString();
+          _roundWinner = 'Round $_currentRound: $roundWinner';
         });
         print('Received round winner: $roundWinner');
-        // Optionally show a snackbar or toast with the winner information
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Winner of the round: $_roundWinner'),
-            duration: Duration(seconds: 3), // Adjust duration as needed
+            content: Text(_roundWinner!),
+            duration: Duration(seconds: 3),
           ),
         );
       }
@@ -75,9 +83,22 @@ class _MatchScorePageState extends State<MatchScorePage> {
       await _hubConnection
           .invoke('JoinGroup', args: [widget.matchGroup.toString()]);
       await _hubConnection.invoke('GetTotalScore', args: [widget.matchGroup]);
+      await _hubConnection
+          .invoke('GetRounds', args: [widget.matchGroup, _currentRound]);
     } catch (error) {
       print('Error establishing SignalR connection: $error');
     }
+  }
+
+  void _resetScoresForNewRound() {
+    setState(() {
+      _liveScore = {
+        'totalRedPoints': 0,
+        'totalBluePoints': 0,
+        'RedPenalty': 0,
+        'BluePenalty': 0,
+      };
+    });
   }
 
   void _handleMatchScoreUpdate(List<Object?>? parameters) {
@@ -89,19 +110,28 @@ class _MatchScorePageState extends State<MatchScorePage> {
         _liveScore = {
           'totalRedPoints': scoreData['totalRedPoints'],
           'totalBluePoints': scoreData['totalBluePoints'],
-          'RedPenalty': scoreData['RedPenalty'],
-          'BluePenalty': scoreData['BluePenalty'],
+          'RedPenalty': scoreData['redPanelty'],
+          'BluePenalty': scoreData['bluePanelty'],
         };
       });
     }
   }
 
-  Future<Map<String, dynamic>> _fetchMatchDetails() async {
+  Future<Map<String, dynamic>?> _fetchMatchDetails() async {
     try {
       final response = await http.get(Uri.parse(
-          'http://192.168.0.106:5032/api/Matchs/GetMatchById/${widget.matchId}'));
+          'http://192.168.0.101:5032/api/Matchs/GetMatchById/${widget.matchId}'));
+
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final matchDetails = jsonDecode(response.body);
+
+        // Assuming matchStatus is a key in matchDetails
+        if (matchDetails['matchStatus'] == 'Live') {
+          return matchDetails;
+        } else {
+          // If matchStatus is not Live, return null or empty map
+          return null; // or return {}; depending on how you handle it
+        }
       } else {
         throw Exception(
             'Failed to load match details. Server responded with status code: ${response.statusCode}');
@@ -112,6 +142,20 @@ class _MatchScorePageState extends State<MatchScorePage> {
     }
   }
 
+  Future<void> _refreshMatchDetails() async {
+    setState(() {
+      _matchDetails = _fetchMatchDetails();
+    });
+
+    try {
+      await _hubConnection.invoke('GetTotalScore', args: [widget.matchGroup]);
+      await _hubConnection
+          .invoke('GetRounds', args: [widget.matchGroup, _currentRound]);
+    } catch (error) {
+      print('Error refreshing SignalR data: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,90 +163,109 @@ class _MatchScorePageState extends State<MatchScorePage> {
         title: Text('Live Score'),
         centerTitle: true,
         backgroundColor: Colors.blue,
-        elevation: 0, // Removes elevation
+        elevation: 0,
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: _matchDetails,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text('No data available'));
-          } else {
-            final matchDetails = snapshot.data!;
-            return Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.blueAccent, Colors.indigo],
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      '${matchDetails['athleteRed']} vs ${matchDetails['athleteBlue']}',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+      body: RefreshIndicator(
+        onRefresh: _refreshMatchDetails,
+        child: FutureBuilder<Map<String, dynamic>?>(
+          future: _matchDetails,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.data == null) {
+              return Center(
+                  child: Text(
+                      'Match is not live')); // Show message if match is not live
+            } else {
+              final matchDetails = snapshot.data!;
+              return Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.blueAccent, Colors.indigo],
                   ),
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        '${matchDetails['athleteRed']} vs ${matchDetails['athleteBlue']}',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 20),
-                            _buildTeamScores(matchDetails),
-                            SizedBox(height: 20),
-                            _buildScoreDetails(
-                                'Red Penalty', _liveScore?['RedPenalty'] ?? 0),
-                            SizedBox(height: 12),
-                            _buildScoreDetails('Blue Penalty',
-                                _liveScore?['BluePenalty'] ?? 0),
-                            SizedBox(height: 20),
-                            Text(
-                              'Round: $_currentRound',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            if (_roundWinner != null)
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        child: SingleChildScrollView(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 20),
+                              _buildTeamScores(matchDetails),
+                              SizedBox(height: 20),
+                              _buildScoreDetails('Red Penalty',
+                                  _liveScore?['RedPenalty'] ?? 0),
+                              SizedBox(height: 12),
+                              _buildScoreDetails('Blue Penalty',
+                                  _liveScore?['BluePenalty'] ?? 0),
+                              SizedBox(height: 20),
                               Text(
-                                'Winner of the Round: $_roundWinner',
+                                'Round: $_currentRound',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.green,
+                                  color: Colors.black,
                                 ),
                               ),
-                          ],
+                              SizedBox(height: 20),
+                              if (_roundWinner != null)
+                                Column(
+                                  children: [
+                                    Text(
+                                      'Round $_currentRound Winner:',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      _roundWinner!,
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }
-        },
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
@@ -211,15 +274,21 @@ class _MatchScorePageState extends State<MatchScorePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _buildTeamScore('${matchDetails['athleteRed']}',
-            _liveScore?['totalRedPoints'], Colors.red),
-        _buildTeamScore('${matchDetails['athleteBlue']}',
-            _liveScore?['totalBluePoints'], Colors.blue),
+        _buildTeamScore(
+            '${matchDetails['athleteRed']}',
+            _liveScore?['totalRedPoints'],
+            _liveScore?['RedPenalty'],
+            Colors.red),
+        _buildTeamScore(
+            '${matchDetails['athleteBlue']}',
+            _liveScore?['totalBluePoints'],
+            _liveScore?['BluePenalty'],
+            Colors.blue),
       ],
     );
   }
 
-  Widget _buildTeamScore(String team, dynamic score, Color color) {
+  Widget _buildTeamScore(String team, int score, int penalty, Color color) {
     return Column(
       children: [
         Text(
@@ -230,10 +299,19 @@ class _MatchScorePageState extends State<MatchScorePage> {
             color: color,
           ),
         ),
+        SizedBox(height: 8), // Adjust spacing between score and penalty
         Text(
-          '${score ?? 0}',
+          '$score',
           style: TextStyle(
             fontSize: 48,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        Text(
+          'Penalty: $penalty', // Display penalty below the score
+          style: TextStyle(
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             color: color,
           ),
@@ -243,26 +321,26 @@ class _MatchScorePageState extends State<MatchScorePage> {
   }
 
   Widget _buildScoreDetails(String label, int score) {
+    IconData iconData;
+    Color iconColor;
+
+    switch (label) {
+      case 'Red Penalty':
+        iconData = Icons.warning;
+        iconColor = Colors.red;
+        break;
+      case 'Blue Penalty':
+        iconData = Icons.warning;
+        iconColor = Colors.blue;
+        break;
+      default:
+        iconData = Icons.error;
+        iconColor = Colors.black;
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-        Text(
-          '$score',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-      ],
+      children: [],
     );
   }
 

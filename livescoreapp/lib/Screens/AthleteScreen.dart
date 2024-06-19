@@ -26,7 +26,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
     });
     try {
       final response = await http
-          .get(Uri.parse('http://192.168.0.106:5032/api/Athletes/getAthelete'));
+          .get(Uri.parse('http://192.168.0.101:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
@@ -54,6 +54,16 @@ class _AthleteScreenState extends State<AthleteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0, // Removes the shadow
+        title: Text(
+          "Athlete List",
+          style: TextStyle(
+            color: Colors.black87, // Text color of the title
+          ),
+        ),
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
@@ -73,7 +83,7 @@ class _AthleteScreenState extends State<AthleteScreen> {
                         itemBuilder: (context, index) {
                           final athlete = _athletes![index];
                           final imageUrl = athlete['imageUrl'] != null
-                              ? 'http://192.168.0.106:5032/images/${athlete['imageUrl']}'
+                              ? 'http://192.168.0.101:5032/images/${athlete['imageUrl']}'
                               : null;
                           return GestureDetector(
                             onTap: () {
