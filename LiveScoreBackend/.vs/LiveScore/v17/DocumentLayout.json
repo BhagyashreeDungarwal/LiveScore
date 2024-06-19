@@ -106,8 +106,7 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-06-14T06:55:08.156Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-14T06:55:08.156Z"
             },
             {
               "$type": "Document",
@@ -119,8 +118,7 @@
               "RelativeToolTip": "Controllers\\RoundsController.cs",
               "ViewState": "AQIAALoAAAAAAAAAAAAowCQBAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-14T06:09:58.251Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-14T06:09:58.251Z"
             },
             {
               "$type": "Document",
@@ -132,8 +130,7 @@
               "RelativeToolTip": "Controllers\\ScoresController.cs",
               "ViewState": "AQIAAJwAAAAAAAAAAAAowI0AAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-13T17:27:26.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-13T17:27:26.446Z"
             },
             {
               "$type": "Document",
@@ -143,7 +140,7 @@
               "RelativeDocumentMoniker": "Controllers\\MatchsController.cs",
               "ToolTip": "D:\\LiveScore\\LiveScoreBackend\\Controllers\\MatchsController.cs",
               "RelativeToolTip": "Controllers\\MatchsController.cs",
-              "ViewState": "AQIAADMBAAAAAAAAAAAnwEoBAABAAAAA",
+              "ViewState": "AQIAADMBAAAAAAAAAIA6wEoBAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-14T09:34:46.472Z",
               "EditorCaption": ""

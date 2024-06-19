@@ -1,5 +1,5 @@
 import { AccessTimeFilledRounded, Category, Close, DateRangeRounded, DonutLargeRounded, EmojiEventsRounded, ModeStandbyRounded, RestartAltRounded, SportsGymnasticsRounded, SportsMartialArtsRounded, } from "@mui/icons-material";
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select,  TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputAdornment, InputLabel, MenuItem, Modal, OutlinedInput, Radio, RadioGroup, Select, TextField, Typography, useTheme } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -157,7 +157,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
+  width: {lg:'50%',md:"50%",sm:"60%",xs:"80%"},
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 14,
@@ -215,7 +215,7 @@ const AddMatch = () => {
   const handleNext = () => {
     if (activeStep === steps.length - 1) {
       console.log('last step');
-      alert('Form submitted successfully!'); 
+      alert('Form submitted successfully!');
     } else {
       setActiveStep((prevStep) => prevStep + 1);
     }
@@ -474,33 +474,33 @@ const AddMatch = () => {
                         />
                         {errors.MatchDate && touched.MatchDate ? (<Typography variant="subtitle1" color="error">{errors.MatchDate}</Typography>) : null}
                       </Grid>
-                      
+
                       <Grid item xl={12} md={12} sm={12} xs={12}>
-                                <FormControl fullWidth variant="standard">
-                                    <InputLabel id="matchType-label">Match Type</InputLabel>
-                                    <Select
-                                        id="MatchType"
-                                        name="MatchType"
-                                        label="Match Type"
-                                        fullWidth
-                                        variant="standard"
-                                        value={values.MatchType}
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        startAdornment={
-                                            <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }}>
-                                                <ModeStandbyRounded />
-                                            </InputAdornment>
-                                        }
-                                    >
-                                        <MenuItem value="Preliminary">Preliminary</MenuItem>
-                                        <MenuItem value="Quarter-Final">Quarter-Final</MenuItem>
-                                        <MenuItem value="Semi-Final">Semi-Final</MenuItem>
-                                        <MenuItem value="Final">Final</MenuItem>
-                                    </Select>
-                                    {errors.MatchType && touched.MatchType ? (<Typography variant="subtitle1" color="error">{errors.MatchType}</Typography>) : null}
-                                </FormControl>
-                            </Grid>
+                        <FormControl fullWidth variant="standard">
+                          <InputLabel id="matchType-label">Match Type</InputLabel>
+                          <Select
+                            id="MatchType"
+                            name="MatchType"
+                            label="Match Type"
+                            fullWidth
+                            variant="standard"
+                            value={values.MatchType}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            startAdornment={
+                              <InputAdornment position="start" sx={{ color: theme.palette.secondary.dark }}>
+                                <ModeStandbyRounded />
+                              </InputAdornment>
+                            }
+                          >
+                            <MenuItem value="Preliminary">Preliminary</MenuItem>
+                            <MenuItem value="Quarter-Final">Quarter-Final</MenuItem>
+                            <MenuItem value="Semi-Final">Semi-Final</MenuItem>
+                            <MenuItem value="Final">Final</MenuItem>
+                          </Select>
+                          {errors.MatchType && touched.MatchType ? (<Typography variant="subtitle1" color="error">{errors.MatchType}</Typography>) : null}
+                        </FormControl>
+                      </Grid>
                       <Grid item lg={12} md={12} sm={12} xs={12}>
 
                         <Grid item sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", }}>
@@ -527,4 +527,4 @@ const AddMatch = () => {
   )
 }
 
-export default ProtectedRoute(AddMatch,"coordinator")
+export default ProtectedRoute(AddMatch, "coordinator")

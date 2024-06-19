@@ -47,8 +47,8 @@ const Index = () => {
             alt="Live Score"
             sx={{
               display: { xs: 'flex', md: 'flex' },
-              width: {lg:'12vw',sm:"10vw",xs:"20vw",md:"20vw"},
-              width: {lg:'20vh',sm:"10vh",xs:"15vh",md:"20vh"},
+              width: {lg:'12vw',sm:"10vw",xs:"30vw",md:"20vw"},
+              height: {lg:'12vh',sm:"12vh",xs:"10vh",md:"20vh"},
               // height: '12vh',
               marginRight: 2,
             }}

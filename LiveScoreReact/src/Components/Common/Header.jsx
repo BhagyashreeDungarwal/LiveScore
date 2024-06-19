@@ -6,11 +6,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Drawer, IconButton, List, ListItem, ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem, Toolbar, Tooltip, Typography, Avatar } from '@mui/material';
 import { useTheme } from '@mui/material/styles'
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { LogoutRounded, MenuRounded, Person2Rounded } from '@mui/icons-material';
+import { LogoutRounded, MenuRounded } from '@mui/icons-material';
 import logo from "../Images/Logof.png"
 
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon, sideRouteLink }) => {
     const theme = useTheme()
@@ -114,7 +114,6 @@ const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon
             >
                 <Toolbar>
                     <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: "center", width: '100%' }}>
-
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
