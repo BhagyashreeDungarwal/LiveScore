@@ -36,6 +36,8 @@ import AddRound from './Components/Coordinator/AddRound';
 import EndMatch from './Components/Coordinator/EndMatch';
 import EndRoundModel from './Components/Coordinator/EndRoundModel';
 import LiveMatch from './Components/Common/LiveMatch';
+import ReviewMatch from './Components/Coordinator/ReviewMatch';
+import EditScore from './Components/Coordinator/EditScore';
 
 
 function App() {
@@ -214,7 +216,13 @@ function App() {
         }, {
           path: "EndRoundModel/:mid/:matchGroup/:rounds",
           element: (<EndRoundModel />)
-        }
+        }, {
+          path: "ReviewMatch",
+          element: (<ReviewMatch />)
+        }, {
+          path: "editscore/:id",
+          element: (<EditScore />)
+        }, 
       ]
     },
     {

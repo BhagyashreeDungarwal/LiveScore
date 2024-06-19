@@ -280,7 +280,7 @@ export const MatchPutApi = createAsyncThunk(
 );
 export const updateRound = createAsyncThunk(
     'coordinator/updateRound',
-    async ({ values, mid , rounds }, { rejectWithValue }) => {
+    async ({ values, mid, rounds }, { rejectWithValue }) => {
         try {
             const { data } = await axios.post(`${url}/Rounds/updateRound/${mid}/${rounds}`, values, {
                 headers: {
@@ -309,13 +309,45 @@ export const updateNextMatchIdApi = createAsyncThunk(
         }
     }
 );
+export const ScorePutApi = createAsyncThunk(
+    'coordinator/editscore',
+    async ({ id, values }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.put(`${url}/Scores/EditTemporaryScore/${id}`, values, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+export const ReviewMatchApi = createAsyncThunk(
+    'coordinator/reviewMatch', // action type prefix
+    async (_, { rejectWithValue }) => { // destructure correctly
+        try {
+            const { data } = await axios.get(`${url}/Scores/GetTemporaryScores`, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            return data;
+        } catch (error) {
+            // Use rejectWithValue to provide additional information on failure
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 const initialState = {
     data: [],
     loading: false,
     error: null,
     blockData: null,
-    verifyData: null
+    verifyData: null,
+    reviewMatch:[]
 }
 
 const CoordinatorSlice = createSlice({
@@ -552,6 +584,28 @@ const CoordinatorSlice = createSlice({
                 state.loading = false;
             })
             .addCase(updateNextMatchIdApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            }).addCase(ScorePutApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(ScorePutApi.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(ScorePutApi.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            }).addCase(ReviewMatchApi.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(ReviewMatchApi.fulfilled, (state, action) => {
+                state.reviewMatch = action.payload;
+                state.loading = false;
+            })
+            .addCase(ReviewMatchApi.rejected, (state, action) => {
                 state.error = action.payload;
                 state.loading = false;
             })

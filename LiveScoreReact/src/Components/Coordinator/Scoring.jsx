@@ -9,6 +9,7 @@ import EndRoundModel from './EndRoundModel';
 import { toast } from 'react-toastify';
 import ProtectedRoute from '../../ProtectedRoute';
 import { useDispatch } from 'react-redux';
+import ReviewMatch from './ReviewMatch';
 const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
@@ -23,6 +24,7 @@ const Scoring = () => {
     const [scoreBlue, setScoreBlue] = useState(0)
     const [matchData, setMatchData] = useState(null);
     const [isDisable, setIsDisable] = useState(false)
+    const [isReview, setIsReview] = useState(false)
     const athleteRed = matchData ? matchData.athleteRedId : "";
     const athleteBlue = matchData ? matchData.athleteBlueId : "";
     const mid = matchData ? matchData.mid : "";
@@ -43,15 +45,10 @@ const Scoring = () => {
         BluePanelty: 0
     })
 
-<<<<<<< Updated upstream
-    const handleEndRound = () => {
-      navigate(`/coordinator/EndRoundodel/${mid}/${matchGroup}/${rounds}`)
-=======
     const handleEndRound = async () => {
         await ScoreTransfer(mid)
         // dispatch(updateRound({ values, mid, rounds }))
       navigate(`/coordinator/EndRoundModel/${mid}/${matchGroup}/${rounds}`)
->>>>>>> Stashed changes
     }
     
 
@@ -157,6 +154,7 @@ const Scoring = () => {
             })
                 .catch(err => console.error('StartCountdown request failed: ', err));
             setIsDisable(false)
+            setIsReview(false)
         }
     };
 
@@ -170,6 +168,7 @@ const Scoring = () => {
             })
                 .catch(err => console.error('PauseCountdown request failed: ', err));
             setIsDisable(true)
+            setIsReview(true)
         }
     };
 
@@ -182,6 +181,7 @@ const Scoring = () => {
             })
                 .catch(err => console.error('ResumeCountdown request failed: ', err));
             setIsDisable(false)
+            setIsReview(false)
         }
     };
 
@@ -358,7 +358,6 @@ const Scoring = () => {
                     </Grid>
                     <Grid item xs={4} md={4} lg={4} sm={4}>
                         <Grid container spacing={2}>
-
                             <Grid item xs={6} md={6} lg={6} sm={6}>
                                 <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "12vh", width: "10vw", borderRadius: "30px", fontSize: "8vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} >
                                     +1
@@ -383,12 +382,14 @@ const Scoring = () => {
                     </Grid >
                 </>
                 }
-                <Grid item sm={12} xl={8} md={8} lg={8} xs={12}>
+                <Grid item sm={12} xl={8} md={8} lg={8} xs={12} sx={{display:'flex', justifyContent:'space-evenly'}}>
                     <Button variant="contained" color="primary" onClick={handleEndRound} >
                       End Round
                     </Button>
-                    {/* <EndRoundModel mid={mid} athleteRed={matchData ? matchData.athleteRed : ""} athleteBlue={matchData ? matchData.athleteBlue : ""} athleteRedId={athleteRed} athleteBlueId={athleteBlue} matchGroup={matchGroup}  rounds={rounds} /> */}
-                </Grid>
+                    {
+                        isReview ? <ReviewMatch  /> : " "
+                    }
+                 </Grid>
             </Grid>
         </Box>
     );
