@@ -1,10 +1,7 @@
 import { Card, CardContent, CardMedia, Typography, Box, Button, Tooltip, Fab } from '@mui/material';
 import dayjs from 'dayjs';
-import GenerateOtp from './GenerateOtp';
 import { Link, useNavigate } from 'react-router-dom';
 import ProtectedRoute from '../../ProtectedRoute';
-
-const img_url = "http://localhost:5032/images/";
 
 const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup, mid }) => {
   const formattedDate = dayjs(matchDate).format('MMM D, YYYY');
@@ -28,7 +25,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
           <Box display="flex" flexDirection="column" alignItems="center">
             <CardMedia
               component="img"
-              image={`${img_url}${athleteRedImg}`}
+              image={`/images/${athleteRedImg}`}
               alt="Athlete Red"
               sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
             />
@@ -42,7 +39,7 @@ const MatchAssign = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName,
           <Box display="flex" flexDirection="column" alignItems="center">
             <CardMedia
               component="img"
-              image={`${img_url}${athleteBlueImg}`}
+              image={`/images/${athleteBlueImg}`}
               alt="Athlete Blue"
               sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 2 }}
             />

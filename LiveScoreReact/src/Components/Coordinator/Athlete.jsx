@@ -60,13 +60,14 @@ const Athlete = () => {
     getAthlete()
   }
 
-  const img_url = "http://localhost:5032/images/";
+ 
+  
 
   const columns = useMemo(() => [
     {
       field: "imageUrl", headerName: "Avatar", width: 64, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editAthletePic/${params.row.id}`}><Avatar src={`${img_url}${params.value}`} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editAthletePic/${params.row.id}`}><Avatar src={`/images/${params.value}`} alt="Avatar" /></Link>
       ),
     },
 

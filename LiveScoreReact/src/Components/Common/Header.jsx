@@ -18,7 +18,6 @@ const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon
     const [isClosing, setIsClosing] = React.useState(false);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-    const img_url = "http://localhost:5032/ACR/";
     const img = localStorage.getItem("Img");
 
     // for logout
@@ -132,7 +131,7 @@ const Header = ({ link, icons, sidebarRoute, name, sideRouterName, sideRouteIcon
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     {/* <People/> */}
-                                    <Avatar alt="Bhagyashree" sx={{ bgcolor: "seagreen" }} src={`${img_url}${img}`} >A</Avatar>
+                                    <Avatar alt="Bhagyashree" sx={{ bgcolor: "seagreen" }} src={`/ACR/${img}`} >A</Avatar>
                                 </IconButton>
                             </Tooltip>
                             <Menu

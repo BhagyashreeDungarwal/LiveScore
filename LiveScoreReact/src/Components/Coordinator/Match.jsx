@@ -54,7 +54,6 @@ function CustomNoRowsOverlay() {
 }
 
 const Match = () => {
-  const img_url = "http://localhost:5032/images/";
   const [status, setStatus] = useState(1)
   const [match, setMatch] = useState()
   const [matchHistory, setMatchHistory] = useState()
@@ -208,14 +207,14 @@ const Match = () => {
      {
       field: "athleteRedImg", headerName: "RedImage", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-       <Avatar src={`${img_url}${params.value}`} alt="Avatar" />
+       <Avatar src={`/images/${params.value}`} alt="Avatar" />
       ),
     },
     { field: "athleteRed", headerName: "Athlete Red", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },
     {
       field: "athleteBlueImg", headerName: "BlueImage", width: 83, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-       <Avatar src={`${img_url}${params.value}`} alt="Avatar" />
+       <Avatar src={`/images/${params.value}`} alt="Avatar" />
       ),
     },
      { field: "athleteBlue", headerName: "Athlete Blue", width: 110, headerClassName: "header", headerAlign: "center", align: "center", },

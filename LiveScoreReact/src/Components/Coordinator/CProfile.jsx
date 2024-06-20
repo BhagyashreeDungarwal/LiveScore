@@ -23,7 +23,6 @@ const CProfile = () => {
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
-  const img_url = "http://localhost:5032/ACR/";
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -146,7 +145,7 @@ const CProfile = () => {
                 boxShadow: "3px 3px 6px"
               }}
               alt="The house from the offer."
-              src={image ? `${img_url}${image.imageURL}` : image}
+              src={image ? `/ACR/${image.imageURL}` : image}
             />
             <Button
               type="submit"
@@ -166,7 +165,7 @@ const CProfile = () => {
               <DialogTitle>Update Profile Picture</DialogTitle>
               <DialogContent>
 
-                <Avatar src={image ? `${img_url}${image.imageURL}` : ""} sx={{
+                <Avatar src={image ? `/ACR/${image.imageURL}` : ""} sx={{
                   height: "12rem",
                   width: "12rem",
                   margin: "auto",

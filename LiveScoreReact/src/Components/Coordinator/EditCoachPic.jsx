@@ -20,34 +20,32 @@ const EditCoachPic = () => {
   const [image, setImage] = React.useState();
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
-const { data, error } = useSelector(state => state.coordinator)
-    
-   const img_url = "http://localhost:5032/coach/";
+  const { data, error } = useSelector(state => state.coordinator)
 
-   const getCoach = async () => {
+  const getCoach = async () => {
     const { data } = await GetCoachById(id)
     data && setImage(data)
-}
-   useEffect(() => {
-  getCoach()
+  }
+  useEffect(() => {
+    getCoach()
   }, [])
 
   const handleClose = () => {
     navigate("/coordinator/coach")
   };
-useEffect(() => {
-        if (data && data.msg) {
-            toast.success(data.msg)
-            dispatch(clearMessage())
-            navigate("/coordinator/coach")
-        }
-        if (error) {
-            toast.error(error.msg)
-            dispatch(clearMessage())
-        }
-    }, [data, error, navigate, dispatch])
+  useEffect(() => {
+    if (data && data.msg) {
+      toast.success(data.msg)
+      dispatch(clearMessage())
+      navigate("/coordinator/coach")
+    }
+    if (error) {
+      toast.error(error.msg)
+      dispatch(clearMessage())
+    }
+  }, [data, error, navigate, dispatch])
 
-  
+
 
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -66,8 +64,8 @@ useEffect(() => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile)
-      dispatch(CoachPutPicApi({id, values: formData}))
-    
+      dispatch(CoachPutPicApi({ id, values: formData }))
+
 
     } else {
       toast.error("Please First Select Image...")
@@ -95,7 +93,7 @@ useEffect(() => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={image ? `${img_url}${image.imageUrl}` : ""}
+          src={image ? `/coach/${image.imageUrl}` : ""}
           sx={{
             height: "12rem",
             width: "12rem",
@@ -125,4 +123,4 @@ useEffect(() => {
   )
 }
 
-export default ProtectedRoute(EditCoachPic,"coordinator")
+export default ProtectedRoute(EditCoachPic, "coordinator")

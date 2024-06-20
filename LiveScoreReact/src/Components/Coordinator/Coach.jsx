@@ -62,14 +62,12 @@ const Coach = () => {
     dispatch(BlockCoachApi(id))
     getCoach()
   }
-   
-  const img_url = "http://localhost:5032/coach/";
 
   const columns = useMemo(() => [
     {
       field: `imageUrl`, headerName: "Avatar", width: 60, headerClassName: "header", headerAlign: "center", align: "center",
       renderCell: (params) => (
-        <Link to={`/coordinator/editCoachPic/${params.row.coachId}`}> <Avatar src={`${img_url}${params.value}`} alt="Avatar" /></Link>
+        <Link to={`/coordinator/editCoachPic/${params.row.coachId}`}> <Avatar src={`/coach/${params.value}`} alt="Avatar" /></Link>
       ),
     },
     { field: "coachName", headerName: "Name", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },

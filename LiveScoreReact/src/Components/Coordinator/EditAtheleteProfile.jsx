@@ -23,7 +23,6 @@ const EditAtheleteProfile = () => {
   const [selectedFile, setSelectedFile] = React.useState()
   const navigate = useNavigate()
 
-  const img_url = "http://localhost:5032/images/";
 
   const getAthleteById = async () => {
     try {
@@ -90,7 +89,7 @@ const EditAtheleteProfile = () => {
       </IconButton>
       <DialogContent>
         <Avatar
-          src={image.imageUrl ? `${img_url}${image.imageUrl}` : ""}
+          src={image.imageUrl ? `/images/${image.imageUrl}` : ""}
           sx={{
             height: "12rem",
             width: "12rem",

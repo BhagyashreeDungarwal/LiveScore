@@ -63,12 +63,12 @@ const {data, error} = useSelector(state => state.coordinator)
      dispatch(BlockRefereeApi(id))
     getRef()
   }
- const img_url = "http://localhost:5032/ACR/";
+  
 
   const columns = useMemo(() => [
     { field: "imageURL", headerName: "Avatar", width: 80, headerClassName: "header", headerAlign: "center", align: "center",
      renderCell: (params) => (
-      <Avatar src={`${img_url}${params.value}`} alt="Avatar" />
+      <Avatar src={`/ACR/${params.value}`} alt="Avatar" />
       ), },
     { field: "name", headerName: "Name", width: 100, headerClassName: "header", headerAlign: "center", align: "center" },
     { field: "email", headerName: "Email", width: 150, headerClassName: "header", headerAlign: "center", align: "center" },
