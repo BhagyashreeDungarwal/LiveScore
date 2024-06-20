@@ -22,12 +22,12 @@ export default defineConfig({
           changeOrigin: true,
           secure: false,
         },
-        // '/scoreHub': {  // Proxy for SignalR hub
-        //   target: 'http://localhost:5032',
-        //   changeOrigin: true,
-        //   secure: false,
-        //   ws: true,  // Enable WebSocket support
-        // }
+        '/scoreHub': {  // Proxy for SignalR hub
+          target: 'http://localhost:5032',
+          changeOrigin: true,
+          secure: false,
+          ws: true,  // Enable WebSocket support
+        }
     },
     port: 5173,
 }

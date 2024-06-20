@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj": {}
+    "D:\\LiveScore\\LiveScoreBackend\\LiveScore.csproj": {}
   },
   "projects": {
-    "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj": {
+    "D:\\LiveScore\\LiveScoreBackend\\LiveScore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+        "projectUniqueName": "D:\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
         "projectName": "LiveScore",
-        "projectPath": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
-        "packagesPath": "C:\\Users\\mistr\\.nuget\\packages\\",
-        "outputPath": "D:\\Sem 2 Project\\LiveScore\\LiveScoreBackend\\obj\\",
+        "projectPath": "D:\\LiveScore\\LiveScoreBackend\\LiveScore.csproj",
+        "packagesPath": "C:\\Users\\dell\\.nuget\\packages\\",
+        "outputPath": "D:\\LiveScore\\LiveScoreBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mistr\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
