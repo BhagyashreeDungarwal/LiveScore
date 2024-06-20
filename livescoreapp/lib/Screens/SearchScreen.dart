@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _fetchAthletes() async {
     try {
       final response = await http
-          .get(Uri.parse('http://192.168.0.106:5032/api/Athletes/getAthelete'));
+          .get(Uri.parse('http://192.168.0.101:5032/api/Athletes/getAthelete'));
       if (response.statusCode == 200) {
         setState(() {
           _athletes = jsonDecode(response.body);
@@ -98,7 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemBuilder: (context, index) {
                           final athlete = _filteredAthletes![index];
                           final imageUrl = athlete['imageUrl'] != null
-                              ? 'http://192.168.0.106:5032/images/${athlete['imageUrl']}'
+                              ? 'http://192.168.0.101:5032/images/${athlete['imageUrl']}'
                               : null;
                           return AnimatedContainer(
                             duration: Duration(milliseconds: 300),

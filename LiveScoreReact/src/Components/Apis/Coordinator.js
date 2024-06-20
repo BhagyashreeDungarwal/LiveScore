@@ -199,4 +199,29 @@ export const ScoreTransfer = async (mid) => {
   }
 }
 
+export const GetTemporaryScores = async () => {
+  try {
+    const data = await axios.get(`${url}/Scores/GetTemporaryScores`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data
+  } catch (error) {
+    return error
+  }
+}
 
+
+export const GetTemporaryScoreById = async (id) => {
+  try {
+    const data = await axios.get(`${url}/Scores/getTemporaryScoreById/${id}`, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    return data;
+  } catch (error) {
+    return error
+  }
+}

@@ -22,13 +22,15 @@ namespace LiveScore.Controllers
         private readonly TempDbContext _tempContext;
         private readonly ITimerService _timerService;
         private readonly IHubContext<ScoreHub> _hubContext;
+        private readonly ILogger<ScoresController> _logger;
 
-        public ScoresController(ApplicationDbContext context, TempDbContext tempContext, ITimerService timerService, IHubContext<ScoreHub> hubContext)
+        public ScoresController(ApplicationDbContext context, TempDbContext tempContext, ITimerService timerService, IHubContext<ScoreHub> hubContext, ILogger<ScoresController> logger)
         {
             _context = context;
             _tempContext = tempContext;
             _timerService = timerService;
             _hubContext = hubContext;
+            _logger = logger;
 
             // Subscribe to the TimerElapsed event
             //_timerService.TimerElapsed += async (sender, matchGroup) => await TransferScores(matchGroup);
@@ -72,6 +74,95 @@ namespace LiveScore.Controllers
                 return NotFound();
             }
             return await _tempContext.TemporaryScores.ToListAsync();
+        }
+        // Add this code to the ScoresController class
+
+        //[HttpGet("GetTemporaryScores/{matchId}")]
+        //public async Task<ActionResult<IEnumerable<TemporaryScore>>> GetTemporaryScores([FromQuery] int matchId)
+        //{
+        //    if (_tempContext.TemporaryScores == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var scores = await _tempContext.TemporaryScores
+        //                               .Where(score => score.MatchId == matchId)
+        //                               .ToListAsync();
+
+        //    if (scores == null || !scores.Any())
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return scores;
+        //}
+
+
+        // GET: api/TemporaryScore/{id}
+        [HttpGet("getTemporaryScoreById/{id}")]
+        public ActionResult<TemporaryScore> getTemporaryScoreById(int id)
+        {
+            var tempScore = _tempContext.TemporaryScores.Find(id);
+            if (tempScore == null)
+            {
+                return NotFound();
+            }
+            return tempScore;
+        }
+
+        // PUT: api/Scores/EditTemporaryScore/{id}
+        [HttpPut("EditTemporaryScore/{id}")]
+        public async Task<IActionResult> EditTemporaryScore(int id, [FromBody] TempScoreVm tempScoreVm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingTempScore = await _tempContext.TemporaryScores.FindAsync(id);
+            if (existingTempScore == null)
+            {
+                _logger.LogWarning($"Temporary score with ID {id} not found.");
+                return NotFound(new { Message = "Temporary score not found" });
+            }
+
+            // Log current state
+            _logger.LogInformation($"Current state of TemporaryScore (ID: {id}): {existingTempScore}");
+
+            // Update only the fields present in TempScoreVm
+            existingTempScore.RedPoints = tempScoreVm.RedPoints;
+            existingTempScore.BluePoints = tempScoreVm.BluePoints;
+            existingTempScore.RedPanelty = tempScoreVm.RedPanelty;
+            existingTempScore.BluePanelty = tempScoreVm.BluePanelty;
+            existingTempScore.ScoreTime = tempScoreVm.ScoreTime;
+
+            // Explicitly mark the entity as modified
+            _tempContext.Entry(existingTempScore).State = EntityState.Modified;
+
+            try
+            {
+                await _tempContext.SaveChangesAsync();
+                _logger.LogInformation($"TemporaryScore with ID {id} updated successfully.");
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!TemporaryScoreExists(id))
+                {
+                    _logger.LogError($"Concurrency issue: Temporary score with ID {id} not found during update.");
+                    return NotFound(new { Message = "Concurrency issue: Temporary score not found during update" });
+                }
+                else
+                {
+                    _logger.LogError($"Concurrency exception: {ex.Message}");
+                    throw;
+                }
+            }
+
+            return Ok(new {msg = "Successfully Update"});
+        }
+        private bool TemporaryScoreExists(int id)
+        {
+            return _tempContext.TemporaryScores.Any(e => e.TempScoreId == id);
         }
 
         [HttpGet("getTotalScore")]
