@@ -18,7 +18,6 @@ const Index = () => {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const img_url = "http://localhost:5032/ACR/";
   const img = localStorage.getItem("Img");
 
   const handleOpenUserMenu = (event) => {
@@ -63,7 +62,7 @@ const Index = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src={`${img_url}${img}`} />
+                <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src={`/ACR/${img}`} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -88,7 +87,7 @@ const Index = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-                <MenuItem   component={Link} to="#">
+                <MenuItem   component={Link} to="/Profile">
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem   onClick={handleLogout}>

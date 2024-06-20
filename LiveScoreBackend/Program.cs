@@ -13,16 +13,16 @@
     startup.ConfigureServices(builder.Services);
 
     // Configure services
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("CorsPolicy", builder =>
-        {
-            builder.WithOrigins("http://localhost:5174", "http://localhost:5173")
-                   .AllowAnyMethod()
-                   .AllowAnyHeader()
-                   .AllowCredentials();
-        });
-    });
+    //builder.Services.AddCors(options => 
+    //{
+    //    options.AddPolicy("CorsPolicy", builder =>
+    //    {
+    //        builder.WithOrigins("http://localhost:5174", "http://localhost:5173", "http://192.168.107.106:5173/", "http://192.168.107.106:5174/")
+    //               .AllowAnyMethod()
+    //               .AllowAnyHeader()
+    //               .AllowCredentials();
+    //    });
+    //});
 
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
@@ -73,7 +73,7 @@
     }
 
     app.UseStaticFiles();
-    app.UseCors("CorsPolicy");
+    //app.UseCors("CorsPolicy");
     app.UseAuthentication();
     app.UseAuthorization();
 

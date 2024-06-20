@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import globalRoute from "../Components/GlobalRoute";
 
 const initialState = {
     data: [],
@@ -8,13 +8,11 @@ const initialState = {
 }
 
 
-const url = "http://localhost:5032/api"
-
 export const validateOtpApi = createAsyncThunk('referee/validateOtp',
     async (values, { rejectWithValue }) => {
         try {
             console.log("from api")
-            const { data } = await axios.post(`${url}/Matchs/ValidateOtp`, values, {
+            const { data } = await globalRoute.post(`/Matchs/ValidateOtp`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -30,7 +28,7 @@ export const UpdateProfileApi = createAsyncThunk(
     'coordinator/updateProfile',
     async ({ id, values }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/ACR/updateCoordinator/${id}`, values, {
+            const { data } = await globalRoute.put(`/ACR/updateCoordinator/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -46,7 +44,7 @@ export const UpdateProfilePicApi = createAsyncThunk(
     'coordinator/updateProfilePic',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
+            const { data } = await globalRoute.put(`/ACR/UpdateCoordinatorImage/${id}`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }

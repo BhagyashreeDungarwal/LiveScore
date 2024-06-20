@@ -10,14 +10,15 @@ import "slick-carousel/slick/slick-theme.css";
 import { ArrowDownward } from '@mui/icons-material'
 import { GetAssignMatch, GetTodayMatch } from './Apis'
 import AssignMatchCard from './AssignMatchCard'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { clearMessageLogin } from '../Redux/LoginRedux'
 
 const CustomPrevArrow = (props) => {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style,  left: "-15px", zIndex: 1 }}
+      style={{ ...style, left: "-15px", zIndex: 1 }}
       onClick={onClick}
     />
   );
@@ -58,7 +59,7 @@ const CustomNextArrowAccordion = (props) => {
 
 const RDashboard = () => {
   const rid = localStorage.getItem("ID");
-
+  const dispatch = useDispatch()
   const getSliderSettings = (matchesLength) => ({
     dots: false,
     infinite: false,
@@ -85,6 +86,9 @@ const RDashboard = () => {
         settings: {
           slidesToShow: matchesLength < 2 ? matchesLength : 2,
           slidesToScroll: 1,
+          infinite: matchesLength > 1,
+          dots: true,
+          initialSlide: 1,
           prevArrow: <CustomPrevArrow />,
           nextArrow: <CustomNextArrow />,
         },
@@ -92,9 +96,10 @@ const RDashboard = () => {
       {
         breakpoint: 450,
         settings: {
-        slidesToShow: matchesLength < 1 ? matchesLength : 1,
-          slidesToShow: 1,
+          slidesToShow: matchesLength < 1 ? matchesLength : 1,
           slidesToScroll: 1,
+          infinite: matchesLength > 1,
+          dots: true,
           initialSlide: 1,
           prevArrow: <CustomPrevArrow />,
           nextArrow: <CustomNextArrow />,
@@ -102,7 +107,7 @@ const RDashboard = () => {
       },
     ],
   });
-
+  
   const settingsAccordion = (matchesLength) => ({
     dots: false,
     infinite: false,
@@ -129,6 +134,9 @@ const RDashboard = () => {
         settings: {
           slidesToShow: matchesLength < 2 ? matchesLength : 2,
           slidesToScroll: 1,
+          infinite: matchesLength > 1,
+          dots: true,
+          initialSlide: 1,
           prevArrow: <CustomPrevArrowAccordion />,
           nextArrow: <CustomNextArrowAccordion />,
         },
@@ -137,8 +145,9 @@ const RDashboard = () => {
         breakpoint: 450,
         settings: {
           slidesToShow: matchesLength < 1 ? matchesLength : 1,
-          // slidesToShow: 1,
           slidesToScroll: 1,
+          infinite: matchesLength > 1,
+          dots: true,
           initialSlide: 1,
           prevArrow: <CustomPrevArrowAccordion />,
           nextArrow: <CustomNextArrowAccordion />,
@@ -146,6 +155,7 @@ const RDashboard = () => {
       },
     ],
   });
+  
   const [todayMatch, setTodayMatch] = useState([]);
   const [assignMatch, setAssignMatch] = useState([]);
 
@@ -177,6 +187,7 @@ const RDashboard = () => {
   };
 
   useEffect(() => {
+    dispatch(clearMessageLogin())
     TodaysMatches();
     getAssignMatch();
   }, []);
@@ -199,7 +210,7 @@ const RDashboard = () => {
                   <Typography variant="h5" sx={{ color: "whitesmoke" }}>Assign Match</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Box sx={{ mb: 1, mt: 1 ,ml:4 }}>
+                  <Box sx={{ mb: 1, mt: 1, ml: 4 }}>
                     {assignMatch.length === 0 ? (
                       <Typography variant="h5" color="white" textAlign="center">No Match is Assigned</Typography>
                     ) : (
@@ -213,7 +224,7 @@ const RDashboard = () => {
                             athleteRedName={match.athleteRed}
                             athleteBlueName={match.athleteBlue}
                             matchGroup={match.matchGroup}
-                            
+
                           />
                         ))}
                       </Slider>
@@ -222,7 +233,7 @@ const RDashboard = () => {
                 </AccordionDetails>
               </Accordion>
             </Box>
-            <Box sx={{ mb: 4, mt: 1,ml:2 }}>
+            <Box sx={{ mb: 4, mt: 1, ml: 2 }}>
               <Typography variant="h5" sx={{ color: "whitesmoke", mb: 1 }}>Today's Matches</Typography>
               <Slider {...getSliderSettings(todayMatch.length)}>
                 {todayMatch.map((data, index) => (
@@ -241,7 +252,7 @@ const RDashboard = () => {
               </Slider>
             </Box>
           </Grid>
-          
+
         </Grid>
       </Box>
       <Box sx={{ display: "block", mt: "1%" }}>

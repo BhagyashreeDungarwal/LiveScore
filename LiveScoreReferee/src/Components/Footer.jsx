@@ -14,7 +14,7 @@ const Footer = () => {
                   component="img"
                   src={logo}
                   alt="BootstrapBrain Logo"
-                  sx={{ width: { lg: '150%',xs:"40%",sm:"40%",xl:"150%",md:"150%" } , marginLeft:{xl:"-50%",lg:"-30%",md:"-10%",xs:"30%"} }}
+                  sx={{ width: { lg: '150%',xs:"40%",sm:"40%",xl:"150%",md:"80%" } , marginLeft:{xl:"-50%",lg:"-30%",md:"10%",xs:"30%"} }}
                 />
             </Box>
           </Grid>

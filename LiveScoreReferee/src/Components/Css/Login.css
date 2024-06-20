@@ -134,13 +134,13 @@ button {
 @media only screen and (max-width: 600px) {
   .form {
     height: 520px;
-    width: 300px;
+    width: 350px;
     overflow: hidden;
     background-color: rgba(255, 255, 255, 0.13);
     position: absolute;
     transform: translate(-50%, -50%);
-    top: 48%;
-    left: 48%;
+    top: 70%;
+    left: 65%;
     border-radius: 10px;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -166,14 +166,14 @@ button {
 
   .shape:first-child {
     background: linear-gradient(#1845ad, #23a2f6);
-    left: -100px;
-    top: -80px;
+    left: -10px;
+    top: -5px;
   }
 
   .shape:last-child {
     background: linear-gradient(to right, #ff512f, #f09819);
-    right: -20px;
-    bottom: -50px;
+    right: -120px;
+    bottom: -200px;
     z-index: -1;
   }
 }

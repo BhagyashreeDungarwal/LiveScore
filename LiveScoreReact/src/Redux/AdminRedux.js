@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import globalRoute from "./GlobalRoute";
 
 const initialState = {
     data: [],
@@ -14,7 +14,7 @@ export const CategoryPostApi = createAsyncThunk(
     'admin/categoryPost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Categories/PostCategory`, values, {
+            const { data } = await globalRoute.post(`/Categories/PostCategory`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -30,7 +30,7 @@ export const CategoryPutApi = createAsyncThunk(
     'admin/categoryPut',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Categories/PutCategory/${id}`, values, {
+            const { data } = await globalRoute.put(`/Categories/PutCategory/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -46,7 +46,7 @@ export const TournamentPostApi = createAsyncThunk(
     'admin/tournamentPost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Tournaments/PostTournament`, values, {
+            const { data } = await globalRoute.post(`/Tournaments/PostTournament`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -62,7 +62,7 @@ export const TournamentPutApi = createAsyncThunk(
     'admin/tournamentPut',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Tournaments/PutTournament/${id}`, values, {
+            const { data } = await globalRoute.put(`/Tournaments/PutTournament/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -78,7 +78,7 @@ export const VerifyCoordinatorApi = createAsyncThunk(
     'admin/coordinatorVerify',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/VerifyCoordinator/${id}`, null, {
+            const { data } = await globalRoute.post(`/ACR/VerifyCoordinator/${id}`, null, {
                 headers: {
                     "Content-Type": "application/json"
                 }

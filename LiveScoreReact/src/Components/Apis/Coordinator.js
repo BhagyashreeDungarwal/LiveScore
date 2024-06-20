@@ -1,10 +1,9 @@
-import axios from "axios"
-const url = "http://localhost:5032/api"
+import globalRoute from "../../Redux/GlobalRoute"
 
 
 export const GetAthleteByCategoryAndGender = async (id, gender) => {
   try {
-    const data = await axios.get(`${url}/Athletes/GetAthleteByCatAndGen/${id}/${gender}`, {
+    const data = await globalRoute.get(`/Athletes/GetAthleteByCatAndGen/${id}/${gender}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -17,7 +16,7 @@ export const GetAthleteByCategoryAndGender = async (id, gender) => {
 
 export const GetAthlete = async () => {
   try {
-    const data = await axios.get(`${url}/Athletes/getAthelete`, {
+    const data = await globalRoute.get(`/Athletes/getAthelete`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -29,7 +28,7 @@ export const GetAthlete = async () => {
 }
 export const GetAthleteById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Athletes/GetAthelete/${id}`, {
+    const data = await globalRoute.get(`/Athletes/GetAthelete/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -42,7 +41,7 @@ export const GetAthleteById = async (id) => {
 
 export const GetReferee = async () => {
   try {
-    const data = await axios.get(`${url}/ACR/Referee`, {
+    const data = await globalRoute.get(`/ACR/Referee`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -55,7 +54,7 @@ export const GetReferee = async () => {
 
 export const GetCoach = async () => {
   try {
-    const data = await axios.get(`${url}/Coaches/GetCoaches`, {
+    const data = await globalRoute.get(`/Coaches/GetCoaches`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -68,7 +67,7 @@ export const GetCoach = async () => {
 }
 export const GetCoachById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Coaches/GetCoachesById/${id}`, {
+    const data = await globalRoute.get(`/Coaches/GetCoachesById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -81,7 +80,7 @@ export const GetCoachById = async (id) => {
 
 export const GetMatch = async () => {
   try {
-    const data = await axios.get(`${url}/Matchs/GetMatchs`, {
+    const data = await globalRoute.get(`/Matchs/GetMatchs`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -95,7 +94,7 @@ export const GetMatch = async () => {
 
 export const GetMatchById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Matchs/GetMatchById/${id}`, {
+    const data = await globalRoute.get(`/Matchs/GetMatchById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -107,7 +106,7 @@ export const GetMatchById = async (id) => {
 }
 export const GetMatchByMatchGroup = async (matchGroup) => {
   try {
-    const data = await axios.get(`${url}/Matchs/GetMatchByMatchGroup/${matchGroup}`, {
+    const data = await globalRoute.get(`/Matchs/GetMatchByMatchGroup/${matchGroup}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -121,7 +120,7 @@ export const GetMatchByMatchGroup = async (matchGroup) => {
 
 export const GetCoordinatorProfile = async (id) => {
   try {
-    const data = await axios.get(`${url}/ACR/${id}`, {
+    const data = await globalRoute.get(`/ACR/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -135,7 +134,7 @@ export const GetCoordinatorProfile = async (id) => {
 
 export const OtpGenerateApi = async ({ matchGroup }) => {
   try {
-    const { data } = await axios.get(`${url}/Matchs/GenerateOtp/${matchGroup}`, {
+    const { data } = await globalRoute.get(`/Matchs/GenerateOtp/${matchGroup}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -148,7 +147,7 @@ export const OtpGenerateApi = async ({ matchGroup }) => {
 
 export const StoreOtpApi = async () => {
   try {
-    const data = await axios.get(`${url}/Matchs/GetStoredOtps`, {
+    const data = await globalRoute.get(`/Matchs/GetStoredOtps`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -163,7 +162,7 @@ export const StoreOtpApi = async () => {
 // this api is used to get match if coordinator and referee are assigned in match
 export const GetAssignMatch = async (id) => {
   try {
-    const { data } = await axios.get(`${url}/Matchs/GetAssignMatch/${id}`, {
+    const { data } = await globalRoute.get(`/Matchs/GetAssignMatch/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -177,7 +176,7 @@ export const GetAssignMatch = async (id) => {
 
 export const GetTotalScore = async () => {
   try {
-    const { data } = await axios.get(`${url}/Scores/getTotalScore`, {
+    const { data } = await globalRoute.get(`/Scores/getTotalScore`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -189,7 +188,7 @@ export const GetTotalScore = async () => {
 }
 export const ScoreTransfer = async (mid) => {
   try {
-    const { data } = await axios.post(`${url}/Scores/transfer/${mid}`, {
+    const { data } = await globalRoute.post(`/Scores/transfer/${mid}`, {
       headers: {
         "Content-Type": "application/json"
       }

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const url = "http://localhost:5032/api"
-import axios from "axios"
+import globalRoute from "./GlobalRoute";
 
 
 export const AthletePostApi = createAsyncThunk(
     'coordinator/athletePost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Athletes/PostAthlete`, values, {
+            const { data } = await globalRoute.post(`/Athletes/PostAthlete`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -23,7 +22,7 @@ export const AthletePutApi = createAsyncThunk(
     'coordinator/athletePut',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`${url}/Athletes/UpdateAthlete/${id}`, values, {
+            const response = await globalRoute.put(`/Athletes/UpdateAthlete/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -40,7 +39,7 @@ export const AthletePutPicApi = createAsyncThunk(
     async ({ values, id }, { rejectWithValue }) => {
         try {
             console.log(id)
-            const { data } = await axios.put(`${url}/Athletes/UpdateAthleteImage/${id}`, values, {
+            const { data } = await globalRoute.put(`/Athletes/UpdateAthleteImage/${id}`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -56,7 +55,7 @@ export const BlockAthleteApi = createAsyncThunk(
     'coordinator/athleteBlock',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Athletes/BlockAthlete/${id}`, {}, {
+            const { data } = await globalRoute.post(`/Athletes/BlockAthlete/${id}`, {}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -72,7 +71,7 @@ export const CoordinatorPostApi = createAsyncThunk(
     'coordinator/coordinatorPost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/AddCoordinator`, values, {
+            const { data } = await globalRoute.post(`/ACR/AddCoordinator`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -89,7 +88,7 @@ export const CoordinatorUpdateProfileApi = createAsyncThunk(
     'coordinator/updateProfile',
     async ({ id, values }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/ACR/updateCoordinator/${id}`, values, {
+            const { data } = await globalRoute.put(`/ACR/updateCoordinator/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -105,7 +104,7 @@ export const CoordinatorUpdateProfilePicApi = createAsyncThunk(
     'coordinator/updateProfilePic',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/ACR/UpdateCoordinatorImage/${id}`, values, {
+            const { data } = await globalRoute.put(`/ACR/UpdateCoordinatorImage/${id}`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -121,7 +120,7 @@ export const RefereePostApi = createAsyncThunk(
     'coordinator/refereePost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/AddReferee`, values, {
+            const { data } = await globalRoute.post(`/ACR/AddReferee`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -138,7 +137,7 @@ export const BlockRefereeApi = createAsyncThunk(
     'coordinator/refereeBlock',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/BlockReferee/${id}`, {}, {
+            const { data } = await globalRoute.post(`/ACR/BlockReferee/${id}`, {}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -155,7 +154,7 @@ export const CoachPostApi = createAsyncThunk(
     'coordinator/coachPost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Coaches/PostCoach`, values, {
+            const { data } = await globalRoute.post(`/Coaches/PostCoach`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -171,7 +170,7 @@ export const CoachPutApi = createAsyncThunk(
     'coordinator/coachPut',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Coaches/UpdateCoach/${id}`, values, {
+            const { data } = await globalRoute.put(`/Coaches/UpdateCoach/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -187,7 +186,7 @@ export const BlockCoachApi = createAsyncThunk(
     'coordinator/coachBlock',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Coaches/BlockCoach/${id}`, {}, {
+            const { data } = await globalRoute.post(`/Coaches/BlockCoach/${id}`, {}, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -203,7 +202,7 @@ export const CoachPutPicApi = createAsyncThunk(
     'coordinator/coachPutPic',
     async ({ id, values }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Coaches/UpdateCoachImage/${id}`, values, {
+            const { data } = await globalRoute.put(`/Coaches/UpdateCoachImage/${id}`, values, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
@@ -219,7 +218,7 @@ export const AddMatchApi = createAsyncThunk(
     'coordinator/matchPost',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Matchs/PostMatch`, values, {
+            const { data } = await globalRoute.post(`/Matchs/PostMatch`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -235,7 +234,7 @@ export const AssignMatchApi = createAsyncThunk(
     'coordinator/assignMatch',
     async ({ values, id }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Matchs/AssignMatch/${id}`, values, {
+            const { data } = await globalRoute.put(`/Matchs/AssignMatch/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -251,7 +250,7 @@ export const RoundPostApi = createAsyncThunk(
     'coordinator/roundPost',
     async ({ values, mid }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Rounds/insertRound/${mid}`, values, {
+            const { data } = await globalRoute.post(`/Rounds/insertRound/${mid}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -267,7 +266,7 @@ export const MatchPutApi = createAsyncThunk(
     'coordinator/matchPut',
     async ({ values, mid }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Matchs/UpdateMatch/${mid}`, values, {
+            const { data } = await globalRoute.put(`/Matchs/UpdateMatch/${mid}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -280,9 +279,9 @@ export const MatchPutApi = createAsyncThunk(
 );
 export const updateRound = createAsyncThunk(
     'coordinator/updateRound',
-    async ({ values, mid , rounds }, { rejectWithValue }) => {
+    async ({ values, mid, rounds }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Rounds/updateRound/${mid}/${rounds}`, values, {
+            const { data } = await globalRoute.post(`/Rounds/updateRound/${mid}/${rounds}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -298,7 +297,7 @@ export const updateNextMatchIdApi = createAsyncThunk(
     'coordinator/updateNextMatchId',
     async ({ mid, values }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Matchs/UpdateNextMatchId/${mid}`, values, {
+            const { data } = await globalRoute.put(`/Matchs/UpdateNextMatchId/${mid}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }

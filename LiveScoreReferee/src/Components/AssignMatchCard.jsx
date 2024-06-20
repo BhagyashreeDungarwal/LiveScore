@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import EnterOtp from './EnterOtp';
 import { Visibility } from '@mui/icons-material';
 
-const img_url = "http://localhost:5032/images/";
 
 const AssignMatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName, matchGroup }) => {
     const formattedDate = dayjs(matchDate).format('MMM D, YYYY');
@@ -22,7 +21,7 @@ const AssignMatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedN
                     <Box display="flex" flexDirection="column" alignItems="center">
                         <CardMedia
                             component="img"
-                            image={`${img_url}${athleteRedImg}`}
+                            image={`/images/${athleteRedImg}`}
                             alt="Athlete Red"
                             sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
                         />
@@ -39,7 +38,7 @@ const AssignMatchCard = ({ matchDate, athleteRedImg, athleteBlueImg, athleteRedN
                     <Box display="flex" flexDirection="column" alignItems="center">
                         <CardMedia
                             component="img"
-                            image={`${img_url}${athleteBlueImg}`}
+                            image={`/images/${athleteBlueImg}`}
                             alt="Athlete Blue"
                             sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
                         />

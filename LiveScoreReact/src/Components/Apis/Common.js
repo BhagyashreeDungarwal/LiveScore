@@ -1,9 +1,8 @@
-import axios from "axios"
-const url = "http://localhost:5032/api"
+import globalRoute from "../../Redux/GlobalRoute"
 
 export const GetMatchHistory = async () => {
     try {
-        const data = await axios.get(`${url}/Matchs/GetMatchHistory`, {
+        const data = await globalRoute.get(`/Matchs/GetMatchHistory`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -16,7 +15,7 @@ export const GetMatchHistory = async () => {
 
 export const GetTodayMatch = async () => {
     try {
-        const { data } = await axios.get(`${url}/Matchs/today`, {
+        const { data } = await globalRoute.get(`/Matchs/today`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -29,7 +28,7 @@ export const GetTodayMatch = async () => {
 
 export const GetRoundsByMatchId = async (id) => {
     try {
-        const data = await axios.get(`${url}/Rounds/GetRoundsByMatchId/${id}`, {
+        const data = await globalRoute.get(`/Rounds/GetRoundsByMatchId/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -42,7 +41,7 @@ export const GetRoundsByMatchId = async (id) => {
 
 export const GetScoresandRounds = async (id, rounds) => {
     try {
-        const data = await axios.get(`${url}/Rounds/GetScoresandRounds/${id}/${rounds}`, {
+        const data = await globalRoute.get(`/Rounds/GetScoresandRounds/${id}/${rounds}`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -55,7 +54,7 @@ export const GetScoresandRounds = async (id, rounds) => {
 
 export const GetTotal = async () => {
     try {
-        const { data } = await axios.get(`${url}/Common/totalcount`, {
+        const { data } = await globalRoute.get(`/Common/totalcount`, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -67,7 +66,7 @@ export const GetTotal = async () => {
 }
 export const GetCategoryViseAthlete = async () => {
     try {
-        const { data } = await axios.get(`${url}/Common/categoryViseAthlete`, {
+        const { data } = await globalRoute.get(`/Common/categoryViseAthlete`, {
             headers: {
                 "Content-Type": "application/json"
             }

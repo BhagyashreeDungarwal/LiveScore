@@ -3,7 +3,6 @@ import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/materi
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-const img_url = "http://localhost:5032/images/";
 
 const MatchCard = ({matchGroup,mid, matchStatus,matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName }) => {
   const formattedDate = dayjs(matchDate).format(' MMM D, YYYY');
@@ -23,7 +22,7 @@ const MatchCard = ({matchGroup,mid, matchStatus,matchDate, athleteRedImg, athlet
           <Box display="flex" flexDirection="column" alignItems="center">
             <CardMedia
               component="img"
-              image={`${img_url}${athleteRedImg}`}
+              image={`/images/${athleteRedImg}`}
               alt="Athlete Red"
               sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
             />
@@ -37,7 +36,7 @@ const MatchCard = ({matchGroup,mid, matchStatus,matchDate, athleteRedImg, athlet
           <Box display="flex" flexDirection="column" alignItems="center">
             <CardMedia
               component="img"
-              image={`${img_url}${athleteBlueImg}`}
+              image={`/images/${athleteBlueImg}`}
               alt="Athlete Blue"
               sx={{ height: '9vh', width: '9vh', clipPath: 'circle()', mb: 1 }}
             />

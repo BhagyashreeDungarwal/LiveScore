@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import { GetMatchByMatchGroup } from './Apis';
-import axios from 'axios';
+import globalRoute from './GlobalRoute';
 
 
-const img_url = "http://localhost:5032/images/";
 
 const Scoring = () => {
   const [penalityRed, setPenalityRed] = useState(0);
@@ -30,14 +29,14 @@ const Scoring = () => {
 
   useEffect(() => {
     console.log(values);
-    axios.post(`http://localhost:5032/api/RefereeScore/CreateRefScore/${rid}/${matchGroup}`, values, {
+    globalRoute.post(`/RefereeScore/CreateRefScore/${rid}/${matchGroup}`, values, {
       headers: {
         "Content-Type": "application/json"
       }
     })
       .catch(err => console.error('Sending score is failed : ', err));
 
-  }, [values, axios]);
+  }, [values, globalRoute]);
 
   useEffect(() => {
     const fetchMatchData = async () => {
@@ -51,7 +50,7 @@ const Scoring = () => {
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl('http://localhost:5032/scoreHub')
+      .withUrl('/scoreHub')  // Use relative URL
       .configureLogging(LogLevel.Information)
       .build();
 
@@ -66,13 +65,15 @@ const Scoring = () => {
       .catch(err => console.error('JoinGroup invocation failed: ', err));
 
     connect.on('TimerUpdate', (timeLeft) => {
+      console.log('TimerUpdate received: ', timeLeft);
       setTimeLeft(timeLeft);
-      setIsDisable(true)
+      setIsDisable(true);
     });
 
     connect.on('TimerEnded', () => {
+      console.log('TimerEnded received');
       setTimeLeft(0);
-      setIsDisable(false)
+      setIsDisable(false);
     });
 
     connect.on('PauseCountdown', () => {
@@ -84,6 +85,7 @@ const Scoring = () => {
       console.log('ResumeCountdown received');
       setIsDisable(true);
     });
+
     setConnection(connect);
 
     return () => {
@@ -94,6 +96,7 @@ const Scoring = () => {
       }
     };
   }, [matchGroup]);
+
 
   const handleRedScore = (increment) => {
     setScoreRed((prevValue) => prevValue + increment);
@@ -136,27 +139,36 @@ const Scoring = () => {
   return (
     <Box>
       <Grid container spacing={2} sx={{ color: "white" }}>
-        <Grid item xs={6} md={6} lg={6} sm={6}>
+        <Grid item xs={12} md={6} lg={6} sm={6}>
           <Typography variant="subtitle1" style={{ textAlign: "center", fontWeight: "bold", fontSize: "5vh", fontFamily: "TimesNewRoman", color: "#bdbdbd", marginBottom: "4%", marginTop: "2%" }}>{matchData ? matchData.tournamentId : ""}</Typography>
         </Grid>
-        <Grid item xs={6} md={6} lg={6} sm={6}>
+        <Grid item xs={12} md={6} lg={6} sm={6}>
           <Typography variant="subtitle1" sx={{ textAlign: "center", fontWeight: "bold", fontSize: "5vh", fontFamily: "TimesNewRoman", color: "#bdbdbd", marginBottom: "4%", marginTop: "2%" }}>{matchData ? matchData.matchType : ""} - {matchData ? matchData.categoryId : ""} </Typography>
         </Grid>
         <Grid item xs={12} md={12} lg={12} sm={12}>
           <Grid container spacing={2}>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
+            <Grid item xs={12} md={4} lg={4} sm={4}>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
-                <img src={matchData ? `${img_url}${matchData.athleteRedImg}` : "https://via.placeholder.com/150"} style={{ height: "15vh", width: "7vw", borderRadius: "10px" }} />
+                <Box
+                  component="img"
+                  src={matchData ? `/images/${matchData.athleteRedImg}` : "https://via.placeholder.com/150"}
+                  sx={{
+                    height: { lg: '15vh', md: '20vh', xl: "15vh", sm: "10vh", xs: '10vh' },
+                    width: { lg: '7vw', md: "10vw", sm: "7vw", xs: "7vw", xl: '7vw' },
+                    borderRadius: '10px',
+                  }}
+                  alt="Athlete"
+                />
                 <Typography variant="h1" style={{ color: "#e53935", fontSize: "20vh" }}>{scoreRed}</Typography>
               </Box>
 
             </Grid>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
+            <Grid item xs={12} md={4} lg={4} sm={4}>
               <Box sx={{
                 backgroundColor: "#141c33",
                 height: "100%", // Changed to 100vh to fill the viewport height
-                borderRadius: "10%",
+                borderRadius: "15px",
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center'
@@ -166,11 +178,20 @@ const Scoring = () => {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={4} md={4} lg={4} sm={4}>
+            <Grid item xs={12} md={4} lg={4} sm={4}>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-evenly" }} fullWidth >
 
                 <Typography variant="h1" sx={{ color: "#1e88e5", textAlign: "center", fontSize: "20vh" }}>{scoreBlue}</Typography>
-                <img src={matchData ? `${img_url}${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"} style={{ height: "15vh", width: "7vw", borderRadius: "10px" }} />
+                <Box
+                  component="img"
+                  src={matchData ? `/images/${matchData.athleteBlueImg}` : "https://via.placeholder.com/150"}
+                  sx={{
+                    height: { lg: '15vh', md: '20vh', xl: "15vh", sm: "10vh", xs: '10vh' },
+                    width: { lg: '7vw', md: "10vw", sm: "7vw", xs: "7vw", xl: '7vw' },
+                    borderRadius: '10px',
+                  }}
+                  alt="Athlete"
+                />
               </Box>
 
             </Grid>
@@ -187,41 +208,41 @@ const Scoring = () => {
         {isDisable ?
           (
             <>
-              <Grid item xs={4} md={4} lg={4} sm={4}>
-                <Grid container spacing={2}>
+              <Grid item xs={12} md={4} lg={4} sm={4}>
+                <Grid container spacing={2} sx={{ ml: "1%", mt: { lg: "-1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }}>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} fullWidth>
                       +2
                     </Button>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} fullWidth>
                       +1
                     </Button>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
                       +3
                     </Button>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
                       penality
                     </Button>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={4} md={4} lg={4} sm={4}>
-                <Grid container spacing={2}>
+              <Grid item xs={12} md={4} lg={4} sm={4}>
+                <Grid container spacing={2} sx={{ mt: { lg: "1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }} >
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                      <Box sx={{ display: 'flex', flexDirection: "column", gap: 2 }}>
+                    <Box sx={{ display: 'flex', flexDirection: { lg: 'row', xl: 'row', md: "column", sm: "column", xs: "column" }, alignItems: 'center', justifyContent: 'center' }}>
+                      <Box sx={{ display: 'flex', flexDirection: { lg: "column", md: "column", xl: 'column', sm: "column", xs: "row" }, gap: 2 }}>
                         {[...Array(5)].map((_, index) => (
                           <Box
                             key={index}
                             sx={{
-                              width: 50,
-                              height: 50,
+                              width: { xl: 50, lg: 60, md: 25, sm: 25, xs: 50 },
+                              height: { xl: 50, lg: 60, md: 25, sm: 20, xs: 50 },
                               borderRadius: '50%',
                               backgroundColor: index < penalityRed ? '#e53935' : '#141c33',
                             }}
@@ -231,14 +252,14 @@ const Scoring = () => {
                     </Box>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                      <Box sx={{ display: 'flex', flexDirection: "column", gap: 2 }}>
+                    <Box sx={{ display: 'flex', flexDirection: { lg: 'row', xl: 'row', md: "column", sm: "column", xs: "column" }, alignItems: 'center', justifyContent: 'center' }}>
+                      <Box sx={{ display: 'flex', flexDirection: { lg: "column", md: "column", xl: 'column', sm: "column", xs: "row" }, gap: 2 }}>
                         {[...Array(5)].map((_, index) => (
                           <Box
                             key={index}
                             sx={{
-                              width: 50,
-                              height: 50,
+                              width: { xl: 50, lg: 60, md: 25, sm: 25, xs: 50 },
+                              height: { xl: 50, lg: 60, md: 25, sm: 20, xs: 50 },
                               borderRadius: '50%',
                               backgroundColor: index < penalityBlue ? '#1e88e5' : '#141c33',
                             }}
@@ -249,27 +270,27 @@ const Scoring = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={4} md={4} lg={4} sm={4}>
-                <Grid container spacing={2}>
+              <Grid item xs={12} md={4} lg={4} sm={4}>
+                <Grid container spacing={2} sx={{ ml: "-10%", mt: { lg: "-1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }}>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
                       +1
                     </Button>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
                       +2
                     </Button>
                   </Grid>
 
 
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "5vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
                       penality
                     </Button>
                   </Grid>
                   <Grid item xs={6} md={6} lg={6} sm={6}>
-                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: "30px", fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
+                    <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
                       +3
                     </Button>
                   </Grid>

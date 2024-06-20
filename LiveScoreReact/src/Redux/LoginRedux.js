@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import globalRoute from "./GlobalRoute";
 
 const initialState = {
     data: [],
@@ -7,13 +7,11 @@ const initialState = {
     error: null,
 }
 
-const url = "http://localhost:5032/api"
-
 export const LoginApi = createAsyncThunk(
     'Login/login',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Login/Login`, values, {
+            const { data } = await globalRoute.post(`/Login/Login`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -28,7 +26,7 @@ export const FindEmailApi = createAsyncThunk(
     'Login/FindEmail',
     async (email, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/FindEmail/${email}`, {
+            const { data } = await globalRoute.post(`/ACR/FindEmail/${email}`, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -43,7 +41,7 @@ export const ForgetPasswordApi = createAsyncThunk(
     'Login/forgetPassword',
     async (formData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/ACR/ForgetPassword`, formData, {
+            const { data } = await globalRoute.post(`/ACR/ForgetPassword`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }

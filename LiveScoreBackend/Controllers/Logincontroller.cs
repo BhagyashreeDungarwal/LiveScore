@@ -14,7 +14,7 @@ namespace LiveScore.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("CorsPolicy")]
+    //[EnableCors("CorsPolicy")]
     public class Logincontroller : ControllerBase
     {
         private readonly ApplicationDbContext _dbcontext;

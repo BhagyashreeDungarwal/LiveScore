@@ -1,26 +1,32 @@
-import React, { useEffect } from 'react'
-import { Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup, TextField, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, Slide, Avatar } from '@mui/material'
-import { AddLocationAltRounded, AddPhotoAlternateRounded, DateRangeRounded, LocationCityRounded, PermContactCalendarRounded, Person2Rounded } from '@mui/icons-material'
-import { useDispatch, useSelector } from 'react-redux'
-import { useFormik } from 'formik'
-import { toast } from 'react-toastify'
-import dayjs from 'dayjs'
-import { GetProfile } from './Apis'
-import { UpdateProfileApi, UpdateProfilePicApi, clearMessage } from '../Redux/RefereeRedux'
-import { UpdateProfile } from './Validation/Login'
+import React, { useEffect, useState, forwardRef } from 'react';
+import {
+  Box, Button, FormControlLabel, FormLabel, Grid, InputAdornment, Paper, Radio, RadioGroup,
+  TextField, Typography, useTheme, Dialog, DialogActions, DialogContent, DialogTitle, Slide, Avatar
+} from '@mui/material';
+import {
+  AddLocationAltRounded, AddPhotoAlternateRounded, DateRangeRounded, LocationCityRounded,
+  PermContactCalendarRounded, Person2Rounded
+} from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+import { GetProfile } from './Apis';
+import { UpdateProfileApi, UpdateProfilePicApi, clearMessage } from '../Redux/RefereeRedux';
+import { UpdateProfile } from './Validation/Login';
 
-
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Profile = () => {
-  const theme = useTheme()
-  const { data, error ,loading } = useSelector((state) => state.referee);
-  const [open, setOpen] = React.useState(false);
-  const [image, setImage] = React.useState();
-  const [selectedFile, setSelectedFile] = React.useState()
-  const img_url = "http://localhost:5032/ACR/";
+  const theme = useTheme();
+  const dispatch = useDispatch();
+  const { data, error, loading } = useSelector((state) => state.referee);
+  const [open, setOpen] = useState(false);
+  const [image, setImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const cid = localStorage.getItem("ID");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,173 +35,122 @@ const Profile = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const dispatch = useDispatch()
-  const cid = localStorage.getItem("ID")
-  const initial = {
-    name: "",
-    contact: "",
-    dateOfBirth: "",
-    gender: "",
-    state: "",
-    city: "",
-  }
 
   const getProfile = async () => {
-    const { data } = await GetProfile(cid)
-    data && setValues(data)
-    data && setImage(data)
-  }
-
+    const response = await GetProfile(cid);
+    if (response.data) {
+      setValues(response.data);
+      setImage(response.data.imageURL);
+    }
+  };
 
   useEffect(() => {
-    getProfile()
+    getProfile();
   }, []);
-
 
   useEffect(() => {
     if (data) {
       toast.success(data.msg);
-      dispatch(clearMessage())
-      getProfile()
+      dispatch(clearMessage());
+      getProfile();
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   useEffect(() => {
     if (error) {
       toast.error(error.msg);
-      dispatch(clearMessage())
+      dispatch(clearMessage());
     }
-  }, [error]);
-
+  }, [error, dispatch]);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
-    setSelectedFile(file)
+    setSelectedFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setImage(reader.result)
+        setImage(reader.result);
       }
-    }
-    reader.readAsDataURL(file)
-  }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleUpdateImage = async () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("ImageFile", selectedFile);
-      dispatch(UpdateProfilePicApi({ values: formData, id:cid }))
-      getProfile()
-      dispatch(clearMessage())
+      dispatch(UpdateProfilePicApi({ values: formData, id: cid }));
       handleClose();
-
     } else {
-      toast.error("Please First Select Image...")
+      toast.error("Please First Select Image...");
     }
-  }
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
-    initialValues: initial,
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      contact: "",
+      dateOfBirth: "",
+      gender: "",
+      state: "",
+      city: "",
+    },
     validationSchema: UpdateProfile,
     onSubmit: async (values) => {
-      console.log(values)
-      dispatch(UpdateProfileApi({ id: cid, values }))
-      if (data) {
-        toast.success(data.msg)
-        getProfile()
-        if (data) {
-          toast.success(data.msg)
-          getProfile()
-          dispatch(clearMessage())
-        }
+      dispatch(UpdateProfileApi({ id: cid, values }));
+    },
+  });
 
-        if (error) {
-          toast.error(error.msg)
-        }
-      }
-    }
-  })
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = formik;
+
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", }} >
+      <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center" }}>
         <Typography variant="h6" color="initial">Profile</Typography>
       </Box>
-      <Grid container spacing={2} sx={{ mt: "1%" }}  >
-
-        <Grid item xl={4} md={4} sm={12} xs={12} sx={{ display: 'block', justifyContent: 'center', alignItems: 'center' , bgcolor:"#141c33" }}  >
-            <Box
-              component="img"
-              sx={{
-                height: 233,
-                width: 350,
-                alignSelf:"center",
-                display: 'block',
-                maxHeight: { xs: 150, md: 167, lg: 250, sm: 500 },
-                maxWidth: { xs: 150, md: 100, lg: 230, sm: 480 },
-                borderRadius: 50,
-                boxShadow: "3px 3px 6px"
-              }}
-              alt="The house from the offer."
-              src={image ? `${img_url}${image.imageURL}` : image}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleClickOpen}
-              color="primary"
-              sx={{ mt: "4%" }}
-               >
-              Update Image
-            </Button>
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-              keepMounted
-              aria-describedby="alert-dialog-slide-description"
-            >
-              <DialogTitle>Update Profile Picture</DialogTitle>
-              <DialogContent>
-
-                <Avatar src={image ? `${img_url}${image.imageURL}` : ""} sx={{
-                  height: "12rem",
-                  width: "12rem",
-                  margin: "auto",
-                  boxShadow: "3px 3px 6px"
-                }} />
-                <TextField
-
-                  // sx={{ margin: "2rem 0 ", }}
-                  id="name"
-                  onChange={handleImage}
-                  sx={{ margin: "1rem 0 " }}
-                  InputProps={{ startAdornment: (<InputAdornment position="start">   </InputAdornment>) }}
-                  type="file"
-
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{ display: "block" }}
-                  fullWidth
-                  onClick={handleUpdateImage}
-                  startIcon={<AddPhotoAlternateRounded />}>
-                 {loading ? 'Updating...' : 'Update '}
-                </Button>
-
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Close</Button>
-              </DialogActions>
-            </Dialog>
+      <Grid container spacing={2} sx={{ mt: "1%" }}>
+        <Grid item xl={4} md={4} sm={12} xs={12} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bgcolor: "#141c33" }}>
+          <Box
+            component="img"
+            sx={{
+              height: { xs: 150, md: 167, lg: 250, sm: 500 },
+              width: { xs: 150, md: 100, lg: 230, sm: 480 },
+              borderRadius: "50%",
+              boxShadow: "3px 3px 6px",
+              mb: 2,
+            }}
+            alt="Profile"
+            src={image ? `/ACR/${image}` : "https://via.placeholder.com/150"}
+          />
+          <Button variant="contained" fullWidth color="primary" onClick={handleClickOpen} sx={{ mt: 2,ml:"30%",mr:"30%" }}>
+            Update Image
+          </Button>
+          <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+            <DialogTitle>Update Profile Picture</DialogTitle>
+            <DialogContent>
+              <Avatar src={image ? `/ACR/${image}` : "https://via.placeholder.com/150"} sx={{ height: "12rem", width: "12rem", margin: "auto", boxShadow: "3px 3px 6px", mb: 2 }} />
+              <TextField
+                id="image"
+                type="file"
+                onChange={handleImage}
+                fullWidth
+                sx={{ mb: 2 }}
+                InputProps={{ startAdornment: <InputAdornment position="start"><AddPhotoAlternateRounded /></InputAdornment> }}
+              />
+              <Button variant="contained" color="primary" fullWidth onClick={handleUpdateImage} startIcon={<AddPhotoAlternateRounded />}>
+                {loading ? 'Updating...' : 'Update'}
+              </Button>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Close</Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
-        <Grid item xl={8} md={8} sm={12} xs={12} >
-          <Paper sx={{
-            padding: 3,
-          }}
-            elevation={1}>
+        <Grid item xl={8} md={8} sm={12} xs={12}>
+          <Paper sx={{ padding: 3 }} elevation={1}>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid item xl={12} sm={12} xs={12} lg={12} >
+                <Grid item xl={12} sm={12} xs={12} lg={12}>
                   <TextField
                     label="Name"
                     size='small'
@@ -206,23 +161,22 @@ const Profile = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     color="secondary"
-                    // sx={{ marginBottom: "15px" }}
                     variant='standard'
                     InputLabelProps={{ shrink: true }}
                     placeholder='Enter Name'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-
+                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }}>
                           <Person2Rounded />
                         </InputAdornment>
                       ),
                     }}
-
                   />
-                  {errors.name && touched.name ? (<Typography variant="subtitle1" color="error">{errors.name}</Typography>) : null}
+                  {errors.name && touched.name && (
+                    <Typography variant="subtitle1" color="error">{errors.name}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={6} sm={12} xs={12} lg={6} >
+                <Grid item xl={6} sm={12} xs={12} lg={6}>
                   <TextField
                     label="Contact"
                     variant="standard"
@@ -238,19 +192,19 @@ const Profile = () => {
                     placeholder='Enter Contact'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-
+                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }}>
                           <PermContactCalendarRounded />
                         </InputAdornment>
                       ),
                     }}
-
                   />
-                  {errors.contact && touched.contact ? (<Typography variant="subtitle1" color="error">{errors.contact}</Typography>) : null}
+                  {errors.contact && touched.contact && (
+                    <Typography variant="subtitle1" color="error">{errors.contact}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={6} sm={12} xs={12} lg={6} >
+                <Grid item xl={6} sm={12} xs={12} lg={6}>
                   <TextField
-                    label="Date fo birth"
+                    label="Date of birth"
                     variant="standard"
                     fullWidth
                     name='dateOfBirth'
@@ -264,37 +218,38 @@ const Profile = () => {
                     placeholder='Enter Date of Birth'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }}>
                           <DateRangeRounded />
                         </InputAdornment>
                       ),
                     }}
                   />
-                  {errors.dateOfBirth && touched.dateOfBirth ? (<Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>) : null}
+                  {errors.dateOfBirth && touched.dateOfBirth && (
+                    <Typography variant="subtitle1" color="error">{errors.dateOfBirth}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={12} sm={12} xs={12} lg={12} >
+                <Grid item xl={12} sm={12} xs={12} lg={12}>
                   <FormLabel component="legend">Gender</FormLabel>
                   <RadioGroup
                     row
                     aria-label="gender"
-
                     id="gender"
                     name="gender"
                     value={values.gender}
                     onChange={handleChange}
                     onBlur={handleBlur}
-
-
                   >
                     <FormControlLabel value="Male" control={<Radio size='small' />} label="Male" />
                     <FormControlLabel value="Female" control={<Radio size='small' />} label="Female" />
                     <FormControlLabel value="Other" control={<Radio size='small' />} label="Other" />
                   </RadioGroup>
-                  {errors.gender && touched.gender ? (<Typography variant="subtitle1" color="error">{errors.gender}</Typography>) : null}
+                  {errors.gender && touched.gender && (
+                    <Typography variant="subtitle1" color="error">{errors.gender}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={6} sm={12} xs={12} lg={12} >
+                <Grid item xl={6} sm={12} xs={12} lg={6}>
                   <TextField
-                    label="state"
+                    label="State"
                     variant="standard"
                     fullWidth
                     color='secondary'
@@ -307,18 +262,19 @@ const Profile = () => {
                     placeholder='Enter State'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
-
+                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }}>
                           <AddLocationAltRounded />
                         </InputAdornment>
                       ),
                     }}
                   />
-                  {errors.state && touched.state ? (<Typography variant="subtitle1" color="error">{errors.state}</Typography>) : null}
+                  {errors.state && touched.state && (
+                    <Typography variant="subtitle1" color="error">{errors.state}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={6} sm={12} xs={12} lg={12} >
+                <Grid item xl={6} sm={12} xs={12} lg={6}>
                   <TextField
-                    label="city"
+                    label="City"
                     name='city'
                     variant="standard"
                     fullWidth
@@ -331,20 +287,23 @@ const Profile = () => {
                     placeholder='Enter City'
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }} >
+                        <InputAdornment position="start" sx={{ color: theme.palette.primary.dark }}>
                           <LocationCityRounded />
                         </InputAdornment>
                       ),
                     }}
                   />
-                  {errors.city && touched.city ? (<Typography variant="subtitle1" color="error">{errors.city}</Typography>) : null}
+                  {errors.city && touched.city && (
+                    <Typography variant="subtitle1" color="error">{errors.city}</Typography>
+                  )}
                 </Grid>
-                <Grid item xl={12} sm={12} xs={12} lg={12} >
+                <Grid item xl={12} sm={12} xs={12} lg={12}>
                   <Button
                     type="submit"
                     variant="contained"
                     color="primary"
-                    fullWidth >
+                    fullWidth
+                  >
                     {loading ? 'Updating...' : 'Update'}
                   </Button>
                 </Grid>
@@ -353,8 +312,8 @@ const Profile = () => {
           </Paper>
         </Grid>
       </Grid>
-    </Box >
-  )
-}
+    </Box>
+  );
+};
 
-export default Profile
+export default Profile;

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import globalRoute from "../Components/GlobalRoute";
 
 const initialState = {
     data: [],
@@ -13,7 +14,7 @@ export const LoginApi = createAsyncThunk(
     'Login/login',
     async (values, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post(`${url}/Login/Login`, values, {
+            const { data } = await globalRoute.post(`/Login/Login`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
