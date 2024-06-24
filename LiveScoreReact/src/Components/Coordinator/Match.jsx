@@ -311,7 +311,7 @@ const Match = () => {
                   <DataGrid
                     rows={matchHistory}
                     columns={columnsHistory}
-                    getRowId={(row) => row.mid}
+                    // getRowId={(row) => row.mid}
                     rowHeight={54}
                     rowSelection="true"
                     rowSpacingType='margin'
@@ -319,7 +319,14 @@ const Match = () => {
                     scrollbarSize={1}
                     columnHeaderHeight={37}
                     pageSize={5}
-                    rowsPerPageOptions={[5]}
+                    rowsPerPageOptions={[5]}   
+                    getRowId={(row) => row.mid}
+                    sortModel={[
+                {
+                  field: 'matchDate',
+                  sort: 'desc',
+                },
+              ]}
                   />) : (
                   <DataGrid
                     autoHeight

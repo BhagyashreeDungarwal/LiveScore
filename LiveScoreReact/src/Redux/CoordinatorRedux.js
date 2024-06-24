@@ -312,7 +312,7 @@ export const ScorePutApi = createAsyncThunk(
     'coordinator/editscore',
     async ({ id, values }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`${url}/Scores/EditTemporaryScore/${id}`, values, {
+            const { data } = await globalRoute.put(`/Scores/EditTemporaryScore/${id}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -327,7 +327,7 @@ export const ReviewMatchApi = createAsyncThunk(
     'coordinator/reviewMatch', // action type prefix
     async (_, { rejectWithValue }) => { // destructure correctly
         try {
-            const { data } = await axios.get(`${url}/Scores/GetTemporaryScores`, {
+            const { data } = await globalRoute.get(`/Scores/GetTemporaryScores`, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -346,7 +346,7 @@ const initialState = {
     error: null,
     blockData: null,
     verifyData: null,
-    reviewMatch:[]
+    reviewMatch: []
 }
 
 const CoordinatorSlice = createSlice({

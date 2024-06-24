@@ -436,14 +436,19 @@ namespace LiveScore.Controllers
                 return BadRequest(new { msg = "Match Not Found" });
             }
 
+            var existingMatch = await _context.Matchss
+            .Where(m => m.MId == id)
+            .Select(m => m.MatchType)
+            .FirstOrDefaultAsync();
             try
             {
                 // Call the stored procedure directly through DbContext.Database.ExecuteSqlRawAsync
-                await _context.Database.ExecuteSqlRawAsync("EXEC UpdateNextMatchId @Umid, @Flag, @MatchStatus, @MatchType",
+                await _context.Database.ExecuteSqlRawAsync("EXEC UpdateNextMatchId @Umid, @Flag, @MatchStatus, @MatchType, @ExistingMatchType",
                     new SqlParameter("@Umid",id),
                     new SqlParameter("@Flag", match.Flag),
                     new SqlParameter("@MatchStatus", match.MatchStatus),
-                    new SqlParameter("@MatchType", match.MatchType));
+                    new SqlParameter("@MatchType", match.MatchType),// Use provided MatchType
+                    new SqlParameter("@ExistingMatchType", existingMatch)); 
                                
                 // Exclude 'MId' column from the INSERT statement
                 var modifiedMatch = new Matchs

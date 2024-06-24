@@ -201,7 +201,7 @@ export const ScoreTransfer = async (mid) => {
 
 export const GetTemporaryScores = async () => {
   try {
-    const data = await axios.get(`${url}/Scores/GetTemporaryScores`, {
+    const data = await globalRoute.get(`/Scores/GetTemporaryScores`, {
       headers: {
         "Content-Type": "application/json"
       }
@@ -215,7 +215,7 @@ export const GetTemporaryScores = async () => {
 
 export const GetTemporaryScoreById = async (id) => {
   try {
-    const data = await axios.get(`${url}/Scores/getTemporaryScoreById/${id}`, {
+    const data = await globalRoute.get(`/Scores/getTemporaryScoreById/${id}`, {
       headers: {
         "Content-Type": "application/json"
       }

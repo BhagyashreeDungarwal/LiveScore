@@ -24,7 +24,7 @@ const Scoring = () => {
     const [isReview, setIsReview] = useState(false)
     const athleteRed = matchData ? matchData.athleteRedId : "";
     const athleteBlue = matchData ? matchData.athleteBlueId : "";
-    const mid = matchData ? matchData.mid : "";
+    const   mid = matchData ? matchData.mid : "";
     const navigate = useNavigate()
     const [refScore, setRefScore] = useState({
         RefereeId: "",
@@ -290,22 +290,22 @@ const Scoring = () => {
                     <Grid item xs={12} md={4} lg={4} sm={4}>
                         <Grid container spacing={2} sx={{ ml: "1%", mt: { lg: "-1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }}>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(2)} fullWidth>
                                     +2
                                 </Button>
                             </Grid>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(1)} fullWidth>
                                     +1
                                 </Button>
                             </Grid>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
                                     +3
                                 </Button>
                             </Grid>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "3vh", xl: "4vh", md: "4vh", sm: "3vh", xs: "1.5vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
                                     penality
                                 </Button>
                             </Grid>
@@ -320,8 +320,8 @@ const Scoring = () => {
                                             <Box
                                                 key={index}
                                                 sx={{
-                                                    width: { xl: 50, lg: 60, md: 25, sm: 25, xs: 50 },
-                                                    height: { xl: 50, lg: 60, md: 25, sm: 20, xs: 50 },
+                                                    width: { xl: 30, lg: 40, md: 20, sm: 20, xs: 40 },
+                                                    height: { xl: 30, lg: 40, md: 20, sm: 18, xs: 40 },
                                                     borderRadius: '50%',
                                                     backgroundColor: index < penalityRed ? '#e53935' : 'grey',
                                                 }}
@@ -337,8 +337,8 @@ const Scoring = () => {
                                             <Box
                                                 key={index}
                                                 sx={{
-                                                    width: { xl: 50, lg: 60, md: 25, sm: 25, xs: 50 },
-                                                    height: { xl: 50, lg: 60, md: 25, sm: 20, xs: 50 },
+                                                    width: { xl: 30, lg: 40, md: 20, sm: 20, xs: 40 },
+                                                    height: { xl: 30, lg: 40, md: 20, sm: 18, xs: 40 },
                                                     borderRadius: '50%',
                                                     backgroundColor: index < penalityBlue ? '#1e88e5' : 'grey',
                                                 }}
@@ -352,24 +352,24 @@ const Scoring = () => {
                     <Grid item xs={12} md={4} lg={4} sm={4}>
                         <Grid container spacing={2} sx={{ ml: "-10%", mt: { lg: "-1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }}>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(1)} fullWidth>
                                     +1
                                 </Button>
                             </Grid>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(2)} fullWidth>
                                     +2
                                 </Button>
                             </Grid>
 
 
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize:  { lg: "3vh", xl: "4vh", md: "4vh", sm: "3vh", xs: "1.5vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
                                     penality
                                 </Button>
                             </Grid>
                             <Grid item xs={6} md={6} lg={6} sm={6}>
-                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
+                                <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "13vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
                                     +3
                                 </Button>
                             </Grid>

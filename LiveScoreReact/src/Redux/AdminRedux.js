@@ -8,7 +8,6 @@ const initialState = {
     verifyData: null,
 }
 
-const url = "http://localhost:5032/api"
 
 export const CategoryPostApi = createAsyncThunk(
     'admin/categoryPost',

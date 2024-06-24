@@ -266,7 +266,6 @@ namespace LiveScore.Controllers
                 };
                 _context.Scores.Add(score);
             }
-            //_tempContext.TemporaryScores.RemoveRange(tempScores);
             await _context.SaveChangesAsync();
             await _tempContext.SaveChangesAsync();
 
