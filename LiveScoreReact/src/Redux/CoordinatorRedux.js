@@ -309,10 +309,10 @@ export const updateNextMatchIdApi = createAsyncThunk(
     }
 );
 export const ScorePutApi = createAsyncThunk(
-    'coordinator/editscore',
-    async ({ id, values }, { rejectWithValue }) => {
+    'coordinator/editScore',
+    async ({ id, values ,mid }, { rejectWithValue }) => {
         try {
-            const { data } = await globalRoute.put(`/Scores/EditTemporaryScore/${id}`, values, {
+            const { data } = await globalRoute.put(`/Scores/EditTemporaryScore/${id}/${mid}`, values, {
                 headers: {
                     "Content-Type": "application/json"
                 }

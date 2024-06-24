@@ -37,7 +37,7 @@ function CustomNoRowsOverlay() {
   );
 }
 
-const EditScore = ({id}) => {
+const EditScore = ({id ,mid}) => {
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -60,7 +60,7 @@ const EditScore = ({id}) => {
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setValues } = useFormik({
         initialValues: initial,
         onSubmit: async (values) => {
-            dispatch(ScorePutApi({  id,values })) 
+            dispatch(ScorePutApi({  id,values,mid })) 
             dispatch(ReviewMatchApi())         
         }
     })
@@ -177,10 +177,8 @@ const EditScore = ({id}) => {
                                         }}
                                     />
                                     {errors.redPanelty && touched.redPanelty ? (<Typography variant="subtitle1" color="error">{errors.redPanelty}</Typography>) : null}
-
                                 </Grid>
                                 <Grid item xl={6} md={6} sm={12} xs={12}>
-
                                     <TextField
                                         fullWidth
                                         id="bluePanelty"
@@ -201,10 +199,7 @@ const EditScore = ({id}) => {
                                     />
                                     {errors.bluePanelty && touched.bluePanelty ? (<Typography variant="subtitle1" color="error">{errors.bluePanelty}</Typography>) : null}
                                 </Grid>
-
-                                
                                 <Grid item xl={12} md={12} sm={12} xs={12}>
-
                                     <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 1 }}>
                                         Submit
                                     </Button>
@@ -219,24 +214,11 @@ const EditScore = ({id}) => {
   )
 }
 
-const ReviewMatch = () => {
+const ReviewMatch = ({mid}) => {
     const [open, setOpen] = useState(false);
-  // const [loading, setLoading] = useState(true);
-  // const [scoreData, setScoreData] = useState([])
   const dispatch = useDispatch()
   const { data, error,reviewMatch,loading } = useSelector(state => state.coordinator);
 
-  // const getTempScore = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const { data } = await GetTemporaryScores();
-  //     setScoreData(data)
-  //   } catch (error) {
-  //     console.error("Error fetching scores and rounds:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   useEffect(() => {
     if (data) {
       toast.success(data.msg)
@@ -254,12 +236,7 @@ const columns = useMemo(() => [
         return (
           <Box>
             <Tooltip title="Edit">
-                {/* <Link to={`/coordinator/editscore/${params.row.tempScoreId}`} >
-              <Fab variant="extended" size="small" color="warning" sx={{ fontSize: '0.75rem', ml: 1 }}>
-                <DriveFileRenameOutlineRounded size="small" sx={{ mr: "1px" }} /> 
-              </Fab>
-                </Link> */}
-                <EditScore id={`${params.row.tempScoreId}`} />
+                <EditScore id={`${params.row.tempScoreId}`} mid={mid} />
             </Tooltip>
           </Box>
         )

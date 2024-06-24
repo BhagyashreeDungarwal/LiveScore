@@ -2,12 +2,12 @@
 import { Button, Grid, Paper, TextField, useTheme, Typography, InputAdornment, FormLabel, RadioGroup, FormControlLabel, Radio, IconButton, Input } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import registration from "../Images/register.jpg"
-import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material'
+import { AccessibilityNewRounded, AddLocationAltRounded, AddPhotoAlternateRounded, AlternateEmailRounded, ArrowBackIosNewRounded, DateRangeRounded, LocationCityRounded, PatternRounded, PermContactCalendarRounded, Person2Rounded, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useFormik } from 'formik'
 import { acr, } from '../Validation/Coordinator'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CoordinatorPostApi } from '../../Redux/CoordinatorRedux'
 
 
@@ -47,7 +47,7 @@ const RegisterCoordinator = () => {
 
     const navigate = useNavigate()
     useEffect(() => {
-        if (data.msg) {
+        if (data && data.msg) {
             toast.success(data.msg)
             navigate("/")
         }
@@ -97,6 +97,9 @@ const RegisterCoordinator = () => {
             justifyContent: 'center',
 
         }}>
+        <Grid item xl={12} md={12} sm={12} xs={12}>
+            <Typography variant="button" component={Link} to="/" color="initial" sx={{ textDecoration:"none", textAlign:"center"}}><ArrowBackIosNewRounded fontSize='inherit' />Back</Typography>
+        </Grid>
             <Grid item xl={6} xs={false} sm={false} sx={{ backgroundImage: `url(${registration})`, backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }}  >
             </Grid>
             <Grid item xs={12} xl={6} sm={6}   >

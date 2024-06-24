@@ -3,11 +3,9 @@ import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/materi
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-
 const MatchCard = ({matchGroup,mid, matchDate, athleteRedImg, athleteBlueImg, athleteRedName, athleteBlueName ,matchStatus }) => {
   const formattedDate = dayjs(matchDate).format(' MMM D, YYYY');
-  return (
-    <Link to={`/LiveMatch/${mid}/${matchGroup}`} style={{textDecoration:"none"}}>
+  const cardContent = (
     <Card sx={{ maxWidth: 300, maxHeight: 200, borderRadius: "7px", mx: 1, color: "black", backgroundColor: "#eceff1" }}>
       <CardContent sx={{ alignItems: "center" }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -15,7 +13,9 @@ const MatchCard = ({matchGroup,mid, matchDate, athleteRedImg, athleteBlueImg, at
             LiveScore
           </Typography>
           <Typography variant="body2" component="div" color="black">
-           {matchStatus == "Live" ? (<Chip label={matchStatus} color="success" size='small' icon={<FiberManualRecord/>}  variant="filled" />) : formattedDate}
+            {matchStatus === "Live" ? (
+              <Chip label={matchStatus} color="success" size='small' icon={<FiberManualRecord />} variant="filled" />
+            ) : formattedDate}
           </Typography>
         </Box>
         <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -47,8 +47,15 @@ const MatchCard = ({matchGroup,mid, matchDate, athleteRedImg, athleteBlueImg, at
         </Box>
       </CardContent>
     </Card>
-    </Link>
   );
-}
+
+  return matchStatus === "Live" ? (
+    <Link to={`/LiveMatch/${mid}/${matchGroup}`} style={{ textDecoration: "none" }}>
+      {cardContent}
+    </Link>
+  ) : (
+    cardContent
+  );
+};
 
 export default MatchCard;

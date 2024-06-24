@@ -111,8 +111,8 @@ namespace LiveScore.Controllers
         }
 
         // PUT: api/Scores/EditTemporaryScore/{id}
-        [HttpPut("EditTemporaryScore/{id}")]
-        public async Task<IActionResult> EditTemporaryScore(int id, [FromBody] TempScoreVm tempScoreVm)
+        [HttpPut("EditTemporaryScore/{id}/{mid}")]
+        public async Task<IActionResult> EditTemporaryScore(int id,int mid, [FromBody] TempScoreVm tempScoreVm)
         {
             if (!ModelState.IsValid)
             {
@@ -157,7 +157,18 @@ namespace LiveScore.Controllers
                     throw;
                 }
             }
+            var totalRedPoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.RedPoints ?? 0) + (ts.BluePanelty ?? 0));
+            var totalBluePoints = await _tempContext.TemporaryScores.SumAsync(ts => (ts.BluePoints ?? 0) + (ts.RedPanelty ?? 0));
+            var RedPanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.RedPanelty ?? 0);
+            var BluePanelty = await _tempContext.TemporaryScores.SumAsync(ts => ts.BluePanelty ?? 0);
 
+            await _hubContext.Clients.Group(mid.ToString()).SendAsync("ReceiveTotalScore", new
+            {
+                totalRedPoints,
+                totalBluePoints,
+                RedPanelty,
+                BluePanelty
+            });
             return Ok(new {msg = "Successfully Update"});
         }
         private bool TemporaryScoreExists(int id)

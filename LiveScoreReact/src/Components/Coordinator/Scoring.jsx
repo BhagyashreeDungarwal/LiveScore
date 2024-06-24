@@ -115,6 +115,13 @@ const Scoring = () => {
                 });
             }
         });
+
+        connect.on('ReceiveTotalScore', (data) => {
+            setScoreRed(data.totalRedPoints);
+            setScoreBlue(data.totalBluePoints);
+            setPenalityRed(data.redPanelty);
+            setPenalityBlue(data.bluePanelty);
+          });
         setConnection(connect)
 
         return () => {
@@ -181,14 +188,14 @@ const Scoring = () => {
     };
 
     const handleRedScore = (increment) => {
-        setScoreRed((prevValue) => prevValue + increment);
+        // setScoreRed((prevValue) => prevValue + increment);
         setValues({ RedPoints: increment, BluePanelty: 0, BluePoints: 0, RedPanelty: 0 });
     };
 
 
 
     const handleBlueScore = (increment) => {
-        setScoreBlue((prevValue) => prevValue + increment);
+        // setScoreBlue((prevValue) => prevValue + increment);
         setValues({ BluePoints: increment, RedPoints: 0, RedPanelty: 0, BluePanelty: 0 });
 
     };
@@ -198,7 +205,7 @@ const Scoring = () => {
             setPenalityRed(prev => {
                 const newCount = prev + 1;
                 setValues({ RedPanelty: 1, BluePanelty: 0, RedPoints: 0, BluePoints: 0 });
-                setScoreBlue((prevValue) => prevValue + 1);
+                // setScoreBlue((prevValue) => prevValue + 1);
                 if (newCount === 5) {
                     toast.error("Athlete Red Disqualified!")
                     setIsDisable(true)
@@ -213,7 +220,7 @@ const Scoring = () => {
             setPenalityBlue(prev => {
                 const newCount = prev + 1;
                 setValues({ BluePanelty: 1, RedPanelty: 0, BluePoints: 0, RedPoints: 0 })
-                setScoreRed((prevValue) => prevValue + 1);
+                // setScoreRed((prevValue) => prevValue + 1);
                 if (newCount === 5) {
                     toast.error("Athlete Blue Disqualified!")
                     setIsDisable(true)
@@ -382,7 +389,7 @@ const Scoring = () => {
                         End Round
                     </Button>
                     {
-                        isReview ? <ReviewMatch /> : " "
+                        isReview ? <ReviewMatch mid={mid} /> : " "
                     }
                 </Grid>
             </Grid>

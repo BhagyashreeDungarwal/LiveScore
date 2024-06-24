@@ -12,6 +12,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import ProtectedRoute from '../../ProtectedRoute';
+import globalRoute from '../../Redux/GlobalRoute';
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +32,7 @@ const MatchesPerWeekChart = ({ month, year }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5032/api/Common/matchesPerWeek/${month}/${year}`);
+        const { data } = await globalRoute.get(`/Common/matchesPerWeek/${month}/${year}`);
         setLineData(data);
       } catch (error) {
         console.error('Error fetching match data:', error);

@@ -220,20 +220,20 @@ const Scoring = () => {
                       +1
                     </Button>
                   </Grid>
-                  <Grid item xs={6} md={6} lg={6} sm={6}>
+                  <Grid item xs={12} md={12} lg={12} sm={12}>
                     <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={() => handleRedScore(3)} fullWidth>
                       +3
                     </Button>
                   </Grid>
-                  <Grid item xs={6} md={6} lg={6} sm={6}>
+                  {/* <Grid item xs={6} md={6} lg={6} sm={6}>
                     <Button variant="contained" sx={{ backgroundColor: "#e53935", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#e53935" } }} onClick={handleRedPenality} disabled={penalityRed === 5} fullWidth>
                       penality
                     </Button>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Grid>
               <Grid item xs={12} md={4} lg={4} sm={4}>
-                <Grid container spacing={2} sx={{ mt: { lg: "1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }} >
+                {/* <Grid container spacing={2} sx={{ mt: { lg: "1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }} >
                   <Grid item xs={6} md={6} lg={6} sm={6}>
                     <Box sx={{ display: 'flex', flexDirection: { lg: 'row', xl: 'row', md: "column", sm: "column", xs: "column" }, alignItems: 'center', justifyContent: 'center' }}>
                       <Box sx={{ display: 'flex', flexDirection: { lg: "column", md: "column", xl: 'column', sm: "column", xs: "row" }, gap: 2 }}>
@@ -268,7 +268,7 @@ const Scoring = () => {
                       </Box>
                     </Box>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </Grid>
               <Grid item xs={12} md={4} lg={4} sm={4}>
                 <Grid container spacing={2} sx={{ ml: "-10%", mt: { lg: "-1%", xl: "-4%", md: "-10%", sm: "-10%", xs: "-10%" } }}>
@@ -284,12 +284,12 @@ const Scoring = () => {
                   </Grid>
 
 
-                  <Grid item xs={6} md={6} lg={6} sm={6}>
+                  {/* <Grid item xs={6} md={6} lg={6} sm={6}>
                     <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: { lg: "4vh", xl: "5vh", md: "5vh", sm: "4vh", xs: "2vh" }, fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={handleBluePenality} disabled={penalityBlue === 5} fullWidth>
                       penality
                     </Button>
-                  </Grid>
-                  <Grid item xs={6} md={6} lg={6} sm={6}>
+                  </Grid> */}
+                  <Grid item xs={12} md={12} lg={12} sm={12}>
                     <Button variant="contained" sx={{ backgroundColor: "#1e88e5", height: "20vh", borderRadius: { lg: "30px", xl: "30px", md: "15px", sm: "15px", xs: "30px" }, fontSize: "10vh", fontWeight: "bold", '&:hover': { backgroundColor: "#1e88e5" } }} onClick={() => handleBlueScore(3)} fullWidth>
                       +3
                     </Button>

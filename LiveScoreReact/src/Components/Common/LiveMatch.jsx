@@ -52,9 +52,20 @@ const LiveMatch = () => {
 
   useEffect(() => {
     const connect = new HubConnectionBuilder()
-      .withUrl('http://localhost:5032/scoreHub')
+      .withUrl('/scoreHub')
       .configureLogging(LogLevel.Information)
       .build();
+
+    connect.start()
+      .then(() => {
+        console.log('Connected to SignalR');
+        return connect.invoke('JoinGroup', matchGroup.toString());
+      })
+      .then(() => {
+        console.log(`Joined Matchgroup ${matchGroup}`);
+      })
+      .catch(err => console.error('JoinGroup invocation failed: ', err));
+
 
     connect.on('ReceiveTotalScore', (data) => {
       setTotalRedPoints(data.totalRedPoints);
@@ -76,17 +87,14 @@ const LiveMatch = () => {
 
     connect.on('ReceiveRoundWinner', (roundWinners) => {
       setRoundWinners(roundWinners);
+      setBluePanelty(0)
+      setRedPanelty(0)
+      setTotalRedPoints(0)
+      SetTotalBluePoints(0)
+      setRound(0)
+      setTimeLeft(0)
     });
 
-    connect.start()
-      .then(() => {
-        console.log('Connected to SignalR');
-        return connect.invoke('JoinGroup', matchGroup.toString());
-      })
-      .then(() => {
-        console.log(`Joined Matchgroup ${matchGroup}`);
-      })
-      .catch(err => console.error('JoinGroup invocation failed: ', err));
 
     setConnection(connect);
 

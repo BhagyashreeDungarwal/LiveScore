@@ -75,9 +75,9 @@ const GenerateOtp = () => {
 
 
 
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
+  const handleClose = () => {
+   navigate("/coordinator/cDashboard")
+  };
 
   return (
     <div>
@@ -92,7 +92,7 @@ const GenerateOtp = () => {
         </DialogTitle>
         <IconButton
           aria-label="close"
-          // onClick={handleClose}
+          onClick={handleClose}
           sx={{
             position: 'absolute',
             right: 8,
